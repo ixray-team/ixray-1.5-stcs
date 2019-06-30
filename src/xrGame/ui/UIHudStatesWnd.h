@@ -35,6 +35,7 @@ private:
 
 	CUIProgressBar*		m_ui_health_bar;
 	CUIProgressBar*		m_ui_armor_bar;
+	CUIProgressBar*		m_ui_stamina_bar;
 
 	CUIProgressShape*	m_progress_self;
 	CUIStatic*			m_radia_damage;

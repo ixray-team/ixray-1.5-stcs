@@ -3,6 +3,7 @@
 #include "UICDkey.h"
 #include "UILines.h"
 #include "../../xrEngine/line_edit_control.h"
+#include "../MainMenu.h"
 
 #include "UIColorAnimatorWrapper.h"
 #include "../../xrEngine/xr_IOConsole.h"
@@ -13,7 +14,14 @@ extern string64	gsCDKey;
 
 CUICDkey::CUICDkey()
 {
+	m_view_access = false;
 	CreateCDKeyEntry();
+	SetCurrentValue();
+}
+
+void CUICDkey::Show( bool status )
+{
+	inherited::Show( status );
 	SetCurrentValue();
 }
 
@@ -30,6 +38,14 @@ void CUICDkey::OnFocusLost()
 
 void CUICDkey::Draw()
 {
+	LPCSTR  edt_str = ec().str_edit();
+	u32    edt_size = xr_strlen( edt_str );
+
+	if ( edt_size == 0 )
+	{
+		m_view_access = true;
+	}
+	
 	//inherited::Draw();
 	Frect						rect;
 	GetAbsoluteRect				(rect);
@@ -43,9 +59,23 @@ void CUICDkey::Draw()
 	pos.set						(rect.left+out.x, rect.top+out.y);
 	UI()->ClientToScreenScaled	(pos);
 
+	string64 xx_str = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
+	edt_size = xr_strlen( edt_str );
+	if ( edt_size > 63 ) { edt_size = 63; }
+	xx_str[edt_size] = 0;
+
+	string64 xx_str1 = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
+	LPCSTR  edt_str1 = ec().str_before_cursor();
+	u32    edt_size1 = xr_strlen( edt_str1 );
+	if ( edt_size1 > 63 ) { edt_size1 = 63; }
+	xx_str1[edt_size1] = 0;
+
 	if ( m_bInputFocus )
 	{		
-		m_pLines->m_pFont->Out	( pos.x, pos.y, "%s", AddHyphens( ec().str_edit() ) );
+		LPCSTR res  = ( m_view_access )? edt_str  : xx_str;
+		LPCSTR res1 = ( m_view_access )? edt_str1 : xx_str1;
+
+		m_pLines->m_pFont->Out	( pos.x, pos.y, "%s", CMainMenu::AddHyphens( res ) );
 		
 		float _h				= m_pLines->m_pFont->CurrentHeight_();
 		UI()->ClientToScreenScaledHeight(_h);
@@ -53,8 +83,8 @@ void CUICDkey::Draw()
 		out.y					= rect.top + (m_wndSize.y - _h)/2.0f;
 		
 		float	w_tmp			= 0.0f;
-		int i					= (int)xr_strlen( ec().str_before_cursor() );
-		w_tmp					= m_pLines->m_pFont->SizeOf_( ec().str_before_cursor() );
+		int i					= (int)xr_strlen( res1 );
+		w_tmp					= m_pLines->m_pFont->SizeOf_( res1 );
 		UI()->ClientToScreenScaledWidth( w_tmp );
 		out.x					= rect.left + w_tmp;
 		
@@ -73,55 +103,14 @@ void CUICDkey::Draw()
 	}
 	else
 	{
-		string64 tmp = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
-		u32 sz = xr_strlen( ec().str_edit() );
-		tmp[sz] = 0;
-
-		m_pLines->m_pFont->Out(pos.x, pos.y, "%s" ,AddHyphens(tmp) );
+		m_pLines->m_pFont->Out(pos.x, pos.y, "%s" , CMainMenu::AddHyphens(xx_str) );
 	}
 	m_pLines->m_pFont->OnRender();
 }
 
 LPCSTR CUICDkey::GetText()
 {
-	return AddHyphens(inherited::GetText());
-}
-
-LPCSTR CUICDkey::AddHyphens( LPCSTR c )
-{
-	static string32 buf;
-
-	int sz = xr_strlen(c);
-	int j = 0; 
-
-	for (int i = 1; i<=3; i++)
-		buf[i*5 - 1]='-';
-
-	for (int i = 0; i<sz; i++)
-	{
-		j = i + iFloor(i/4.0f);
-		buf[j] = c[i];		
-	}
-	buf[sz + iFloor(sz/4.0f)] = 0;
-
-	return buf;
-}
-
-LPCSTR CUICDkey::DelHyphens( LPCSTR c )
-{
-	static string32 buf;
-
-	int sz = xr_strlen(c);
-	int j = 0; 
-
-	for (int i = 0; i<sz - _min(iFloor(sz/4.0f),3); i++)
-	{
-		j = i + iFloor(i/4.0f);
-		buf[i] = c[j];		
-	}
-	buf[sz - _min(iFloor(sz/4.0f),3)] = 0;
-
-	return buf;
+	return CMainMenu::AddHyphens(inherited::GetText());
 }
 
 void CUICDkey::SetCurrentValue()
@@ -129,22 +118,20 @@ void CUICDkey::SetCurrentValue()
 	string512	CDKeyStr;
 	CDKeyStr[0] = 0;
 	GetCDKey_FromRegistry(CDKeyStr);
-	inherited::SetText( DelHyphens(CDKeyStr) );
+	inherited::SetText( CMainMenu::DelHyphens(CDKeyStr) );
 }
 
 void CUICDkey::SaveValue()
 {
 	CUIOptionsItem::SaveValue();
 
-//	char NewCDKey[32];
-//	HKEY KeyCDKey = 0;
-
-//	string256 tmp;
-	strcpy_s( gsCDKey, sizeof(gsCDKey), AddHyphens(inherited::GetText()) );
+	strcpy_s( gsCDKey, sizeof(gsCDKey), CMainMenu::AddHyphens(inherited::GetText()) );
 	WriteCDKey_ToRegistry( gsCDKey );
-//	sprintf_s(gsCDKey,"%s",AddHyphens(inherited::GetText()));
-//	sprintf_s(tmp,"cdkey %s",AddHyphens(m_lines.GetText()));
-//	Console->Execute(tmp);
+
+	if ( MainMenu()->IsCDKeyIsValid() )
+	{
+		m_view_access = false;
+	}
 }
 
 bool CUICDkey::IsChanged()
@@ -199,6 +186,10 @@ void GetPlayerName_FromRegistry(char* name)
 	if ( xr_strlen(name) > 17 )
 	{
 		name[17] = 0;
+	}
+	if ( xr_strlen(name) == 0 )
+	{
+		Msg( "! Player name in registry is empty! (%s)", REGISTRY_VALUE_USERNAME );
 	}
 }
 

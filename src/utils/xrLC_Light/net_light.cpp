@@ -31,59 +31,31 @@ static struct unload
 	}
 } _unload;
 */
+#pragma warning(disable:4995)
 DWORD g_sessionId = DWORD(-1);
+
+//bool  GetGlobalData( IAgent* agent,
+//				    DWORD sessionId );
+bool  TaskReceive( net_task &task,IAgent* agent,
+					DWORD sessionId, 
+					IGenericStream* inStream );
+
 class net_task_interface_impl : public net_task_interface
 {
  
- bool  GetGlobalData( IAgent* agent,
-				    DWORD sessionId )
- {
-	 
-	 if(!inlc_global_data())
-	 {
 
-		  net_pool.clear();
-		  IGenericStream* globalDataStream;
-		  HRESULT rz = agent->GetData(sessionId, dataDesc, &globalDataStream);
-		  
-		  if (rz!=S_OK) 
-		  {
-			  //block.Leave();
-			  return false;
-		  } 
-
-		 INetReader r_global( globalDataStream );
-		 create_global_data();
-
-		 VERIFY( inlc_global_data() );
-		 inlc_global_data()->read( r_global );
-
-		 globalDataStream->Release();
-		   
-		 agent->FreeCachedData(sessionId, dataDesc);
-		 FPU::m64r		();
-		 Memory.mem_compact	();
-	 }
-	 return true;
-
- }
 
  bool  TaskReceive( net_task &task,IAgent* agent,
 					DWORD sessionId, 
 					IGenericStream* inStream )
  {
-	
-	 bool ret = false;
-	 __try{
-		ret = GetGlobalData( agent, sessionId ) && task.receive( inStream ) ;
-	 }
-	 __except( EXCEPTION_EXECUTE_HANDLER )
-	 {
-		return ret;
-	 }
-	return ret;
+	 return ::TaskReceive(task,agent,sessionId,inStream);
  }
-
+ /*bool  GetGlobalData( IAgent* agent,
+				    DWORD sessionId )
+ {
+		GetGlobalData()
+ }*/
  bool TaskSendResult( net_task &task,  IGenericStream* outStream )
  {
 	
@@ -93,6 +65,7 @@ class net_task_interface_impl : public net_task_interface
 	}
 	__except( EXCEPTION_EXECUTE_HANDLER )
 	{
+		Msg( "accept!" );
 		return ret;
 	}
 	return ret;
@@ -107,7 +80,7 @@ bool  RunTask ( IAgent* agent,
  block.Enter();
 
  g_sessionId = sessionId;
- net_task task( *agent, sessionId );
+ net_task task( agent, sessionId );
 
  if(!TaskReceive( task, agent, sessionId, inStream ))
  {
@@ -129,7 +102,7 @@ bool  RunTask ( IAgent* agent,
  return true;
 }
 } g_net_task_interface_impl;
-
+#pragma warning(default:4995)
 
 XRLC_LIGHT_API net_task_interface *g_net_task_interface = &g_net_task_interface_impl;
 /*

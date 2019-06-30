@@ -56,6 +56,7 @@ protected:
 	text_editor::line_edit_control*		m_editor_control;
 	text_editor::line_edit_control&		ec();
 	
+	u32		m_last_key_state_time;
 	char	m_out_str[EDIT_BUF_SIZE];
 	float	m_dx_cur;
 

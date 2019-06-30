@@ -486,7 +486,7 @@ void CSpectator::GetSpectatorString		(string1024& pStr)
 			SpectatorMsg += *st.translate("mp_first_eye");
 			SpectatorMsg += " ";
 //			SpectatorMsg = "SPECTATOR (First-Eye): ";
-			SpectatorMsg += m_pActorToLookAt->Name();			
+			SpectatorMsg += m_pActorToLookAt ? m_pActorToLookAt->Name() : "";
 
 		}break;
 	case eacFreeLook:
@@ -496,7 +496,7 @@ void CSpectator::GetSpectatorString		(string1024& pStr)
 			SpectatorMsg += *st.translate("mp_free_look");
 			SpectatorMsg += " ";
 //			SpectatorMsg = "SPECTATOR (Free-Look):";
-			SpectatorMsg += m_pActorToLookAt->Name();
+			SpectatorMsg += m_pActorToLookAt ? m_pActorToLookAt->Name() : "";
 		}break;
 	case eacLookAt:
 		{
@@ -505,7 +505,7 @@ void CSpectator::GetSpectatorString		(string1024& pStr)
 			SpectatorMsg += *st.translate("mp_look_at");
 			SpectatorMsg += " ";
 //			SpectatorMsg = "SPECTATOR (Look-At):";
-			SpectatorMsg += m_pActorToLookAt->Name();
+			SpectatorMsg += m_pActorToLookAt ? m_pActorToLookAt->Name() : "";
 		}break;
 	};
 	strcpy_s(pStr, SpectatorMsg.c_str());

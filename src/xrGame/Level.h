@@ -148,6 +148,7 @@ private:
 	void						BlockCheatLoad					()				;
 
 	BOOL						Connect2Server					(LPCSTR options);
+	void						SendClientDigestToServer		();
 private:
 	bool						m_bConnectResultReceived;
 	bool						m_bConnectResult;

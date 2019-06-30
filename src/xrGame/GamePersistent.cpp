@@ -776,5 +776,6 @@ void CGamePersistent::OnSectorChanged(int sector)
 
 void CGamePersistent::OnAssetsChanged()
 {
-	CStringTable().rescan();
+	IGame_Persistent::OnAssetsChanged	();
+	CStringTable().rescan				();
 }

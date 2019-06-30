@@ -16,7 +16,6 @@
 #include "../actor.h"
 #include "../../xrServerEntities/script_process.h"
 #include "../inventory.h"
-#include "../WeaponMagazined.h"
 
 #include "ai_space.h"
 #include "alife_simulator.h"
@@ -281,7 +280,7 @@ void CUIInventoryUpgradeWnd::OnMesBoxYes()
 {
 	if ( get_manager().upgrade_install( *m_inv_item, m_cur_upgrade_id, false ) )
 	{
-		OnUpgradeItem();
+//-		OnUpgradeItem();
 //-		UpdateAllUpgrades();
 		
 		VERIFY( m_pParentWnd );
@@ -336,8 +335,8 @@ CUIInventoryUpgradeWnd::Manager_type& CUIInventoryUpgradeWnd::get_manager()
 {
 	return  ai().alife().inventory_upgrade_manager();
 }
-
-void CUIInventoryUpgradeWnd::OnUpgradeItem()
+/*
+void CUIInventoryUpgradeWnd::PreUpgradeItem()
 {
 	CWeapon* weapon = smart_cast<CWeapon*>( m_inv_item );
 	if ( weapon )
@@ -362,3 +361,4 @@ void CUIInventoryUpgradeWnd::OnUpgradeItem()
 		wm->SwitchAmmoType( CMD_START );
 	}
 }
+*/

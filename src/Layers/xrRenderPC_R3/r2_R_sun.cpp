@@ -723,8 +723,8 @@ void CRender::render_sun				()
 	// Render shadow-map
 	//. !!! We should clip based on shrinked frustum (again)
 	{
-		bool	bNormal							= mapNormal[0].size() || mapMatrix[0].size();
-		bool	bSpecial						= mapNormal[1].size() || mapMatrix[1].size() || mapSorted.size();
+		bool	bNormal							= mapNormalPasses[0][0].size() || mapMatrixPasses[0][0].size();
+		bool	bSpecial						= mapNormalPasses[1][0].size() || mapMatrixPasses[1][0].size() || mapSorted.size();
 		if ( bNormal || bSpecial)	{
 			Target->phase_smap_direct			(fuckingsun, SE_SUN_FAR		);
 			RCache.set_xform_world				(Fidentity					);
@@ -749,6 +749,13 @@ void CRender::render_sun				()
 
 	// Accumulate
 	Target->phase_accumulator	();
+
+	if ( Target->use_minmax_sm_this_frame()	)
+	{
+		PIX_EVENT(SE_SUN_FAR_MINMAX_GENERATE);
+		Target->create_minmax_SM();
+	}
+
 	PIX_EVENT(SE_SUN_FAR);
 	Target->accum_direct		(SE_SUN_FAR);
 
@@ -926,7 +933,7 @@ void CRender::render_sun_near	()
 
 	// Begin SMAP-render
 	{
-		bool	bSpecialFull					= mapNormal[1].size() || mapMatrix[1].size() || mapSorted.size();
+		bool	bSpecialFull					= mapNormalPasses[1][0].size() || mapMatrixPasses[1][0].size() || mapSorted.size();
 		VERIFY									(!bSpecialFull);
 		HOM.Disable								();
 		phase									= PHASE_SMAP;
@@ -944,8 +951,8 @@ void CRender::render_sun_near	()
 	// Render shadow-map
 	//. !!! We should clip based on shrinked frustum (again)
 	{
-		bool	bNormal							= mapNormal[0].size() || mapMatrix[0].size();
-		bool	bSpecial						= mapNormal[1].size() || mapMatrix[1].size() || mapSorted.size();
+		bool	bNormal							= mapNormalPasses[0][0].size() || mapMatrixPasses[0][0].size();
+		bool	bSpecial						= mapNormalPasses[1][0].size() || mapMatrixPasses[1][0].size() || mapSorted.size();
 		if ( bNormal || bSpecial)	{
 			Target->phase_smap_direct			(fuckingsun	, SE_SUN_NEAR	);
 			RCache.set_xform_world				(Fidentity					);
@@ -972,6 +979,13 @@ void CRender::render_sun_near	()
 
 	// Accumulate
 	Target->phase_accumulator	();
+	
+	if ( Target->use_minmax_sm_this_frame()	)
+	{
+		PIX_EVENT(SE_SUN_NEAR_MINMAX_GENERATE);
+		Target->create_minmax_SM();
+	}
+
 	PIX_EVENT(SE_SUN_NEAR);
 	Target->accum_direct		(SE_SUN_NEAR);
 

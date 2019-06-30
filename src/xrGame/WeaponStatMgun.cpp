@@ -215,7 +215,7 @@ void CWeaponStatMgun::cam_Update			(float dt, float fov)
 
 	IKinematics* K					= smart_cast<IKinematics*>(Visual());
 	K->CalculateBones_Invalidate	();
-	K->CalculateBones				();
+	K->CalculateBones				(TRUE);
 	const Fmatrix& C				= K->LL_GetTransform(m_camera_bone);
 	XFORM().transform_tiny			(P,C.c);
 

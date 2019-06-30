@@ -28,10 +28,10 @@ void fix_texture_thm_name(LPSTR fn)
 		*_ext = 0;
 }
 
-void CTextureDescrMngr::LoadTHM()
+void CTextureDescrMngr::LoadTHM(LPCSTR initial)
 {
 	FS_FileSet				flist;
-	FS.file_list			(flist,"$game_textures$",FS_ListFiles,"*.thm");
+	FS.file_list			(flist, initial, FS_ListFiles, "*.thm");
 #ifdef DEBUG
 	Msg						("count of .thm files=%d", flist.size());
 #endif // #ifdef DEBUG
@@ -42,9 +42,9 @@ void CTextureDescrMngr::LoadTHM()
 	for(;It!=It_e;++It)
 	{
 		
-		FS.update_path		(fn,"$game_textures$", (*It).name.c_str());
+		FS.update_path		(fn, initial, (*It).name.c_str());
 		IReader* F			= FS.r_open(fn);
-		strcpy_s				(fn,(*It).name.c_str());
+		strcpy_s			(fn,(*It).name.c_str());
 		fix_texture_thm_name(fn);
 
 		R_ASSERT			(F->find_chunk(THM_CHUNK_TYPE));
@@ -99,10 +99,13 @@ void CTextureDescrMngr::LoadTHM()
 
 void CTextureDescrMngr::Load()
 {
+#ifdef DEBUG
 	CTimer					TT;
 	TT.Start				();
+#endif // #ifdef DEBUG
 
-	LoadTHM					();
+	LoadTHM					("$game_textures$");
+	LoadTHM					("$level$");
 
 #ifdef DEBUG
 	Msg("load time=%d ms",TT.GetElapsed_ms());

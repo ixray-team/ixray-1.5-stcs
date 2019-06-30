@@ -102,26 +102,7 @@ void Root::test_all_upgrades( CInventoryItem& item )
 }
 
 #endif // DEBUG
-/*
-void Root::init_install( CInventoryItem& item, Manager& manager_r )
-{
-	if ( !pSettings->line_exist( id(), "installed_upgrades" ) )
-	{
-		return;	
-	}
 
-	// installed_upgrades by default
-	LPCSTR	upgrades_str = pSettings->r_string( id(), "installed_upgrades" );
-	if ( upgrades_str )
-	{
-		PSTR	temp = (PSTR)_alloca( (xr_strlen(upgrades_str) + 1) * sizeof(char) );
-		for ( int n = _GetItemCount(upgrades_str), i = 0; i < n; ++i )
-		{
-			manager_r.upgrade_install( item, _GetItem( upgrades_str, i, temp ) );
-		}
-	}
-}
-*/
 bool Root::contain_upgrade( const shared_str& upgrade_id )
 {
 	if ( inherited::contain_upgrade( upgrade_id ) )

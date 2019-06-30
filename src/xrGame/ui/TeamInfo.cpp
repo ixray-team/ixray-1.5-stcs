@@ -61,25 +61,33 @@ shared_str	CTeamInfo::GetTeam2_name(){
     return team2_name;
 }
 
-LPCSTR	CTeamInfo::GetTeam_name(int team){
-	R_ASSERT(1 == team || 2 == team);
-    if (1 == team)
+LPCSTR	CTeamInfo::GetTeam_name(int team)
+{
+	string32 tmp;
+	R_ASSERT2( team == 1 || team == 2 || team == 3, itoa(team, tmp, 10) );
+    if (team == 1)
 		return *GetTeam1_name();
 	else 
 		return *GetTeam2_name();
 }
 
-LPCSTR	CTeamInfo::GetTeam_color_tag(int team){
-	R_ASSERT(1 == team || 2 == team);
+LPCSTR	CTeamInfo::GetTeam_color_tag(int team)
+{
+	string32 tmp;
+	R_ASSERT2( team == 1 || team == 2 || team == 3, itoa(team, tmp, 10) );
 //	if (flags.test(flTeam1_col_t)) return *team1_color_tag;
 //	if (flags.test(flTeam2_col_t)) return *team2_color_tag;
+	if (team == 3)
+	{
+		team = 2;
+	}
 
 	string256 _buff;
 
 	//"%c[255,64,255,64]", "%c[255,64,64,255]"
 
 	LPCSTR tm_col;
-	if (1 == team)
+	if (team == 1)
 		tm_col = pSettings->r_string("team1","color");
 	else
 		tm_col = pSettings->r_string("team2","color");
@@ -94,12 +102,14 @@ LPCSTR	CTeamInfo::GetTeam_color_tag(int team){
 	str += _GetItem(tm_col, 2, _buff);
 	str += "]";
 
-	if (1 == team){
+	if (team == 1)
+	{
 		flags.set(flTeam1_col_t,true);
         team1_color_tag = str.c_str();
         return *team1_color_tag;
 	}
-	else{
+	else
+	{
 		flags.set(flTeam2_col_t,true);
 		team2_color_tag = str.c_str();
         return *team2_color_tag;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8,00"
+	Version="8.00"
 	Name="xrRender_R3"
 	ProjectGUID="{3F383D3C-FCD8-4170-990B-EB4833F09248}"
 	RootNamespace="xrRender_R3"
@@ -377,10 +377,6 @@
 			Name="Core"
 			>
 			<File
-				RelativePath="..\xrRenderDX10\dx10Texture.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\xrRender\PSLibrary.cpp"
 				>
 			</File>
@@ -530,6 +526,10 @@
 					RelativePath="doug_lea_memory_allocator.h"
 					>
 				</File>
+				<File
+					RelativePath="..\xrRenderDX10\dx10Texture.cpp"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -575,18 +575,6 @@
 				RelativePath="..\xrRenderDX10\dx10DetailManager_VS.cpp"
 				>
 			</File>
-			<Filter
-				Name="Debug"
-				>
-				<File
-					RelativePath="..\xrRender\Debug\dxPixEventWrapper.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\xrRender\Debug\dxPixEventWrapper.h"
-					>
-				</File>
-			</Filter>
 		</Filter>
 		<Filter
 			Name="Stripifier"
@@ -852,6 +840,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\dx10MinMaxSMBlender.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\dx10MinMaxSMBlender.h"
+				>
+			</File>
+			<File
 				RelativePath="..\xrRender\uber_deffer.cpp"
 				>
 			</File>
@@ -1097,6 +1093,10 @@
 			</File>
 			<File
 				RelativePath=".\r3_rendertarget_accum_spot_geom.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\r3_rendertarget_create_minmaxSM.cpp"
 				>
 			</File>
 			<File
@@ -2111,8 +2111,24 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="Debug"
+			>
+			<File
+				RelativePath="..\xrRender\Debug\dxPixEventWrapper.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\xrRender\Debug\dxPixEventWrapper.h"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath="todo.txt"
+			>
+		</File>
+		<File
+			RelativePath=".\VTune\xrRender_R3.vpj"
 			>
 		</File>
 	</Files>

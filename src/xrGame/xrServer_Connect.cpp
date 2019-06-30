@@ -61,7 +61,6 @@ xrServer::EConnect xrServer::Connect(shared_str &session_name, GameDescriptionDa
 
 	// Options
 	if (0==game)			return ErrConnect;
-	csPlayers.Enter			();
 //	game->type				= type_id;
 #ifdef DEBUG
 	Msg("* Created server_game %s",game->type_name());
@@ -73,7 +72,6 @@ xrServer::EConnect xrServer::Connect(shared_str &session_name, GameDescriptionDa
 	strcpy_s(game_descr.download_url, get_map_download_url(game_descr.map_name, game_descr.map_version));
 
 	game->Create			(session_name);
-	csPlayers.Leave			();
 
 #ifdef BATTLEYE
 	if ( game->get_option_i( *session_name, "battleye", 1) != 0 ) // default => battleye enable (always)
@@ -144,7 +142,7 @@ IClient* xrServer::new_client( SClientConnectData* cl_data )
 	P.r_pos			= 0;
 
 	game->AddDelayedEvent( P, GAME_EVENT_CREATE_CLIENT, 0, CL->ID );
-	if ( client_Count() == 1 )
+	if ( GetClientsCount() == 1 )
 	{
 		Update();
 	}
@@ -187,4 +185,41 @@ void xrServer::AttachNewClient			(IClient* CL)
 	CL->m_guid[0]=0;
 }
 
-
+void xrServer::RequestClientDigest(IClient* CL)
+{
+	if (CL == GetServerClient())
+	{
+		Check_BuildVersion_Success(CL);	
+		return;
+	}
+	NET_Packet P;
+	P.w_begin	(M_SV_DIGEST);
+	SendTo		(CL->ID, P);
+}
+#define NET_BANNED_STR	"Player banned by server!"
+void xrServer::ProcessClientDigest(xrClientData* xrCL, NET_Packet* P)
+{
+	R_ASSERT(xrCL);
+	IClient* tmp_client = static_cast<IClient*>(xrCL);
+	game_sv_mp* server_game = smart_cast<game_sv_mp*>(game);
+	P->r_stringZ(xrCL->m_cdkey_digest);
+	shared_str	admin_name;
+	if (server_game->IsPlayerBanned(xrCL->m_cdkey_digest.c_str(), admin_name))
+	{
+		R_ASSERT2(tmp_client != GetServerClient(), "can't disconnect server client");
+		Msg("--- Client [%s][%s] tried to connect - rejecting connection (he is banned by %s) ...",
+			tmp_client->m_cAddress.to_string().c_str(), tmp_client->name.c_str(),
+			admin_name.size() ? admin_name.c_str() : "Server");
+		LPSTR message_to_user;
+		if (admin_name.size())
+		{
+			STRCONCAT(message_to_user, "You have been banned by ", admin_name.c_str());
+		} else
+		{
+			message_to_user = "";
+		}
+		SendConnectResult(tmp_client, 0, 3, message_to_user);
+		return;
+	} 
+	Check_BuildVersion_Success(tmp_client);	
+}

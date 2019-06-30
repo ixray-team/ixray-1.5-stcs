@@ -17,7 +17,8 @@
 #include "alife_simulator.h"
 #include "inventory_upgrade_manager.h"
 #include "inventory_upgrade.h"
-
+#include "Level.h"
+#include "WeaponMagazinedWGrenade.h"
 
 bool CInventoryItem::has_upgrade( const shared_str& upgrade_id )
 {
@@ -28,11 +29,19 @@ bool CInventoryItem::has_upgrade( const shared_str& upgrade_id )
 	return ( std::find( m_upgrades.begin(), m_upgrades.end(), upgrade_id ) != m_upgrades.end() );
 }
 
-void CInventoryItem::add_upgrade( const shared_str& upgrade_id )
+void CInventoryItem::add_upgrade( const shared_str& upgrade_id, bool loading )
 {
 	if ( !has_upgrade( upgrade_id ) )
 	{
 		m_upgrades.push_back( upgrade_id );
+
+		if ( !loading )
+		{
+			NET_Packet					P;
+			CGameObject::u_EventGen		( P, GE_INSTALL_UPGRADE, object_id() );
+			P.w_stringZ					( upgrade_id );
+			CGameObject::u_EventSend	( P );
+		}
 	}
 }
 
@@ -108,28 +117,19 @@ void CInventoryItem::log_upgrades()
 }
 #endif // DEBUG
 
-void CInventoryItem::init_upgrades()
+void CInventoryItem::net_Spawn_install_upgrades( Upgrades_type saved_upgrades ) // net_Spawn
 {
-	if( ai().get_alife() )
-	{
-		ai().alife().inventory_upgrade_manager().init_install( *this );
-	}
-}
-
-void CInventoryItem::install_loaded_upgrades() // after load
-{
-	size_t const count			= m_upgrades.size();
-	typedef buffer_vector<shared_str>	Upgrades;
-	Upgrades					copy_upgrades(
-		_alloca(sizeof(shared_str) * count),
-		count,
-		m_upgrades.begin(),
-		m_upgrades.end()
-	);
 	m_upgrades.clear_not_free();
 
-	Upgrades::iterator ib = copy_upgrades.begin();
-	Upgrades::iterator ie = copy_upgrades.end();
+	if ( !ai().get_alife() )
+	{
+		return;
+	}
+	
+	ai().alife().inventory_upgrade_manager().init_install( *this ); // from pSettings
+
+	Upgrades_type::iterator ib = saved_upgrades.begin();
+	Upgrades_type::iterator ie = saved_upgrades.end();
 	for ( ; ib != ie ; ++ib )
 	{
 		ai().alife().inventory_upgrade_manager().upgrade_install( *this, (*ib), true );
@@ -180,4 +180,44 @@ bool CInventoryItem::install_upgrade_impl( LPCSTR section, bool test )
 		CHitImmunity::LoadImmunities( str, pSettings );
 	}
 	return result;
+}
+
+void CInventoryItem::pre_install_upgrade()
+{
+	CWeaponMagazined* wm = smart_cast<CWeaponMagazined*>( this );
+	if ( wm )
+	{
+		wm->UnloadMagazine();
+
+		CWeaponMagazinedWGrenade* wg = smart_cast<CWeaponMagazinedWGrenade*>( this );
+		if ( wg )
+		{
+			if ( wg->IsGrenadeLauncherAttached() ) 
+			{
+				wg->PerformSwitchGL();
+				wg->UnloadMagazine();
+				wg->PerformSwitchGL(); // restore state
+			}
+		}
+	}
+
+	CWeapon* weapon = smart_cast<CWeapon*>( this );
+	if ( weapon )
+	{
+		//weapon->SwitchAmmoType( CMD_START );
+		if ( weapon->ScopeAttachable() && weapon->IsScopeAttached() )
+		{
+			weapon->Detach( weapon->GetScopeName().c_str(), true );
+		}
+		if ( weapon->SilencerAttachable() && weapon->IsSilencerAttached() )
+		{
+			weapon->Detach( weapon->GetSilencerName().c_str(), true );
+		}
+		if ( weapon->GrenadeLauncherAttachable() && weapon->IsGrenadeLauncherAttached() )
+		{
+			weapon->Detach( weapon->GetGrenadeLauncherName().c_str(), true );
+		}
+	}
+
+
 }

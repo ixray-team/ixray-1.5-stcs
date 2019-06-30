@@ -7,6 +7,7 @@
 #include "serialize.h"
 #include "mu_model_face.h"
 #include "xrmu_model.h"
+#include "xrmu_model_reference.h"
 #include "../../xrcdb/xrcdb.h"
 
 bool g_using_smooth_groups = true;
@@ -39,6 +40,8 @@ void	create_global_data()
 void	destroy_global_data()
 {
 	VERIFY( inlc_global_data() );
+	if(data)
+		data->clear();
 	xr_delete(data);
 }
 
@@ -400,4 +403,51 @@ xrLC_GlobalData::~xrLC_GlobalData()
 {
 	//u32 i;
 	//i++;
+}
+
+template<typename T>
+void vec_clear( xr_vector<T*> &v )
+{
+	typename xr_vector<T*>::iterator i = v.begin(), e = v.end();
+	for(;i!=e;++i)
+		xr_delete(*i);
+	v.clear();
+}
+template<typename T>
+void vec_spetial_clear( xr_vector<T> &v )
+{
+	typename xr_vector<T>::iterator i = v.begin(), e = v.end();
+	for(;i!=e;++i)
+		clear(*i);
+	v.clear();
+}
+
+void mu_mesh_clear();
+void		xrLC_GlobalData::				clear			()
+{
+		vec_spetial_clear(_textures );
+		_materials.clear();
+		_shaders.Unload();
+	//	CMemoryWriter					_err_invalid;
+	//	b_params						_g_params;
+		vec_clear(_g_lightmaps);
+		vec_clear(_mu_models);//mem leak
+		vec_clear(_mu_refs);
+		mu_mesh_clear();
+		gl_mesh_clear();
+		//VertexPool;
+		//FacePool;
+
+	
+
+	//	vecVertex						_g_vertices;
+	//	vecFace							_g_faces;
+		gl_mesh_clear	();
+	    vec_clear		(_g_deflectors);
+
+		//base_lighting					_L_static;
+		xr_delete(_RCAST_Model);
+
+//		bool							_b_nosun;
+//		bool							_gl_linear;
 }

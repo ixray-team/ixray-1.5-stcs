@@ -41,6 +41,7 @@ private:
 	GAMESPY_FN_VAR_DECL(void, qr2_register_natneg_callback, (void* qrec, fnqr2_natnegcallback_t nncallback));
 	GAMESPY_FN_VAR_DECL(void, qr2_register_clientmessage_callback, (void* qrec, fnqr2_clientmessagecallback_t cmcallback));
 	GAMESPY_FN_VAR_DECL(void, qr2_register_publicaddress_callback, (void* qrec, fnqr2_publicaddresscallback_t pacallback));
+	GAMESPY_FN_VAR_DECL(void, qr2_register_denyresponsetoip_callback, (void* qrec, fnqr2_denyqr2responsetoipcallback_t dertoipcallback));
 
 	GAMESPY_FN_VAR_DECL(const char*, GetGameVersion, (const	char*));
 

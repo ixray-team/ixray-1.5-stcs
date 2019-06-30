@@ -152,7 +152,7 @@ void attachable_hud_item::update(bool bForce)
 	{
 		ka->UpdateTracks									();
 		ka->dcast_PKinematics()->CalculateBones_Invalidate	();
-		ka->dcast_PKinematics()->CalculateBones				();
+		ka->dcast_PKinematics()->CalculateBones				(TRUE);
 	}
 }
 
@@ -459,7 +459,7 @@ void player_hud::load(const shared_str& player_hud_sect)
 			m_attached_items[0]->m_parent_hud_item->on_a_hud_attach();
 	}
 	m_model->dcast_PKinematics()->CalculateBones_Invalidate	();
-	m_model->dcast_PKinematics()->CalculateBones();
+	m_model->dcast_PKinematics()->CalculateBones(TRUE);
 }
 
 bool player_hud::render_item_ui_query()
@@ -566,7 +566,7 @@ void player_hud::update(const Fmatrix& cam_trans)
 
 	m_model->UpdateTracks				();
 	m_model->dcast_PKinematics()->CalculateBones_Invalidate	();
-	m_model->dcast_PKinematics()->CalculateBones				();
+	m_model->dcast_PKinematics()->CalculateBones				(TRUE);
 
 	if(m_attached_items[0])
 		m_attached_items[0]->update(true);

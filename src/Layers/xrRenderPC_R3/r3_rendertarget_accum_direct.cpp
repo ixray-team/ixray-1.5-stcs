@@ -11,6 +11,11 @@ void CRenderTarget::accum_direct		(u32 sub_phase)
 		return			;
 	}
 
+	//	choose corect element for the sun shader
+	u32 uiElementIndex = sub_phase;
+	if ( (uiElementIndex==SE_SUN_NEAR) && use_minmax_sm_this_frame())
+		uiElementIndex = SE_SUN_NEAR_MINMAX;
+
 	//	TODO: DX10: Remove half pixe offset
 	// *** assume accumulator setted up ***
 	light*			fuckingsun			= (light*)RImplementation.Lights.sun_adapted._get()	;
@@ -193,7 +198,7 @@ void CRenderTarget::accum_direct		(u32 sub_phase)
 		RCache.set_Geometry			(g_combine_2UV);
 
 		// setup
-		RCache.set_Element			(s_accum_direct->E[sub_phase]);
+		RCache.set_Element			(s_accum_direct->E[uiElementIndex]);
 		RCache.set_c				("Ldynamic_dir",		L_dir.x,L_dir.y,L_dir.z,0		);
 		RCache.set_c				("Ldynamic_color",		L_clr.x,L_clr.y,L_clr.z,L_spec	);
 		RCache.set_c				("m_shadow",			m_shadow						);
@@ -244,7 +249,7 @@ void CRenderTarget::accum_direct		(u32 sub_phase)
          // per sample
          if( RImplementation.o.dx10_msaa_opt )
          {
-		      RCache.set_Element	(s_accum_direct_msaa[0]->E[sub_phase]);
+		      RCache.set_Element	(s_accum_direct_msaa[0]->E[uiElementIndex]);
             RCache.set_Stencil	(TRUE,D3DCMP_EQUAL,dwLightMarkerID|0x80,0xff,0x00);
 	         RCache.set_CullMode	(CULL_NONE	);
 		      RCache.Render			(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
@@ -253,7 +258,7 @@ void CRenderTarget::accum_direct		(u32 sub_phase)
          {
 		      for( u32 i = 0; i < RImplementation.o.dx10_msaa_samples; ++i )
 		      {
-			      RCache.set_Element			(s_accum_direct_msaa[i]->E[sub_phase]);
+			      RCache.set_Element			(s_accum_direct_msaa[i]->E[uiElementIndex]);
                RCache.set_Stencil	      (TRUE,D3DCMP_EQUAL,dwLightMarkerID|0x80,0xff,0x00);
 	            RCache.set_CullMode		   (CULL_NONE	);
                StateManager.SetSampleMask ( u32(1) << i  );
@@ -683,15 +688,9 @@ void CRenderTarget::accum_direct_lum	()
 void CRenderTarget::accum_direct_volumetric	(u32 sub_phase, const u32 Offset, const Fmatrix &mShadow)
 {
 	PIX_EVENT(accum_direct_volumetric);
-	if ( ! (RImplementation.o.advancedpp && ps_r_sun_shafts) )
-		return;
 
-	{
-		CEnvDescriptor&	E = *g_pGamePersistent->Environment().CurrentEnv;
-		float fValue = E.m_fSunShaftsIntensity;
-		//	TODO: add multiplication by sun color here
-		if (fValue<0.0001) return;
-	}
+	if (!need_to_render_sunshafts())
+		return;
 	
 	//	Test. draw only for near part
 //	if (sub_phase!=SE_SUN_N/EAR) return;
@@ -702,6 +701,12 @@ void CRenderTarget::accum_direct_volumetric	(u32 sub_phase, const u32 Offset, co
 	phase_vol_accumulator();
 
 	RCache.set_ColorWriteEnable();
+
+	ref_selement	Element = s_accum_direct_volumetric->E[0];
+
+	//if ( (sub_phase==SE_SUN_NEAR) && use_minmax_sm_this_frame())
+	if ( use_minmax_sm_this_frame())
+		Element = s_accum_direct_volumetric_minmax->E[0];
 
 	//	Assume everything was recalculated before this call by accum_direct
 
@@ -717,7 +722,7 @@ void CRenderTarget::accum_direct_volumetric	(u32 sub_phase, const u32 Offset, co
 		}
 		else				pszSMapName = r2_RT_smap_surf;
 		//s_smap
-		STextureList* _T = &*s_accum_direct_volumetric->E[0]->passes[0]->T;
+		STextureList* _T = &*Element->passes[0]->T;
 
 		STextureList::iterator	_it		= _T->begin	();
 		STextureList::iterator	_end	= _T->end	();
@@ -749,7 +754,7 @@ void CRenderTarget::accum_direct_volumetric	(u32 sub_phase, const u32 Offset, co
 
 		// setup
 		//RCache.set_Element			(s_accum_direct_volumetric->E[sub_phase]);
-		RCache.set_Element			(s_accum_direct_volumetric->E[0]);
+		RCache.set_Element			(Element);
 //		RCache.set_c				("Ldynamic_dir",		L_dir.x,L_dir.y,L_dir.z,0 );
 		RCache.set_c				("Ldynamic_color",		L_clr.x,L_clr.y,L_clr.z,0);
 		RCache.set_c				("m_shadow",			mShadow);

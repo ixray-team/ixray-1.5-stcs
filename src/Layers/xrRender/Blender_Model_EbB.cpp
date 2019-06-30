@@ -223,6 +223,7 @@ void CBlender_Model_EbB::Compile( CBlender_Compile& C )
 			//C.r_Sampler		("s_base",C.L_textures[0]);
 			C.r_dx10Texture		("s_base",C.L_textures[0]);
 			C.r_dx10Sampler		("smp_base");
+			C.r_dx10Sampler		("smp_linear");
 			C.r_ColorWriteEnable(false, false, false, false);
 			C.r_End			();
 			break;

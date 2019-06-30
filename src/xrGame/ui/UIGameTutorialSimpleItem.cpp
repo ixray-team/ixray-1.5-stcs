@@ -10,10 +10,11 @@
 #include "../HUDManager.h"
 #include "../level.h"
 #include "UIPdaWnd.h"
-//.#include "UIInventoryWnd.h"
 #include "UIActorMenu.h"
 #include "UITalkWnd.h"
 #include "UICarBodyWnd.h"
+#include "../../xrServerEntities/script_engine.h"
+#include "../ai_space.h"
 
 extern ENGINE_API BOOL bShowPauseString;
 
@@ -81,7 +82,19 @@ void CUISequenceSimpleItem::Load(CUIXml* xml, int idx)
 
 	m_flags.set						(etiCanBeStopped,	(m_continue_dik_guard==-1));
 	m_flags.set						(etiGrabInput,		1==xml->ReadInt("grab_input",0,1));
-
+	
+	int actions_count				= xml->GetNodesNum	(0,0,"action");
+	m_actions.resize				(actions_count);
+	for(int idx=0; idx<actions_count; ++idx)
+	{
+		SActionItem& itm			= m_actions[idx];
+		LPCSTR str					= xml->ReadAttrib("action", idx, "id");
+		itm.m_action				= action_name_to_id(str);
+		itm.m_bfinalize				= !!xml->ReadAttribInt("action", idx, "finalize", FALSE);
+		str							= xml->Read(xml->GetLocalRoot(), "action", idx, "");
+		bool functor_exists			= ai().script_engine().functor(str ,itm.m_functor);
+		THROW3						(functor_exists, "Cannot find script function described in tutorial item ", str);
+	}
 
 	//ui-components
 	m_UIWindow						= xr_new<CUIWindow>();
@@ -283,7 +296,22 @@ void CUISequenceSimpleItem::OnKeyboardPress	(int dik)
 
 		if(m_continue_dik_guard==9999 || dik == m_continue_dik_guard)
 			m_flags.set(etiCanBeStopped, TRUE); //match key
+	}
 
+	for(u32 idx=0; idx<m_actions.size(); ++idx)
+	{
+		SActionItem& itm			= m_actions[idx];
+		bool b = is_binded(itm.m_action, dik);
+		if(b)
+		{
+			itm.m_functor();
+			if(itm.m_bfinalize)
+			{
+				m_flags.set					(etiCanBeStopped, TRUE);
+				m_stop_lua_functions.clear	();
+				Stop						();
+			}
+		}
 	}
 }
 

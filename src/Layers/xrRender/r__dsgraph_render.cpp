@@ -239,92 +239,101 @@ void R_dsgraph_structure::r_dsgraph_render_graph	(u32	_priority, bool _clear)
 	// Sorting by SSA and changes minimizations
 	{
 		RCache.set_xform_world			(Fidentity);
-		mapNormalVS&	vs				= mapNormal	[_priority];
-		vs.getANY_P						(nrmVS);
-		std::sort						(nrmVS.begin(), nrmVS.end(), cmp_vs_nrm);
-		for (u32 vs_id=0; vs_id<nrmVS.size(); vs_id++)
+
+		// Render several passes
+		for ( u32 iPass = 0; iPass<SHADER_PASSES_MAX; ++iPass)
 		{
-			mapNormalVS::TNode*	Nvs			= nrmVS[vs_id];
-			RCache.set_VS					(Nvs->key);
-
-#ifdef	USE_DX10
-			//	GS setup
-			mapNormalGS&		gs			= Nvs->val;		gs.ssa	= 0;
-			gs.getANY_P						(nrmGS);
-			std::sort						(nrmGS.begin(), nrmGS.end(), cmp_gs_nrm);
-			for (u32 gs_id=0; gs_id<nrmGS.size(); gs_id++)
+			//mapNormalVS&	vs				= mapNormal	[_priority];
+			mapNormalVS&	vs				= mapNormalPasses[_priority][iPass];
+			vs.getANY_P						(nrmVS);
+			std::sort						(nrmVS.begin(), nrmVS.end(), cmp_vs_nrm);
+			for (u32 vs_id=0; vs_id<nrmVS.size(); vs_id++)
 			{
-				mapNormalGS::TNode*	Ngs			= nrmGS[gs_id];
-				RCache.set_GS					(Ngs->key);	
+				mapNormalVS::TNode*	Nvs			= nrmVS[vs_id];
+				RCache.set_VS					(Nvs->key);
 
-				mapNormalPS&		ps			= Ngs->val;		ps.ssa	= 0;
-#else	//	USE_DX10
-				mapNormalPS&		ps			= Nvs->val;		ps.ssa	= 0;
-#endif	//	USE_DX10
-
-				ps.getANY_P						(nrmPS);
-				std::sort						(nrmPS.begin(), nrmPS.end(), cmp_ps_nrm);
-				for (u32 ps_id=0; ps_id<nrmPS.size(); ps_id++)
-				{
-					mapNormalPS::TNode*	Nps			= nrmPS[ps_id];
-					RCache.set_PS					(Nps->key);	
-
-					mapNormalCS&		cs			= Nps->val;		cs.ssa	= 0;
-					cs.getANY_P						(nrmCS);
-					std::sort						(nrmCS.begin(), nrmCS.end(), cmp_cs_nrm);
-					for (u32 cs_id=0; cs_id<nrmCS.size(); cs_id++)
-					{
-						mapNormalCS::TNode*	Ncs			= nrmCS[cs_id];
-						RCache.set_Constants			(Ncs->key);
-
-						mapNormalStates&	states		= Ncs->val;		states.ssa	= 0;
-						states.getANY_P					(nrmStates);
-						std::sort						(nrmStates.begin(), nrmStates.end(), cmp_states_nrm);
-						for (u32 state_id=0; state_id<nrmStates.size(); state_id++)
-						{
-							mapNormalStates::TNode*	Nstate		= nrmStates[state_id];
-							RCache.set_States					(Nstate->key);
-
-							mapNormalTextures&		tex			= Nstate->val;	tex.ssa =	0;
-							sort_tlist_nrm						(nrmTextures,nrmTexturesTemp,tex,true);
-							for (u32 tex_id=0; tex_id<nrmTextures.size(); tex_id++)
-							{
-								mapNormalTextures::TNode*	Ntex	= nrmTextures[tex_id];
-								RCache.set_Textures					(Ntex->key);
-								RImplementation.apply_lmaterial		();
-
-								mapNormalItems&				items	= Ntex->val;		items.ssa	= 0;
-								mapNormal_Render					(items);
-								if (_clear)				items.clear	();
-							}
-							nrmTextures.clear		();
-							nrmTexturesTemp.clear	();
-							if(_clear) tex.clear	();
-						}
-						nrmStates.clear			();
-						if(_clear) states.clear	();
-					}
-					nrmCS.clear				();
-					if(_clear) cs.clear		();
-
-				}
-				nrmPS.clear				();
-				if(_clear) ps.clear		();
 #ifdef	USE_DX10
-		}
-		nrmGS.clear				();
-		if(_clear) gs.clear		();
+				//	GS setup
+				mapNormalGS&		gs			= Nvs->val;		gs.ssa	= 0;
+				gs.getANY_P						(nrmGS);
+				std::sort						(nrmGS.begin(), nrmGS.end(), cmp_gs_nrm);
+				for (u32 gs_id=0; gs_id<nrmGS.size(); gs_id++)
+				{
+					mapNormalGS::TNode*	Ngs			= nrmGS[gs_id];
+					RCache.set_GS					(Ngs->key);	
+
+					mapNormalPS&		ps			= Ngs->val;		ps.ssa	= 0;
+#else	//	USE_DX10
+					mapNormalPS&		ps			= Nvs->val;		ps.ssa	= 0;
 #endif	//	USE_DX10
+
+					ps.getANY_P						(nrmPS);
+					std::sort						(nrmPS.begin(), nrmPS.end(), cmp_ps_nrm);
+					for (u32 ps_id=0; ps_id<nrmPS.size(); ps_id++)
+					{
+						mapNormalPS::TNode*	Nps			= nrmPS[ps_id];
+						RCache.set_PS					(Nps->key);	
+
+						mapNormalCS&		cs			= Nps->val;		cs.ssa	= 0;
+						cs.getANY_P						(nrmCS);
+						std::sort						(nrmCS.begin(), nrmCS.end(), cmp_cs_nrm);
+						for (u32 cs_id=0; cs_id<nrmCS.size(); cs_id++)
+						{
+							mapNormalCS::TNode*	Ncs			= nrmCS[cs_id];
+							RCache.set_Constants			(Ncs->key);
+
+							mapNormalStates&	states		= Ncs->val;		states.ssa	= 0;
+							states.getANY_P					(nrmStates);
+							std::sort						(nrmStates.begin(), nrmStates.end(), cmp_states_nrm);
+							for (u32 state_id=0; state_id<nrmStates.size(); state_id++)
+							{
+								mapNormalStates::TNode*	Nstate		= nrmStates[state_id];
+								RCache.set_States					(Nstate->key);
+
+								mapNormalTextures&		tex			= Nstate->val;	tex.ssa =	0;
+								sort_tlist_nrm						(nrmTextures,nrmTexturesTemp,tex,true);
+								for (u32 tex_id=0; tex_id<nrmTextures.size(); tex_id++)
+								{
+									mapNormalTextures::TNode*	Ntex	= nrmTextures[tex_id];
+									RCache.set_Textures					(Ntex->key);
+									RImplementation.apply_lmaterial		();
+
+									mapNormalItems&				items	= Ntex->val;		items.ssa	= 0;
+									mapNormal_Render					(items);
+									if (_clear)				items.clear	();
+								}
+								nrmTextures.clear		();
+								nrmTexturesTemp.clear	();
+								if(_clear) tex.clear	();
+							}
+							nrmStates.clear			();
+							if(_clear) states.clear	();
+						}
+						nrmCS.clear				();
+						if(_clear) cs.clear		();
+
+					}
+					nrmPS.clear				();
+					if(_clear) ps.clear		();
+#ifdef	USE_DX10
+				}
+				nrmGS.clear				();
+				if(_clear) gs.clear		();
+#endif	//	USE_DX10
+			}
+			nrmVS.clear				();
+			if(_clear) vs.clear		();
 		}
-		nrmVS.clear				();
-		if(_clear) vs.clear		();
 	}
 
 	// **************************************************** MATRIX
 	// Perform sorting based on ScreenSpaceArea
 	// Sorting by SSA and changes minimizations
+	// Render several passes
+	for ( u32 iPass = 0; iPass<SHADER_PASSES_MAX; ++iPass)
 	{
-		mapMatrixVS&	vs				= mapMatrix	[_priority];
+		//mapMatrixVS&	vs				= mapMatrix	[_priority];
+		mapMatrixVS&	vs				= mapMatrixPasses[_priority][iPass];
 		vs.getANY_P						(matVS);
 		std::sort						(matVS.begin(), matVS.end(), cmp_vs_mat);
 		for (u32 vs_id=0; vs_id<matVS.size(); vs_id++)	{

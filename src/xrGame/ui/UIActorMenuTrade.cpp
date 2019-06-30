@@ -12,6 +12,8 @@
 #include "../Inventory.h"
 #include "../Trade.h"
 #include "../Entity.h"
+#include "../Actor.h"
+#include "../Weapon.h"
 #include "../trade_parameters.h"
 #include "../inventory_item_object.h"
 #include "../string_table.h"
@@ -261,7 +263,7 @@ bool CUIActorMenu::CanMoveToPartner(PIItem pItem)
 	float r2				= CalcItemsWeight( m_pTradePartnerList );	// partner
 	float itmWeight			 = pItem->Weight();
 	float partner_inv_weight = m_pPartnerInvOwner->inventory().CalcTotalWeight();
-	float partner_max_weight = m_pPartnerInvOwner->inventory().GetMaxWeight();
+	float partner_max_weight = m_pPartnerInvOwner->MaxCarryWeight();
 
 	if ( partner_inv_weight - r2 + r1 + itmWeight > partner_max_weight )
 	{
@@ -282,6 +284,16 @@ void CUIActorMenu::UpdateActor()
 	{
 		UpdateActorMP();
 	}
+	
+	CActor* actor = smart_cast<CActor*>( m_pActorInvOwner );
+	if ( actor )
+	{
+		CWeapon* wp = smart_cast<CWeapon*>( actor->inventory().ActiveItem() );
+		if ( wp ) 
+		{
+			wp->ForceUpdateAmmo();
+		}
+	}//actor
 
 	InventoryUtilities::UpdateWeightStr( *m_ActorWeight, *m_ActorWeightMax, m_pActorInvOwner );
 	

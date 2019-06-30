@@ -134,7 +134,7 @@ private:
 	void MoveLifeActors();
 	void RespawnDeadPlayers();
 	void RespawnClient(xrClientData const * pclient);
-	void PrepareClientForNewRound(xrClientData *clientData);
+	void __stdcall PrepareClientForNewRound(IClient* client);
 	void BalanceTeams();
 	void ClearReadyFlagFromAll();
 
@@ -216,6 +216,7 @@ protected:
 	virtual void FillDeathActorRejectItems(CSE_ActorMP *actor, xr_vector<CSE_Abstract*> & to_reject);
 	shared_str m_not_free_ammo_str;
 	virtual	bool CanChargeFreeAmmo(char const * ammo_section);
+	virtual	void WriteGameState(CInifile& ini, LPCSTR sect, bool bRoundResult);
 public:
 	game_sv_CaptureTheArtefact();
 	virtual ~game_sv_CaptureTheArtefact();

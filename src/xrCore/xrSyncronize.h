@@ -21,6 +21,17 @@
 // Desc: Simple wrapper for critical section
 class XRCORE_API		xrCriticalSection
 {
+public:
+	class XRCORE_API raii
+	{
+	public:
+		raii(xrCriticalSection*);
+	   ~raii();
+
+	private:
+		xrCriticalSection* critical_section;
+	};
+
 private:
 	void*				pmutex;
 #ifdef PROFILE_CRITICAL_SECTIONS

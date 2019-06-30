@@ -33,7 +33,6 @@ CCustomOutfit::~CCustomOutfit()
 BOOL CCustomOutfit::net_Spawn(CSE_Abstract* DC)
 {
 	BOOL res = inherited::net_Spawn(DC);
-	init_upgrades();
 	return					(res);
 }
 

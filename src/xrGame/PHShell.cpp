@@ -44,6 +44,7 @@ IC		bool	PhOutOfBoundaries			(const Fvector& v)
 }
 CPHShell::~CPHShell				()							
 {
+	
 	m_pKinematics	= 0;
 	VERIFY(!isActive());
 	
@@ -57,6 +58,7 @@ CPHShell::~CPHShell				()
 		xr_delete(*j);
 	joints.clear();
 	if(m_spliter_holder)xr_delete(m_spliter_holder);
+
 }
 CPHShell::CPHShell()
 {

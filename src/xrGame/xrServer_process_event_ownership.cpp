@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "xrserver.h"
 #include "xrserver_objects.h"
+#include "xrserver_objects_alife_monsters.h"
 
 void ReplaceOwnershipHeader	(NET_Packet& P)
 {
@@ -19,14 +20,20 @@ void xrServer::Process_event_ownership(NET_Packet& P, ClientID sender, u32 time,
 	CSE_Abstract*		e_entity	= game->get_entity_from_eid	(id_entity);
 	
 	
-#ifndef MASTER_GOLD
-	Msg("---Process ownership take: parent [%d][%s], item [%d][%s]", 
+#ifdef MP_LOGGING
+	Msg( "--- SV: Process ownership take: parent [%d][%s], item [%d][%s]", 
 		id_parent, e_parent ? e_parent->name_replace() : "null_parent",
 		id_entity, e_entity ? e_entity->name() : "null_entity");
-#endif // #ifndef MASTER_GOLD
+#endif // MP_LOGGING
 	
-	if (!e_parent)						return;
-	if (!e_entity)						return;
+	if ( !e_parent ) {
+		Msg( "! ERROR: parent not found. parent_id = [%d], entity_id = [%d], frame = [%d]. Process_event_ownership()", id_parent, id_entity, Device.dwFrame );
+		return;
+	}
+	if ( !e_entity ) {
+		Msg( "! ERROR: entity not found. parent_id = [%d], entity_id = [%d], frame = [%d]. Process_event_ownership()", id_parent, id_entity, Device.dwFrame );
+		return;
+	}
 	if (0xffff != e_entity->ID_Parent)	return;
 
 	xrClientData*		c_parent		= e_parent->owner;
@@ -39,10 +46,18 @@ void xrServer::Process_event_ownership(NET_Packet& P, ClientID sender, u32 time,
 		return;
 	}
 
+	CSE_ALifeCreatureAbstract* alife_entity = smart_cast<CSE_ALifeCreatureAbstract*>(e_parent);
+	if (alife_entity && !alife_entity->g_Alive() && game->Type()!=eGameIDSingle)
+	{
+#ifdef MP_LOGGING
+		Msg("--- SV: WARNING: dead player [%d] tries to take item [%d]", id_parent, id_entity);
+#endif //#ifdef MP_LOGGING
+		return;
+	};
+
 	// Game allows ownership of entity
 	if (game->OnTouch	(id_parent,id_entity, bForced))
 	{
-
 		// Perform migration if needed
 		if (c_parent != c_entity)		PerformMigration(e_entity,c_entity,c_parent);
 

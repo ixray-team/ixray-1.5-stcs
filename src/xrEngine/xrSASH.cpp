@@ -68,6 +68,9 @@ void xrSASH::LoopOA()
 
 	while (!bExit)
 	{
+		//	It must be called on the oaCommand object sent to 
+		//	oaGetNextCommand() before each call to oaGetNextCommand().
+		oaInitCommand(&Command);
 		switch(oaGetNextCommand(&Command))
 		{
 			/* No more commands, exit program */
@@ -161,9 +164,6 @@ void xrSASH::ReportNative( LPCSTR pszTestName )
 
 	const u32 iWindowSize	=	15;
 
-	//	erase the last element
-	m_aFrimeTimes.resize(m_aFrimeTimes.size()-1);
-
 	if ( m_aFrimeTimes.size() > iWindowSize*4 )
 	{
 		for (u32 it=0; it<m_aFrimeTimes.size()-iWindowSize; it++)
@@ -180,7 +180,7 @@ void xrSASH::ReportNative( LPCSTR pszTestName )
 	}
 	else
 	{
-		for (u32	it=1; it<m_aFrimeTimes.size(); it++)
+		for (u32	it=0; it<m_aFrimeTimes.size(); it++)
 		{
 			float fFps	= 1.f / m_aFrimeTimes[it];
 			if (fFps<fMinFps) fMinFps = fFps;
@@ -266,8 +266,8 @@ void xrSASH::GetAllOptions()
 	oaNamedOptionStruct Option; 
 	oaInitOption(&Option);
 	
-	DescribeOption("renderer", Option.Dependency);
-	DescribeOption("vid_mode", Option.Dependency);
+	DescribeOption("renderer",		Option.Dependency);
+	DescribeOption("vid_mode",		Option.Dependency);
 	DescribeOption("rs_fullscreen", Option.Dependency);
 
 	DescribeOption("rs_vis_distance",				Option.Dependency);
@@ -281,36 +281,64 @@ void xrSASH::GetAllOptions()
 	Option.Dependency.ParentName = TEXT("renderer");
 	Option.Dependency.ComparisonOp = OA_COMP_OP_EQUAL;
 	Option.Dependency.ComparisonVal.Enum = TEXT("renderer_r1");
-	DescribeOption("r__supersample",		Option.Dependency);
-	DescribeOption("r1_no_detail_textures", Option.Dependency);
+	Option.Dependency.ComparisonValType = GetOptionType("renderer");
+	{
+		DescribeOption("r__supersample",		Option.Dependency);
+		DescribeOption("r1_no_detail_textures", Option.Dependency);
+	}
 
 	//	>=r2
-	Option.Dependency.ParentName = TEXT("renderer");
-	Option.Dependency.ComparisonOp = OA_COMP_OP_GREATER_OR_EQUAL;
-	Option.Dependency.ComparisonVal.Enum = TEXT("renderer_r2");
-	DescribeOption("r2_sun", Option.Dependency);
-	DescribeOption("r2_slight_fade", Option.Dependency);
-	DescribeOption("r2_ls_squality", Option.Dependency);
-	DescribeOption("r2_detail_bump", Option.Dependency);
+	oaInitOption(&Option);	//	Reset dependency info
+	//	Currently only equal/not equal works
+	//Option.Dependency.ParentName = TEXT("renderer");
+	//Option.Dependency.ComparisonOp = OA_COMP_OP_GREATER_OR_EQUAL;
+	//Option.Dependency.ComparisonVal.Enum = TEXT("renderer_r2");
+	//Option.Dependency.ComparisonValType = GetOptionType("renderer");
+	{
+		DescribeOption("r2_sun", Option.Dependency);
+		DescribeOption("r2_sun_quality", Option.Dependency);
+		DescribeOption("r2_slight_fade", Option.Dependency);
+		DescribeOption("r2_ls_squality", Option.Dependency);
+		DescribeOption("r2_detail_bump", Option.Dependency);
+	}
 
 	//	>=r2.5
-	Option.Dependency.ParentName = TEXT("renderer");
-	Option.Dependency.ComparisonOp = OA_COMP_OP_GREATER_OR_EQUAL;
-	Option.Dependency.ComparisonVal.Enum = TEXT("renderer_r2.5");
-	DescribeOption("r2_sun_shafts",			Option.Dependency);
-	DescribeOption("r2_ssao",				Option.Dependency);
-	DescribeOption("r2_soft_water",			Option.Dependency);
-	DescribeOption("r2_soft_particles",		Option.Dependency);
-	DescribeOption("r2_dof_enable",			Option.Dependency);
-	DescribeOption("r2_volumetric_lights",	Option.Dependency);
-	DescribeOption("r2_steep_parallax",		Option.Dependency);
+	//Option.Dependency.ParentName = TEXT("renderer");
+	//Option.Dependency.ComparisonOp = OA_COMP_OP_GREATER_OR_EQUAL;
+	//Option.Dependency.ComparisonVal.Enum = TEXT("renderer_r2.5");
+	//Option.Dependency.ComparisonValType = GetOptionType("renderer");
+	{
+		DescribeOption("r2_sun_shafts",			Option.Dependency);
+		DescribeOption("r2_ssao",				Option.Dependency);
+		DescribeOption("r2_soft_water",			Option.Dependency);
+		DescribeOption("r2_soft_particles",		Option.Dependency);
+		DescribeOption("r2_dof_enable",			Option.Dependency);
+		DescribeOption("r2_volumetric_lights",	Option.Dependency);
+		DescribeOption("r2_steep_parallax",		Option.Dependency);
+	}
 
 	//	>=r3
-	Option.Dependency.ParentName = TEXT("renderer");
-	Option.Dependency.ComparisonOp = OA_COMP_OP_GREATER_OR_EQUAL;
-	Option.Dependency.ComparisonVal.Enum = TEXT("renderer_r3");
-	DescribeOption("r3_dynamic_wet_surfaces",Option.Dependency);
-	DescribeOption("r3_volumetric_smoke",	Option.Dependency);
+	//Option.Dependency.ParentName = TEXT("renderer");
+	//Option.Dependency.ComparisonOp = OA_COMP_OP_GREATER_OR_EQUAL;
+	//Option.Dependency.ComparisonVal.Enum = TEXT("renderer_r3");
+	//Option.Dependency.ComparisonValType = GetOptionType("renderer");
+	{
+		DescribeOption("r3_dynamic_wet_surfaces",Option.Dependency);
+		DescribeOption("r3_volumetric_smoke",	Option.Dependency);
+		DescribeOption("r3_gbuff_opt",			Option.Dependency);
+		DescribeOption("r3_use_dx10_1",			Option.Dependency);
+		DescribeOption("r3_minmax_sm",			Option.Dependency);
+		DescribeOption("r3_msaa",				Option.Dependency);
+		//	>= 2x
+		//Option.Dependency.ParentName = TEXT("r3_msaa");
+		//Option.Dependency.ComparisonOp = OA_COMP_OP_GREATER_OR_EQUAL;
+		//Option.Dependency.ComparisonVal.Enum = TEXT("2x");
+		//Option.Dependency.ComparisonValType = GetOptionType("r3_msaa");
+		{
+			DescribeOption("r3_msaa_opt",			Option.Dependency);
+			DescribeOption("r3_msaa_alphatest",		Option.Dependency);
+		}
+	}
 
 	ReleaseEngine();
 }
@@ -337,6 +365,7 @@ void xrSASH::GetCurrentOptions()
 
 	//	>=r2
 	GetOption("r2_sun");
+	GetOption("r2_sun_quality");
 	GetOption("r2_slight_fade");
 	GetOption("r2_ls_squality");
 	GetOption("r2_detail_bump");
@@ -353,6 +382,13 @@ void xrSASH::GetCurrentOptions()
 	//	>=r3
 	GetOption("r3_dynamic_wet_surfaces");
 	GetOption("r3_volumetric_smoke");
+	GetOption("r3_use_dx10_1");
+	GetOption("r3_minmax_sm");
+	GetOption("r3_msaa");
+	GetOption("r3_msaa_opt");
+	GetOption("r3_msaa_alphatest");
+	GetOption("r3_gbuff_opt");
+	
 
 	ReleaseEngine();
 }
@@ -406,7 +442,7 @@ void xrSASH::TryInitEngine( bool bNoRun)
 	if (m_bReinitEngine)
 	{
 		InitEngine();
-		//	It was destroyed on previouse exit
+		//	It was destroyed on previous exit
 		Console->Initialize();
 	}
 
@@ -467,6 +503,38 @@ void xrSASH::ReleaseEngine()
 	destroyEngine();
 }
 
+oaOptionDataType xrSASH::GetOptionType( char* pszOptionName )
+{
+	CConsole::vecCMD_IT I = Console->Commands.find(pszOptionName);
+	if (I==Console->Commands.end())
+	{
+		Msg("SASH:: Option \"%s\" not found.", pszOptionName);
+		VERIFY(I!=Console->Commands.end());
+		return OA_TYPE_BOOL;
+	}
+
+	IConsole_Command* pCmd = I->second;
+	CCC_Mask* pMask = dynamic_cast<CCC_Mask*>(pCmd);
+	CCC_Token* pToken = dynamic_cast<CCC_Token*>(pCmd);
+	CCC_Float* pFloat = dynamic_cast<CCC_Float*>(pCmd);
+	CCC_Integer* pInt = dynamic_cast<CCC_Integer*>(pCmd);
+
+	if (pMask)
+		return OA_TYPE_BOOL;
+	else if (pToken)
+		return OA_TYPE_ENUM;
+	else if (pFloat)
+		return OA_TYPE_FLOAT;
+	else if (pInt)
+		return OA_TYPE_INT;
+	else
+	{
+		VERIFY(!"Unsupported console command type.");
+		return OA_TYPE_BOOL;
+	}
+
+}
+
 void xrSASH::DescribeOption( char* pszOptionName, const oaOptionDependency &Dependency)
 {
 	oaNamedOptionStruct Option; 
@@ -476,8 +544,11 @@ void xrSASH::DescribeOption( char* pszOptionName, const oaOptionDependency &Depe
 
 	CConsole::vecCMD_IT I = Console->Commands.find(pszOptionName);
 	if (I==Console->Commands.end())
+	{
 		Msg("SASH:: Option \"%s\" not found.", pszOptionName);
-	VERIFY(I!=Console->Commands.end());
+		VERIFY(I!=Console->Commands.end());
+		return;
+	}
 	
 	IConsole_Command* pCmd = I->second;
 	CCC_Mask* pMask = dynamic_cast<CCC_Mask*>(pCmd);
@@ -533,8 +604,12 @@ void xrSASH::GetOption( char* pszOptionName)
 
 	CConsole::vecCMD_IT I = Console->Commands.find(pszOptionName);
 	if (I==Console->Commands.end())
+	{
 		Msg("SASH:: Option \"%s\" not found.", pszOptionName);
-	VERIFY(I!=Console->Commands.end());
+		VERIFY(I!=Console->Commands.end());
+		return;
+	}
+	
 
 	IConsole_Command* pCmd = I->second;
 	CCC_Mask* pMask = dynamic_cast<CCC_Mask*>(pCmd);
@@ -581,8 +656,11 @@ void xrSASH::SetOption(oaNamedOption *pOption)
 	*/
 	CConsole::vecCMD_IT I = Console->Commands.find(pOption->Name);
 	if (I==Console->Commands.end())
+	{
 		Msg("SASH:: Option \"%s\" not found.", pOption->Name);
-	VERIFY(I!=Console->Commands.end());
+		VERIFY(I!=Console->Commands.end());
+		return;
+	}
 
 	IConsole_Command* pCmd = I->second;
 	CCC_Mask* pMask = dynamic_cast<CCC_Mask*>(pCmd);

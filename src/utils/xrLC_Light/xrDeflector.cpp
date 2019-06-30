@@ -369,6 +369,36 @@ void	CDeflector::write				( IWriter	&w ) const
 	w.w_u8( (u8) bMerged );
 }
 
+bool	CDeflector::similar					( const CDeflector &D, float eps/* =EPS */ ) const
+{
+	if( bMerged != D.bMerged )
+		return false;
+	
+	if( !normal.similar( D.normal, eps ) )
+		return false;
+
+	if( !Sphere.P.similar( D.Sphere.P, eps ) )
+		return false;
+
+	if( !fsimilar( Sphere.R, D.Sphere.R, eps ) )
+		return false;
+
+	if( UVpolys.size() != D.UVpolys.size() )
+		return false;
+
+	for( u32 i = 0; i < UVpolys.size(); ++i )
+	{
+		if( !UVpolys[i].similar( D.UVpolys[i], eps ) )
+		{
+			return false;
+		}
+	}
+
+	return 
+		layer.similar( D.layer, eps );
+}
+
+
 CDeflector*		CDeflector::read_create					()
 {
 	return xr_new<CDeflector>();
@@ -379,6 +409,10 @@ void DumpDeflctor( u32 id )
 	VERIFY( inlc_global_data()->g_deflectors().size()>id );
 	const CDeflector &D = *inlc_global_data()->g_deflectors()[id];
 	clMsg( "deflector id: %d - faces num: %d ", id, D.UVpolys.size() );
+}
+void DumpDeflctor( CDeflector &D )
+{
+	clMsg( "deflector - faces num: %d ", D.UVpolys.size() );
 }
 void DeflectorsStats ()
 {

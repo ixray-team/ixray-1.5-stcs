@@ -18016,6 +18016,45 @@
 						>
 					</File>
 				</Filter>
+				<Filter
+					Name="lua_studio"
+					>
+					<File
+						RelativePath="..\xrServerEntities\lua_studio.cpp"
+						>
+						<FileConfiguration
+							Name="Debug|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								PrecompiledHeaderThrough="pch_script.h"
+								PrecompiledHeaderFile="$(IntDir)/$(ProjectName)_script.pch"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Mixed|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								PrecompiledHeaderThrough="pch_script.h"
+								PrecompiledHeaderFile="$(IntDir)/$(ProjectName)_script.pch"
+							/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								PrecompiledHeaderThrough="pch_script.h"
+								PrecompiledHeaderFile="$(IntDir)/$(ProjectName)_script.pch"
+							/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath="..\xrServerEntities\lua_studio.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="ASound"
@@ -19163,6 +19202,49 @@
 						<File
 							RelativePath=".\Level_network_map_sync.h"
 							>
+						</File>
+					</Filter>
+					<Filter
+						Name="ClientDigestComputer"
+						>
+						<File
+							RelativePath=".\Level_network_digest_computer.cpp"
+							>
+						</File>
+						<File
+							RelativePath="..\xrGameSpy\gamespy\md5.h"
+							>
+						</File>
+						<File
+							RelativePath="..\xrGameSpy\gamespy\md5c.c"
+							>
+							<FileConfiguration
+								Name="Debug|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									ExceptionHandling="1"
+									UsePrecompiledHeader="0"
+								/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Mixed|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									ExceptionHandling="0"
+									UsePrecompiledHeader="0"
+								/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Release|Win32"
+								>
+								<Tool
+									Name="VCCLCompilerTool"
+									ExceptionHandling="0"
+									UsePrecompiledHeader="0"
+								/>
+							</FileConfiguration>
 						</File>
 					</Filter>
 				</Filter>
@@ -27285,6 +27367,14 @@
 						<Filter
 							Name="mp"
 							>
+							<File
+								RelativePath=".\cdkey_ban_list.cpp"
+								>
+							</File>
+							<File
+								RelativePath=".\cdkey_ban_list.h"
+								>
+							</File>
 							<File
 								RelativePath=".\game_sv_mp.cpp"
 								>

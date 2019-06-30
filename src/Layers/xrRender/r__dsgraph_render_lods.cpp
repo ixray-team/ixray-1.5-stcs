@@ -104,18 +104,29 @@ void R_dsgraph_structure::r_dsgraph_render_lods	(bool _setup_zb, bool _clear)
 		RCache.Vertex.Unlock		( iBatchSize*uiVertexPerImposter, firstV->geom->vb_stride );
 
 		// *** Render
-		int current=0;
 		RCache.set_xform_world		(Fidentity);
-		for (u32 g=0; g<lstLODgroups.size(); g++)	
+		for ( u32 uiPass = 0; uiPass < SHADER_PASSES_MAX; ++uiPass)
 		{
-			int p_count				= lstLODgroups[g];
-			RCache.set_Element		(lstLODs[current].pVisual->shader->E[shid]);
-			RCache.set_Geometry		(firstV->geom);
-			RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,4*p_count,0,2*p_count);
-			RCache.stat.r.s_flora_lods.add	(4*p_count);
-			current	+=	p_count		;
-			vOffset	+=	4*p_count	;
+			int current=0;
+			u32 vCurOffset = vOffset;
+			
+			for (u32 g=0; g<lstLODgroups.size(); g++)	
+			{
+				int p_count				= lstLODgroups[g];
+				u32 uiNumPasses			= lstLODs[current].pVisual->shader->E[shid]->passes.size();
+				if (uiPass<uiNumPasses)
+				{
+					RCache.set_Element		(lstLODs[current].pVisual->shader->E[shid], uiPass);
+					RCache.set_Geometry		(firstV->geom);
+					RCache.Render			(D3DPT_TRIANGLELIST,vCurOffset,0,4*p_count,0,2*p_count);
+				}
+				RCache.stat.r.s_flora_lods.add	(4*p_count);
+				current	+=	p_count		;
+				vCurOffset	+=	4*p_count	;
+			}
+
 		}
+
 		lstLODgroups.clear	();
 	}
 

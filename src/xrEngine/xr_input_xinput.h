@@ -1,4 +1,5 @@
 #pragma once
+/*
 #include <xinput.h>
 
 struct DXUT_GAMEPAD;
@@ -48,3 +49,4 @@ struct DXUT_GAMEPAD
 };
 
 extern DXUT_GAMEPAD          g_GamePads[DXUT_MAX_CONTROLLERS];
+*/

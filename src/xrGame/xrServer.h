@@ -11,6 +11,7 @@
 #include "game_sv_base.h"
 #include "id_generator.h"
 #include "battleye.h"
+#include "../xrEngine/mp_logging.h"
 
 #ifdef DEBUG
 //. #define SLOW_VERIFY_ENTITIES
@@ -44,6 +45,8 @@ public:
 		u32						m_dwLoginTime;
 	}m_admin_rights;
 
+	shared_str					m_cdkey_digest;
+
 							xrClientData			();
 	virtual					~xrClientData			();
 	virtual void			Clear					();
@@ -58,15 +61,29 @@ struct	svs_respawn
 };
 IC bool operator < (const svs_respawn& A, const svs_respawn& B)	{ return A.timestamp<B.timestamp; }
 
+struct CheaterToKick
+{
+	shared_str	reason;
+	ClientID	cheater_id;
+};
+typedef xr_vector<CheaterToKick> cheaters_t;
+
 class xrServer	: public IPureServer  
 {
 private:
 	xrS_entities				entities;
 	xr_multiset<svs_respawn>	q_respawn;
 	xr_vector<u16>				conn_spawned_ids;
+	cheaters_t					m_cheaters;
 
 	u16							m_iCurUpdatePacket;
 	xr_vector<NET_Packet>		m_aUpdatePackets;
+	u32							m_first_packet_size;
+	
+	bool						IsUpdatePacketsReady();
+	void						MakeUpdatePackets(NET_Packet const & firstExportPacket);
+	void						InsertFirstPacketToUpdate(NET_Packet const & P);
+	void						SendUpdatePacketsToClient(ClientID clientId);
 
 	struct DelayedPacket
 	{
@@ -85,6 +102,7 @@ private:
 	u32							OnDelayedMessage		(NET_Packet& P, ClientID sender);			// Non-Zero means broadcasting with "flags" as returned
 
 	void						SendUpdatesToAll		();
+	void	_stdcall			SendUpdateTo			(IClient* client);
 private:
 	typedef 
 		CID_Generator<
@@ -146,13 +164,16 @@ public:
 	void					AttachNewClient			(IClient* CL);
 	virtual void			OnBuildVersionRespond				(IClient* CL, NET_Packet& P);
 protected:
-	bool					CheckAdminRights		(const shared_str& user, const shared_str& pass, string512 reason);
+	bool					CheckAdminRights		(const shared_str& user, const shared_str& pass, string512& reason);
 	virtual IClient*		new_client				( SClientConnectData* cl_data );
 	
 	virtual bool			Check_ServerAccess( IClient* CL, string512& reason )	{ return true; }
 
 	virtual bool			NeedToCheckClient_GameSpy_CDKey		(IClient* CL)	{ return false; }
 	virtual void			Check_GameSpy_CDKey_Success			(IClient* CL);
+			void			RequestClientDigest					(IClient* CL);
+			void			ProcessClientDigest					(xrClientData* xrCL, NET_Packet* P);
+			void			KickCheaters						();
 	
 	virtual bool			NeedToCheckClient_BuildVersion		(IClient* CL);
 	virtual void			Check_BuildVersion_Success			(IClient* CL);
@@ -168,6 +189,7 @@ public:
 
 	// extended functionality
 	virtual u32				OnMessage			(NET_Packet& P, ClientID sender);	// Non-Zero means broadcasting with "flags" as returned
+			u32				OnMessageSync		(NET_Packet& P, ClientID sender);
 	virtual void			OnCL_Connected		(IClient* CL);
 	virtual void			OnCL_Disconnected	(IClient* CL);
 	virtual bool			OnCL_QueryHost		();
@@ -183,9 +205,6 @@ public:
 	void					entity_Destroy		(CSE_Abstract *&P);
 	u32						GetEntitiesNum		()			{ return entities.size(); };
 	CSE_Abstract*			GetEntity			(u32 Num);
-
-	IC void					clients_Lock		()			{	csPlayers.Enter();	}
-	IC void					clients_Unlock		()			{   csPlayers.Leave();	}
 
 	xrClientData*			ID_to_client		(ClientID ID, bool ScanAll = false ) { return (xrClientData*)(IPureServer::ID_to_client( ID, ScanAll)); }
 	CSE_Abstract*			ID_to_entity		(u16 ID);
@@ -209,6 +228,7 @@ public:
 	virtual bool			HasPassword			()	{ return false; }
 	virtual bool			HasProtected		()	{ return false; }
 			bool			HasBattlEye			();
+			void			AddCheater			(shared_str const & reason, ClientID const & cheaterID);
 
 	virtual void			GetServerInfo		( CServerInfo* si );
 public:

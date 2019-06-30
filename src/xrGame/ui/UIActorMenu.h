@@ -278,7 +278,8 @@ public:
 	bool						SetInfoCurUpgrade			(Upgrade_type* upgrade_type, CInventoryItem* inv_item );
 	void						SeparateUpgradeItem			();
 	PIItem						get_upgrade_item			();
-	
+	bool						DropAllItemsFromRuck		(bool quest_force = false); //debug func
+
 	void						UpdateActor					();
 	void						UpdatePartnerBag			();
 	void						UpdateDeadBodyBag			();

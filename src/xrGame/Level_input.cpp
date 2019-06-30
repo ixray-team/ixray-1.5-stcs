@@ -162,7 +162,7 @@ void CLevel::IR_OnKeyboardPress	(int key)
 		}break;
 	};
 
-	if ( !b_ui_exist )			return;
+	if ( !bReady || !b_ui_exist )			return;
 
 	if ( b_ui_exist && pHUD->GetUI()->IR_OnKeyboardPress(key)) return;
 
@@ -430,7 +430,7 @@ void CLevel::IR_OnKeyboardRelease(int key)
 {
 	bool b_ui_exist = (pHUD && pHUD->GetUI());
 
-	if (g_bDisableAllInput	) return;
+	if (!bReady || g_bDisableAllInput	) return;
 	if ( b_ui_exist && pHUD->GetUI()->IR_OnKeyboardRelease(key)) return;
 	if (Device.Paused()		) return;
 	if (game && Game().OnKeyboardRelease(get_binded_action(key)) ) return;

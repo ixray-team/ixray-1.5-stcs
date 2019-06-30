@@ -34,15 +34,26 @@ void WeaponUsageStatistic::WriteLtx(CInifile& ini)
 	ini.w_u32(sect, "dwTotalNumRespawns_2",m_dwTotalNumRespawns[2]);
 
 	u32 NumPlayers = aPlayersStatistic.size();
-
-	ini.w_u32(sect, "NumPlayers",NumPlayers);
-
+	u32 validPlayersCount = 0;
+	for (u32 i = 0; i < NumPlayers; ++i)
+	{
+		if (aPlayersStatistic[i].PDigest.size())
+		{
+			++validPlayersCount;
+		}
+	}
+	ini.w_u32(sect, "NumPlayers", validPlayersCount);
+	u32 playerIndex = 0;
 	for (u32 i=0; i<NumPlayers; i++)
 	{
 		Player_Statistic& PS = aPlayersStatistic[i];
 		string512			save_sect;
-		sprintf_s			(save_sect,"%s_player_%d",sect,i);
-		PS.WriteLtx			(ini,save_sect);
+		if (PS.PDigest.size())
+		{
+			sprintf_s			(save_sect,"%s_player_%d",sect,playerIndex);
+			PS.WriteLtx			(ini,save_sect);
+			++playerIndex;
+		}
 	}
 }
 
@@ -105,6 +116,7 @@ void WeaponUsageStatistic::Write(FILE* pFile)
 void Player_Statistic::WriteLtx(CInifile& ini, LPCSTR sect)
 {
 	ini.w_string(sect, "name", PName.c_str());
+	ini.w_string(sect, "player_unique_digest", PDigest.c_str());
 
 	ini.w_u32(sect,"TotalShots",m_dwTotalShots);
 
@@ -176,25 +188,47 @@ void Weapon_Statistic::WriteLtx(CInifile& ini, LPCSTR sect)
 
 	ini.w_u32(sect,"wpn_dwKillsScored",m_dwKillsScored);
 
+	ini.w_u16(sect,"wpn_dwExplosionKills", m_explosion_kills);
+
+	ini.w_u16(sect,"wpn_dwBleedKills", m_bleed_kills);
+
 	//----------------------------------------------
 	u32 NumHits = 0;
-	for (u32 i=0; i<m_Hits.size(); i++)
+	u32 i = 0;
+	for (i=0; i<m_Hits.size(); i++)
 	{
 		HitData& Hit = m_Hits[i];
-		if (Hit.Completed) NumHits++;
+		if (Hit.Completed && Hit.count) NumHits++;
 	};
 
 	ini.w_u32(sect,"NumHits",NumHits);
 
-	for (i=0; i<m_Hits.size(); ++i)
+	u32 hits_size = m_Hits.size();
+	i = 0;
+	u32 hit_number = 0;
+	u8 hit_index = 0;
+	while (i < hits_size)
 	{
 		HitData& Hit		= m_Hits[i];
-		if (!Hit.Completed) continue;
-
+		if (!Hit.Completed)
+		{
+			++i;
+			hit_index = 0;
+			continue;
+		}
+		
 		string512				save_prefix;
-		sprintf_s				(save_prefix,"hit_%d_", i);
+		sprintf_s				(save_prefix,"hit_%d_", hit_number);
 
 		Hit.WriteLtx			(ini, sect, save_prefix);
+		
+		++hit_index;
+		if (hit_index >= Hit.count)
+		{
+			hit_index = 0;
+			++i;
+		}
+		++hit_number;
 	};
 };
 
@@ -228,6 +262,30 @@ void Weapon_Statistic::Write(FILE* pFile)
 	};
 };
 
+#define ARCHIVE_HIT_RADIUS 0.5f
+//this method searches hit in last 30 hits (magazine size) - optimization
+void Weapon_Statistic::add_hit(HitData const & hit)
+{
+	u32 magazine_size = 30;
+	for (HITS_VEC::reverse_iterator i = m_Hits.rbegin(),
+		ie = m_Hits.rend(); i != ie; ++i)
+	{
+		HitData & tmp_hit = *i;
+		if ((tmp_hit.BoneID == hit.BoneID) &&
+			(tmp_hit.TargetID == hit.TargetID) &&
+			(tmp_hit.Pos0.distance_to(hit.Pos0) < ARCHIVE_HIT_RADIUS) &&
+			(tmp_hit.Pos1.distance_to(hit.Pos1) < ARCHIVE_HIT_RADIUS) &&
+			(tmp_hit.count < 254) )
+		{
+			++tmp_hit.count;
+			return;
+		}
+		if (--magazine_size == 0)
+			break;
+	}
+	m_Hits.push_back(hit);
+}
+
 void HitData::WriteLtx(CInifile& ini, LPCSTR sect, LPCSTR prefix)
 {
 	string512		buff;
@@ -243,6 +301,7 @@ void HitData::WriteLtx(CInifile& ini, LPCSTR sect, LPCSTR prefix)
 
 	ini.w_string(sect,strconcat(sizeof(buff), buff, prefix ,"BoneName"),BoneName.c_str());
 };
+
 
 void HitData::Write						(FILE* pFile)
 {

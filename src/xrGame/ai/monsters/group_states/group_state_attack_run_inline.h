@@ -15,8 +15,6 @@ CStateGroupAttackRunAbstract::CStateGroupAttackRun	(_Object *obj) : inherited(ob
 	m_next_encircle_tick = 0;
 }
 
-//#pragma optimize("", off)
-
 TEMPLATE_SPECIALIZATION
 void CStateGroupAttackRunAbstract::initialize()
 {
@@ -173,9 +171,6 @@ void CStateGroupAttackRunAbstract::execute()
 		object->path().set_use_dest_orient  (false);
 	}
 }
-
-//#pragma optimize("", on)
-
 
 // TEMPLATE_SPECIALIZATION
 // void CStateGroupAttackRunAbstract::execute()

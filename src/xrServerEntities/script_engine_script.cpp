@@ -20,20 +20,23 @@ void LuaLog(LPCSTR caMessage)
 #endif // #ifndef MASTER_GOLD
 
 #ifdef USE_DEBUGGER
-	if( ai().script_engine().debugger() ){
-		ai().script_engine().debugger()->Write(caMessage);
-	}
-#endif
+#	ifndef USE_LUA_STUDIO
+		if( ai().script_engine().debugger() )
+			ai().script_engine().debugger()->Write(caMessage);
+#	endif // #ifndef USE_LUA_STUDIO
+#endif // #ifdef USE_DEBUGGER
 }
 
 void ErrorLog(LPCSTR caMessage)
 {
-	ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"%s",caMessage);
+	ai().script_engine().error_log("%s",caMessage);
 #ifdef USE_DEBUGGER
-	if( ai().script_engine().debugger() ){
-		ai().script_engine().debugger()->Write(caMessage);
-	}
-#endif
+#	ifndef USE_LUA_STUDIO
+		if( ai().script_engine().debugger() ){
+			ai().script_engine().debugger()->Write(caMessage);
+		}
+#	endif // #ifndef USE_LUA_STUDIO
+#endif // #ifdef USE_DEBUGGER
 }
 
 void FlushLogs()

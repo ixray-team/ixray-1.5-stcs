@@ -241,7 +241,7 @@ ALife::_TIME_ID  game_GameState::GetStartGameTime()
 
 ALife::_TIME_ID game_GameState::GetGameTime()
 {
-	return			(m_qwStartGameTime + iFloor(m_fTimeFactor*float(Level().timeServer_Async() - m_qwStartProcessorTime)));
+	return			(m_qwStartGameTime + ALife::_TIME_ID(m_fTimeFactor*float(Level().timeServer_Async() - m_qwStartProcessorTime)));
 }
 
 float game_GameState::GetGameTimeFactor()
@@ -265,7 +265,7 @@ void game_GameState::SetGameTimeFactor	(ALife::_TIME_ID GameTime, const float fT
 
 ALife::_TIME_ID game_GameState::GetEnvironmentGameTime()
 {
-	return						(m_qwEStartGameTime + iFloor(m_fETimeFactor*float(Level().timeServer_Async() - m_qwEStartProcessorTime)));
+	return						(m_qwEStartGameTime + ALife::_TIME_ID(m_fETimeFactor*float(Level().timeServer_Async() - m_qwEStartProcessorTime)));
 }
 
 float game_GameState::GetEnvironmentGameTimeFactor()

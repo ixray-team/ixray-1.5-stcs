@@ -39,7 +39,7 @@ void	CPhysicsSkeletonObject::SpawnInitPhysics	(CSE_Abstract	*D)
 	if(K)	
 	{	
 		K->CalculateBones_Invalidate();
-		K->CalculateBones	();
+		K->CalculateBones	(TRUE);
 	}
 }
 

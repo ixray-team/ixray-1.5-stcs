@@ -288,6 +288,10 @@ ID3DBaseTexture*	CRender::texture_load(LPCSTR fRName, u32& ret_msize, bool bStag
 	D3DX10_IMAGE_INFO			IMG;
 	ZeroMemory(&IMG, sizeof(IMG));
 
+	//	Staging control
+	static bool bAllowStaging = !strstr(Core.Params,"-no_staging");
+	bStaging &= bAllowStaging;
+
 	ID3DBaseTexture*		pTexture2D		= NULL;
 	//IDirect3DCubeTexture9*	pTextureCUBE	= NULL;
 	string_path				fn;

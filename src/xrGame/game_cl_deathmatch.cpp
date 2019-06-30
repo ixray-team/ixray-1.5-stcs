@@ -21,6 +21,8 @@
 #include "map_location.h"
 #include "clsid_game.h"
 #include "ui/UIActorMenu.h"
+#include "weapon.h"
+#include "game_cl_base_weapon_usage_statistic.h"
 
 #include "game_cl_deathmatch_snd_messages.h"
 #include "game_base_menu_events.h"
@@ -668,11 +670,11 @@ bool	game_cl_Deathmatch::OnKeyboardPress			(int key)
 	if (kSCORES == key && Phase() == GAME_PHASE_INPROGRESS)
 	{
 		if(m_game_ui)
-#ifndef NDEBUG
+#ifdef DEBUG
 			if (Level().IR_GetKeyState(DIK_LCONTROL))
 				m_game_ui->ShowStatistic(true);
 			else
-#endif
+#endif //#ifdef DEBUG
 				m_game_ui->ShowFragList(true);
 		return true;
 	};
@@ -766,7 +768,7 @@ bool	game_cl_Deathmatch::OnKeyboardRelease		(int key)
 		if (m_game_ui)
 		{
 			m_game_ui->ShowFragList(false);
-			m_game_ui->ShowStatistic(false);
+			//m_game_ui->ShowStatistic(false);
 			
 		};
 		return true;
@@ -982,6 +984,17 @@ void game_cl_Deathmatch::OnSpawn(CObject* pObj)
 		if (xr_strlen(Actor_Spawn_Effect))
 			PlayParticleEffect(Actor_Spawn_Effect.c_str(), pObj->Position());
 	};
+	if (smart_cast<CWeapon*>(pObj))
+	{
+		if (pObj->H_Parent())
+		{
+			game_PlayerState *ps = GetPlayerByGameID(pObj->H_Parent()->ID());
+			if (ps)
+			{
+				m_WeaponUsageStatistic->OnWeaponBought(ps, pObj->cNameSect().c_str());
+			}
+		}
+	}
 }
 
 void game_cl_Deathmatch::LoadSndMessages()
@@ -1137,7 +1150,7 @@ void game_cl_Deathmatch::OnPlayerFlagsChanged(game_PlayerState* ps)
 
 	if (ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD))
 	{
-		if ( m_game_ui && m_game_ui->ActorMenu().IsShown() )
+		if ( ps == local_player && m_game_ui && m_game_ui->ActorMenu().IsShown() )
 		{
 			m_game_ui->HideActorMenu();
 		}

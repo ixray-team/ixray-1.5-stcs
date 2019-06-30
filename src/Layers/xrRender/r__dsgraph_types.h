@@ -120,6 +120,7 @@ namespace	R_dsgraph
 	struct	mapNormalVS			: public	FixedMAP<vs_type, mapNormalPS,render_allocator>						{	};
 #endif	//	USE_DX10
 	typedef mapNormalVS			mapNormal_T;
+	typedef mapNormal_T			mapNormalPasses_T[SHADER_PASSES_MAX];
 
 	// MATRIX
 	typedef xr_vector<_MatrixItem,render_allocator::helper<_MatrixItem>::result>	mapMatrixDirect;
@@ -135,6 +136,7 @@ namespace	R_dsgraph
 	struct	mapMatrixVS			: public	FixedMAP<vs_type, mapMatrixPS,render_allocator>						{	};
 #endif	//	USE_DX10
 	typedef mapMatrixVS			mapMatrix_T;
+	typedef mapMatrix_T			mapMatrixPasses_T[SHADER_PASSES_MAX];
 
 	// Top level
 	typedef FixedMAP<float,_MatrixItemS,render_allocator>			mapSorted_T;

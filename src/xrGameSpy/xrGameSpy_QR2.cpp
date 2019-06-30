@@ -51,6 +51,11 @@ XRGAMESPY_API void xrGS_qr2_register_publicaddress_callback (qr2_t qrec, qr2_pub
 {
 	qr2_register_publicaddress_callback (qrec, pacallback);
 };
+XRGAMESPY_API void xrGS_qr2_register_denyresponsetoip_callback(qr2_t qrec, qr2_denyqr2responsetoipcallback_t dertoipcallback)
+{
+	qr2_register_denyresponsetoip_callback (qrec, dertoipcallback);
+};
+
 
 //XRGAMESPY_API qr2_error_t xrGS_qr2_init(/*[out]*/qr2_t *qrec, const gsi_char *ip, int baseport, const gsi_char *gamename, const gsi_char *secret_key,
 XRGAMESPY_API qr2_error_t xrGS_qr2_init(/*[out]*/qr2_t *qrec, const gsi_char *ip, int baseport, 

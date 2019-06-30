@@ -49,6 +49,7 @@ void	CGameSpy_QR2::LoadGameSpy(HMODULE hGameSpyDLL)
 	GAMESPY_LOAD_FN(xrGS_qr2_register_natneg_callback);
 	GAMESPY_LOAD_FN(xrGS_qr2_register_clientmessage_callback);
 	GAMESPY_LOAD_FN(xrGS_qr2_register_publicaddress_callback);
+	GAMESPY_LOAD_FN(xrGS_qr2_register_denyresponsetoip_callback);
 
 	GAMESPY_LOAD_FN(xrGS_qr2_init);
 
@@ -116,6 +117,7 @@ void	CGameSpy_QR2::RegisterAdditionalKeys	()
 	//---- Team keys
 //	xrGS_qr2_register_key(T_NAME_KEY,					("t_name_key"));
 	xrGS_qr2_register_key(T_SCORE_T_KEY,					("t_score_t"));
+	xrGS_qr2_register_key(SERVER_UP_TIME_KEY,			("server_up_time"));
 };
 
 //bool	CGameSpy_QR2::Init		(u32 PortID, int Public, void* instance)
@@ -151,6 +153,10 @@ bool	CGameSpy_QR2::Init		(int PortID, int Public, void* instance)
 
 	// Set a function to be called when we receive a nat negotiation request
 	xrGS_qr2_register_natneg_callback(NULL, callback_nn);
+
+	//Set a function to be called when gamespy responds my IP and port number
+	//xrGS_qr2_register_publicaddress_callback(NULL, callback_public);
+	xrGS_qr2_register_denyresponsetoip_callback(NULL, callback_deny_ip);
 
 #ifndef MASTER_GOLD
 	Msg("xrGS::QR2 : Initialized");

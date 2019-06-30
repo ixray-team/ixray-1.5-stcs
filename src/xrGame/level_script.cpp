@@ -28,6 +28,8 @@
 #include "map_spot.h"
 #include "map_location.h"
 #include "phworld.h"
+#include "alife_simulator.h"
+#include "alife_time_manager.h"
 
 using namespace luabind;
 
@@ -150,21 +152,21 @@ ESingleGameDifficulty get_game_difficulty()
 u32 get_time_days()
 {
 	u32 year = 0, month = 0, day = 0, hours = 0, mins = 0, secs = 0, milisecs = 0;
-	split_time(Level().GetGameTime(), year, month, day, hours, mins, secs, milisecs);
+	split_time((g_pGameLevel && Level().game) ? Level().GetGameTime() : ai().alife().time_manager().game_time(), year, month, day, hours, mins, secs, milisecs);
 	return			day;
 }
 
 u32 get_time_hours()
 {
 	u32 year = 0, month = 0, day = 0, hours = 0, mins = 0, secs = 0, milisecs = 0;
-	split_time(Level().GetGameTime(), year, month, day, hours, mins, secs, milisecs);
+	split_time((g_pGameLevel && Level().game) ? Level().GetGameTime() : ai().alife().time_manager().game_time(), year, month, day, hours, mins, secs, milisecs);
 	return			hours;
 }
 
 u32 get_time_minutes()
 {
 	u32 year = 0, month = 0, day = 0, hours = 0, mins = 0, secs = 0, milisecs = 0;
-	split_time(Level().GetGameTime(), year, month, day, hours, mins, secs, milisecs);
+	split_time((g_pGameLevel && Level().game) ? Level().GetGameTime() : ai().alife().time_manager().game_time(), year, month, day, hours, mins, secs, milisecs);
 	return			mins;
 }
 
@@ -340,6 +342,10 @@ void show_indicators()
 	psActorFlags.set(AF_GODMODE_RT, FALSE);
 }
 
+void show_weapon(bool b)
+{
+	psHUD_Flags.set	(HUD_WEAPON_RT2, b);
+}
 
 bool is_level_present()
 {
@@ -627,6 +633,10 @@ u32 vertex_id	(Fvector position)
 	return	(ai().level_graph().vertex_id(position));
 }
 
+u32 render_get_dx_level()
+{
+	return ::Render->get_dx_level();
+}
 #pragma optimize("s",on)
 void CLevel::script_register(lua_State *L)
 {
@@ -690,6 +700,7 @@ void CLevel::script_register(lua_State *L)
 		def("hide_indicators_safe",				hide_indicators_safe),
 
 		def("show_indicators",					show_indicators),
+		def("show_weapon",						show_weapon),
 		def("add_call",							((void (*) (const luabind::functor<bool> &,const luabind::functor<void> &)) &add_call)),
 		def("add_call",							((void (*) (const luabind::object &,const luabind::functor<bool> &,const luabind::functor<void> &)) &add_call)),
 		def("add_call",							((void (*) (const luabind::object &, LPCSTR, LPCSTR)) &add_call)),
@@ -739,7 +750,8 @@ void CLevel::script_register(lua_State *L)
 	[
 		def("command_line",						&command_line),
 		def("IsGameTypeSingle",					&IsGameTypeSingle),
-		def("IsDynamicMusic",					&IsDynamicMusic)
+		def("IsDynamicMusic",					&IsDynamicMusic),
+		def("render_get_dx_level",				&render_get_dx_level)
 	];
 
 	module(L,"relation_registry")

@@ -1,4 +1,5 @@
 #pragma once
+#include "xr_level_controller.h"
 
 class CUIWindow;
 class CUIStatic;
@@ -96,6 +97,11 @@ class CUISequenceSimpleItem: public CUISequenceItem
 	};
 	DEFINE_VECTOR			(SSubItem,SubItemVec,SubItemVecIt);
 	SubItemVec				m_subitems;
+	struct SActionItem{
+		EGameActions			m_action;
+		luabind::functor<void>	m_functor;
+		bool					m_bfinalize;
+	};
 public:
 	CUIWindow*				m_UIWindow;
 	ref_sound				m_sound;
@@ -104,6 +110,7 @@ public:
 	string64				m_pda_section;
 	Fvector2				m_desired_cursor_pos;
 	int						m_continue_dik_guard;
+	xr_vector<SActionItem>	m_actions;
 public:
 							CUISequenceSimpleItem(CUISequencer* owner):CUISequenceItem(owner){}
 	virtual					~CUISequenceSimpleItem();

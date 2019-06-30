@@ -80,8 +80,9 @@ BOOL CCustomRocket::net_Spawn(CSE_Abstract* DC)
 void CCustomRocket::net_Destroy() 
 {
 //	Msg("---------net_Destroy [%d] frame[%d]",ID(), Device.dwFrame);
-	inherited::net_Destroy();
 	CPHUpdateObject::Deactivate();
+	inherited::net_Destroy();
+	
 
 	StopEngine();
 	StopFlying();
@@ -110,9 +111,11 @@ void CCustomRocket::SetLaunchParams (const Fmatrix& xform,
 
 void CCustomRocket::activate_physic_shell	()
 {
-	VERIFY(H_Parent());
-	VERIFY(!m_pPhysicsShell);
+	R_ASSERT(H_Parent());
+	R_ASSERT(!m_pPhysicsShell);
 	create_physic_shell();
+	
+	R_ASSERT(m_pPhysicsShell);
 	if( m_pPhysicsShell->isActive())
 		return;
 	VERIFY2(_valid(m_LaunchXForm),"CCustomRocket::activate_physic_shell. Invalid m_LaunchXForm!");
@@ -136,7 +139,7 @@ void CCustomRocket::activate_physic_shell	()
 
 void CCustomRocket::create_physic_shell	()
 {
-	VERIFY(!m_pPhysicsShell);
+	R_ASSERT(!m_pPhysicsShell);
 	Fobb								obb;
 	Visual()->getVisData().box.get_CD			(obb.m_translate,obb.m_halfsize);
 	obb.m_rotate.identity				();
@@ -261,6 +264,8 @@ void CCustomRocket::ObjectContactCallback(bool& do_colide,bool bo1,dContact& c ,
 #endif
 			
 			l_this->Contact(l_pos, vUp);
+			
+			R_ASSERT( l_this->m_pPhysicsShell );
 			l_this->m_pPhysicsShell->DisableCollision();
 			l_this->m_pPhysicsShell->set_LinearVel(Fvector().set(0,0,0));
 			l_this->m_pPhysicsShell->set_AngularVel(Fvector().set(0,0,0));
@@ -426,7 +431,7 @@ void CCustomRocket::StartEngine				()
 	m_dwEngineTime = m_dwEngineWorkTime;
 
 	StartEngineParticles();
-
+	R_ASSERT(m_pPhysicsShell);
 	CPHUpdateObject::Activate();
 }
 
@@ -455,6 +460,8 @@ void CCustomRocket::UpdateEnginePh			()
 	l_dir.set(XFORM().k);
 
 	l_dir.normalize();
+	
+	R_ASSERT( m_pPhysicsShell );
 	m_pPhysicsShell->applyImpulse(l_dir,(1.f+k_back)*force);
 	m_pPhysicsShell->get_LinearVel(l_dir);
 	l_dir.normalize_safe();
@@ -474,7 +481,7 @@ void CCustomRocket::UpdateEngine				()
 	//	VERIFY( getVisible() );
 	//	VERIFY( m_pPhysicsShell);
 	if( !m_pPhysicsShell )
-		Msg("! CCustomRocket::UpdateEngine called, but 0==m_pPhysicsShell");
+		Msg("! CCustomRocket::UpdateEngine called, but m_pPhysicsShell is NULL");
 
 	if( !getVisible() ){
 		Msg("! CCustomRocket::UpdateEngine called, but false==getVisible() id[%d] frame[%d]",ID(),Device.dwFrame);
@@ -638,3 +645,10 @@ void	CCustomRocket::OnEvent(NET_Packet& P, u16 type)
 	}
 	inherited::OnEvent(P,type);
 };
+#ifdef DEBUG
+void	CCustomRocket::deactivate_physics_shell ()
+{
+	R_ASSERT( !CPHUpdateObject::IsActive() );
+	inherited::deactivate_physics_shell();
+}
+#endif

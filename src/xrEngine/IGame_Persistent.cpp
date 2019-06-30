@@ -236,3 +236,10 @@ void IGame_Persistent::destroy_particles		(const bool &all_particles)
 	VERIFY								(ps_needtoplay.empty() && ps_destroy.empty() && (!all_particles || ps_active.empty()));
 #endif
 }
+
+void IGame_Persistent::OnAssetsChanged()
+{
+#ifndef _EDITOR
+	Device.m_pRender->OnAssetsChanged(); //Resources->m_textures_description.Load();
+#endif    
+}

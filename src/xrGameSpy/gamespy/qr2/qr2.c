@@ -177,6 +177,9 @@ qr2_error_t qr2_init_socketA(/*[out]*/qr2_t *qrec, SOCKET s, int boundport, cons
 	cr->publicip = 0;
 	cr->publicport = 0;
 	cr->pa_callback = NULL;
+//#if defined(QR2_IP_FILTER)
+	cr->denyresp2_ip_callback = NULL;
+//#endif //#if defined(QR2_IP_FILTER)	
 	cr->userstatechangerequested = 0;
 	cr->backendoptions = 0;
 
@@ -403,8 +406,15 @@ void qr2_register_publicaddress_callback(qr2_t qrec, qr2_publicaddresscallback_t
 		qrec = current_rec;
 	qrec->pa_callback = pacallback;
 }
+void qr2_register_denyresponsetoip_callback(qr2_t qrec, qr2_denyqr2responsetoipcallback_t dertoipcallback)
+{
+	gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Misc, GSIDebugLevel_StackTrace,
+		"qr2_register_denyresponsetoip_callback()\r\n");
 
-
+	if (qrec == NULL)
+		qrec = current_rec;
+	qrec->denyresp2_ip_callback = dertoipcallback;
+}
 /* qr2_think: Processes any waiting queries, and sends a
 heartbeat if needed  */
 void qr2_think(qr2_t qrec)
@@ -1365,6 +1375,26 @@ void qr2_parse_queryA(qr2_t qrec, char *query, int len, struct sockaddr *sender)
 		}
 	}
 #endif
+
+//#if defined(QR2_IP_FILTER)
+		if (qrec->denyresp2_ip_callback)
+		{
+			unsigned int aMasterAddr = (qrec->hbaddr.sin_addr.s_addr);
+			unsigned int senderAddr = ((SOCKADDR_IN*)sender)->sin_addr.s_addr;	//in hbo
+			if ((aMasterAddr & 0xffff) != (senderAddr & 0xffff))				//if sender ip is not in gamespy subnet /16 (fake)
+			{
+				int deny_result = 0;
+				qrec->denyresp2_ip_callback(qrec->udata, senderAddr, &deny_result);
+				if (deny_result)
+				{
+					gsDebugFormat(GSIDebugCat_QR2, GSIDebugType_Network, GSIDebugLevel_Warning,
+						"QR2_IP_FILTER defined, ignoring QR2 packet from denied ip\r\n");
+					return;
+				}
+			}
+		}
+//#endif //#if defined(QR2_IP_FILTER)
+
 
 	if (qrec->listed_state > 0)
 		qrec->listed_state = 0;

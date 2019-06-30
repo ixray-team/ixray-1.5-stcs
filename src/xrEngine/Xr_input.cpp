@@ -202,7 +202,7 @@ void CInput::KeyUpdate	( )
 	for ( i = 0; i < COUNT_KB_BUTTONS; i++ )
 		if (KBState[i]) 
 			cbStack.back()->IR_OnKeyboardHold( i );
-
+/*
 #ifndef _EDITOR
 //update xinput if exist
     for( DWORD iUserIndex=0; iUserIndex<DXUT_MAX_CONTROLLERS; iUserIndex++ )
@@ -233,11 +233,11 @@ void CInput::KeyUpdate	( )
 	if(Device.fTimeGlobal > stop_vibration_time)
 	{
 		stop_vibration_time		= flt_max;
-//.		set_vibration			(0, 0);
+		set_vibration			(0, 0);
 	}
 //xinput
 #endif
-
+*/
 #ifndef _EDITOR
 	if(!b_altF4 && iGetAsyncKeyState(DIK_F4) && (iGetAsyncKeyState(DIK_RMENU) || iGetAsyncKeyState(DIK_LMENU)))
 	{

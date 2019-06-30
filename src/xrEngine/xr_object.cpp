@@ -12,6 +12,8 @@
 #include "x_ray.h"
 #include "GameFont.h"
 
+#include "mp_logging.h"
+
 #pragma warning(push)
 #pragma warning(disable:4995)
 #include <intrin.h>
@@ -407,6 +409,9 @@ void CObject::setDestroy			(BOOL _destroy)
 		if(debug_destroy)
 			Msg("cl setDestroy [%d][%d]",ID(),Device.dwFrame);
 #endif
+#ifdef MP_LOGGING
+		Msg("cl setDestroy [%d][%d]",ID(),Device.dwFrame);
+#endif //#ifdef MP_LOGGING
 	}else
 		VERIFY		(!g_pGameLevel->Objects.registered_object_to_destroy(this));
 }

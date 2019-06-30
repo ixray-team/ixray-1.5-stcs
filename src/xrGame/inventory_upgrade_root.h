@@ -36,8 +36,6 @@ public:
 				void		test_all_upgrades( CInventoryItem& item );
 #endif // DEBUG
 
-//				void		init_install( CInventoryItem& item, Manager& manager_r);
-
 	virtual		bool		contain_upgrade( const shared_str& upgrade_id );
 				bool		verify_scheme_index( const Ivector2& scheme_index );
 				Upgrade*	get_upgrade_by_index( Ivector2 const& index );

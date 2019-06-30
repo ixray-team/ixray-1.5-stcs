@@ -26,3 +26,5 @@ struct  b_BuildTexture : public b_texture
 	void		write	(IWriter	&w )const;
 
 };
+
+void clear( b_BuildTexture &texture );

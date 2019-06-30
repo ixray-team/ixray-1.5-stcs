@@ -76,7 +76,7 @@ void CMMSound::music_Play()
 	VERIFY			(FS.exist("$game_sounds$", _path ));	
 
 	m_music_stereo.create(_path,st_Music,sg_SourceType);
-    m_music_stereo.play_at_pos(NULL, Fvector().set(0.0f,0.f,0.0f), sm_2D);
+    m_music_stereo.play(NULL, sm_2D);
 }
 
 void CMMSound::music_Update()

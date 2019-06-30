@@ -8,7 +8,7 @@ private:
 	typedef			CUIEditBox		inherited;
 
 public:
-						CUICDkey		();
+					CUICDkey		();
 	virtual	void	SetText			(LPCSTR str) {}
 	virtual	LPCSTR	GetText			();
 	// CUIOptionsItem
@@ -18,12 +18,12 @@ public:
 	
 			void	CreateCDKeyEntry();			
 
-	virtual void	Draw();
+	virtual void	Show			(bool status);
+	virtual void	Draw			();
 	virtual void	OnFocusLost		();
 
 private:
-			LPCSTR	AddHyphens(LPCSTR str);
-			LPCSTR	DelHyphens(LPCSTR str);
+	bool			m_view_access;
 
 }; // class CUICDkey
 

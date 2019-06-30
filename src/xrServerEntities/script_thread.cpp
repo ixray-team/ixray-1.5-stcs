@@ -17,7 +17,11 @@ extern "C" {
 #define LUABIND_HAS_BUGS_WITH_LUA_THREADS
 
 #ifdef USE_DEBUGGER
-#	include "script_debugger.h"
+#	ifndef USE_LUA_STUDIO
+#		include "script_debugger.h"
+#	else // #ifndef USE_LUA_STUDIO
+#		include "lua_studio.h"
+#	endif // #ifndef USE_LUA_STUDIO
 #endif
 
 const LPCSTR main_function = "console_command_run_string_main_thread_function";
@@ -49,12 +53,14 @@ CScriptThread::CScriptThread(LPCSTR caNamespaceName, bool do_string, bool reload
 			if (!l_iErrorCode) {
 				l_iErrorCode = lua_pcall(ai().script_engine().lua(),0,0,0);
 				if (l_iErrorCode) {
-					ai().script_engine().print_output(ai().script_engine().lua(),*m_script_name,l_iErrorCode);
+					ai().script_engine().print_output	(ai().script_engine().lua(),*m_script_name,l_iErrorCode);
+					ai().script_engine().on_error		(ai().script_engine().lua());
 					return;
 				}
 			}
 			else {
-				ai().script_engine().print_output(ai().script_engine().lua(),*m_script_name,l_iErrorCode);
+				ai().script_engine().print_output		(ai().script_engine().lua(),*m_script_name,l_iErrorCode);
+				ai().script_engine().on_error			(ai().script_engine().lua());
 				return;
 			}
 		}
@@ -63,6 +69,10 @@ CScriptThread::CScriptThread(LPCSTR caNamespaceName, bool do_string, bool reload
 		m_virtual_machine	= lua_newthread(ai().script_engine().lua());
 //		m_virtual_machine	= lua_newcthread(ai().script_engine().lua(),0);
 		VERIFY2				(lua(),"Cannot create new Lua thread");
+#if defined(USE_DEBUGGER) && defined(USE_LUA_STUDIO)
+		if ( ai().script_engine().debugger() )
+			ai().script_engine().debugger()->add	( m_virtual_machine );
+#endif // #if defined(USE_DEBUGGER) && defined(USE_LUA_STUDIO)
 //		print_stack_		(ai().script_engine().lua());
 //		m_thread_reference	= luaL_ref(ai().script_engine().lua(),LUA_REGISTRYINDEX);
 //		print_stack_		(ai().script_engine().lua());
@@ -75,14 +85,16 @@ CScriptThread::CScriptThread(LPCSTR caNamespaceName, bool do_string, bool reload
 //		Msg					("lua get top %d",lua_gettop(ai().script_engine().lua()));
 //		print_stack_		(ai().script_engine().lua());
 		
-#ifdef DEBUG
-#	ifdef USE_DEBUGGER
-		if (ai().script_engine().debugger() && ai().script_engine().debugger()->Active())
-			lua_sethook		(lua(), CDbgLuaHelper::hookLua,			LUA_MASKLINE|LUA_MASKCALL|LUA_MASKRET, 0);
-		else
-#	endif
-			lua_sethook		(lua(),CScriptEngine::lua_hook_call,	LUA_MASKLINE|LUA_MASKCALL|LUA_MASKRET,	0);
-#endif
+#ifndef USE_LUA_STUDIO
+#	ifdef DEBUG
+#		ifdef USE_DEBUGGER
+			if (ai().script_engine().debugger() && ai().script_engine().debugger()->Active())
+				lua_sethook		(lua(), CDbgLuaHelper::hookLua,			LUA_MASKLINE|LUA_MASKCALL|LUA_MASKRET, 0);
+			else
+#		endif // #ifdef USE_DEBUGGER
+				lua_sethook		(lua(),CScriptEngine::lua_hook_call,	LUA_MASKLINE|LUA_MASKCALL|LUA_MASKRET,	0);
+#	endif // #ifdef DEBUG
+#endif // #ifndef USE_LUA_STUDIO
 
 		if (!do_string)
 			sprintf_s			(S,"%s.main()",caNamespaceName);
@@ -105,6 +117,10 @@ CScriptThread::~CScriptThread()
 	Msg						("* Destroying script thread %s",*m_script_name);
 #endif
 	try {
+#if defined(USE_DEBUGGER) && defined(USE_LUA_STUDIO)
+		if (ai().script_engine().debugger())
+			ai().script_engine().debugger()->remove	( m_virtual_machine );
+#endif // #if defined(USE_DEBUGGER) && defined(USE_LUA_STUDIO)
 #ifndef LUABIND_HAS_BUGS_WITH_LUA_THREADS
 		luaL_unref			(ai().script_engine().lua(),LUA_REGISTRYINDEX,m_thread_reference);
 #endif
@@ -124,7 +140,8 @@ bool CScriptThread::update()
 		int					l_iErrorCode = lua_resume(lua(),0);
 		
 		if (l_iErrorCode && (l_iErrorCode != LUA_YIELD)) {
-			ai().script_engine().print_output(lua(),*script_name(),l_iErrorCode);
+			ai().script_engine().print_output	(lua(),*script_name(),l_iErrorCode);
+			ai().script_engine().on_error		(ai().script_engine().lua());
 #ifdef DEBUG
 			print_stack		(lua());
 #endif
@@ -134,7 +151,8 @@ bool CScriptThread::update()
 			if (l_iErrorCode != LUA_YIELD) {
 #ifdef DEBUG
 				if (m_current_stack_level) {
-					ai().script_engine().print_output(lua(),*script_name(),l_iErrorCode);
+					ai().script_engine().print_output	(lua(),*script_name(),l_iErrorCode);
+					ai().script_engine().on_error		(ai().script_engine().lua());
 //					print_stack		(lua());
 				}
 #endif // DEBUG
@@ -144,15 +162,6 @@ bool CScriptThread::update()
 #endif // DEBUG
 			}
 			else {
-#ifdef DEBUG
-#	ifdef USE_DEBUGGER
-				if(!ai().script_engine().debugger() || !ai().script_engine().debugger()->Active() ) 
-#	endif
-				{
-//					VERIFY2		(m_current_stack_level,*script_name());
-//					--m_current_stack_level;
-				}
-#endif
 				VERIFY2		(!lua_gettop(lua()),"Do not pass any value to coroutine.yield()!");
 			}
 		}

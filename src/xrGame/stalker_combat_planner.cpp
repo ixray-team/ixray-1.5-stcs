@@ -128,6 +128,8 @@ void CStalkerCombatPlanner::initialize			()
 		object().brain().CStalkerPlanner::m_storage.set_property(eWorldPropertyCriticallyWounded,	false);
 	}
 
+	CScriptActionPlanner::m_storage.set_property(eWorldPropertyStartedToThrowGrenade,	false);
+
 	object().agent_manager().member().member(m_object).cover(0);
 	// this is fake, should be revisited
 	// we must clear path, since it can be built using eMentalStateFree velocities

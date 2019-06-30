@@ -45,10 +45,12 @@ void xrServer::Process_event_destroy	(NET_Packet& P, ClientID sender, u32 time, 
 	xrClientData					*c_from = ID_to_client(sender);	// клиент, кто прислал
 	R_ASSERT						(c_dest == c_from);							// assure client ownership of event
 	u16								parent_id = e_dest->ID_Parent;
-/*
-	Msg("---Process destroy: owner [%s], parent [%d], item [%d][%s]", 
-		c_dest->owner->name_replace(), parent_id, e_dest->ID, e_dest->name());
-*/
+
+#ifdef MP_LOGGING
+	Msg("--- SV: Process destroy: parent [%d] item [%d][%s]", 
+		parent_id, id_dest, e_dest->name());
+#endif //#ifdef MP_LOGGING
+
 	//---------------------------------------------
 	NET_Packet	P2, *pEventPack = pEPack;
 	P2.w_begin	(M_EVENT_PACK);

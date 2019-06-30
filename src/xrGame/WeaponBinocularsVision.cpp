@@ -37,10 +37,10 @@ void SBinocVisibleObj::create_default(u32 color)
 	m_rt.InitTexture			("ui\\ui_enemy_frame");m_rt.SetWndRect(r);
 	m_rb.InitTexture			("ui\\ui_enemy_frame");m_rb.SetWndRect(r);
 
-	m_lt.SetOriginalRect		(Frect().set(0,				0,				RECT_SIZE,		RECT_SIZE)		);
-	m_lb.SetOriginalRect		(Frect().set(0,				32-RECT_SIZE,	RECT_SIZE,		32-RECT_SIZE)	);
-	m_rt.SetOriginalRect		(Frect().set(32-RECT_SIZE,	0,				32-RECT_SIZE,	32-RECT_SIZE)	);
-	m_rb.SetOriginalRect		(Frect().set(32-RECT_SIZE,	32-RECT_SIZE,	32-RECT_SIZE,	32-RECT_SIZE)	);
+	m_lt.SetOriginalRect		(Frect().set(0,				0,				RECT_SIZE,		RECT_SIZE)	);
+	m_lb.SetOriginalRect		(Frect().set(0,				32-RECT_SIZE,	RECT_SIZE,		32)			);
+	m_rt.SetOriginalRect		(Frect().set(32-RECT_SIZE,	0,				32,				RECT_SIZE)	);
+	m_rb.SetOriginalRect		(Frect().set(32-RECT_SIZE,	32-RECT_SIZE,	32,				32)			);
 
 
 	u32 clr			= subst_alpha(color,128);
@@ -180,11 +180,11 @@ void SBinocVisibleObj::Update()
 }
 
 
-CBinocularsVision::CBinocularsVision(CWeaponBinoculars* parent)
+CBinocularsVision::CBinocularsVision(const shared_str& sect)
 {
-	m_parent = parent;
-	Load									(m_parent->cNameSect());
+	Load							(sect);
 }
+
 CBinocularsVision::~CBinocularsVision()
 {
 	m_snd_found.destroy	();

@@ -373,3 +373,9 @@ bool dxRenderDeviceRender::HWSupportsShaderYUV2RGB()
 	u32		v_need	= CAP_VERSION(2,0);
 	return (v_dev>=v_need);
 }
+
+void  dxRenderDeviceRender::OnAssetsChanged()
+{
+	Resources->m_textures_description.UnLoad();
+	Resources->m_textures_description.Load();
+}

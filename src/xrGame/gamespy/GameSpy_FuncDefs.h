@@ -112,6 +112,7 @@ typedef void (__cdecl* fnRefreshAuthCallBackFn)(int gameid, int localid, int hin
 typedef void (__cdecl* fnqr2_natnegcallback_t)(int cookie, void *userdata);	
 typedef void (__cdecl* fnqr2_clientmessagecallback_t)(char *data, int len, void *userdata);	
 typedef void (__cdecl* fnqr2_publicaddresscallback_t)(unsigned int ip, unsigned short port, void *userdata);
+typedef void (__cdecl* fnqr2_denyqr2responsetoipcallback_t)(void* userdata, unsigned int ip, int * result);
 
 typedef void (__cdecl* fnqr2_serverkeycallback_t)(int keyid, void* outbuf, void *userdata);
 typedef void (__cdecl* fnqr2_playerteamkeycallback_t)(int keyid, int index, void* outbuf, void *userdata);	

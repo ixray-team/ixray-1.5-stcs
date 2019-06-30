@@ -76,10 +76,13 @@ void CAI_Stalker::OnEvent		(NET_Packet& P, u16 type)
 			if (!O)
 				break;
 
-			bool just_before_destroy	= !P.r_eof() && P.r_u8();
+			bool just_before_destroy		= !P.r_eof() && P.r_u8();
+			bool dont_create_shell			= (type==GE_TRADE_SELL) || just_before_destroy;
 			
 
-			on_ownership_reject	( O, just_before_destroy );
+			O->SetTmpPreDestroy				(just_before_destroy);
+			on_ownership_reject				(O, dont_create_shell );
+
 
 			break;
 		}
@@ -92,8 +95,6 @@ void CAI_Stalker::on_ownership_reject	( CObject*O, bool just_before_destroy )
 	IKinematics* const kinematics			= smart_cast<IKinematics*>(Visual());
 	kinematics->CalculateBones_Invalidate	();
 	kinematics->CalculateBones				(true);
-
-	O->SetTmpPreDestroy						(just_before_destroy);
 
 	CGameObject* const game_object			= smart_cast<CGameObject*>(O);
 	VERIFY									(game_object);

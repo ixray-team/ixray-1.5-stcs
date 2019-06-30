@@ -559,6 +559,8 @@ bool CUIXmlInit::InitProgressBar(CUIXml& xml_doc, LPCSTR path,
 {
 	R_ASSERT4(xml_doc.NavigateToNode(path,index), "XML node not found", path, xml_doc.m_xml_file_name);
 
+	InitAutoStaticGroup			(xml_doc, path, index, pWnd);
+
 	string256 buf;
 	Fvector2 pos, size;
 	pos.x 				= xml_doc.ReadAttribFlt(path, index, "x");

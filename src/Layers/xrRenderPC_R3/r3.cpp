@@ -233,7 +233,7 @@ void					CRender::create					()
 
 	// nvstencil on NV40 and up
 	o.nvstencil			= FALSE;
-	if ((HW.Caps.id_vendor==0x10DE)&&(HW.Caps.id_device>=0x40))	o.nvstencil = TRUE;
+	//if ((HW.Caps.id_vendor==0x10DE)&&(HW.Caps.id_device>=0x40))	o.nvstencil = TRUE;
 	if (strstr(Core.Params,"-nonvs"))		o.nvstencil	= FALSE;
 
 	// nv-dbt
@@ -275,28 +275,78 @@ void					CRender::create					()
 
 	o.ssao_blur_on		= ps_r2_ls_flags_ext.test(R2FLAGEXT_SSAO_BLUR) && (ps_r_ssao != 0);
 
-	//	MSAA option dependencies
-	o.dx10_msaa_samples	= 0x0F & u32(ps_r__Supersample);
-	VERIFY(o.dx10_msaa_samples == u32(ps_r__Supersample));
-	if (o.dx10_msaa_samples<2)
-		o.dx10_msaa_samples = 1;
-	else if (o.dx10_msaa_samples<4)
-		o.dx10_msaa_samples = 2;
-	else if (o.dx10_msaa_samples<8)
-		o.dx10_msaa_samples = 4;
-	//else o.dx10_msaa_samples = 8;
-	else o.dx10_msaa_samples = 4;
+	o.dx10_sm4_1		= ps_r2_ls_flags.test((u32)R3FLAG_USE_DX10_1);
+	o.dx10_sm4_1		= o.dx10_sm4_1 && ( HW.pDevice1 != 0 );
 
-	o.dx10_msaa			= ps_r2_ls_flags.test(R3FLAG_MSAA);
-	o.dx10_msaa			= o.dx10_msaa && (o.dx10_msaa_samples > 1);
+	//	MSAA option dependencies
+
+	o.dx10_msaa			= !!ps_r3_msaa;
+	o.dx10_msaa_samples = (1 << ps_r3_msaa);
 
 	o.dx10_msaa_opt		= ps_r2_ls_flags.test(R3FLAG_MSAA_OPT);
 	o.dx10_msaa_opt		= o.dx10_msaa_opt && o.dx10_msaa && ( HW.pDevice1 != 0 );
 
-	o.dx10_msaa_alphatest= ps_r2_ls_flags.test((u32)R3FLAG_MSAA_ALPHATEST);
-	o.dx10_msaa_alphatest= o.dx10_msaa_alphatest && o.dx10_msaa_opt;
+	//o.dx10_msaa_hybrid	= ps_r2_ls_flags.test(R3FLAG_MSAA_HYBRID);
+	o.dx10_msaa_hybrid	= ps_r2_ls_flags.test((u32)R3FLAG_USE_DX10_1);
+	o.dx10_msaa_hybrid	&= !o.dx10_msaa_opt && o.dx10_msaa && ( HW.pDevice1 != 0) ;
+
+	//	Allow alpha test MSAA for DX10.0
+
+	//o.dx10_msaa_alphatest= ps_r2_ls_flags.test((u32)R3FLAG_MSAA_ALPHATEST);
+	//o.dx10_msaa_alphatest= o.dx10_msaa_alphatest && o.dx10_msaa;
+
+	//o.dx10_msaa_alphatest_atoc= (o.dx10_msaa_alphatest && !o.dx10_msaa_opt && !o.dx10_msaa_hybrid);
+
+	o.dx10_msaa_alphatest = 0;
+	if (o.dx10_msaa)
+	{
+		if ( o.dx10_msaa_opt || o.dx10_msaa_hybrid )
+		{
+			if (ps_r3_msaa_atest==1)
+				o.dx10_msaa_alphatest = MSAA_ATEST_DX10_1_ATOC;
+			else if (ps_r3_msaa_atest==2)
+				o.dx10_msaa_alphatest = MSAA_ATEST_DX10_1_NATIVE;
+		}
+		else
+		{
+			if (ps_r3_msaa_atest)
+				o.dx10_msaa_alphatest = MSAA_ATEST_DX10_0_ATOC;
+		}
+	}
 
 	o.dx10_gbuffer_opt	= ps_r2_ls_flags.test(R3FLAG_GBUFFER_OPT);
+
+	o.dx10_minmax_sm = ps_r3_minmax_sm;
+	o.dx10_minmax_sm_screenarea_threshold = 1600*1200;
+
+	if (o.dx10_minmax_sm==MMSM_AUTODETECT)
+	{
+		o.dx10_minmax_sm = MMSM_OFF;
+
+		//	AMD device
+		if (HW.Caps.id_vendor==0x1002)
+		{
+			if (ps_r_sun_quality>=3)
+				o.dx10_minmax_sm=MMSM_AUTO;
+			else if (ps_r_ssao>=2)
+			{
+				o.dx10_minmax_sm=MMSM_AUTODETECT;
+				//	Check resolution in runtime in use_minmax_sm_this_frame
+				o.dx10_minmax_sm_screenarea_threshold = 1600*1200;
+			}
+		}
+
+		//	NVidia boards
+		if (HW.Caps.id_vendor==0x10DE)
+		{
+			if ((ps_r_ssao>=2))
+			{
+				o.dx10_minmax_sm=MMSM_AUTODETECT;
+				//	Check resolution in runtime in use_minmax_sm_this_frame
+				o.dx10_minmax_sm_screenarea_threshold = 1280*1024;
+			}
+		}
+	}
 
 	// constants
 	dxRenderDeviceRender::Instance().Resources->RegisterConstantSetup	("parallax",	&binder_parallax);
@@ -836,6 +886,20 @@ HRESULT	CRender::shader_compile			(
 		def_it						++;
 	}
 
+   if( o.dx10_sm4_1 )
+   {
+	   defines[def_it].Name		=	"SM_4_1";
+	   defines[def_it].Definition	=	"1";
+	   def_it++;
+   }
+
+   if (o.dx10_minmax_sm)
+   {
+	   defines[def_it].Name		=	"USE_MINMAX_SM";
+	   defines[def_it].Definition	=	"1";
+	   def_it++;
+   }
+
 	// add a #define for DX10_1 MSAA support
    if( o.dx10_msaa )
    {
@@ -856,14 +920,46 @@ HRESULT	CRender::shader_compile			(
 		   defines[def_it].Name		=	"MSAA_OPTIMIZATION";
 		   defines[def_it].Definition	=	"1";
 		   def_it						++;
+	   }
 
-		   if( o.dx10_msaa_alphatest )
+		switch(o.dx10_msaa_alphatest)
+		{
+		case MSAA_ATEST_DX10_0_ATOC:
+			defines[def_it].Name		=	"MSAA_ALPHATEST_DX10_0_ATOC";
+			defines[def_it].Definition	=	"1";
+			def_it						++;
+			break;
+		case MSAA_ATEST_DX10_1_ATOC:
+			defines[def_it].Name		=	"MSAA_ALPHATEST_DX10_1_ATOC";
+			defines[def_it].Definition	=	"1";
+			def_it						++;
+			break;
+		case MSAA_ATEST_DX10_1_NATIVE:
+			defines[def_it].Name		=	"MSAA_ALPHATEST_DX10_1";
+			defines[def_it].Definition	=	"1";
+			def_it						++;
+			break;
+		}
+	   /*
+	   VERIFY( !o.dx10_msaa_alphatest || (o.dx10_msaa_alphatest&&o.dx10_msaa_opt) || (o.dx10_msaa_alphatest&&o.dx10_msaa_alphatest_atoc)
+		   || (o.dx10_msaa_alphatest&&o.dx10_msaa_hybrid));
+
+	   if( o.dx10_msaa_alphatest )
+	   {
+		   if (o.dx10_msaa_alphatest_atoc)
+		   {
+			   defines[def_it].Name		=	"MSAA_ALPHATEST_ATOC";
+			   defines[def_it].Definition	=	"1";
+			   def_it						++;
+		   }
+		   else
 		   {
 			   defines[def_it].Name		=	"MSAA_ALPHATEST";
 			   defines[def_it].Definition	=	"1";
 			   def_it						++;
 		   }
 	   }
+	   */
    }
 
 	// finish

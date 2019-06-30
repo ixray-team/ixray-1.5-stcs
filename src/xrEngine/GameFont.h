@@ -21,7 +21,7 @@ public:
 private:
 	struct String
 	{
-		string512	string;
+		string1024	string;
 		float		x,y;
 		float		height;
 		u32			c;
@@ -87,7 +87,7 @@ public:
 	float					SizeOf_			( LPCSTR s );
 	float					SizeOf_			( const wide_char *wsStr );
 
-	float					SizeOf_			( const char cChar );
+	float					SizeOf_			( const char cChar );  // only ANSII 
 
 	float					CurrentHeight_	();
 

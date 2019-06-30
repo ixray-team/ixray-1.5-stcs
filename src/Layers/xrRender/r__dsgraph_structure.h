@@ -34,8 +34,10 @@ public:
 	bool														pmask_wmark			;
 public:
 	// Dynamic scene graph
-	R_dsgraph::mapNormal_T										mapNormal	[2]		;	// 2==(priority/2)
-	R_dsgraph::mapMatrix_T										mapMatrix	[2]		;
+	//R_dsgraph::mapNormal_T										mapNormal	[2]		;	// 2==(priority/2)
+	R_dsgraph::mapNormalPasses_T								mapNormalPasses	[2]	;	// 2==(priority/2)
+	//R_dsgraph::mapMatrix_T										mapMatrix	[2]		;
+	R_dsgraph::mapMatrixPasses_T								mapMatrixPasses	[2]	;
 	R_dsgraph::mapSorted_T										mapSorted;
 	R_dsgraph::mapHUD_T											mapHUD;
 	R_dsgraph::mapLOD_T											mapLOD;
@@ -128,10 +130,17 @@ public:
 
 		lstRecorded.clear		();
 
-		mapNormal[0].destroy	();
-		mapNormal[1].destroy	();
-		mapMatrix[0].destroy	();
-		mapMatrix[1].destroy	();
+		//mapNormal[0].destroy	();
+		//mapNormal[1].destroy	();
+		//mapMatrix[0].destroy	();
+		//mapMatrix[1].destroy	();
+		for (int i=0; i<SHADER_PASSES_MAX; ++i)
+		{
+			mapNormalPasses[0][i].destroy	();
+			mapNormalPasses[1][i].destroy	();
+			mapMatrixPasses[0][i].destroy	();
+			mapMatrixPasses[1][i].destroy	();
+		}
 		mapSorted.destroy		();
 		mapHUD.destroy			();
 		mapLOD.destroy			();

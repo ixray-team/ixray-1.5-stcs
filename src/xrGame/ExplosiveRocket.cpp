@@ -114,15 +114,15 @@ void CExplosiveRocket::PH_A_CrPr			()
 		VERIFY(obj.Visual());
 		IKinematics *K = obj.Visual()->dcast_PKinematics();
 		VERIFY( K );
+		if (!obj.PPhysicsShell())
+		{
+			Msg("! ERROR: PhysicsShell is NULL, object [%s][%d]", obj.cName().c_str(), obj.ID());
+			return;
+		}
 		if(!obj.PPhysicsShell()->isFullActive())
 		{
 			K->CalculateBones_Invalidate();
 			K->CalculateBones(TRUE);
-		}
-		if (!obj.PPhysicsShell())
-		{
-			Msg("! ERROR: PhysicsShell is NULL, object [%s][%d]", obj.cName().c_str(), obj.ID());
-			FATAL("physical shell is NULL");
 		}
 		obj.PPhysicsShell()->GetGlobalTransformDynamic(&obj.XFORM());
 		K->CalculateBones_Invalidate();

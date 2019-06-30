@@ -30,7 +30,7 @@ class CTextureDescrMngr
 
 	map_TD									m_texture_details;
 
-	void		LoadTHM		();
+	void		LoadTHM		(LPCSTR initial);
 
 public:
 	void		Load		();

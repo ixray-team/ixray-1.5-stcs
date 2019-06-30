@@ -442,21 +442,20 @@ bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 #ifdef DEBUG
 	test_key(dik);
 #endif // #ifdef DEBUG
-
+/*
 	if(Level().IR_GetKeyState(DIK_LSHIFT) || Level().IR_GetKeyState(DIK_RSHIFT))
 	{
-/*		switch(dik)
-		{
-		case DIK_NUMPADMINUS:
-			UIZoneMap->ZoomOut();
-			return true;
-			break;
-		case DIK_NUMPADPLUS:
-			UIZoneMap->ZoomIn();
-			return true;
-			break;
-		}
-*/
+//		switch(dik)
+//		{
+//		case DIK_NUMPADMINUS:
+//			UIZoneMap->ZoomOut();
+//			return true;
+//			break;
+//		case DIK_NUMPADPLUS:
+//			UIZoneMap->ZoomIn();
+//			return true;
+//			break;
+//		}
 	}
 	else
 	{
@@ -478,6 +477,7 @@ bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 			break;
 		}
 	}
+*/
 	return false;
 }
 
@@ -497,9 +497,9 @@ void CUIMainIngameWnd::RenderQuickInfos()
 			UIStaticQuickHelp.SetTextST				(actor_action);
 	}
 
-	if (pObject!=m_pActor->ObjectWeLookingAt())
+	if(pObject!=m_pActor->ObjectWeLookingAt())
 	{
-		UIStaticQuickHelp.SetTextST				(actor_action);
+		UIStaticQuickHelp.SetTextST				(actor_action?actor_action:" ");
 		UIStaticQuickHelp.ResetClrAnimation		();
 		pObject	= m_pActor->ObjectWeLookingAt	();
 	}

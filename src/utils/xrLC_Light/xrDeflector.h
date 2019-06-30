@@ -62,7 +62,9 @@ static	CDeflector*		read_create					();
 	void	RemapUV				(u32 base_u, u32 base_v, u32 size_u, u32 size_v, u32 lm_u, u32 lm_v, BOOL bRotate);
 	void	read				( INetReader	&r );
 	void	write				( IWriter	&w ) const ;
+	bool	similar				( const CDeflector &D, float eps =EPS ) const;
 };
+
 
 typedef xr_vector<UVtri>::iterator UVIt;
 
@@ -75,8 +77,9 @@ extern void		lblit			(lm_layer& dst, lm_layer& src, u32 px, u32 py, u32 aREF);
 extern XRLC_LIGHT_API void		LightPoint		(CDB::COLLIDER* DB, CDB::MODEL* MDL, base_color_c &C, Fvector &P, Fvector &N, base_lighting& lights, u32 flags, Face* skip);
 extern XRLC_LIGHT_API BOOL		ApplyBorders	(lm_layer &lm, u32 ref);
 extern XRLC_LIGHT_API void		DumpDeflctor	( u32 id );
+extern XRLC_LIGHT_API void		DumpDeflctor	( CDeflector &d );
 extern XRLC_LIGHT_API void		DeflectorsStats ();
-
+extern XRLC_LIGHT_API void		DumpDeflctor	( u32 id );
 extern XRLC_LIGHT_API CDeflector*		Deflector		;
 
 static const	u32								c_LMAP_size				= 1024;			// pixels

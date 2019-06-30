@@ -41,8 +41,10 @@ void UIWarState::InitXML( CUIXml& xml, LPCSTR att_name, CUIWindow* parent )
 void UIWarState::ClearInfo()
 {
 	//m_installed = false;
-	m_static->SetVisible( false );
+//	m_static->SetVisible( false );
+	SetVisible( false );
 	set_hint_text_ST( "" );
+	
 	//m_static->InitTexture( m_def_texture.c_str() );
 }
 
@@ -54,7 +56,8 @@ bool UIWarState::UpdateInfo( LPCSTR icon, LPCSTR hint_text )
 	}
 
 //	m_installed = true;
-	m_static->SetVisible( true );
+//	m_static->SetVisible( true );
+	SetVisible( true );
 	m_static->InitTexture( icon );
 
 	if ( !hint_text || !xr_strlen(hint_text) )
@@ -77,6 +80,15 @@ void  UIWarState::Draw()
 	}
 	m_static->SetColor( cr );
 	*/
-	inherited::Draw();
-	m_static->Draw();
+	
+	if( IsShown() )
+	{
+		inherited::Draw();
+	}
+
+//	if ( GetVisible() )
+//	{
+//		inherited::Draw();
+//		m_static->Draw();
+//	}
 }

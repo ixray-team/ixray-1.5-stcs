@@ -12,6 +12,15 @@ extern ECORE_API	xr_token	qssao_token[];
 extern ECORE_API	u32			ps_r_sun_quality;	//	=	0;
 extern ECORE_API	xr_token	qsun_quality_token[];
 
+extern ECORE_API	u32			ps_r3_msaa;	//	=	0;
+extern ECORE_API	xr_token	qmsaa_token[];
+
+extern ECORE_API	u32			ps_r3_msaa_atest; //=	0;
+extern ECORE_API	xr_token	qmsaa__atest_token[];
+
+extern ECORE_API	u32			ps_r3_minmax_sm;//	=	0;
+extern ECORE_API	xr_token	qminmax_sm_token[];
+
 extern ENGINE_API	int			ps_r__Supersample;
 extern ECORE_API	int			ps_r__LightSleepFrames;
 
@@ -160,10 +169,12 @@ enum
 	R3FLAG_DYN_WET_SURF			= (1<<26),
 	R3FLAG_VOLUMETRIC_SMOKE		= (1<<27),
 
-	R3FLAG_MSAA					= (1<<28),
+	//R3FLAG_MSAA					= (1<<28),
+	R3FLAG_MSAA_HYBRID			= (1<<28),
 	R3FLAG_MSAA_OPT				= (1<<29),
 	R3FLAG_GBUFFER_OPT			= (1<<30),
-	R3FLAG_MSAA_ALPHATEST		= (1<<31),
+	R3FLAG_USE_DX10_1			= (1<<31),
+	//R3FLAG_MSAA_ALPHATEST		= (1<<31),
 };
 
 enum

@@ -31,7 +31,8 @@ void CConsole::Register_callbacks()
 	
 	ec().assign_callback( DIK_ESCAPE, text_editor::ks_free, Callback( this, &CConsole::Hide_cmd ) );
 	ec().assign_callback( DIK_GRAVE,  text_editor::ks_free, Callback( this, &CConsole::Hide_cmd ) );
-
+	
+	ec().assign_callback( DIK_LSHIFT, text_editor::ks_Ctrl, Callback( this, &CConsole::SwitchKL ) );
 }
 
 void CConsole::Prev_log() // DIK_PRIOR=PAGE_UP
@@ -141,4 +142,9 @@ void CConsole::Hide_cmd()
 void CConsole::GamePause()
 {
 
+}
+
+void CConsole::SwitchKL()
+{
+	ActivateKeyboardLayout( 0, 0 );
 }

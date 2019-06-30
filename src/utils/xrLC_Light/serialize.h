@@ -202,6 +202,33 @@ static	u32		get_id			(  const type* f, const xr_vector<type*>& vec )
 void write(IWriter	&w, const b_texture &b);
 void read(INetReader &r, b_texture &b);
 
+IC void write_task_id( IGenericStream* stream, u32 id )
+{
+	stream->Write( &id, sizeof(id) );
+}
+IC void read_task_id( IGenericStream* stream, u32 &id )
+{
+	stream->Read( &id, sizeof(id) );
+}
+IC void write_task_type(IGenericStream* stream, u32 type)
+{
+	stream->Write( &type, sizeof(type) );
+}
+IC void read_task_type( IGenericStream* stream, u32 &type )
+{
+	stream->Read( &type, sizeof(type) );
+}
+IC void write_task_caption( IGenericStream* stream, u32 id, u32 type )
+{
+	write_task_id	( stream, id );
+	write_task_type ( stream, type );
+}
+IC void read_task_caption( IGenericStream* stream, u32 &id, u32 &type )
+{
+	read_task_id	( stream, id );
+	read_task_type ( stream, type );
+}
+
 
 
 

@@ -16,6 +16,9 @@
 #include "game_cl_capture_the_artefact.h"
 #include "clsid_game.h"
 #include "actor.h"
+#include "weapon.h"
+#include "game_cl_base_weapon_usage_statistic.h"
+
 #include "../xrEngine/IGame_Persistent.h"
 #include "ui/UIActorMenu.h"
 
@@ -812,6 +815,17 @@ void game_cl_CaptureTheArtefact::OnSpawn(CObject* pObj)
 			if (m_game_ui)
 			{
 				m_game_ui->HideBuyMenu();
+			}
+		}
+	}
+	if (smart_cast<CWeapon*>(pObj))
+	{
+		if (pObj->H_Parent())
+		{
+			game_PlayerState *ps = GetPlayerByGameID(pObj->H_Parent()->ID());
+			if (ps)
+			{
+				m_WeaponUsageStatistic->OnWeaponBought(ps, pObj->cNameSect().c_str());
 			}
 		}
 	}

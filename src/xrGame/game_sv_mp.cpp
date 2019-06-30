@@ -49,6 +49,8 @@ game_sv_mp::game_sv_mp() :inherited()
 	m_aRanks.clear();	
 	//------------------------------------------------------	
 	round_end_reason = eRoundEnd_Force; //unknown
+	m_async_stats_request_time = 0;
+	round_statistics_dump_fn[0] = 0;
 }
 
 game_sv_mp::~game_sv_mp()
@@ -102,6 +104,7 @@ void	game_sv_mp::Update	()
 			if(Phase()==GAME_PHASE_INPROGRESS)
 			{
 				DumpOnlineStatistic();
+				DumpRoundStatistics();
 				g_sv_mp_iDumpStats_last	= curr_minutes;
 			}
 		}
@@ -115,6 +118,7 @@ void game_sv_mp::OnRoundStart()
 	if( g_pGameLevel && Level().game )
 	{
 		Game().m_WeaponUsageStatistic->Clear();
+		StartToDumpStatistics();
 	}
 	
 	m_CorpseList.clear();
@@ -125,13 +129,19 @@ void game_sv_mp::OnRoundStart()
 	timestamp			(m_round_start_time_str);
 	
 	// clear "ready" flag
-	u32		cnt		= get_players_count	();
-	for		(u32 it=0; it<cnt; ++it)	
+	struct ready_clearer
 	{
-		game_PlayerState*	ps	=	get_it	(it);
-		ps->resetFlag(GAME_PLAYER_FLAG_READY+GAME_PLAYER_FLAG_VERY_VERY_DEAD);
-		ps->m_online_time = Level().timeServer();
+		void operator()(IClient* client)
+		{
+			xrClientData* tmp_client = static_cast<xrClientData*>(client);
+			game_PlayerState* tmp_ps = tmp_client->ps;
+			tmp_ps->resetFlag(GAME_PLAYER_FLAG_READY+GAME_PLAYER_FLAG_VERY_VERY_DEAD);
+			tmp_ps->m_online_time = Level().timeServer();
+		}
 	};
+	ready_clearer tmp_functor;
+	m_server->ForEachClientDo(tmp_functor);
+	m_async_stats_request_time = 0;
 	
 	// 1. We have to destroy all delayed events
 	CleanDelayedEvents();
@@ -170,17 +180,50 @@ void game_sv_mp::OnRoundEnd()
 	u_EventSend(P);
 	//-------------------------------------------------------
 	CleanDelayedEvents();
-	u32		cnt						= get_players_count	();
-	xrClientData*	ServerClient	= static_cast<xrClientData*>(m_server->GetServerClient());
-	for		(u32 it=0; it<cnt; ++it)	
+	struct event_clearer
 	{
-		xrClientData*	C	= static_cast<xrClientData*>(m_server->client_Get(it));
-		if (!C) continue;
-		if (C == ServerClient) continue;
-		m_event_queue->SetIgnoreEventsFor(true, C->ID);
-	}
+		GameEventQueue*		event_queue;
+		IClient*			server_client;
+		event_clearer(GameEventQueue* eq, IClient* sc)
+		{
+			event_queue = eq;
+			server_client = sc;
+		};
+		void operator()(IClient* client)
+		{
+			if (client != server_client)
+			{
+				event_queue->SetIgnoreEventsFor(true, client->ID);
+			}
+		}
+	};
+
+	event_clearer	tmp_functor(m_event_queue, m_server->GetServerClient());
+	m_server->ForEachClientDo(tmp_functor);
 }
 
+struct real_sender
+{
+	xrServer* server_for_send;
+	NET_Packet* P;
+	u32	flags_to_send;
+
+	real_sender(xrServer* server, NET_Packet* Packet, u32 flags=DPNSEND_GUARANTEED)
+	{
+		server_for_send = server;
+		P = Packet;
+		flags_to_send = flags;
+	}
+	void operator()(IClient* client)
+	{
+		xrClientData* tmp_client = static_cast<xrClientData*>(client);
+		game_PlayerState* ps	= tmp_client->ps;
+		if (!ps || !tmp_client->net_Ready)
+			return;
+		
+		server_for_send->SendTo(client->ID, *P, flags_to_send);
+	}
+};
 
 void	game_sv_mp::KillPlayer				(ClientID id_who, u16 GameID)
 {
@@ -204,7 +247,8 @@ void	game_sv_mp::KillPlayer				(ClientID id_who, u16 GameID)
 	{
 		//-------------------------------------------------------
 		OnPlayerKillPlayer(xrCData->ps, xrCData->ps, KT_HIT, SKT_NONE, NULL);
-		xrCData->ps->m_bClearRun = false;
+		if (xrCData->ps)
+			xrCData->ps->m_bClearRun = false;
 	};
 	//-------------------------------------------------------
 	CActor* pActor = smart_cast <CActor*>(pObject);
@@ -384,7 +428,6 @@ void game_sv_mp::ReconnectPlayer(ClientID const & clientID)
 	P.w_stringZ			(Level().name().c_str());
 	P.w_stringZ			(GameTypeToString(Type(),true));
 	m_server->SendTo(clientID, P, net_flags(TRUE, TRUE));
-	m_server->clients_Lock		();
 	IClient* pCL = m_server->client_Find_Get(clientID);
 	R_ASSERT2(pCL, make_string(
 		"client 0x%08x not found", clientID).c_str());
@@ -394,7 +437,6 @@ void game_sv_mp::ReconnectPlayer(ClientID const & clientID)
 		sprintf_s(disconnect_reason, "reconnect");
 		m_server->DisconnectClient(pCL, disconnect_reason);
 	}*/
-	m_server->clients_Unlock	();
 }
 
 bool g_bConsoleCommandsCreated = false;
@@ -413,6 +455,7 @@ void game_sv_mp::Create (shared_str &options)
 	LoadRanks();
 	//------------------------------------------------------------------
 	Set_RankUp_Allowed(false);
+	m_cdkey_ban_list.load();
 };
 
 u8	game_sv_mp::SpectatorModes_Pack		()
@@ -590,7 +633,10 @@ void game_sv_mp::OnPlayerDisconnect		(ClientID id_who, LPSTR Name, u16 GameID)
 	KillPlayer					(id_who, GameID);
 	
 	AllowDeadBodyRemove			(id_who, GameID);
-	m_CorpseList.push_back		(GameID);
+	
+	CSE_Abstract* pSObject = get_entity_from_eid(GameID);
+	if (pSObject)
+		m_CorpseList.push_back(GameID);
 
 	inherited::OnPlayerDisconnect (id_who, Name, GameID);
 }
@@ -910,6 +956,43 @@ _votecommands	votecommands[] = {
 	{ NULL, 			NULL }
 };
 
+s32 game_sv_mp::ExcludeBanTimeFromVoteStr(char const * vote_string, char* new_vote_str, u32 new_vote_str_size)
+{
+	if (!vote_string || !xr_strlen(vote_string))
+		return 0;
+	
+	s32 ret_time = 0;
+	strncpy(new_vote_str, vote_string, new_vote_str_size - 1);
+	new_vote_str[new_vote_str_size - 1] = 0;
+	char * start_time_str = strrchr(new_vote_str, ' ');
+	if (!start_time_str || !xr_strlen(++start_time_str))
+		return 0;
+	ret_time = atoi(start_time_str);
+	*(start_time_str - 1) = 0;
+	return ret_time;	
+}
+
+struct SearcherClientByName
+{
+	string128 player_name;
+	SearcherClientByName(LPCSTR name)
+	{
+		strncpy_s(player_name, sizeof(player_name), name, sizeof(player_name) - 1);
+		xr_strlwr(player_name);
+		player_name[sizeof(player_name) - 1] = 0;
+	}
+	bool operator()(IClient* client)
+	{
+		xrClientData*	temp_client = smart_cast<xrClientData*>(client);
+
+		if (!xr_strcmp(player_name, temp_client->ps->getName()))
+		{
+			return true;
+		}
+		return false;
+	}
+};
+
 void game_sv_mp::OnVoteStart				(LPCSTR VoteCommand, ClientID sender)
 {
 	if (!IsVotingEnabled()) return;
@@ -977,6 +1060,38 @@ void game_sv_mp::OnVoteStart				(LPCSTR VoteCommand, ClientID sender)
 				LevelName,
 				LevelVersion
 			);
+		} else if (!stricmp(votecommands[i].name, "kick"))
+		{
+			SearcherClientByName tmp_predicate(CommandParams);
+			IClient*	tmp_client = m_server->FindClient(tmp_predicate);
+			if (tmp_client)
+			{
+				m_pVoteCommand.sprintf("sv_kick_id %u", tmp_client->ID.value());
+			} else
+			{
+				m_pVoteCommand.sprintf("%s %s", votecommands[i].command, CommandParams);	//backward compatibility
+			}
+			strcpy_s(resVoteCommand, VoteCommand);
+		} else if (!stricmp(votecommands[i].name, "ban"))
+		{
+			string256 tmp_victim_name;
+			s32 ban_time = ExcludeBanTimeFromVoteStr(CommandParams, tmp_victim_name, sizeof(tmp_victim_name));
+			//if (ban_time)
+			//{
+			SearcherClientByName tmp_predicate(tmp_victim_name);
+			IClient*	tmp_client = m_server->FindClient(tmp_predicate);
+			if (tmp_client)
+			{
+				m_pVoteCommand.sprintf("sv_banplayer %u %d", tmp_client->ID.value(), ban_time);
+			} else
+			{
+				Msg("! ERROR: can't find player with name %s", tmp_victim_name);
+			}
+			//} else
+			//{
+			//	Msg("! ERROR: failed to extract ban time from vote string.");
+			//}
+			strcpy_s(resVoteCommand, VoteCommand);
 		} else
 		{
 			m_pVoteCommand.sprintf("%s %s", votecommands[i].command, CommandParams);
@@ -988,20 +1103,27 @@ void game_sv_mp::OnVoteStart				(LPCSTR VoteCommand, ClientID sender)
 		m_pVoteCommand.sprintf("%s", VoteCommand+1);
 	};
 
-	xrClientData *pStartedPlayer = NULL;
-	u32	cnt = get_players_count();	
-	for(u32 it=0; it<cnt; it++)	
+	struct vote_status_setter
 	{
-		xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
-		if (!l_pC) continue;
-		if (l_pC->ID == sender)
+		ClientID senderID;
+		xrClientData* pStartedPlayer;
+		void operator()(IClient* client)
 		{
-			l_pC->ps->m_bCurrentVoteAgreed = 1;
-			pStartedPlayer = l_pC;
+			xrClientData* tmp_client = static_cast<xrClientData*>(client);
+			if (tmp_client->ID == senderID)
+			{
+				tmp_client->ps->m_bCurrentVoteAgreed = 1;
+				pStartedPlayer = tmp_client;
+			} else
+			{
+				tmp_client->ps->m_bCurrentVoteAgreed = 2;
+			}
 		}
-		else
-			l_pC->ps->m_bCurrentVoteAgreed = 2;
 	};
+	vote_status_setter tmp_functor;
+	tmp_functor.senderID = sender;
+	tmp_functor.pStartedPlayer = NULL;
+	m_server->ForEachClientDo(tmp_functor);
 
 	signal_Syncronize();
 	//-----------------------------------------------------------------------------
@@ -1015,7 +1137,7 @@ void game_sv_mp::OnVoteStart				(LPCSTR VoteCommand, ClientID sender)
 		m_voting_string = VoteCommand + 1;
 	}
 	P.w_stringZ(m_voting_string);
-	m_started_player = pStartedPlayer ? pStartedPlayer->ps->getName() : "";
+	m_started_player = tmp_functor.pStartedPlayer ? tmp_functor.pStartedPlayer->ps->getName() : "";
 	P.w_stringZ(m_started_player);
 	P.w_u32(u32(g_sv_mp_fVoteTime*60000));
 	u_EventSend(P);
@@ -1037,33 +1159,41 @@ void game_sv_mp::SendActiveVotingTo(ClientID const & receiver)
 	m_server->SendTo(receiver, P, net_flags(TRUE, TRUE));
 }
 
-
 void		game_sv_mp::UpdateVote				()
 {
 	if (!IsVotingEnabled() || !IsVotingActive()) return;
 
-	u32 NumAgreed = 0;
-	u32 NumParticipated = 0;
-	u32 NumToCount = 0;
-	u32	cnt = get_players_count();	
-	for(u32 it=0; it<cnt; it++)	
+	struct vote_updator
 	{
-		xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
-		game_PlayerState* ps	= l_pC->ps;
-		if (!l_pC || !l_pC->net_Ready || !ps || ps->IsSkip()) continue;
-		if ((ps->m_bCurrentVoteAgreed != 2) &&
-			(ps->m_bCurrentVoteAgreed != 1)) NumParticipated++;
-		if (ps->m_bCurrentVoteAgreed == 1) NumAgreed++;
-		NumToCount++;
+		u32 NumAgreed;
+		u32 NumParticipated;
+		u32 NumToCount;
+		void operator()(IClient* client)
+		{
+			xrClientData* tmp_client = static_cast<xrClientData*>(client);
+			game_PlayerState* ps = tmp_client->ps;
+			if (!ps || !tmp_client->net_Ready || ps->IsSkip())
+				return;
+			if ((ps->m_bCurrentVoteAgreed != 2) &&
+				(ps->m_bCurrentVoteAgreed != 1)) ++NumParticipated;
+			if (ps->m_bCurrentVoteAgreed == 1) ++NumAgreed;
+			++NumToCount;
+		}
 	};
-	u32 NumAgainst = (NumToCount - NumAgreed);
+	vote_updator vote_stats;
+	vote_stats.NumAgreed = 0;
+	vote_stats.NumParticipated = 0;
+	vote_stats.NumToCount = 0;
+	m_server->ForEachClientDo(vote_stats);
+	
+	u32 NumAgainst = (vote_stats.NumToCount - vote_stats.NumAgreed);
 
 	bool VoteSucceed = false;
 	u32 CurTime = Level().timeServer();
 	
 	if (m_uVoteStartTime + u32(g_sv_mp_fVoteTime*60000) > CurTime)
 	{
-		if (NumAgreed > (NumAgainst + NumParticipated))
+		if (vote_stats.NumAgreed > (NumAgainst + vote_stats.NumParticipated))
 		{
 			VoteSucceed = true;
 		} else {
@@ -1073,9 +1203,9 @@ void		game_sv_mp::UpdateVote				()
 	else
 	{
 		if (g_sv_mp_bCountParticipants) 
-			VoteSucceed = (float(NumAgreed)/float(NumParticipated + NumAgainst)) >= g_sv_mp_fVoteQuota;
+			VoteSucceed = (float(vote_stats.NumAgreed)/float(vote_stats.NumParticipated + NumAgainst)) >= g_sv_mp_fVoteQuota;
 		else
-			VoteSucceed = (float(NumAgreed)/float(NumToCount)) >= g_sv_mp_fVoteQuota;
+			VoteSucceed = (float(vote_stats.NumAgreed)/float(vote_stats.NumToCount)) >= g_sv_mp_fVoteQuota;
 	};
 
 	SetVotingActive(false);
@@ -1096,8 +1226,10 @@ void		game_sv_mp::UpdateVote				()
 	P.w_stringZ("st_mp_voting_succeed");
 	u_EventSend(P);
 
-	if (m_bVotingReal)
+	if (m_bVotingReal && m_pVoteCommand.size())
+	{
 		Console->Execute(m_pVoteCommand.c_str());
+	}
 };
 
 
@@ -1266,14 +1398,18 @@ void game_sv_mp::OnPlayerKilled(NET_Packet P)
 #endif // #ifndef MASTER_GOLD
 		return;
 	}
-#ifdef DEBUG
+#ifdef MP_LOGGING
 	Msg("--- Player [%d] killed player [%d], Frame [%d]", KillerID, KilledID, Device.dwFrame);
-#endif // #ifdef DEBUG
+#endif
 	
 
 	CSE_Abstract* pWeaponA = get_entity_from_eid(WeaponID);
 
 	OnPlayerKillPlayer(ps_killer, ps_killed, KillType, SpecialKill, pWeaponA);
+	if (KillType == KT_BLEEDING)
+	{
+		Game().m_WeaponUsageStatistic->OnBleedKill(ps_killer, ps_killed, WeaponID);
+	}
 	//---------------------------------------------------
 	SendPlayerKilledMessage((ps_killed)?ps_killed->GameID:KilledID, KillType, (ps_killer)?ps_killer->GameID:KillerID, WeaponID, SpecialKill);
 };
@@ -1310,14 +1446,24 @@ void	game_sv_mp::SendPlayerKilledMessage	(u16 KilledID, KILL_TYPE KillType, u16 
 	P.w_u16	(WeaponID);
 	P.w_u8	(u8(SpecialKill));
 
-	u32	cnt = get_players_count();	
-	for( u32 it = 0; it < cnt; it++ )
+	struct player_killed_sender
 	{
-		xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
-		game_PlayerState* ps	= l_pC->ps;
-		if (!l_pC || !l_pC->net_Ready || !ps) continue;
-		m_server->SendTo(l_pC->ID, P);
+		NET_Packet* P;
+		xrServer* server_for_send;
+		void operator()(IClient* client)
+		{
+			xrClientData* tmp_client = static_cast<xrClientData*>(client);
+			game_PlayerState* ps = tmp_client->ps;
+			if (!ps || !tmp_client->net_Ready)
+				return;
+			server_for_send->SendTo(client->ID, *P);
+		}
 	};
+
+	player_killed_sender sender;
+	sender.P = &P;
+	sender.server_for_send = m_server;
+	m_server->ForEachClientDoSender(sender);
 };
 
 void	game_sv_mp::OnPlayerChangeName		(NET_Packet& P, ClientID sender)
@@ -1357,15 +1503,9 @@ void	game_sv_mp::OnPlayerChangeName		(NET_Packet& P, ClientID sender)
 		P.w_s16(ps->team);
 		P.w_stringZ(ps->getName());
 		P.w_stringZ(NewName);
-		//---------------------------------------------------		
-		u32	cnt = get_players_count();	
-		for(u32 it=0; it<cnt; it++)	
-		{
-			xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
-			game_PlayerState* ps	= l_pC->ps;
-			if (!l_pC || !l_pC->net_Ready || !ps) continue;
-			m_server->SendTo(l_pC->ID, P);
-		};
+		//---------------------------------------------------
+		real_sender tmp_functor(m_server, &P);
+		m_server->ForEachClientDoSender(tmp_functor);
 		//---------------------------------------------------
 		pClient->owner->set_name_replace(NewName);
 		NewPlayerName_Replace(pClient, NewName);
@@ -1393,16 +1533,9 @@ void		game_sv_mp::OnPlayerSpeechMessage	(NET_Packet& P, ClientID sender)
 		NP.w_u16(ps->GameID);
 		NP.w_u8(P.r_u8());
 		NP.w_u8(P.r_u8());
-		NP.w_u8(P.r_u8());		
-		//---------------------------------------------------		
-		u32	cnt = get_players_count();	
-		for(u32 it=0; it<cnt; it++)	
-		{
-			xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
-			game_PlayerState* ps	= l_pC->ps;
-			if (!l_pC || !l_pC->net_Ready || !ps) continue;
-			m_server->SendTo(l_pC->ID, NP, net_flags(TRUE, TRUE, TRUE));
-		};
+		NP.w_u8(P.r_u8());
+		real_sender tmp_sender(m_server, &NP, net_flags(TRUE, TRUE, TRUE));
+		m_server->ForEachClientDoSender(tmp_sender);
 	};
 };
 
@@ -1543,37 +1676,47 @@ void	game_sv_mp::Player_ExperienceFin	(game_PlayerState* ps)
 
 void	game_sv_mp::UpdatePlayersMoney		()
 {
-	u32	cnt = get_players_count();	
-	for(u32 it=0; it<cnt; it++)	
+	struct player_money_updator
 	{
-		xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
-		game_PlayerState* ps	= l_pC->ps;
-		if (!l_pC || !l_pC->net_Ready || !ps) continue;
-		if (!ps->money_added && ps->m_aBonusMoney.empty()) continue;
-		//-----------------------------------------------------------
-		NET_Packet P;
-		
-		GenerateGameMessage (P);
-		P.w_u32		(GAME_EVENT_PLAYERS_MONEY_CHANGED);
+		xrServer* m_server;
+		game_sv_mp* m_owner;
 
-		P.w_s32(ps->money_for_round);
-		P.w_s32(ps->money_added);	
-		ps->money_added = 0;
-		P.w_u8(u8(ps->m_aBonusMoney.size() & 0xff));
-		if (!ps->m_aBonusMoney.empty())
+		void operator()(IClient* client)
 		{
-			for (u32 i=0; i<ps->m_aBonusMoney.size(); i++)
-			{
-				Bonus_Money_Struct* pBMS = &(ps->m_aBonusMoney[i]);
-				P.w_s32(pBMS->Money);
-				P.w_u8(u8(pBMS->Reason & 0xff));
-				if (pBMS->Reason == SKT_KIR) P.w_u8(pBMS->Kills);
-			};
-			ps->m_aBonusMoney.clear();
-		};		
+			xrClientData* l_pC = static_cast<xrClientData*>(client);
+			game_PlayerState* ps	= l_pC->ps;
+			if (!l_pC || !l_pC->net_Ready || !ps) return;
+			if (!ps->money_added && ps->m_aBonusMoney.empty()) return;
+			//-----------------------------------------------------------
+			NET_Packet P;
+			
+			m_owner->GenerateGameMessage (P);
+			P.w_u32		(GAME_EVENT_PLAYERS_MONEY_CHANGED);
 
-		m_server->SendTo(l_pC->ID, P);
+			P.w_s32(ps->money_for_round);
+			P.w_s32(ps->money_added);	
+			ps->money_added = 0;
+			P.w_u8(u8(ps->m_aBonusMoney.size() & 0xff));
+			if (!ps->m_aBonusMoney.empty())
+			{
+				for (u32 i=0; i<ps->m_aBonusMoney.size(); i++)
+				{
+					Bonus_Money_Struct* pBMS = &(ps->m_aBonusMoney[i]);
+					P.w_s32(pBMS->Money);
+					P.w_u8(u8(pBMS->Reason & 0xff));
+					if (pBMS->Reason == SKT_KIR) P.w_u8(pBMS->Kills);
+				};
+				ps->m_aBonusMoney.clear();
+			};		
+
+			m_server->SendTo(l_pC->ID, P);
+		}
 	};
+
+	player_money_updator tmp_functor;
+	tmp_functor.m_server = m_server;
+	tmp_functor.m_owner = this;
+	m_server->ForEachClientDoSender(tmp_functor);
 };
 /*
 bool	game_sv_mp::GetTeamItem_ByID		(WeaponDataStruct** pRes, TEAM_WPN_LIST* pWpnList, u16 ItemID)
@@ -1660,48 +1803,57 @@ void game_sv_mp::ConsoleCommands_Clear	()
 
 void game_sv_mp::RenewAllActorsHealth	()
 {
-	u32 clientsCount = get_players_count();
-	for (u32 i = 0; i < clientsCount; ++i)
+	struct actor_health_renewer
 	{
-		xrClientData *l_pC = static_cast<xrClientData*>(m_server->client_Get(i));
-		VERIFY2(l_pC, make_string("client #%d not found", i).c_str());
-		VERIFY2(l_pC->ps, make_string("player state of client #%d, ClientID = 0x%08x", i, l_pC->ID.value()).c_str());
-		if (!l_pC || !l_pC->ps)
+		void operator()(IClient* client)
 		{
-			continue;
-		}
-		if (l_pC->ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD))
-		{
+			xrClientData *l_pC = static_cast<xrClientData*>(client);
+			VERIFY2(l_pC->ps, make_string("player state of client, ClientID = 0x%08x", l_pC->ID.value()).c_str());
+			if (!l_pC || !l_pC->ps)
+			{
+				return;
+			}
+			if (l_pC->ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD))
+			{
 #ifdef DEBUG
-			Msg("--- Actor has dead flag in player state");
+				Msg("--- Actor has dead flag in player state");
 #endif // #ifdef DEBUG
-			continue;
-		}
-		// this hack (client objects on server) must be deleted !!!
-		CActor *pActor = smart_cast<CActor*>(Level().Objects.net_Find(l_pC->ps->GameID));
-		if (!pActor)	//if player is spectator
-			continue;
+				return;
+			}
+			// this hack (client objects on server) must be deleted !!!
+			CActor *pActor = smart_cast<CActor*>(Level().Objects.net_Find(l_pC->ps->GameID));
+			if (!pActor)	//if player is spectator
+				return;
 
-		if (!pActor->g_Alive())
-		{
+			if (!pActor->g_Alive())
+			{
 #ifndef MASTER_GOLD
-			Msg("! ERROR: dead actor !!!");
+				Msg("! ERROR: dead actor !!!");
 #endif // #ifndef MASTER_GOLD
-			continue;
-		}
+				return;
+			}
 
-		VERIFY2(pActor, make_string("client object on server of actor GameID = 0x%08x, not found", l_pC->ps->GameID).c_str());
-		if (pActor)
-		{
-			pActor->SetfHealth(pActor->GetMaxHealth());
+			VERIFY2(pActor, make_string("client object on server of actor GameID = 0x%08x, not found", l_pC->ps->GameID).c_str());
+			if (pActor)
+			{
+				pActor->SetfHealth(pActor->GetMaxHealth());
+			}
 		}
-	}
-	signal_Syncronize(); //mega hack
+	};
+	actor_health_renewer tmp_functor;
+	m_server->ForEachClientDo(tmp_functor);
+	signal_Syncronize();
 }
 
 void game_sv_mp::DestroyGameItem(CSE_Abstract* entity)
 {
-	VERIFY2(entity, "entity not found for destroying");
+//	R_ASSERT2( entity, "entity not found for destroying" );
+	VERIFY2  ( entity, "entity not found for destroying" );
+	if ( !entity ) {
+		Msg ( "! ERROR: entity not found for destroying" );
+		return;
+	}
+
 	NET_Packet P;
 	P.w_begin(M_EVENT);
 	P.w_u32(Device.dwTimeGlobal - 2*NET_Latency);
@@ -1713,15 +1865,29 @@ void game_sv_mp::DestroyGameItem(CSE_Abstract* entity)
 
 void game_sv_mp::RejectGameItem(CSE_Abstract* entity)
 {
-	R_ASSERT		(entity);
-	CSE_Abstract*	e_parent = get_entity_from_eid(entity->ID_Parent);
+//	R_ASSERT2( entity, "entity not found for rejecting" );
+	VERIFY2  ( entity, "entity not found for rejecting" );
+	if ( !entity ) {
+		Msg ( "! ERROR: entity not found for rejecting" );
+		return;
+	}
+
 	if (smart_cast<CSE_ALifeItemGrenade*>(entity))
 	{
 		CGrenade* grenade = smart_cast<CGrenade*>(Level().Objects.net_Find(entity->ID));
 		if (grenade && grenade->DropGrenade())
 			return;
 	}
-	R_ASSERT		(e_parent);
+
+	CSE_Abstract*	e_parent = get_entity_from_eid(entity->ID_Parent);
+	
+//	R_ASSERT2( e_parent, make_string( "RejectGameItem: parent not found. entity_id = [%d], parent_id = [%d]", entity->ID, entity->ID_Parent ).c_str() );
+	VERIFY2  ( e_parent, make_string( "RejectGameItem: parent not found. entity_id = [%d], parent_id = [%d]", entity->ID, entity->ID_Parent ).c_str() );
+	if ( !e_parent ) {
+		Msg               ( "! ERROR (RejectGameItem): parent not found. entity_id = [%d], parent_id = [%d]", entity->ID, entity->ID_Parent );
+		return;
+	}
+
 	NET_Packet		P;
 	u_EventGen		(P,GE_OWNERSHIP_REJECT, e_parent->ID);
 	P.w_u16			(entity->ID);
@@ -1736,18 +1902,18 @@ void game_sv_mp::DumpOnlineStatistic()
 	string_path					fn;
 	FS.update_path				(fn,"$logs$","mp_stats\\");
 	strcat_s					(fn, srv->HostName.c_str());
-	strcat_s					(fn, "\\online\\dmp" );
+	strcat_s					(fn, "\\online_dump.ltx" );
 
 	string64					t_stamp;
 	timestamp					(t_stamp);
-	strcat_s					(fn, t_stamp );
-	strcat_s					(fn, ".ltx" );
 
 	CInifile					ini(fn, FALSE, FALSE, TRUE);
 	shared_str					current_section = "global";
 	string256					str_buff;
 
-	ini.w_u32					(current_section.c_str(), "players_total_cnt", m_server->client_Count());
+	ini.w_string				(current_section.c_str(), "dump_time", t_stamp);
+	
+	ini.w_u32					(current_section.c_str(), "players_total_cnt", m_server->GetClientsCount());
 
 	sprintf_s					(str_buff,"\"%s\"",CStringTable().translate(Level().name().c_str()).c_str());
 	ini.w_string				(current_section.c_str(), "current_map_name", str_buff);
@@ -1765,21 +1931,36 @@ void game_sv_mp::DumpOnlineStatistic()
 		ini.w_string				("map_rotation", num_buf, str_buff);
 	}
 
-	for(u32 idx=0; idx<m_server->client_Count(); ++idx)
+	struct player_stats_writer
 	{
-		xrClientData *l_pC			= (xrClientData*)m_server->client_Get(idx);
+		game_sv_mp* m_owner;
+		xrServer* m_server;
+		u32 player_index;
+		CInifile* ini;
 		
-		if(m_server->GetServerClient()==l_pC && g_dedicated_server) 
-			continue;
+		void operator()(IClient* client)
+		{
+			xrClientData *l_pC			= static_cast<xrClientData*>(client);
 		
-		if(!l_pC->net_Ready)
-			continue;
+			if(m_server->GetServerClient()==l_pC && g_dedicated_server) 
+				return;
+			
+			if(!l_pC->net_Ready)
+				return;
 
-		string16					num_buf;
-		sprintf_s					(num_buf,"player_%d",idx);
+			string16					num_buf;
+			sprintf_s					(num_buf,"player_%d",player_index);
+			++player_index;
 
-		WritePlayerStats			(ini,num_buf,l_pC);
-	}
+			m_owner->WritePlayerStats(*ini,num_buf,l_pC);
+		}
+	};
+	player_stats_writer tmp_functor;
+	tmp_functor.m_owner = this;
+	tmp_functor.m_server = m_server;
+	tmp_functor.ini = &ini;
+	tmp_functor.player_index = 0;
+	m_server->ForEachClientDo(tmp_functor);
 	WriteGameState				(ini, current_section.c_str(), false);
 }
 
@@ -1793,6 +1974,7 @@ void game_sv_mp::WritePlayerStats(CInifile& ini, LPCSTR sect, xrClientData* pCl)
 	ini.w_u32	(sect,"deaths",			pCl->ps->m_iDeaths);
 
 	ini.w_string(sect,"player_ip",		pCl->m_cAddress.to_string().c_str());
+	ini.w_string(sect,"player_unique_digest",	pCl->m_cdkey_digest.c_str());
 	ini.w_u32	(sect,"kills_in_row",	pCl->ps->m_iKillsInRowMax);
 	ini.w_u32	(sect,"rank",			pCl->ps->rank);
 	ini.w_u32	(sect,"artefacts",		pCl->ps->af_count);
@@ -1821,26 +2003,116 @@ void game_sv_mp::WriteGameState(CInifile& ini, LPCSTR sect, bool bRoundResult)
 		ini.w_u32						(sect, "online_time_sec", Device.dwTimeGlobal/1000);
 }
 
-void game_sv_mp::DumpRoundStatistics()
+
+void game_sv_mp::async_statistics_collector::operator ()(IClient* client)
+{
+	async_responses.insert(std::make_pair(client->ID, false));
+}
+
+bool game_sv_mp::async_statistics_collector::all_ready() const
+{
+	for (responses_t::const_iterator i = async_responses.begin(),
+		ie = async_responses.end(); i != ie; ++i)
+	{
+		if (!i->second)
+			return false;
+	}
+	return true;
+}
+
+void game_sv_mp::async_statistics_collector::set_responded(ClientID clientID)
+{
+	responses_t::iterator tmp_iter = async_responses.find(clientID);
+	if (tmp_iter != async_responses.end())
+	{
+		tmp_iter->second = true;
+	}
+}
+void game_sv_mp::AskAllToUpdateStatistics()
+{
+	NET_Packet P;
+	P.w_begin	(M_STATISTIC_UPDATE);
+	P.w_u32		(m_async_stats_request_time);
+	m_server->SendBroadcast(BroadcastCID,P,net_flags(TRUE,TRUE));
+}
+
+void game_sv_mp::DumpRoundStatisticsAsync()
+{
+	if ( !g_sv_mp_iDumpStatsPeriod )
+		return;
+
+	m_async_stats.async_responses.clear();
+	m_server->ForEachClientDo(m_async_stats);
+	m_async_stats_request_time = Device.dwTimeGlobal;
+	AskAllToUpdateStatistics();
+}
+
+bool game_sv_mp::CheckStatisticsReady()
+{
+	if ( !g_sv_mp_iDumpStatsPeriod )
+		return true;
+	
+	if (!m_async_stats_request_time)
+		return true;
+
+	if (m_async_stats.all_ready() || 
+		(m_async_stats_request_time + g_sv_dwMaxClientPing) < Device.dwTimeGlobal)
+	{
+		DumpRoundStatistics();
+		FinishToDumpStatistics();
+		m_async_stats_request_time = 0;
+		return true;
+	}
+	return false;
+}
+
+void game_sv_mp::StartToDumpStatistics	()
 {
 	if ( !g_sv_mp_iDumpStatsPeriod ) return;
 
-	string_path					fn;
+	if (xr_strlen(round_statistics_dump_fn))
+	{
+		StopToDumpStatistics();
+	}
+	
 	xrGameSpyServer* srv		= smart_cast<xrGameSpyServer*>(m_server);
-
-	FS.update_path				(fn,"$logs$","mp_stats\\");
+	FS.update_path				(round_statistics_dump_fn,"$logs$","mp_stats\\");
 	string64					t_stamp;
 	timestamp					(t_stamp);
-	strcat_s					(fn, srv->HostName.c_str() );
-	strcat_s					(fn, "\\games\\dmp" );
-	strcat_s					(fn, t_stamp );
-	strcat_s					(fn, ".ltx" );
+	strcat_s					(round_statistics_dump_fn, srv->HostName.c_str() );
+	strcat_s					(round_statistics_dump_fn, "\\games\\dmp" );
+	strcat_s					(round_statistics_dump_fn, t_stamp );
+	strcat_s					(round_statistics_dump_fn, ".ltx" );
+}
 
-	CInifile					ini(fn, FALSE, FALSE, TRUE);
+void game_sv_mp::StopToDumpStatistics	()
+{
+	if (xr_strlen(round_statistics_dump_fn))
+	{
+		remove(round_statistics_dump_fn);
+	}
+	FinishToDumpStatistics();
+}
+
+void game_sv_mp::FinishToDumpStatistics	()
+{
+	round_statistics_dump_fn[0] = 0;
+}
+
+void game_sv_mp::DumpRoundStatistics()
+{
+	if ( !g_sv_mp_iDumpStatsPeriod ) return;
+	if ( !xr_strlen(round_statistics_dump_fn) ) return;
+
+	CInifile					ini(round_statistics_dump_fn, FALSE, FALSE, TRUE);
 	shared_str					current_section = "global";
 	string256					str_buff;
 
 	ini.w_string				(current_section.c_str(),"start_time", m_round_start_time_str);
+	
+	string64					str_current_time;
+	timestamp					(str_current_time);
+	ini.w_string				(current_section.c_str(),"end_time", str_current_time);
 
 	sprintf_s					(str_buff,"%s",CStringTable().translate(type_name()).c_str() );
 	ini.w_string				(current_section.c_str(), "game_mode", str_buff);
@@ -1851,17 +2123,36 @@ void game_sv_mp::DumpRoundStatistics()
 	sprintf_s					(str_buff,"\"%s\"",Level().name().c_str());
 	ini.w_string				(current_section.c_str(), "current_map_name_internal", str_buff);
 
-	for(u32 idx=0; idx<m_server->client_Count(); ++idx)
+	struct player_stats_writer
 	{
-		xrClientData *l_pC			= (xrClientData*)m_server->client_Get(idx);
-		if(m_server->GetServerClient()==l_pC && g_dedicated_server) 
-			continue;
+		game_sv_mp* m_owner;
+		xrServer* m_server;
+		u32 player_index;
+		CInifile* ini;
+		
+		void operator()(IClient* client)
+		{
+			xrClientData *l_pC			= static_cast<xrClientData*>(client);
+		
+			if(m_server->GetServerClient()==l_pC && g_dedicated_server) 
+				return;
+			if (!l_pC->m_cdkey_digest.size())
+				return;
+			
+			string16					num_buf;
+			sprintf_s					(num_buf,"player_%d",player_index);
+			++player_index;
 
-		string16					num_buf;
-		sprintf_s					(num_buf,"player_%d",idx);
-
-		WritePlayerStats			(ini,num_buf,l_pC);
-	}
+			m_owner->WritePlayerStats(*ini,num_buf,l_pC);
+		}
+	};
+	player_stats_writer tmp_functor;
+	tmp_functor.m_owner = this;
+	tmp_functor.m_server = m_server;
+	tmp_functor.ini = &ini;
+	tmp_functor.player_index = 0;
+	m_server->ForEachClientDo(tmp_functor);
+	
 	WriteGameState					(ini,current_section.c_str(), true);
 
 	Game().m_WeaponUsageStatistic->SaveDataLtx(ini);
@@ -1888,11 +2179,18 @@ void game_sv_mp::DestroyAllPlayerItems(ClientID id_who)	//except rukzak
 	for (TIItemContainer::const_iterator ii = pActor->inventory().m_all.begin();
 		ii != iie; ++ii)
 	{
-		VERIFY(*ii);
+//		VERIFY(*ii);
+		R_ASSERT2(*ii, make_string("PIItem in player`s inventory not found. Destroy all items of actor[%d]", ps->GameID).c_str());
+
 		u16 object_id = (*ii)->object().ID();
 		CSE_Abstract* tempEntity = m_server->ID_to_entity(object_id);
-		R_ASSERT2(tempEntity, 
-			make_string("entity not found [%d]", object_id).c_str());
+
+//		R_ASSERT2( tempEntity, make_string("entity not found [%d]. Destroy all items of actor[%d]", object_id, ps->GameID).c_str() );
+		VERIFY2  ( tempEntity, make_string("entity not found [%d]. Destroy all items of actor[%d]", object_id, ps->GameID).c_str() );
+		if (!tempEntity) {
+			Msg                 ( "! ERROR: entity not found [%d]. Destroy all items of actor[%d]", object_id, ps->GameID );
+			continue;
+		}
 		
 		if (smart_cast<CMPPlayersBag*>(*ii))
 			continue;
@@ -1900,8 +2198,7 @@ void game_sv_mp::DestroyAllPlayerItems(ClientID id_who)	//except rukzak
 		if (smart_cast<CWeaponKnife*>(*ii))
 			continue;
 		
-		CArtefact*	temp_artefact = smart_cast<CArtefact*>(*ii);
-		if (temp_artefact)
+		if (smart_cast<CArtefact*>(*ii))
 			continue;
 		
 		DestroyGameItem(tempEntity);
@@ -1912,9 +2209,54 @@ void game_sv_mp::SvSendChatMessage(LPCSTR str)
 {
 	NET_Packet			P;	
 	P.w_begin			(M_CHAT_MESSAGE);
-	P.w_s16				(0);
+	P.w_s16				(-1);
 	P.w_stringZ			("ServerAdmin");
 	P.w_stringZ			(str);
 	P.w_s16				(0);
 	u_EventSend			(P);
+}
+
+bool game_sv_mp::IsPlayerBanned(char const * hexstr_digest, shared_str & by_who)
+{
+	if (!hexstr_digest || !xr_strlen(hexstr_digest))
+		return false;
+	return m_cdkey_ban_list.is_player_banned(hexstr_digest, by_who);
+}
+
+IClient* game_sv_mp::BanPlayer(ClientID const & client_id, s32 ban_time_sec, xrClientData* initiator)
+{
+	if (client_id == m_server->GetServerClient()->ID)
+	{
+		Msg("! ERROR: can't ban server client.");
+		return NULL;
+	}
+	xrClientData* client_to_ban = static_cast<xrClientData*>(
+		m_server->ID_to_client(client_id)
+	);
+	
+	if (!client_to_ban)
+		return NULL;
+	
+	if (client_to_ban->m_admin_rights.m_has_admin_rights)
+	{
+		Msg("! ERROR: Can't ban player with admin rights");
+		return NULL;
+	}
+	m_cdkey_ban_list.ban_player(client_to_ban, ban_time_sec, initiator);
+	return client_to_ban;
+}
+
+void game_sv_mp::BanPlayerDirectly(char const * client_hex_digest, s32 ban_time_sec, xrClientData* initiator)
+{
+	m_cdkey_ban_list.ban_player_ll(client_hex_digest, ban_time_sec, initiator);
+}
+
+void game_sv_mp::UnBanPlayer(size_t banned_player_index)
+{
+	m_cdkey_ban_list.unban_player_by_index(banned_player_index);
+}
+
+void game_sv_mp::PrintBanList(char const * filter = NULL)
+{
+	m_cdkey_ban_list.print_ban_list(filter);
 }

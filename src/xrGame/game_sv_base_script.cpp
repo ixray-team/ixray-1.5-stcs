@@ -95,9 +95,9 @@ void game_sv_GameState::script_register(lua_State *L)
 
 	.def("get_eid",				&game_sv_GameState::get_eid)
 	.def("get_id",				&game_sv_GameState::get_id)
-	.def("get_it",				&game_sv_GameState::get_it)
-	.def("get_it_2_id",			&game_sv_GameState::get_it_2_id)
-	.def("get_name_it",			&game_sv_GameState::get_name_it)
+	//.def("get_it",				&game_sv_GameState::get_it)
+	//.def("get_it_2_id",			&game_sv_GameState::get_it_2_id)
+	//.def("get_name_it",			&game_sv_GameState::get_name_it)
 	.def("get_name_id",			&game_sv_GameState::get_name_id)
 	.def("get_player_name_id",	&game_sv_GameState::get_player_name_id)
 	

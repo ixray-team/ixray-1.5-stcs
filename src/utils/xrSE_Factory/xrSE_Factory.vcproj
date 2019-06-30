@@ -1612,6 +1612,45 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="lua_studio"
+				>
+				<File
+					RelativePath="..\..\xrServerEntities\lua_studio.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PrecompiledHeaderThrough="pch_script.h"
+							PrecompiledHeaderFile="$(IntDir)/$(ProjectName)_script.pch"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Mixed|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PrecompiledHeaderThrough="pch_script.h"
+							PrecompiledHeaderFile="$(IntDir)/$(ProjectName)_script.pch"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PrecompiledHeaderThrough="pch_script.h"
+							PrecompiledHeaderFile="$(IntDir)/$(ProjectName)_script.pch"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\..\xrServerEntities\lua_studio.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="ServerStuff"

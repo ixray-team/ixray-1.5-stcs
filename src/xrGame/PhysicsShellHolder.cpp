@@ -211,10 +211,10 @@ void CPhysicsShellHolder::activate_physic_shell()
 	if(H_Parent()&&H_Parent()->Visual())
 	{
 		smart_cast<IKinematics*>(H_Parent()->Visual())->CalculateBones_Invalidate	();
-		smart_cast<IKinematics*>(H_Parent()->Visual())->CalculateBones	();
+		smart_cast<IKinematics*>(H_Parent()->Visual())->CalculateBones	(TRUE);
 	}
 	smart_cast<IKinematics*>(Visual())->CalculateBones_Invalidate	();
-	smart_cast<IKinematics*>(Visual())->CalculateBones();
+	smart_cast<IKinematics*>(Visual())->CalculateBones(TRUE);
 	if(!IsGameTypeSingle())
 	{
 		if(!smart_cast<CCustomRocket*>(this)&&!smart_cast<CGrenade*>(this)) PPhysicsShell()->SetIgnoreDynamic();
@@ -228,7 +228,7 @@ void CPhysicsShellHolder::activate_physic_shell()
 	if(H_Parent()&&H_Parent()->Visual())
 	{
 		smart_cast<IKinematics*>(H_Parent()->Visual())->CalculateBones_Invalidate	();
-		smart_cast<IKinematics*>(H_Parent()->Visual())->CalculateBones	();
+		smart_cast<IKinematics*>(H_Parent()->Visual())->CalculateBones	(TRUE);
 	}
 	CPhysicsShellHolder* P = smart_cast<CPhysicsShellHolder*>( H_Parent() );
 	if( P )
@@ -241,7 +241,7 @@ void CPhysicsShellHolder::setup_physic_shell	()
 	create_physic_shell			();
 	m_pPhysicsShell->Activate	(XFORM(),0,XFORM());
 	smart_cast<IKinematics*>(Visual())->CalculateBones_Invalidate	();
-	smart_cast<IKinematics*>(Visual())->CalculateBones();
+	smart_cast<IKinematics*>(Visual())->CalculateBones(TRUE);
 	correct_spawn_pos();
 	m_pPhysicsShell->GetGlobalTransformDynamic(&XFORM());
 }

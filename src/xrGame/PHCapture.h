@@ -20,7 +20,7 @@ virtual				~CPHCapture	();
 bool				Failed		(){return e_state == cstFree;}
 
 void				Release		();
-void				OnNetDestroyObject	(CObject* O);
+void				RemoveConnection(CObject* O);
 
 protected:
 CPHCharacter		*m_character;
@@ -69,6 +69,7 @@ static void object_contactCallbackFun(bool& do_colide,bool bo1,dContact& c,SGame
 ///////////CPHObject/////////////////////////////
 	virtual void PhDataUpdate(dReal step);
 	virtual void PhTune(dReal step);
+	virtual void NetRelcase		(CPhysicsShell *s);
 
 };
 #endif

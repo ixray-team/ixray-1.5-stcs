@@ -31,6 +31,9 @@ enum key_state // Flags32
 	ks_Shift  = u32( ks_LShift | ks_RShift ),
 	ks_Ctrl   = u32( ks_LCtrl  | ks_RCtrl  ),
 	ks_Alt    = u32( ks_LAlt   | ks_RAlt   ),
+
+	ks_force  = u32(-1)
+
 };// enum key_state
 
 enum init_mode
@@ -68,6 +71,7 @@ public:
 //	IC	Flags32		get_key_state		() const							{ return m_key_state; }
 	IC	bool		get_key_state		( key_state mask ) const			{ return (mask)? !!(m_key_state.test( mask ) ) : true; }
 	IC	void		set_key_state		( key_state mask, bool value )		{ m_key_state.set( mask, value ); }
+	IC	void		reset_key_state		()									{ m_key_state.zero(); }
 
 	IC	bool		cursor_view			()	const	{ return m_cursor_view; }
 	IC	bool		need_update			()	const	{ return m_need_update; }

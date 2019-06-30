@@ -96,3 +96,9 @@ poolSS<_face,8*1024>	&mu_faces_pool()
 {
 	return mu_faces;
 }
+
+void mu_mesh_clear()
+{
+	mu_vertices.clear();
+	mu_faces.clear();
+}

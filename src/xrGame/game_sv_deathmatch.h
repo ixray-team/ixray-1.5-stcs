@@ -6,6 +6,8 @@
 #include "Hit.h"
 #include "../xrEngine/pure_relcase.h"
 
+class IClient;
+
 class	game_sv_Deathmatch			: public game_sv_mp,private pure_relcase
 {
 	typedef game_sv_mp inherited;
@@ -199,6 +201,9 @@ public:
 	virtual		u32					GetAnomaliesTime		();
 
 	virtual		u32					GetNumTeams				() {return teams.size();};
+
+	// adtitional methods for predicates
+	void		__stdcall			RespawnPlayerAsSpectator(IClient* client);
 protected:
 	virtual		void				WriteGameState			(CInifile& ini, LPCSTR sect, bool bRoundResult);
 	shared_str m_not_free_ammo_str;

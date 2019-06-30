@@ -61,7 +61,7 @@ void lm_layer::read( INetReader	&r )
 	height	=r.r_u32();
 	r_pod_vector(r,surface);
 	r_pod_vector(r,marker);
-	mode    =(LMODE)r.r_u8();	
+//	mode    =(LMODE)r.r_u8();	
 }
 void lm_layer::write( IWriter	&w ) const
 {
@@ -69,5 +69,34 @@ void lm_layer::write( IWriter	&w ) const
 	w.w_u32(height);
 	w_pod_vector(w,surface);
 	w_pod_vector(w,marker);
-	w.w_u8((u8)mode);
+//	w.w_u8((u8)mode);
+}
+
+bool	lm_layer::similar			( const lm_layer &layer, float eps/* =EPS*/ ) const
+{
+	//if( mode != layer.mode )
+		//return false;
+	if( marker.size() != layer.marker.size() )
+		return false;
+	for( u32 i = 0; i< marker.size(); ++i )
+	{
+		if( marker[i]!=layer.marker[i] )
+		{
+			return false;
+		}
+	}
+	if( surface.size() != layer.surface.size() )
+		return false;
+	for( u32 i = 0; i < surface.size(); ++i )
+	{
+		if( !surface[i].similar( layer.surface[i], EPS ) )
+		{
+			Msg("sufface diff id: %d", i);
+			return false;
+		}
+	}
+
+	return width ==  layer.width &&
+		   height == layer.height;
+
 }

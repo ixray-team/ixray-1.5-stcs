@@ -67,8 +67,10 @@ public:
 	virtual void	PlayAnimModeSwitch	();
 	virtual void	PlayAnimBore		();
 	
-protected:
-	virtual bool	install_upgrade_impl( LPCSTR section, bool test );
+private:
+	virtual	void	net_Spawn_install_upgrades	( Upgrades_type saved_upgrades );
+	virtual bool	install_upgrade_impl		( LPCSTR section, bool test );
+	virtual	bool	install_upgrade_ammo_class	( LPCSTR section, bool test );
 	
 public:
 	//дополнительные параметры патронов 

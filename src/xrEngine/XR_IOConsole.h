@@ -126,6 +126,7 @@ protected:
 	void xr_stdcall Show_cmd	();
 	void xr_stdcall Hide_cmd	();
 	void xr_stdcall GamePause	();
+	void xr_stdcall SwitchKL	();
 
 protected:
 	void	add_cmd_history		( shared_str const& str );

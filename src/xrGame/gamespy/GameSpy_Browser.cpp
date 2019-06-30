@@ -353,6 +353,7 @@ void	CGameSpy_Browser::ReadServerInfo	(ServerInfo* pServerInfo, void* pServer)
 	pServerInfo->m_Ping = (s16)(xrGS_SBServerGetPing(pServer) & 0xffff);
 	pServerInfo->m_ServerNumPlayers = (s16)xrGS_SBServerGetIntValue(pServer, m_pQR2->xrGS_RegisteredKey(NUMPLAYERS_KEY), 0);
 	pServerInfo->m_ServerMaxPlayers = (s16)xrGS_SBServerGetIntValue(pServer, m_pQR2->xrGS_RegisteredKey(MAXPLAYERS_KEY), 32);
+	sprintf_s(pServerInfo->m_ServerUpTime, "%s", xrGS_SBServerGetStringValue(pServer, m_pQR2->xrGS_RegisteredKey(SERVER_UP_TIME_KEY), "Unknown"));
 	pServerInfo->m_ServerNumTeams = (s16)xrGS_SBServerGetIntValue(pServer, m_pQR2->xrGS_RegisteredKey(NUMTEAMS_KEY), 0);
 	pServerInfo->m_Port		= (s16)xrGS_SBServerGetIntValue(pServer, m_pQR2->xrGS_RegisteredKey(HOSTPORT_KEY), 0);
 	pServerInfo->m_HPort	= (s16)xrGS_SBServerGetPublicQueryPort(pServer);
@@ -466,6 +467,8 @@ void	CGameSpy_Browser::ReadServerInfo	(ServerInfo* pServerInfo, void* pServer)
 		ADD_BOOL_INFO(pServerInfo, pServer, *st.translate("mp_si_return_players"),					G_RETURN_PLAYERS_KEY	);
 		ADD_BOOL_INFO(pServerInfo, pServer, *st.translate("mp_si_afbearer_cant_sprint"),			G_BEARER_CANT_SPRINT_KEY);
 	}
+	pServerInfo->m_aInfos.push_back(GameInfo("Uptime", pServerInfo->m_ServerUpTime));
+
 	
 	//--------- Read Players Info -------------------------//	
 	for (int i=0; i<pServerInfo->m_ServerNumPlayers; i++)

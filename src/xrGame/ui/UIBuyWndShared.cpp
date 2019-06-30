@@ -63,7 +63,9 @@ const u32 CItemMgr::GetItemIdx(const shared_str& sect_name) const
 	
 	if		(it==m_items.end())
 	{
+#ifdef DEBUG
 		Msg("item not found in registry [%s]", sect_name.c_str());
+#endif // DEBUG
 		return u32(-1);
 	}
 

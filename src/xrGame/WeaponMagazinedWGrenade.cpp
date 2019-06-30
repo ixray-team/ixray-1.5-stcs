@@ -76,14 +76,20 @@ void CWeaponMagazinedWGrenade::net_Destroy()
 
 BOOL CWeaponMagazinedWGrenade::net_Spawn(CSE_Abstract* DC) 
 {
+	CSE_ALifeItemWeapon* const weapon		= smart_cast<CSE_ALifeItemWeapon*>(DC);
+	R_ASSERT								(weapon);
+	if ( IsGameTypeSingle() )
+	{
+		inherited::net_Spawn_install_upgrades	(weapon->m_upgrades);
+	}
+
 	BOOL l_res = inherited::net_Spawn(DC);
-	CSE_ALifeItemWeapon	*E	=	smart_cast<CSE_ALifeItemWeapon*>(DC);
 	 
 	UpdateGrenadeVisibility(!!iAmmoElapsed);
 	SetPending			(FALSE);
 
 	m_DefaultCartridge2.Load(*m_ammoTypes2[m_ammoType2], u8(m_ammoType2));
-	iAmmoElapsed2 = static_cast<int>(E->a_elapsed_grenades);
+	iAmmoElapsed2 = static_cast<int>(weapon->a_elapsed_grenades);
 
 	if (!IsGameTypeSingle())
 	{
@@ -201,6 +207,9 @@ bool CWeaponMagazinedWGrenade::Action(s32 cmd, u32 flags)
 				LaunchGrenade		();
 			else
 				Reload				();
+
+			if(GetState() == eIdle) 
+				OnEmptyClick			();
 		}
 		return					true;
 	}
@@ -392,6 +401,10 @@ void CWeaponMagazinedWGrenade::FireEnd()
 
 void CWeaponMagazinedWGrenade::OnMagazineEmpty() 
 {
+	if(GetState() == eIdle) 
+	{
+		OnEmptyClick			();
+	}
 }
 
 void CWeaponMagazinedWGrenade::ReloadMagazine() 
@@ -776,24 +789,58 @@ u8 CWeaponMagazinedWGrenade::GetCurrentHudOffsetIdx()
 		return		1;
 }
 
+bool CWeaponMagazinedWGrenade::install_upgrade_ammo_class	( LPCSTR section, bool test )
+{
+	LPCSTR str;
+
+	bool result = process_if_exists( section, "ammo_mag_size", &CInifile::r_s32, iMagazineSize2, test );
+	iMagazineSize		= m_bGrenadeMode?1:iMagazineSize2;
+
+	//	ammo_class = ammo_5.45x39_fmj, ammo_5.45x39_ap  // name of the ltx-section of used ammo
+	bool result2 = process_if_exists_set( section, "ammo_class", &CInifile::r_string, str, test );
+	if ( result2 && !test ) 
+	{
+		xr_vector<shared_str>& ammo_types	= m_bGrenadeMode ? m_ammoTypes2 : m_ammoTypes;
+		ammo_types.clear					(); 
+		for ( int i = 0, count = _GetItemCount( str ); i < count; ++i )	
+		{
+			string128						ammo_item;
+			_GetItem						( str, i, ammo_item );
+			ammo_types.push_back			( ammo_item );
+		}
+
+		shared_str& ammo_name				= m_bGrenadeMode ? m_ammoName2 : m_ammoName;
+		ammo_name							= pSettings->r_string( *ammo_types[0], "inv_name_short" );		
+		m_ammoType  = 0;
+		m_ammoType2 = 0;
+	}
+	result |= result2;
+
+	return result2;
+}
+
 bool CWeaponMagazinedWGrenade::install_upgrade_impl( LPCSTR section, bool test )
 {
 	LPCSTR str;
-	bool result = inherited::install_upgrade_impl( section, test );;
+	bool result = inherited::install_upgrade_impl( section, test );
 	
 	//	grenade_class = ammo_vog-25, ammo_vog-25p          // name of the ltx-section of used grenades
 	bool result2 = process_if_exists_set( section, "grenade_class", &CInifile::r_string, str, test );
 	if ( result2 && !test )
 	{
-		m_ammoTypes2.clear(); 
-		string128	_ammoItem;
-		int			count = _GetItemCount( str );
-		for ( int i = 0; i < count; ++i )	
+		xr_vector<shared_str>& ammo_types	= !m_bGrenadeMode ? m_ammoTypes2 : m_ammoTypes;
+		ammo_types.clear					(); 
+		for ( int i = 0, count = _GetItemCount( str ); i < count; ++i )	
 		{
-			_GetItem( str, i, _ammoItem );
-			m_ammoTypes2.push_back( _ammoItem );
+			string128						ammo_item;
+			_GetItem						( str, i, ammo_item );
+			ammo_types.push_back			( ammo_item );
 		}
-		m_ammoName2 = pSettings->r_string( *m_ammoTypes2[0], "inv_name_short" );
+
+		shared_str& ammo_name				= !m_bGrenadeMode ? m_ammoName2 : m_ammoName;
+		ammo_name							= pSettings->r_string( *ammo_types[0], "inv_name_short" );
+		m_ammoType  = 0;
+		m_ammoType2 = 0;
 	}
 	result |= result2;
 
@@ -811,11 +858,11 @@ bool CWeaponMagazinedWGrenade::install_upgrade_impl( LPCSTR section, bool test )
 	if ( result2 && !test ) { m_sounds.LoadSound( section, "snd_switch", "sndSwitch", m_eSoundReload );	}
 	result |= result2;
 
-	if ( !m_bGrenadeMode )
-	{
-		iMagazineSize2 = iMagazineSize;
-	}
-	
 	return result;
 }
 
+void CWeaponMagazinedWGrenade::net_Spawn_install_upgrades	( Upgrades_type saved_upgrades )
+{
+	// do not delete this
+	// this is intended behaviour
+}

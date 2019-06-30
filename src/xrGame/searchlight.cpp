@@ -120,7 +120,7 @@ void CProjector::TurnOn()
 
 	visual->LL_SetBoneVisible			(guid_bone, TRUE, TRUE);
 	visual->CalculateBones_Invalidate	();
-	visual->CalculateBones				();
+	visual->CalculateBones				(TRUE);
 }
 
 void CProjector::TurnOff()

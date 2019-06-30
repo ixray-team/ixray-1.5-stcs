@@ -127,7 +127,9 @@ void CUIHudStatesWnd::InitFromXml( CUIXml& xml, LPCSTR path )
 	m_arrow_shadow->init_from_xml( xml, "arrow_shadow", this );
 
 	m_back_over_arrow = UIHelper::CreateStatic( xml, "back_over_arrow", this );
-	
+
+	m_ui_stamina_bar  = UIHelper::CreateProgressBar( xml, "progress_bar_stamina", this );
+
 	m_bleeding = UIHelper::CreateStatic( xml, "bleeding", this );
 	m_bleeding->Show( false );
 
@@ -207,6 +209,7 @@ void CUIHudStatesWnd::Update()
 void CUIHudStatesWnd::UpdateHealth( CActor* actor )
 {
 	m_ui_health_bar->SetProgressPos( actor->GetfHealth() * 100.0f );
+	m_ui_stamina_bar->SetProgressPos( actor->conditions().GetPower()*100.0f );
 
 	CCustomOutfit* outfit = actor->GetOutfit();
 	if ( outfit )

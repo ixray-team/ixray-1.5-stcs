@@ -438,14 +438,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\communicate.h"
-				>
-			</File>
-			<File
-				RelativePath=".\FreeImage.h"
-				>
-			</File>
-			<File
 				RelativePath=".\MeshMenderLayerOGF.h"
 				>
 			</File>
@@ -1319,6 +1311,10 @@
 				</File>
 				<File
 					RelativePath=".\net.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\net.h"
 					>
 				</File>
 			</Filter>

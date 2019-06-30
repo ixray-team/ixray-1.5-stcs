@@ -387,8 +387,6 @@ void CRenderDevice::message_loop()
 
 		on_idle				();
     }
-
-	g_SASH.EndBenchmark();
 }
 
 void CRenderDevice::Run			()

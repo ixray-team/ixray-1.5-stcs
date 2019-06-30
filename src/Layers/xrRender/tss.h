@@ -12,6 +12,10 @@ enum	XRDX10SAMPLERSTATETYPE
 	XRDX10SAMP_COMPARISONFUNC,
 	XRDX10SAMP_MINLOD				//	integer value. 0 - the most detailed level
 };
+enum	XRDX10RENDERSTATETYPE
+{
+	XRDX10RS_ALPHATOCOVERAGE		=	1024
+};
 #endif	//	USE_DX10
 
 class  CSimulatorTSS
@@ -76,7 +80,8 @@ class  CSimulatorRS
 public:
 	IC void Set			(SimulatorStates& container, u32 N, u32 V)
 	{
-		R_ASSERT(N<256);
+		//	Igor: XBox has render states 400 and hire
+		//R_ASSERT(N<256);
 		container.set_RS(N,V);
 	}
 };

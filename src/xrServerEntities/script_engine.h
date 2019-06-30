@@ -15,9 +15,8 @@
 
 extern "C" {
 	#include <lua/lua.h>
-//	#include <lua/luajit.h>
-	//#include <../luajit/src/lcoco.h>
 };
+
 //#define DBG_DISABLE_SCRIPTS
 
 #include "script_engine_space.h"
@@ -28,7 +27,17 @@ struct lua_State;
 struct lua_Debug;
 
 #ifdef USE_DEBUGGER
-	class CScriptDebugger;
+#	ifndef USE_LUA_STUDIO
+		class CScriptDebugger;
+#	else // #ifndef USE_LUA_STUDIO
+		namespace cs {
+			namespace lua_debugger {
+				struct world;
+			} // namespace lua_debugger
+		} // namespace cs
+
+		class lua_studio_engine;
+#	endif // #ifndef USE_LUA_STUDIO
 #endif
 
 class CScriptEngine : public CScriptStorage {
@@ -47,8 +56,13 @@ protected:
 
 protected:
 #ifdef USE_DEBUGGER
-	CScriptDebugger				*m_scriptDebugger;
-#endif
+#	ifndef USE_LUA_STUDIO
+		CScriptDebugger				*m_scriptDebugger;
+#	else // #ifndef USE_LUA_STUDIO
+		cs::lua_debugger::world*	m_lua_studio_world;
+		lua_studio_engine*			m_lua_studio_engine;
+#	endif // #ifndef USE_LUA_STUDIO
+#endif // #ifdef USE_DEBUGGER
 
 private:
 	string128					m_last_no_file;
@@ -65,7 +79,9 @@ public:
 	static	int					lua_panic					(lua_State *L);
 	static	void				lua_error					(lua_State *L);
 	static	int					lua_pcall_failed			(lua_State *L);
+#ifdef DEBUG
 	static	void				lua_hook_call				(lua_State *L, lua_Debug *dbg);
+#endif // #ifdef DEBUG
 			void				setup_callbacks				();
 			void				load_common_scripts			();
 			bool				load_file					(LPCSTR	caScriptName, LPCSTR namespace_name);
@@ -84,10 +100,17 @@ public:
 	IC		bool				functor						(LPCSTR function_to_call, luabind::functor<_result_type> &lua_function);
 
 #ifdef USE_DEBUGGER
+#	ifndef USE_LUA_STUDIO
 			void				stopDebugger				();
 			void				restartDebugger				();
 			CScriptDebugger		*debugger					();
+#	else // ifndef USE_LUA_STUDIO
+			void				try_connect_to_debugger		();
+			void				disconnect_from_debugger	();
+	inline cs::lua_debugger::world*	debugger				() const { return m_lua_studio_world; }
+#	endif // ifndef USE_LUA_STUDIO
 #endif
+	virtual	void				on_error					(lua_State* state);
 			void				collect_all_garbage			();
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION

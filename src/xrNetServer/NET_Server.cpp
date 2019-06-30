@@ -2,6 +2,7 @@
 #include "dxerr9.h"
 #include "NET_Common.h"
 #include "net_server.h"
+#include <functional>
 
 #include "NET_Log.h"
 
@@ -18,6 +19,7 @@ static	INetLog* pSvNetLog = NULL;
 
 #define NET_BANNED_STR                "Player banned by server!"
 #define NET_PROTECTED_SERVER_STR      "Access denied by protected server for this player!"
+#define NET_NOTFOR_SUBNET_STR		  "Your IP does not present in server's subnet"
 
 void	dump_URL	(LPCSTR p, IDirectPlay8Address* A);
 
@@ -199,29 +201,11 @@ IClient::_SendTo_LL( const void* data, u32 size, u32 flags, u32 timeout )
 IClient*	IPureServer::ID_to_client		(ClientID ID, bool ScanAll)
 {
 	if ( 0 == ID.value() )			return NULL;
-	csPlayers.Enter	();
-
-	for ( u32 client = 0; client < net_Players.size(); ++client )
-	{
-		if ( net_Players[client]->ID == ID )
-		{
-			csPlayers.Leave();
-			return net_Players[client];
-		}
-	}
-	if ( ScanAll )
-	{
-		for ( u32 client = 0; client < net_Players_disconnected.size(); ++client )
-		{
-			if ( net_Players_disconnected[client]->ID == ID )
-			{
-				csPlayers.Leave();
-				return net_Players_disconnected[client];
-			}
-		}
-	};
-	csPlayers.Leave();
-	return NULL;
+	IClient* ret_client = GetClientByID(ID);
+	if (ret_client || !ScanAll)
+		return ret_client;
+	
+	return GetDisconnectedClientByID(ID);
 }
 
 void
@@ -237,7 +221,11 @@ IPureServer::_Recieve( const void* data, u32 data_size, u32 param )
 
     id.set( param );
     packet.construct( data, data_size );
+	//DWORD currentThreadId = GetCurrentThreadId();
+	//Msg("-S- Entering to csMessages from _Receive [%d]", currentThreadId);
 	csMessage.Enter();
+	//LogStackTrace(
+	//		make_string("-S- Entered to csMessages [%d]", currentThreadId).c_str());
 	//---------------------------------------
 	if( psNET_Flags.test(NETFLAG_LOG_SV_PACKETS) ) 
 	{
@@ -249,13 +237,12 @@ IPureServer::_Recieve( const void* data, u32 data_size, u32 param )
 	}
 	//---------------------------------------
 	u32	result = OnMessage( packet, id );
-
+	//Msg("-S- Leaving from csMessages [%d]", currentThreadId);
 	csMessage.Leave();
 	
 	if( result )		
 	    SendBroadcast( id, packet, result );
 }
-
 
 //==============================================================================
 
@@ -273,6 +260,9 @@ IPureServer::IPureServer	(CTimer* timer, BOOL	Dedicated)
 	NET						= NULL;
 	net_Address_device		= NULL;
 	pSvNetLog				= NULL;//xr_new<INetLog>("logs\\net_sv_log.log", TimeGlobal(device_timer));
+#ifdef DEBUG
+	sender_functor_invoked = false;
+#endif
 }
 
 IPureServer::~IPureServer	()
@@ -474,7 +464,10 @@ if(!psNET_direct_connect)
 //.	config_Load		();
 
 	if(!psNET_direct_connect)
+	{
 		BannedList_Load	();
+		IpList_Load();
+	}
 
 	return	ErrNoError;
 }
@@ -484,7 +477,10 @@ void IPureServer::Disconnect	()
 //.	config_Save		();
 
 	if (!psNET_direct_connect)
+	{
 		BannedList_Save	();
+		IpList_Unload	();
+	}
 
     if( NET )	NET->Close(0);
 	
@@ -492,7 +488,6 @@ void IPureServer::Disconnect	()
     _RELEASE	(net_Address_device);
     _RELEASE	(NET);
 }
-
 
 HRESULT	IPureServer::net_Handler(u32 dwMessageType, PVOID pMessage)
 {
@@ -548,21 +543,17 @@ HRESULT	IPureServer::net_Handler(u32 dwMessageType, PVOID pMessage)
 	case DPN_MSGID_DESTROY_PLAYER:
 		{
 			PDPNMSG_DESTROY_PLAYER	msg = PDPNMSG_DESTROY_PLAYER(pMessage);
-
-			csPlayers.Enter			();
-			for (u32 I=0; I<net_Players.size(); I++)
-				if (net_Players[I]->ID.compare(msg->dpnidPlayer) )
-				{
-					// gen message
-					net_Players[I]->flags.bConnected	= FALSE;
-					net_Players[I]->flags.bReconnect	= FALSE;
-					OnCL_Disconnected	(net_Players[I]);
-
-					// real destroy
-					client_Destroy		(net_Players[I]);
-					break;
-				}
-			csPlayers.Leave			();
+			IClient* tmp_client = net_players.GetFoundClient(
+				ClientIdSearchPredicate(static_cast<ClientID>(msg->dpnidPlayer))
+			);
+			if (tmp_client)
+			{
+				tmp_client->flags.bConnected	= FALSE;
+				tmp_client->flags.bReconnect	= FALSE;
+				OnCL_Disconnected	(tmp_client);
+				// real destroy
+				client_Destroy		(tmp_client);
+			}
 		}
 		break;
 	case DPN_MSGID_RECEIVE:
@@ -602,13 +593,19 @@ HRESULT	IPureServer::net_Handler(u32 dwMessageType, PVOID pMessage)
 
 			if (GetBannedClient(HAddr)) 
 			{
-				msg->dwReplyDataSize	= xr_strlen(NET_BANNED_STR);
+				msg->dwReplyDataSize	= sizeof(NET_BANNED_STR);
 				msg->pvReplyData		= NET_BANNED_STR;
 				return					S_FALSE;
 			};
+			//first connected client is SV_Client so if it is NULL then this server client tries to connect ;)
+			if (SV_Client && !m_ip_filter.is_ip_present(HAddr.m_data.data))
+			{
+				msg->dwReplyDataSize	= sizeof(NET_NOTFOR_SUBNET_STR);
+				msg->pvReplyData		= NET_NOTFOR_SUBNET_STR;
+				return					S_FALSE;
+			}
 		}break;
     }
-	
     return S_OK;
 }
 
@@ -617,21 +614,26 @@ void	IPureServer::Flush_Clients_Buffers	()
     #if NET_LOG_PACKETS
     Msg( "#flush server send-buf" );
     #endif
-
-	csPlayers.Enter();	
-
-	for( xr_vector<IClient*>::iterator it = net_Players.begin(); it != net_Players.end(); ++it )
-        (*it)->MultipacketSender::FlushSendBuffer( 0 );
-
-	csPlayers.Leave();
+	
+	struct LocalSenderFunctor
+	{
+		static void FlushBuffer(IClient* client)
+		{
+			client->MultipacketSender::FlushSendBuffer(0);
+		}
+	};
+	
+	net_players.ForEachClientDo(
+		LocalSenderFunctor::FlushBuffer
+	);
 }
 
 void	IPureServer::SendTo_Buf(ClientID id, void* data, u32 size, u32 dwFlags, u32 dwTimeout)
 {
-    xr_vector<IClient*>::iterator it = std::find( net_Players.begin(), net_Players.end(), id );
-
-    if( it != net_Players.end()) 
-        (*it)->MultipacketSender::SendPacket( data, size, dwFlags, dwTimeout );
+	IClient* tmp_client = net_players.GetFoundClient(
+		ClientIdSearchPredicate(id));
+	VERIFY(tmp_client);
+	tmp_client->MultipacketSender::SendPacket(data, size, dwFlags, dwTimeout);
 }
 
 
@@ -690,19 +692,37 @@ void	IPureServer::SendTo		(ClientID ID/*DPNID ID*/, NET_Packet& P, u32 dwFlags, 
 
 void	IPureServer::SendBroadcast_LL(ClientID exclude, void* data, u32 size, u32 dwFlags)
 {
-	csPlayers.Enter();
-	
-	for( u32 i=0; i<net_Players.size(); i++ )
+	struct ClientExcluderPredicate
 	{
-		IClient* player = net_Players[i];
-		
-		if( player->ID == exclude )     continue;
-		if( !player->flags.bConnected ) continue;
-		
-		SendTo_LL( player->ID, data, size, dwFlags );
-	}
-	
-	csPlayers.Leave	();
+		ClientID id_to_exclude;
+		ClientExcluderPredicate(ClientID exclude) :
+			id_to_exclude(exclude)
+		{}
+		bool operator()(IClient* client)
+		{
+			if (client->ID == id_to_exclude)
+				return false;
+			if (!client->flags.bConnected)
+				return false;
+			return true;
+		}
+	};
+	struct ClientSenderFunctor
+	{
+		IPureServer*	m_owner;
+		void*			m_data;
+		u32				m_size;
+		u32				m_dwFlags;
+		ClientSenderFunctor(IPureServer* owner, void* data, u32 size, u32 dwFlags) :
+			m_owner(owner), m_data(data), m_size(size), m_dwFlags(dwFlags)
+		{}
+		void operator()(IClient* client)
+		{
+			m_owner->SendTo_LL(client->ID, m_data, m_size, m_dwFlags);			
+		}
+	};
+	ClientSenderFunctor temp_functor(this, data, size, dwFlags);
+	net_players.ForFoundClientsDo(ClientExcluderPredicate(exclude), temp_functor);
 }
 
 void	IPureServer::SendBroadcast(ClientID exclude, NET_Packet& P, u32 dwFlags)
@@ -795,10 +815,14 @@ void	IPureServer::UpdateClientStatistic		(IClient* C)
 void	IPureServer::ClearStatistic	()
 {
 	stats.clear();
-	for (u32 I=0; I<net_Players.size(); I++)
+	struct StatsClearFunctor
 	{
-		net_Players[I]->stats.Clear();
-	}
+		static void Clear(IClient* client)
+		{
+			client->stats.Clear();
+		}
+	};
+	net_players.ForEachClientDo(StatsClearFunctor::Clear);
 };
 
 /*bool			IPureServer::DisconnectClient	(IClient* C)
@@ -822,21 +846,34 @@ bool			IPureServer::DisconnectClient	(IClient* C, LPCSTR Reason)
 
 bool	IPureServer::DisconnectAddress	(const ip_address& Address, LPCSTR reason)
 {
-	xr_vector<IClient*>		PlayersToDisconnect;
-
-	for (u32 idx = 0; idx<net_Players.size(); ++idx)
+	u32 players_count = net_players.ClientsCount();
+	buffer_vector<IClient*>	PlayersToDisconnect(
+		_alloca(players_count * sizeof(IClient*)),
+		players_count
+	);
+	struct ToDisconnectFillerFunctor
 	{
-		ip_address			ClAddress;
-		GetClientAddress	(net_Players[idx]->ID, ClAddress);
-
-		if (Address == ClAddress)
+		IPureServer*				m_owner;
+		buffer_vector<IClient*>*	dest;
+		ip_address const*			address_to_disconnect;
+		ToDisconnectFillerFunctor(IPureServer* owner, buffer_vector<IClient*>* dest_disconnect, ip_address const* address) :
+			m_owner(owner), dest(dest_disconnect), address_to_disconnect(address)
+		{}
+		void operator()(IClient* client)
 		{
-			PlayersToDisconnect.push_back(net_Players[idx]);
-		};
+			ip_address			tmp_address;
+			m_owner->GetClientAddress(client->ID, tmp_address);
+			if (*address_to_disconnect == tmp_address)
+			{
+				dest->push_back(client);
+			};
+		}
 	};
-
-	xr_vector<IClient*>::iterator it	= PlayersToDisconnect.begin();
-	xr_vector<IClient*>::iterator it_e	= PlayersToDisconnect.end();
+	ToDisconnectFillerFunctor tmp_functor(this, &PlayersToDisconnect, &Address);
+	net_players.ForEachClientDo(tmp_functor);
+	
+	buffer_vector<IClient*>::iterator it	= PlayersToDisconnect.begin();
+	buffer_vector<IClient*>::iterator it_e	= PlayersToDisconnect.end();
 
 	for ( ;it!=it_e; ++it)
 	{
@@ -938,12 +975,13 @@ void IPureServer::UnBanAddress	(const ip_address& Address)
 
 void IPureServer::Print_Banned_Addreses	()
 {
-	Msg ("- Banned list");
+	Msg("- ----banned ip list begin-------");
 	for (u32 i=0; i<BannedAddresses.size(); i++)
 	{
 		IBannedClient* pBClient = BannedAddresses[i];
 		Msg("- %s to %s", pBClient->HAddr.to_string().c_str(), pBClient->BannedTimeTo().c_str() );
 	}
+	Msg("- ----banned ip list end-------");
 }
 
 void IPureServer::BannedList_Save	()
@@ -979,6 +1017,21 @@ void IPureServer::BannedList_Load()
 	}
 }
 
+void IPureServer::IpList_Load()
+{
+	Msg("* Initializing IP filter.");
+	m_ip_filter.load();
+}
+void IPureServer::IpList_Unload()
+{
+	Msg("* Deinitializing IP filter.");
+	m_ip_filter.unload();
+}
+bool IPureServer::IsPlayerIPDenied(u32 ip_address)
+{
+	return !m_ip_filter.is_ip_present(ip_address);
+}
+
 bool banned_client_comparer(IBannedClient* C1, IBannedClient* C2)
 {
 	return C1->BanTime > C2->BanTime;
@@ -1001,5 +1054,5 @@ void IPureServer::UpdateBannedList()
 
 LPCSTR IPureServer::GetBannedListName()
 {
-	return "banned_list.ltx";
+	return "banned_list_ip.ltx";
 }

@@ -79,7 +79,10 @@ void CDeflector::L_Direct	(CDB::COLLIDER* DB, base_lighting* LightsSelected, HAS
 	if(_net_session && !_net_session->test_connection())
 			 return;
 		for (u32 U=0; U<lm.width; U++)	{
-			
+#ifdef NET_CMP
+			if(V*lm.width+U!=8335)
+				continue;
+#endif
 			u32				Fcount	= 0;
 			base_color_c	C;
 			try {

@@ -92,14 +92,15 @@ CUIMultiTextStatic::SPh::SPh()
 void CUIMultiTextStatic::SPh::SetText(const char *fmt, ...)
 {
 	va_list		Print;                                                                  
-	string256	msg;
+	string512	msg;
 	xr_string	buf;
 
-	va_start(Print, fmt);
-		vsprintf(msg, fmt, Print);
-		buf += msg;
-		msg[0] = '\n';
-	va_end(Print);
+	va_start( Print , fmt );
+		vsprintf_s( msg , fmt , Print );
+	va_end( Print );
+
+	buf += msg;
+	msg[0] = '\n';
 
 	str = buf.c_str();
 

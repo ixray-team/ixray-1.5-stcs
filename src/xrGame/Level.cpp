@@ -384,7 +384,16 @@ void CLevel::cl_Process_Event				(u16 dest, u16 type, NET_Packet& P)
 	if (type != GE_DESTROY_REJECT)
 	{
 		if (type == GE_DESTROY)
+		{
 			Game().OnDestroy(GO);
+//			if ( GO->H_Parent() )
+//			{
+// = GameObject.cpp (210)
+//				Msg( "! ERROR (Level): GE_DESTROY arrived to object[%d][%s], that has parent[%d][%s], frame[%d]",
+//					GO->ID(), GO->cNameSect().c_str(),
+//					GO->H_Parent()->ID(), GO->H_Parent()->cName().c_str(), Device.dwFrame );
+//			}
+		}
 		GO->OnEvent		(P,type);
 	}
 	else { // handle GE_DESTROY_REJECT here
@@ -587,21 +596,30 @@ void CLevel::OnFrame	()
 				F->OutNext	("sv_urate/cl_urate : %4d/%4d", psNET_ServerUpdate, psNET_ClientUpdate);
 
 				F->SetColor	(D3DCOLOR_XRGB(255,255,255));
-				for (u32 I=0; I<Server->client_Count(); ++I)	
+
+				struct net_stats_functor
 				{
-					IClient*	C = Server->client_Get(I);
-					Server->UpdateClientStatistic(C);
-					F->OutNext("%10s: P(%d), BPS(%2.1fK), MRR(%2d), MSR(%2d), Retried(%2d), Blocked(%2d)",
-						//Server->game->get_option_s(*C->Name,"name",*C->Name),
-						C->name.c_str(),
-						C->stats.getPing(),
-						float(C->stats.getBPS()),// /1024,
-						C->stats.getMPS_Receive	(),
-						C->stats.getMPS_Send	(),
-						C->stats.getRetriedCount(),
-						C->stats.dwTimesBlocked
+					xrServer* m_server;
+					CGameFont* F;
+					void operator()(IClient* C)
+					{
+						m_server->UpdateClientStatistic(C);
+						F->OutNext("%10s: P(%d), BPS(%2.1fK), MRR(%2d), MSR(%2d), Retried(%2d), Blocked(%2d)",
+							//Server->game->get_option_s(*C->Name,"name",*C->Name),
+							C->name.c_str(),
+							C->stats.getPing(),
+							float(C->stats.getBPS()),// /1024,
+							C->stats.getMPS_Receive	(),
+							C->stats.getMPS_Send	(),
+							C->stats.getRetriedCount(),
+							C->stats.dwTimesBlocked
 						);
-				}
+					}
+				};
+				net_stats_functor tmp_functor;
+				tmp_functor.m_server = Server;
+				tmp_functor.F = F;
+				Server->ForEachClientDo(tmp_functor);
 			}
 			if (IsClient())
 			{
@@ -1104,7 +1122,7 @@ bool CLevel::IsServer ()
 		return IsServerDemo();
 	};	
 	if (!Server) return false;
-	return (Server->client_Count() != 0);
+	return (Server->GetClientsCount() != 0);
 
 }
 
@@ -1116,7 +1134,7 @@ bool CLevel::IsClient ()
 		return IsClientDemo();
 	};	
 	if (!Server) return true;
-	return (Server->client_Count() == 0);
+	return (Server->GetClientsCount() == 0);
 }
 
 void CLevel::OnAlifeSimulatorUnLoaded()

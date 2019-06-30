@@ -663,6 +663,14 @@
 	</References>
 	<Files>
 		<File
+			RelativePath=".\ip_filter.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\ip_filter.h"
+			>
+		</File>
+		<File
 			RelativePath=".\NET_Client.cpp"
 			>
 		</File>
@@ -696,6 +704,10 @@
 		</File>
 		<File
 			RelativePath=".\NET_Messages.h"
+			>
+		</File>
+		<File
+			RelativePath=".\NET_PlayersMonitor.h"
 			>
 		</File>
 		<File

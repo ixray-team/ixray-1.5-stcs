@@ -598,3 +598,40 @@ bool CActor::is_jump()
 {
 	return ((mstate_real & (mcJump|mcFall|mcLanding|mcLanding2)) != 0);
 }
+
+//максимальный переносимы вес
+#include "CustomOutfit.h"
+float CActor::MaxCarryWeight () const
+{
+	float res = inventory().GetMaxWeight();
+	res      += get_additional_weight();
+	return res;
+}
+
+float CActor::MaxWalkWeight() const
+{
+	float max_w = CActor::conditions().MaxWalkWeight();
+	max_w      += get_additional_weight();
+	return max_w;
+}
+
+float CActor::get_additional_weight() const
+{
+	float res = 0.0f ;
+	CCustomOutfit* outfit	= GetOutfit();
+	if ( outfit )
+	{
+		res				+= outfit->m_additional_weight;
+	}
+
+	if ( !m_ArtefactsOnBelt.empty() )
+	{
+		xr_vector<const CArtefact*>::const_iterator it		= m_ArtefactsOnBelt.begin();
+		xr_vector<const CArtefact*>::const_iterator it_e	= m_ArtefactsOnBelt.end();
+		for ( ; it != it_e ; ++it )
+		{
+			res			+= (*it)->AdditionalInventoryWeight();
+		}
+	}
+	return res;
+}

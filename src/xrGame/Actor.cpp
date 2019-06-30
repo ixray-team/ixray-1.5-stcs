@@ -839,7 +839,7 @@ float g_fov = 67.5f;
 
 float CActor::currentFOV()
 {
-	if (!psHUD_Flags.is(HUD_WEAPON|HUD_WEAPON_RT))
+	if (!psHUD_Flags.is(HUD_WEAPON|HUD_WEAPON_RT|HUD_WEAPON_RT2))
 		return g_fov;
 
 	CWeapon* pWeapon = smart_cast<CWeapon*>(inventory().ActiveItem());	

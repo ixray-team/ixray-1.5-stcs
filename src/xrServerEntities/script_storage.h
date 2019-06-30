@@ -14,11 +14,10 @@
 struct lua_State;
 class CScriptThread;
 
-#ifdef	DEBUG
-	#ifndef ENGINE_BUILD
-	#	define	USE_DEBUGGER
-	#endif
-#endif
+#ifndef MASTER_GOLD
+#	define USE_DEBUGGER
+#	define USE_LUA_STUDIO
+#endif // #ifndef MASTER_GOLD
 
 #ifdef XRGAME_EXPORTS
 #	ifndef MASTER_GOLD
@@ -71,9 +70,11 @@ public:
 			bool				object						(LPCSTR	caIdentifier, int type);
 			bool				object						(LPCSTR	caNamespaceName, LPCSTR	caIdentifier, int type);
 			luabind::object		name_space					(LPCSTR	namespace_name);
+			int					error_log					(LPCSTR	caFormat, ...);
 	static	int		__cdecl		script_log					(ELuaMessageType message,	LPCSTR	caFormat, ...);
 	static	bool				print_output				(lua_State *L,		LPCSTR	caScriptName,		int		iErorCode = 0);
 	static	void				print_error					(lua_State *L,		int		iErrorCode);
+	virtual	void				on_error					(lua_State *L) = 0;
 
 #ifdef DEBUG
 public:

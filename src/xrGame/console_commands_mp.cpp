@@ -254,20 +254,65 @@ public:
 	virtual void		Execute			(LPCSTR arguments)
 	{
 		string64 cdkey;
-		if(0==stricmp(arguments,"clear"))
+		if ( 0 == stricmp(arguments,"clear") )
 		{
 			cdkey[0] = 0;
-		}else
+		}
+		else
+		{
 			strcpy_s(cdkey, arguments);
+		}
 
-		CCC_String::Execute(cdkey);	
+		u32 cdkey_len = xr_strlen( cdkey );
+		if ( (cdkey_len > 0) && g_pGamePersistent && MainMenu() )
+		{
+			if ( (cdkey_len > 5) && cdkey[4] != '-' )
+			{
+				LPCSTR res = CMainMenu::AddHyphens( cdkey );
+				strcpy_s( cdkey, res );
+			}
 
-		WriteCDKey_ToRegistry(cdkey);
+			CCC_String::Execute( cdkey );	
+			WriteCDKey_ToRegistry( cdkey );
 
-		if (g_pGamePersistent && MainMenu()) MainMenu()->ValidateCDKey();
-	}
+			if ( !MainMenu()->ValidateCDKey() )
+			{
+#ifdef DEBUG
+				Msg( "! Invalid CD-Key" );
+#endif // DEBUG
+			}
+		}
+	}//Execute
 	virtual void		Save			(IWriter *F)	{};
+	/*virtual void		get_tips		(xr_vector<shared_str>& tips)
+	{
+		tips.push_back( "xxxx-xxxx-xxxx-xxxx" );
+		tips.push_back( "clear" );
+	}*/
 };
+
+//most useful predicates 
+struct SearcherClientByName
+{
+	string512 player_name;
+	SearcherClientByName(LPCSTR name)
+	{
+		strncpy_s(player_name, sizeof(player_name), name, sizeof(player_name) - 1);
+		xr_strlwr(player_name);
+	}
+	bool operator()(IClient* client)
+	{
+		xrClientData*	temp_client = smart_cast<xrClientData*>(client);
+
+		if (!xr_strcmp(player_name, temp_client->ps->getName()))
+		{
+			return true;
+		}
+		return false;
+	}
+};
+
+#define STRING_KICKED_BY_SERVER "st_kicked_by_server"
 
 class CCC_KickPlayerByName : public IConsole_Command {
 public:
@@ -291,43 +336,262 @@ public:
 			strcpy_s(PlayerName, args);
 
 		xr_strlwr			(PlayerName);
-
-		Level().Server->clients_Lock();
-		u32	cnt					= Level().Server->game->get_players_count();
-		for(u32 it=0; it<cnt; it++)	
+		IClient*	tmp_client = Level().Server->FindClient(SearcherClientByName(PlayerName));
+		if (tmp_client && (tmp_client != Level().Server->GetServerClient()))
 		{
-			xrClientData *l_pC = (xrClientData*)	Level().Server->client_Get	(it);
-			if (l_pC)
+			Msg("Disconnecting : %s", PlayerName);
+			xrClientData* tmpxrclient = static_cast<xrClientData*>(tmp_client);
+			if (!tmpxrclient->m_admin_rights.m_has_admin_rights)
 			{
-				string64			_low_name;
-				strcpy_s				(_low_name,l_pC->ps->getName());
-				xr_strlwr			(_low_name);
-
-				if (!xr_strcmp(_low_name, PlayerName))
-				{
-					if (Level().Server->GetServerClient() != l_pC)
-					{
-						Msg("Disconnecting : %s", l_pC->ps->getName());
-						LPSTR	reason;
-						STRCONCAT( reason, CStringTable().translate("st_kicked_by_server").c_str() );
-						Level().Server->DisconnectClient( l_pC, reason );
-						break;
-					}else
-						Msg("! Can't disconnect server's client");
-				}
-			}			
-		};
-		if (it == cnt) 
+				Level().Server->DisconnectClient( tmp_client, STRING_KICKED_BY_SERVER );
+			} else
+			{
+				Msg("! Can't disconnect client with admin rights");
+			}
+		} else
 		{
-			Msg("! No such player found : %s", PlayerName);
+			Msg("! Can't disconnect player [%s]", PlayerName);
 		}
-		Level().Server->clients_Unlock();		
 	};
 
 	virtual void	Info	(TInfo& I)	{strcpy_s(I,"Kick Player by name"); }
 };
 
+static ClientID last_printed_player;
+#define LAST_PRINTED_PLAYER_STR "last_printed"
+static u32		last_printed_player_banned;
+#define LAST_PRINTED_PLAYER_BANNED_STR "last_printed_banned"
 
+class CCC_KickPlayerByID : public IConsole_Command {
+public:
+					CCC_KickPlayerByID	(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = false; };
+	virtual void	Execute				(LPCSTR args) 
+	{
+		if (!g_pGameLevel || !Level().Server || !Level().Server->game) return;
+		
+		u32 len	= xr_strlen(args);
+		if ((len == 0) || (len >= 128))		//one digit and raid:%u
+			return;
+		ClientID client_id(0);
+
+		if (!strncmp(args, LAST_PRINTED_PLAYER_STR, sizeof(LAST_PRINTED_PLAYER_STR) - 1))
+		{
+			client_id = last_printed_player;
+		} else
+		{
+			u32 tmp_client_id;
+			if (sscanf_s(args, "%u", &tmp_client_id) != 1)
+			{
+				Msg("! ERROR: bad command parameters.");
+				Msg("Kick player. Format: \"sv_kick_id <player session id | \'%s\'>\". To receive list of players ids see sv_listplayers",
+					LAST_PRINTED_PLAYER_STR
+				);
+				return;
+			}
+			client_id.set(tmp_client_id);
+		}
+		
+		IClient*	tmp_client = Level().Server->GetClientByID(client_id);
+
+		if (tmp_client && (tmp_client != Level().Server->GetServerClient()))
+		{
+			Msg("Disconnecting : client %u", client_id.value());
+			xrClientData* tmpxrclient = static_cast<xrClientData*>(tmp_client);
+			if (!tmpxrclient->m_admin_rights.m_has_admin_rights)
+			{
+				Level().Server->DisconnectClient( tmp_client, STRING_KICKED_BY_SERVER );
+			} else
+			{
+				Msg("! Can't disconnect client with admin rights %u", client_id.value());
+			}
+		} else
+		{
+			Msg("! Can't disconnect client %u", client_id.value());
+		}
+	};
+
+	virtual void	Info	(TInfo& I)	{ strcpy_s(I, "Kick player by ID."); }
+};
+
+
+#define RAPREFIX "raid:"
+static xrClientData* exclude_command_initiator(LPCSTR args)
+{
+	LPCSTR tmp_str = strrchr(args, ' ');
+	if (!tmp_str)
+		tmp_str = args;
+	LPCSTR clientidstr = strstr(tmp_str, RAPREFIX);
+	if (clientidstr)
+	{
+		clientidstr += sizeof(RAPREFIX) - 1;
+		u32 client_id = atoi(clientidstr);
+		ClientID tmp_id;
+		tmp_id.set(client_id);
+		if (g_pGameLevel && Level().Server)
+			return Level().Server->ID_to_client(tmp_id);
+	}
+	return NULL;
+};
+static char const * exclude_raid_from_args(LPCSTR args, LPSTR dest, size_t dest_size)
+{
+	strncpy(dest, args, dest_size - 1);
+	char* tmp_str = strrchr(dest, ' ');
+	if (!tmp_str)
+		tmp_str = dest;
+	char* raidstr = strstr(tmp_str, RAPREFIX);
+	if (raidstr)
+	{
+		if (raidstr <= tmp_str)
+			*raidstr		= 0;
+		else
+			*(raidstr - 1)	= 0;	//with ' '
+	}
+	dest[dest_size - 1] = 0;
+	return dest;
+}
+
+class CCC_BanPlayerByCDKEY : public IConsole_Command {
+public:
+	CCC_BanPlayerByCDKEY (LPCSTR N) : IConsole_Command(N) { bEmptyArgsHandled = false; };
+	virtual void	Execute		(LPCSTR args_) 
+	{
+		if (!g_pGameLevel || !Level().Server || !Level().Server->game) return;
+		game_sv_mp*	tmp_sv_game = smart_cast<game_sv_mp*>(Level().Server->game);
+		if (!tmp_sv_game) return;
+
+		u32 len	= xr_strlen(args_);
+		if ((len == 0) || (len >= 256))		//two digits and raid:%u
+			return;
+
+		ClientID client_id = 0;
+		s32 ban_time = 0;
+		if (!strncmp(args_, LAST_PRINTED_PLAYER_STR, sizeof(LAST_PRINTED_PLAYER_STR) - 1))
+		{
+			client_id = last_printed_player;
+			if (sscanf_s(args_ + sizeof(LAST_PRINTED_PLAYER_STR), "%d", &ban_time) != 1)
+			{
+				Msg("! ERROR: bad command parameters.");
+				Msg("Ban player. Format: \"sv_banplayer <player session id | \'%s\'> <ban_time_in_sec>\". To receive list of players ids see sv_listplayers",
+					LAST_PRINTED_PLAYER_STR
+				);
+				return;
+			}
+		} else
+		{
+			u32 tmp_client_id;
+			if (sscanf_s(args_, "%u %d", &tmp_client_id, &ban_time) != 2)
+			{
+				Msg("! ERROR: bad command parameters.");
+				Msg("Ban player. Format: \"sv_banplayer <player session id | \'%s\'> <ban_time_in_sec>\". To receive list of players ids see sv_listplayers",
+					LAST_PRINTED_PLAYER_STR
+				);
+				return;
+			}
+			client_id.set(tmp_client_id);
+		}
+			
+		
+		IClient* to_disconnect = tmp_sv_game->BanPlayer(
+			client_id,
+			ban_time,
+			exclude_command_initiator(args_)
+		);
+		if (to_disconnect)
+		{
+			Level().Server->DisconnectClient(to_disconnect, STRING_KICKED_BY_SERVER);
+		} else
+		{
+			Msg("! ERROR: bad client id [%u]", client_id.value());
+		}
+	}
+	virtual void	Info		(TInfo& I)
+	{
+		strcpy_s(I, 
+			make_string(
+				"Ban player. Format: \"sv_banplayer <player session id | \'%s\'> <ban_time_in_sec>\". To receive list of players ids see sv_listplayers",
+				LAST_PRINTED_PLAYER_STR
+			).c_str()
+		);
+	}
+};
+
+class CCC_BanPlayerByCDKEYDirectly : public IConsole_Command {
+public:
+	CCC_BanPlayerByCDKEYDirectly (LPCSTR N) : IConsole_Command(N) { bEmptyArgsHandled = false; };
+	virtual void	Execute		(LPCSTR args_) 
+	{
+		if (!g_pGameLevel || !Level().Server || !Level().Server->game) return;
+		game_sv_mp*	tmp_sv_game = smart_cast<game_sv_mp*>(Level().Server->game);
+		if (!tmp_sv_game) return;
+
+		u32 len	= xr_strlen(args_);
+		if ((len == 0) || (len >= 256))
+			return;
+
+		char hex_digest[64];
+		s32 ban_time = 0;
+		if (sscanf_s(args_, "%s %i", &hex_digest, sizeof(hex_digest), &ban_time) != 2)
+		{
+			Msg("! ERROR: bad command parameters.");
+			Msg("Ban player. Format: \"sv_banplayer_by_digest <hex digest> <ban_time_in_sec>\". To get player hex digest you can enter: sv_listplayers_banned");
+			return;
+		}
+			
+		tmp_sv_game->BanPlayerDirectly(hex_digest,
+			ban_time,
+			exclude_command_initiator(args_)
+		);
+	}
+	virtual void	Info		(TInfo& I)
+	{
+		strcpy_s(I, 
+			"Ban player by hex digest (CAREFULLY: low level command). Format: \"sv_banplayer_by_digest <hex digest> <ban_time_in_sec>\". To get player hex digest you can enter: sv_listplayers_banned"
+		);
+	}
+};
+
+
+class CCC_UnBanPlayerByIndex : public IConsole_Command {
+public:
+	CCC_UnBanPlayerByIndex(LPCSTR N) : IConsole_Command(N) { bEmptyArgsHandled = false; };
+	virtual void	Execute		(LPCSTR args_) 
+	{
+		if (!g_pGameLevel || !Level().Server || !Level().Server->game) return;
+		game_sv_mp*	tmp_sv_game = smart_cast<game_sv_mp*>(Level().Server->game);
+		if (!tmp_sv_game) return;
+		u32 len	= xr_strlen(args_);
+		if ((len == 0) || (len >= 64))		//one digit and raid:%u
+			return;
+		
+		if (!strncmp(args_, LAST_PRINTED_PLAYER_BANNED_STR, sizeof(LAST_PRINTED_PLAYER_BANNED_STR) - 1))
+		{
+			tmp_sv_game->UnBanPlayer(last_printed_player_banned);
+		} else
+		{
+			size_t player_index = 0;
+			if (sscanf_s(args_, "%u", &player_index) != 1)
+			{
+				Msg("! ERROR: bad command parameters.");
+				Msg(" Unban player. Format: \"sv_unbanplayer <banned player index | \'%s\'>. To receive list of banned players se sv_listplayers_banned",
+					LAST_PRINTED_PLAYER_BANNED_STR
+				);
+				return;
+			}
+			tmp_sv_game->UnBanPlayer(player_index);
+		}
+	}
+	virtual void	Info		(TInfo& I)
+	{
+		strcpy_s(I,
+			make_string(
+				"Unban player. Format: \"sv_unbanplayer <banned player index | \'%s\'>. To receive list of banned players see sv_listplayers_banned",
+				LAST_PRINTED_PLAYER_BANNED_STR
+			).c_str()
+		);
+	}
+};
+
+	
 class CCC_BanPlayerByName : public IConsole_Command {
 public:
 					CCC_BanPlayerByName	(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = false; };
@@ -374,39 +638,16 @@ public:
 
 		xr_strlwr			(PlayerName);
 
-		Level().Server->clients_Lock();
-		u32	cnt					= Level().Server->game->get_players_count();
-		for(u32 it=0; it<cnt; it++)	
+		IClient*	tmp_client = Level().Server->FindClient(SearcherClientByName(PlayerName));
+		if (tmp_client && (tmp_client != Level().Server->GetServerClient()))
 		{
-			xrClientData *l_pC = (xrClientData*)	Level().Server->client_Get	(it);
-			if (l_pC)
-			{
-				string64			_low_name;
-				strcpy_s				(_low_name,l_pC->ps->getName());
-				xr_strlwr			(_low_name);
-
-				if (!xr_strcmp(_low_name, PlayerName))
-				{
-					if (Level().Server->GetServerClient() != l_pC)
-					{
-						Msg("Disconnecting and Banning: %s", l_pC->ps->getName());
-						Level().Server->BanClient(l_pC, ban_time);
-						LPSTR	reason;
-						STRCONCAT( reason, CStringTable().translate("st_kicked_by_server").c_str() );
-						Level().Server->DisconnectClient( l_pC, reason );
-						break;
-					}else
-					{
-						Msg("! Can't disconnect server's client");
-						break;
-					}
-				}
-			}			
-		};
-		if (it == cnt)
-			Msg("! No such player found : %s", PlayerName);
-
-		Level().Server->clients_Unlock();	
+			Msg("Disconnecting and Banning: %s", PlayerName);
+			Level().Server->BanClient(tmp_client, ban_time);
+			Level().Server->DisconnectClient(tmp_client, STRING_KICKED_BY_SERVER );
+		} else
+		{
+			Msg("! Can't disconnect player [%s]", PlayerName);
+		}
 	};
 
 	virtual void	Info	(TInfo& I){strcpy_s(I,"Ban Player by Name"); }
@@ -420,10 +661,10 @@ public:
 	{
 		if (!g_pGameLevel || !Level().Server) return;
 //-----------
-		string4096				buff;
-		strcpy_s					(buff, args_);
-		u32 len					= xr_strlen(buff);
+		string4096					buff;
+		exclude_raid_from_args		(args_, buff, sizeof(buff)); //strcpy_s(buff, args_);
 		
+		u32 len					= xr_strlen(buff);
 		if (0==len) 
 			return;
 
@@ -455,18 +696,12 @@ public:
 
 		ip_address							Address;
 		Address.set							(s_ip_addr);
-		Level().Server->clients_Lock		();
 		Msg									("Disconnecting and Banning: %s",Address.to_string().c_str() ); 
 		Level().Server->BanAddress			(Address, ban_time);
-
-		LPSTR	reason;
-		STRCONCAT( reason, CStringTable().translate("st_kicked_by_server").c_str() );
-		Level().Server->DisconnectAddress	(Address, reason);
-
-		Level().Server->clients_Unlock		();
+		Level().Server->DisconnectAddress	(Address, STRING_KICKED_BY_SERVER);
 	};
 
-	virtual void	Info	(TInfo& I){strcpy_s(I,"Ban Player by IP"); }
+	virtual void	Info	(TInfo& I){strcpy_s(I,"Ban Player by IP. Format: \"sb_banplayer_ip <ip address>\""); }
 };
 
 class CCC_UnBanPlayerByIP : public IConsole_Command {
@@ -478,43 +713,82 @@ public:
 
 		if (!xr_strlen(args)) return;
 
+		string4096					buff;
+		exclude_raid_from_args		(args, buff, sizeof(buff)); //strcpy_s(buff, args_);
+		if (!xr_strlen(buff)) 
+			return;
+
 		ip_address						Address;
-		Address.set						(args);
-		Level().Server->clients_Lock	();
+		Address.set						(buff);
 		Level().Server->UnBanAddress	(Address);
-		Level().Server->clients_Unlock	();
 	};
 
-	virtual void	Info	(TInfo& I){strcpy_s(I,"UnBan Player by IP");}
+	virtual void	Info	(TInfo& I){strcpy_s(I,"UnBan Player by IP. Format: \"sv_unbanplayer_ip <ip address>\"");}
 };
+
 
 class CCC_ListPlayers : public IConsole_Command {
 public:
 					CCC_ListPlayers	(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
 	virtual void	Execute			(LPCSTR args) 
 	{
-		if (!OnServer())	return;
-		
-		u32	cnt = Level().Server->game->get_players_count();
-		Msg("------------------------");
-		Msg("- Total Players : %d", cnt);
-		for(u32 it=0; it<cnt; it++)	
-		{
-			xrClientData *l_pC	= (xrClientData*)	Level().Server->client_Get	(it);
-			if (!l_pC)			continue;
-			ip_address			Address;
-			DWORD dwPort		= 0;
+		if (!g_pGameLevel || !Level().Server || !Level().Server->game) return;
 
-			Level().Server->GetClientAddress(l_pC->ID, Address, &dwPort);
-			Msg("%d : %s - %s port[%u] ping[%u]", it+1, l_pC->ps->getName(),
-				Address.to_string().c_str(),
-				dwPort,
-				l_pC->ps->ping);
+		u32	cnt = Level().Server->game->get_players_count();
+		Msg("- Total Players : %d", cnt);
+		Msg("- ----player list begin-----");
+		struct PlayersEnumerator
+		{
+			LPCSTR filter_string;
+			PlayersEnumerator()
+			{
+				filter_string = NULL;
+			}
+			void operator()(IClient* client)
+			{
+				xrClientData *l_pC	= (xrClientData*)client;
+				if (!l_pC)
+					return;
+				ip_address			Address;
+				DWORD dwPort		= 0;
+				Level().Server->GetClientAddress(client->ID, Address, &dwPort);
+				string512 tmp_string;
+				sprintf_s(tmp_string, "- (player session id : %u), (name : %s), (ip: %s), (ping: %u);",
+					client->ID.value(),
+					l_pC->ps->getName(),
+					Address.to_string().c_str(),
+					l_pC->ps->ping);
+				if (filter_string)
+				{
+					if (strstr(tmp_string, filter_string))
+					{
+						Msg(tmp_string);
+						last_printed_player = client->ID;
+					}
+				} else
+				{
+					Msg(tmp_string);
+					last_printed_player = client->ID;
+				}
+			}
 		};
-		Msg("------------------------");
+		PlayersEnumerator tmp_functor;
+		string512 filter_string;
+		string512 tmp_dest;
+		if (xr_strlen(args))
+		{
+			exclude_raid_from_args(args, tmp_dest, sizeof(tmp_dest));
+			if (xr_strlen(tmp_dest))
+			{
+				sscanf_s(tmp_dest, "%s", filter_string);
+				tmp_functor.filter_string = filter_string;
+			}
+		}
+		Level().Server->ForEachClientDo(tmp_functor);
+		Msg("- ----player list end-------");
 	};
 
-	virtual void	Info	(TInfo& I){strcpy_s(I,"List Players"); }
+	virtual void	Info	(TInfo& I){strcpy_s(I,"List Players. Format: \"sv_listplayers [ filter string ]\""); }
 };
 
 class CCC_ListPlayers_Banned : public IConsole_Command {
@@ -522,14 +796,23 @@ public:
 					CCC_ListPlayers_Banned	(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
 	virtual void	Execute					(LPCSTR args) 
 	{
-		if (!OnServer())	return;
-		Msg("------------------------");
-        Level().Server->Print_Banned_Addreses();
-		Msg("------------------------");
+		if (!g_pGameLevel || !Level().Server || !Level().Server->game) return;
+		game_sv_mp*	tmp_sv_game = smart_cast<game_sv_mp*>(Level().Server->game);
+		if (!tmp_sv_game) return;
+		string512 tmp_dest;
+		string512 filter_dest = "";
+		exclude_raid_from_args(args, tmp_dest, sizeof(tmp_dest));
+		if (xr_strlen(tmp_dest))
+		{
+			sscanf_s(tmp_dest, "%s", filter_dest);
+		}
+		tmp_sv_game->PrintBanList(filter_dest);
+		Level().Server->Print_Banned_Addreses();
 	};
 
-	virtual void	Info	(TInfo& I){strcpy_s(I,"List of Banned Players"); }
+	virtual void	Info	(TInfo& I){strcpy_s(I,"List of Banned Players. Format: \"sv_listplayers_banned [ filter string ]\""); }
 };
+
 class CCC_ChangeLevelGameType : public IConsole_Command {
 public:
 					CCC_ChangeLevelGameType	(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
@@ -1345,15 +1628,20 @@ void register_mp_console_commands()
 	CMD4(CCC_Integer,	"g_corpsenum",			(int*)&g_dwMaxCorpses,		0,	100);
 
 
-	CMD1(CCC_KickPlayerByName,	"sv_kick"					);
+	CMD1(CCC_KickPlayerByName,	"sv_kick"					);	//saved for backward compatibility
+	CMD1(CCC_KickPlayerByID,	"sv_kick_id"				);
 
-	CMD1(CCC_BanPlayerByName,	"sv_banplayer"				);
-	CMD1(CCC_BanPlayerByIP,		"sv_banplayer_ip"			);
+	//CMD1(CCC_BanPlayerByName,	"sv_banplayer"				);
+	CMD1(CCC_BanPlayerByCDKEY,			"sv_banplayer"				);
+	CMD1(CCC_BanPlayerByCDKEYDirectly,	"sv_banplayer_by_digest"	);
+	CMD1(CCC_BanPlayerByIP,				"sv_banplayer_ip"			);
+	
 
 	CMD1(CCC_UnBanPlayerByIP,	"sv_unbanplayer_ip"			);
+	CMD1(CCC_UnBanPlayerByIndex,"sv_unbanplayer"			);
 
 	CMD1(CCC_ListPlayers,			"sv_listplayers"			);		
-	CMD1(CCC_ListPlayers_Banned,	"sv_listplayers_banned"			);		
+	CMD1(CCC_ListPlayers_Banned,	"sv_listplayers_banned"		);		
 	
 	CMD1(CCC_ChangeGameType,		"sv_changegametype"			);
 	CMD1(CCC_ChangeLevel,			"sv_changelevel"			);

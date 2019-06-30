@@ -449,6 +449,9 @@ public:
 	virtual	float						GetWeaponAccuracy	() const;
 			float						GetFireDispertion	() const {return m_fdisp_controller.GetCurrentDispertion();}
 			bool						IsZoomAimingMode	() const {return m_bZoomAimingMode;}
+	virtual float						MaxCarryWeight		() const;
+			float						MaxWalkWeight		() const;
+			float						get_additional_weight() const;
 
 protected:
 	CFireDispertionController			m_fdisp_controller;

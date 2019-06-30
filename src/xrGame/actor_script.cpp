@@ -8,6 +8,7 @@
 
 #include "pch_script.h"
 #include "actor.h"
+#include "level_changer.h"
 
 using namespace luabind;
 
@@ -17,6 +18,9 @@ void CActor::script_register(lua_State *L)
 	module(L)
 	[
 		class_<CActor,CGameObject>("CActor")
+			.def(constructor<>()),
+
+		class_<CLevelChanger,CGameObject>("CLevelChanger")
 			.def(constructor<>())
 	];
 }

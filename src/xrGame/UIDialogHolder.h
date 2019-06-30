@@ -1,4 +1,6 @@
 #pragma once
+#include "../xrEngine/dedicated_server_only.h"
+#include "../xrEngine/no_single.h"
 
 class CUIDialogWnd;
 class CUIWindow;
@@ -20,7 +22,7 @@ public:
 	Flags8			m_flags;
 };
 
-class DLL_API CDialogHolder :public ISheduled,public pureFrame
+class PROTECT_API CDialogHolder :public ISheduled,public pureFrame
 {
 	//dialogs
 	xr_vector<recvItem>										m_input_receivers;

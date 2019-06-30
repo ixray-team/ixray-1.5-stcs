@@ -22,12 +22,14 @@ CUIArtefactParams::CUIArtefactParams()
 	{
 		m_restore_item[i] = NULL;
 	}
+	m_additional_weight = NULL;
 }
 
 CUIArtefactParams::~CUIArtefactParams()
 {
 	delete_data( m_immunity_item );
 	delete_data( m_restore_item );
+	xr_delete( m_additional_weight );
 }
 
 LPCSTR af_immunity_section_names[] = // ALife::EInfluenceType
@@ -123,6 +125,17 @@ void CUIArtefactParams::InitFromXml( CUIXml& xml )
 
 		xml.SetLocalRoot( base_node );
 	}
+	
+	{
+		m_additional_weight = xr_new<UIArtefactParamItem>();
+		m_additional_weight->Init( xml, "additional_weight" );
+		m_additional_weight->SetAutoDelete(false);
+
+		LPCSTR name = CStringTable().translate( "ui_inv_outfit_additional_weight" ).c_str();
+		m_additional_weight->SetCaption( name );
+
+		//xml.SetLocalRoot( base_node );
+	}
 
 	xml.SetLocalRoot( stored_root );
 }
@@ -182,6 +195,21 @@ void CUIArtefactParams::SetInfo( shared_str const& af_section )
 		h += m_restore_item[i]->GetWndSize().y;
 		AttachChild( m_restore_item[i] );
 	}
+	
+	{
+		val	= pSettings->r_float( af_section, "additional_inventory_weight" );
+		if ( !fis_zero(val) )
+		{
+			m_additional_weight->SetValue( val );
+
+			pos.set( m_additional_weight->GetWndPos() );
+			pos.y = h;
+			m_additional_weight->SetWndPos( pos );
+
+			h += m_additional_weight->GetWndSize().y;
+			AttachChild( m_additional_weight );
+		}
+	}
 
 	SetHeight( h );
 }
@@ -194,6 +222,10 @@ UIArtefactParamItem::UIArtefactParamItem()
 	m_value     = NULL;
 	m_magnitude = 1.0f;
 	m_sign_inverse = false;
+	
+	m_unit_str._set( "" );
+	m_texture_minus._set( "" );
+	m_texture_plus._set( "" );
 }
 
 UIArtefactParamItem::~UIArtefactParamItem()
@@ -209,6 +241,19 @@ void UIArtefactParamItem::Init( CUIXml& xml, LPCSTR section )
 	m_value     = UIHelper::CreateStatic( xml, "value",   this );
 	m_magnitude = xml.ReadAttribFlt( "value", 0, "magnitude", 1.0f );
 	m_sign_inverse = (xml.ReadAttribInt( "value", 0, "sign_inverse", 0 ) == 1);
+	
+	LPCSTR unit_str = xml.ReadAttrib( "value", 0, "unit_str", "" );
+	m_unit_str._set( CStringTable().translate( unit_str ) );
+	
+	LPCSTR texture_minus = xml.Read( "texture_minus", 0, "" );
+	if ( texture_minus && xr_strlen(texture_minus) )
+	{
+		m_texture_minus._set( texture_minus );
+		
+		LPCSTR texture_plus = xml.Read( "caption:texture", 0, "" );
+		m_texture_plus._set( texture_plus );
+		VERIFY( m_texture_plus.size() );
+	}
 }
 
 void UIArtefactParamItem::SetCaption( LPCSTR name )
@@ -221,10 +266,33 @@ void UIArtefactParamItem::SetValue( float value )
 	value *= m_magnitude;
 	string32	buf;
 	sprintf_s( buf, "%+.0f", value );
-	m_value->SetText( buf );
+	
+	LPSTR		str;
+	if ( m_unit_str.size() )
+	{
+		STRCONCAT( str, buf, " ", m_unit_str.c_str() );
+	}
+	else // = ""
+	{
+		STRCONCAT( str, buf );
+	}
+	m_value->SetText( str );
 
 	bool positive = (value >= 0.0f);
 	positive      = (m_sign_inverse)? !positive : positive;
 	u32 color     = (positive      )? green_clr : red_clr;
 	m_value->SetTextColor( color );
+
+	if ( m_texture_minus.size() )
+	{
+		if ( positive )
+		{
+			m_caption->InitTexture( m_texture_plus.c_str() );
+		}
+		else
+		{
+			m_caption->InitTexture( m_texture_minus.c_str() );
+		}
+	}
+
 }

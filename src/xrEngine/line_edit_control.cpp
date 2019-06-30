@@ -106,7 +106,7 @@ void line_edit_control::clear_states()
 	m_rep_time			= 0.0f;
 	m_last_frame_time	= 0;
 	m_last_key_time		= 0.0f;
-	m_last_changed_frame = 0;
+	m_last_changed_frame  = 0;
 
 	m_hold_mode			= false;
 	m_insert_mode		= false;
@@ -116,7 +116,7 @@ void line_edit_control::clear_states()
 	m_need_update		= false;
 	m_unselected_mode	= false;
 
-	m_key_state.zero();
+	reset_key_state();
 }
 
 void line_edit_control::init( u32 str_buffer_size, init_mode mode )
@@ -474,6 +474,7 @@ void line_edit_control::on_frame()
 	{
 		m_need_update = false;
 	}
+	
 	/*if ( Device.dwFrame % 100 == 0 )
 	{
 	Msg( " cur_time=%.2f  re=%d  acc=%.2f   rep_time=%.2f", cur_time, bRepeat, fAccel, rep_time );

@@ -584,6 +584,22 @@ public:
 			return;
 		}
 
+		if (!CSavedGameWrapper::saved_game_exist(g_last_saved_game)) {
+			Msg						("! Cannot find saved game %s",g_last_saved_game);
+			return;
+		}
+
+		if (!CSavedGameWrapper::valid_saved_game(g_last_saved_game)) {
+			Msg						("! Cannot load saved game %s, version mismatch or saved game is corrupted",g_last_saved_game);
+			return;
+		}
+
+		if ( !valid_saved_game_name(g_last_saved_game) )
+		{
+			Msg						("! Cannot load saved game %s, invalid file name",g_last_saved_game);
+			return;
+		}
+
 		string512				command;
 		if (ai().get_alife()) {
 			strconcat			(sizeof(command),command,"load ",g_last_saved_game);
@@ -732,6 +748,7 @@ public:
 	}
 };
 
+#if defined(USE_DEBUGGER) && !defined(USE_LUA_STUDIO)
 class CCC_ScriptDbg : public IConsole_Command {
 public:
 	CCC_ScriptDbg(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
@@ -769,6 +786,27 @@ public:
 			strcpy_s(I,"restarts script debugger or start if no script debugger presents"); 
 	}
 };
+#endif // #if defined(USE_DEBUGGER) && !defined(USE_LUA_STUDIO)
+
+#if defined(USE_DEBUGGER) && defined(USE_LUA_STUDIO)
+class CCC_ScriptLuaStudioConnect : public IConsole_Command {
+public:
+	CCC_ScriptLuaStudioConnect(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
+	virtual void Execute(LPCSTR args)
+	{
+		ai().script_engine().try_connect_to_debugger	();
+	};
+};
+
+class CCC_ScriptLuaStudioDisconnect : public IConsole_Command {
+public:
+	CCC_ScriptLuaStudioDisconnect(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
+	virtual void Execute(LPCSTR args)
+	{
+		ai().script_engine().disconnect_from_debugger	();
+	};
+};
+#endif // #if defined(USE_DEBUGGER) && defined(USE_LUA_STUDIO)
 
 class CCC_DumpInfos : public IConsole_Command {
 public:
@@ -1076,7 +1114,8 @@ public:
 			if (!l_iErrorCode) {
 				l_iErrorCode = lua_pcall(ai().script_engine().lua(),0,0,0);
 				if (l_iErrorCode) {
-					ai().script_engine().print_output(ai().script_engine().lua(),*m_script_name,l_iErrorCode);
+					ai().script_engine().print_output	(ai().script_engine().lua(),*m_script_name,l_iErrorCode);
+					ai().script_engine().on_error		(ai().script_engine().lua());
 					return;
 				}
 			}
@@ -1413,6 +1452,34 @@ public:
 	}
 };
 
+class CCC_InvDropAllItems : public IConsole_Command
+{
+public:
+	CCC_InvDropAllItems(LPCSTR N) : IConsole_Command(N)	{ bEmptyArgsHandled = TRUE; };
+	virtual void Execute( LPCSTR args )
+	{
+		if ( !g_pGameLevel )
+		{
+			return;
+		}
+		CUIGameSP* ui_game_sp = smart_cast<CUIGameSP*>( HUD().GetUI()->UIGame() );
+		if ( !ui_game_sp )
+		{
+			return;
+		}
+		int d = 0;
+		sscanf( args, "%d", &d );
+		if ( ui_game_sp->ActorMenu().DropAllItemsFromRuck( d == 1 ) )
+		{
+			Msg( "- All items from ruck of Actor is dropping now." );
+		}
+		else
+		{
+			Msg( "! ActorMenu is not in state `Inventory`" );
+		}
+	}
+}; // CCC_InvDropAllItems
+
 #endif // DEBUG
 
 class CCC_DumpObjects : public IConsole_Command {
@@ -1631,9 +1698,16 @@ CMD4(CCC_Integer,			"hit_anims_tune",						&tune_hit_anims,		0, 1);
 	CMD4(CCC_Integer,			"ai_dbg_inactive_time",	&g_AI_inactive_time, 0, 1000000);
 	
 	CMD1(CCC_DebugNode,			"ai_dbg_node");
+#if defined(USE_DEBUGGER) && !defined(USE_LUA_STUDIO)
 	CMD1(CCC_ScriptDbg,			"script_debug_break");
 	CMD1(CCC_ScriptDbg,			"script_debug_stop");
 	CMD1(CCC_ScriptDbg,			"script_debug_restart");
+#endif // #if defined(USE_DEBUGGER) && !defined(USE_LUA_STUDIO)
+
+#if defined(USE_DEBUGGER) && defined(USE_LUA_STUDIO)
+	CMD1(CCC_ScriptLuaStudioConnect,	"lua_studio_connect");
+	CMD1(CCC_ScriptLuaStudioDisconnect,	"lua_studio_disconnect");
+#endif // #if defined(USE_DEBUGGER) && defined(USE_LUA_STUDIO)
 	
 	CMD1(CCC_ShowMonsterInfo,	"ai_monster_info");
 	CMD1(CCC_DebugFonts,		"debug_fonts");
@@ -1849,6 +1923,8 @@ CMD4(CCC_FloatBlock,		"dbg_text_height_scale",	&dbg_text_height_scale	,			0.2f	,
 	CMD1(CCC_InvUpgradesHierarchy,	"inv_upgrades_hierarchy");
 	CMD1(CCC_InvUpgradesCurItem,	"inv_upgrades_cur_item");
 	CMD4(CCC_Integer,	"inv_upgrades_log",	&g_upgrades_log, 0, 1);
+	CMD1(CCC_InvDropAllItems,	"inv_drop_all_items");
+
 extern BOOL dbg_moving_bones_snd_player;
 	CMD4(CCC_Integer,   "dbg_bones_snd_player",		&dbg_moving_bones_snd_player, FALSE, TRUE );
 #endif

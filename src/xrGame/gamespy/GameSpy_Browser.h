@@ -39,6 +39,7 @@ struct ServerInfo{
 
 	s16						m_ServerNumPlayers;
 	s16						m_ServerMaxPlayers;
+	string128				m_ServerUpTime;
 	s16						m_ServerNumTeams;
 	bool					m_bDedicated;
 	bool					m_bFFire;

@@ -68,7 +68,8 @@ enum {
 	M_REMOTE_CONTROL_CMD,
 	M_BATTLEYE,
 
-	M_SV_MAP_NAME,
+	M_SV_MAP_NAME,				//request and responce
+	M_SV_DIGEST,				//request and responce
 
 	MSG_FORCEDWORD				= u32(-1)
 };
@@ -104,6 +105,7 @@ enum {
 	GE_ADDON_ATTACH,
 	GE_ADDON_DETACH,
 	GE_ADDON_CHANGE,
+	GE_INSTALL_UPGRADE,
 	
 	GE_GRENADE_EXPLODE,
 	GE_INV_ACTION,				//a action beign taken on inventory

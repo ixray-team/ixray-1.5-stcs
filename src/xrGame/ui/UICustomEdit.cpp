@@ -21,6 +21,7 @@ CUICustomEdit::CUICustomEdit()
 	m_dx_cur       = 0.0f;
 	m_read_mode    = false;
 	m_force_update = true;
+	m_last_key_state_time = 0;
 }	
 
 
@@ -168,12 +169,19 @@ bool  CUICustomEdit::OnKeyboardHold(int dik)
 
 void CUICustomEdit::Update()
 {
-// 	if ( ec().need_update() )
-// 	{
-// 		inherited::SetText( ec().str_edit() );
-// 	}
-
 	ec().on_frame();
+
+	if ( !ec().get_key_state( text_editor::ks_force ) )
+	{
+		m_last_key_state_time = Device.dwTimeGlobal;
+	}
+	else
+	{
+		if ( m_last_key_state_time + 7000 < Device.dwTimeGlobal ) // 7 sec
+		{
+			ec().reset_key_state();
+		}
+	}
 
 	inherited::Update();
 }
@@ -246,6 +254,7 @@ void  CUICustomEdit::Draw()
 
 void CUICustomEdit::Show( bool status )
 {
+	ec().reset_key_state();
 	m_force_update = true;
 	inherited::Show( status );
 }

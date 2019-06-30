@@ -28,7 +28,13 @@ void xrLC_GlobalData	::destroy_vertex	(Vertex* &f)
 	_VertexPool.destroy( f );
 }
 
-
+void xrLC_GlobalData	::gl_mesh_clear	()
+{
+	_g_vertices.clear();
+	_g_faces.clear();
+	_VertexPool.clear();
+	_FacePool.clear();
+}
 
 
 

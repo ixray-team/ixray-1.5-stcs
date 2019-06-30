@@ -39,6 +39,7 @@
 
 #define		r2_RT_smap_surf		"$user$smap_surf"		// --- directional
 #define		r2_RT_smap_depth	"$user$smap_depth"		// ---directional
+#define		r2_RT_smap_depth_minmax	"$user$smap_depth_minmax"	
 
 #define		r2_material			"$user$material"		// ---
 #define		r2_ds2_fade			"$user$ds2_fade"		// ---
@@ -89,6 +90,7 @@ const		u32					LUMINANCE_size		= 16	;
 #define		SE_SUN_NEAR			0
 #define		SE_SUN_FAR			1
 #define		SE_SUN_LUMINANCE	2
+#define		SE_SUN_NEAR_MINMAX	3
 //	For rain R3 rendering
 #define		SE_SUN_RAIN_SMAP	3
 

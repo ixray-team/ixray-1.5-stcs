@@ -205,13 +205,21 @@ void CGameObject::OnEvent		(NET_Packet& P, u16 type)
 		break;
 	case GE_DESTROY:
 		{
-			if(H_Parent())
+			if ( H_Parent() )
 			{
-				Msg("GE_DESTROY arrived, but H_Parent() exist. object[%d][%s] parent[%d][%s] [%d]", 
-					ID(), cName().c_str(),
-					H_Parent()->ID(), H_Parent()->cName().c_str(),
-					Device.dwFrame);
+				Msg( "! ERROR (GameObject): GE_DESTROY arrived to object[%d][%s], that has parent[%d][%s], frame[%d]",
+					ID(), cNameSect().c_str(),
+					H_Parent()->ID(), H_Parent()->cName().c_str(), Device.dwFrame );
+				
+				// This object will be destroy on call function <H_Parent::Destroy>
+				// or it will be call <H_Parent::Reject>  ==>  H_Parent = NULL
+				// !!! ___ it is necessary to be check!
+				break;
 			}
+#ifdef MP_LOGGING
+			Msg("--- Object: GE_DESTROY of [%d][%s]", ID(), cNameSect().c_str());
+#endif // MP_LOGGING
+
 			setDestroy		(TRUE);
 //			MakeMeCrow		();
 		}

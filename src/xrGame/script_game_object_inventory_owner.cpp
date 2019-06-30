@@ -385,12 +385,12 @@ void CScriptGameObject::TransferItem(CScriptGameObject* pItem, CScriptGameObject
 
 	// выбросить у себя 
 	NET_Packet						P;
-	CGameObject::u_EventGen			(P,GE_OWNERSHIP_REJECT, object().ID());
+	CGameObject::u_EventGen			(P,GE_TRADE_SELL, object().ID());
 	P.w_u16							(pIItem->object().ID());
 	CGameObject::u_EventSend		(P);
 
 	// отдать партнеру
-	CGameObject::u_EventGen			(P,GE_OWNERSHIP_TAKE, pForWho->object().ID());
+	CGameObject::u_EventGen			(P,GE_TRADE_BUY, pForWho->object().ID());
 	P.w_u16							(pIItem->object().ID());
 	CGameObject::u_EventSend		(P);
 }

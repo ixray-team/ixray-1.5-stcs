@@ -10,6 +10,7 @@
 #include "xrMessages.h"
 #include "xrServer_Objects_ALife_Items.h"
 #include "clsid_game.h"
+#include "object_broker.h"
 
 #ifndef XRGAME_EXPORTS
 #	include "bone.h"
@@ -83,6 +84,7 @@ CSE_ALifeInventoryItem::~CSE_ALifeInventoryItem	()
 void CSE_ALifeInventoryItem::STATE_Write	(NET_Packet &tNetPacket)
 {
 	tNetPacket.w_float			(m_fCondition);
+	save_data					(m_upgrades, tNetPacket);
 	State.position				= base()->o_Position;
 }
 
@@ -91,6 +93,11 @@ void CSE_ALifeInventoryItem::STATE_Read		(NET_Packet &tNetPacket, u16 size)
 	u16 m_wVersion = base()->m_wVersion;
 	if (m_wVersion > 52)
 		tNetPacket.r_float		(m_fCondition);
+
+	if (m_wVersion > 123)
+	{
+		load_data				(m_upgrades, tNetPacket);
+	}
 
 	State.position				= base()->o_Position;
 }
@@ -284,6 +291,22 @@ u32 CSE_ALifeInventoryItem::update_rate		() const
 {
 	return						(1000);
 }
+
+bool CSE_ALifeInventoryItem::has_upgrade( const shared_str& upgrade_id )
+{
+	return ( std::find( m_upgrades.begin(), m_upgrades.end(), upgrade_id ) != m_upgrades.end() );
+}
+
+void CSE_ALifeInventoryItem::add_upgrade( const shared_str& upgrade_id )
+{
+	if ( !has_upgrade( upgrade_id ) )
+	{
+		m_upgrades.push_back( upgrade_id );
+		return;
+	}
+	FATAL( make_string( "Can`t add existent upgrade (%s)!", upgrade_id.c_str() ).c_str() );
+}
+
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItem

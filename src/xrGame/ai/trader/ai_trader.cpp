@@ -191,9 +191,11 @@ void CAI_Trader::OnEvent		(NET_Packet& P, u16 type)
 			{
 				P.r_u16		(id);
 				Obj = Level().Objects.net_Find	(id);
-				bool just_before_destroy	= !P.r_eof() && P.r_u8();
-				Obj->SetTmpPreDestroy				(just_before_destroy);
-				inventory().DropItem(smart_cast<CGameObject*>(Obj), just_before_destroy);
+				bool just_before_destroy		= !P.r_eof() && P.r_u8();
+				bool dont_create_shell			= (type==GE_TRADE_SELL) || just_before_destroy;
+
+				Obj->SetTmpPreDestroy			(just_before_destroy);
+				inventory().DropItem			(smart_cast<CGameObject*>(Obj), dont_create_shell);
 				//if(inventory().DropItem(smart_cast<CGameObject*>(Obj), just_before_destroy)) 
 				//	Obj->H_SetParent(0, just_before_destroy); //moved to DropItem
 			}break;

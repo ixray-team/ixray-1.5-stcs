@@ -198,7 +198,7 @@ void CTorch::Switch	(bool light_on)
 		u16 bi								= pVisual->LL_BoneID(light_trace_bone);
 
 		pVisual->LL_SetBoneVisible			(bi,	light_on,	TRUE);
-		pVisual->CalculateBones				();
+		pVisual->CalculateBones				(TRUE);
 //.		pVisual->LL_SetBoneVisible			(bi,	light_on,	TRUE); //hack
 	}
 }
@@ -487,4 +487,13 @@ void CTorch::afterDetach			()
 void CTorch::renderable_Render()
 {
 	inherited::renderable_Render();
+}
+
+void CTorch::enable(bool value)
+{
+	inherited::enable(value);
+
+	if(!enabled() && m_switched_on)
+		Switch				(false);
+
 }

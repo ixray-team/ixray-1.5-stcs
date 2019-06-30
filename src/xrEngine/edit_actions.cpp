@@ -88,12 +88,13 @@ void type_pair::on_key_press( line_edit_control* const control )
 		string128		buff, code_page;
 		buff[0]			= 0;
 		
-		LPSTR			prev_locale;
-		STRCONCAT		( prev_locale, setlocale( LC_CTYPE, "" ) );
+		setlocale( LC_CTYPE , "" ); // User-default
+
+		// The following 3 lines looks useless
 
 		LPSTR			loc;
 		STRCONCAT		( loc, ".", itoa( GetACP(), code_page, 10 ) );
-		setlocale		( LC_CTYPE, loc );// LC_CTYPE
+		setlocale		( LC_CTYPE , loc );
 
 		if ( pInput->get_dik_name( m_dik, buff, sizeof(buff) ) )
 		{
@@ -105,7 +106,8 @@ void type_pair::on_key_press( line_edit_control* const control )
 				c_shift	= buff[0];
 			}
 		}
-		setlocale( LC_CTYPE, prev_locale ); // restore
+
+		setlocale( LC_CTYPE, "C" );	// restore to ANSI
 
 		if ( control->get_key_state( ks_Shift ) )
 		{

@@ -12,6 +12,8 @@
 #include <direct.h>
 #pragma warning(pop)
 
+#include <exception>
+
 extern bool shared_str_initialized;
 
 #ifdef __BORLANDC__
@@ -23,7 +25,7 @@ extern bool shared_str_initialized;
         static BOOL			bException	= TRUE;
     #   define USE_BUG_TRAP
 #else
-    #   define USE_BUG_TRAP
+//    #   define USE_BUG_TRAP
     #	define DEBUG_INVOKE	__asm int 3
         static BOOL			bException	= FALSE;
 #endif
@@ -175,6 +177,7 @@ void xrDebug::backend	(const char *expression, const char *description, const ch
 	error_after_dialog	= true;
 
 	string4096			assertion_info;
+
 	gather_info			(expression, description, argument0, argument1, file, line, function, assertion_info);
 
 #ifdef USE_OWN_ERROR_MESSAGE_WINDOW
@@ -321,6 +324,8 @@ int out_of_memory_handler	(size_t size)
 
 extern LPCSTR log_name();
 
+XRCORE_API string_path g_bug_report_file;
+
 void CALLBACK PreErrorHandler	(INT_PTR)
 {
 #ifdef USE_BUG_TRAP
@@ -348,6 +353,9 @@ void CALLBACK PreErrorHandler	(INT_PTR)
 	strconcat				(sizeof(temp), temp, log_folder, log_name());
 	BT_AddLogFile			(temp);
 
+	if (*g_bug_report_file)
+		BT_AddLogFile		(g_bug_report_file);
+
 	BT_MakeSnapshot			( 0 );
 #endif // USE_BUG_TRAP
 }
@@ -368,7 +376,7 @@ void SetupExceptionHandler	(const bool &dedicated)
 	BT_SetDialogMessage				(
 		BTDM_INTRO2,
 		"\
-This is XRay Engine crash reporting client. \
+This is X-Ray Engine v1.5 crash reporting client. \
 To help the development process, \
 please Submit Bug or save report and email it manually (button More...).\
 \r\nMany thanks in advance and sorry for the inconvenience."
@@ -377,26 +385,54 @@ please Submit Bug or save report and email it manually (button More...).\
 	BT_SetPreErrHandler		(PreErrorHandler,0);
 	BT_SetAppName			("XRay Engine");
 	BT_SetReportFormat		(BTRF_TEXT);
-	BT_SetFlags				(BTF_DETAILEDMODE | /**BTF_EDIETMAIL | /**/BTF_ATTACHREPORT /**| BTF_LISTPROCESSES /**| BTF_SHOWADVANCEDUI /**| BTF_SCREENCAPTURE/**/);
-	BT_SetDumpType			(
-		MiniDumpWithDataSegs |
-//		MiniDumpWithFullMemory |
-//		MiniDumpWithHandleData |
-//		MiniDumpFilterMemory |
-//		MiniDumpScanMemory |
-//		MiniDumpWithUnloadedModules |
-#ifndef _EDITOR
-		MiniDumpWithIndirectlyReferencedMemory |
-#endif // _EDITOR
-//		MiniDumpFilterModulePaths |
-//		MiniDumpWithProcessThreadData |
-//		MiniDumpWithPrivateReadWriteMemory |
-//		MiniDumpWithoutOptionalData |
-//		MiniDumpWithFullMemoryInfo |
-//		MiniDumpWithThreadInfo |
-//		MiniDumpWithCodeSegs |
-		0
-	);
+	BT_SetFlags				(/**/BTF_DETAILEDMODE | /**BTF_EDIETMAIL | /**/BTF_ATTACHREPORT /**| BTF_LISTPROCESSES /**| BTF_SHOWADVANCEDUI /**| BTF_SCREENCAPTURE/**/);
+
+	u32 const minidump_flags	=
+#ifndef MASTER_GOLD
+		(
+			MiniDumpWithDataSegs |
+//			MiniDumpWithFullMemory |
+//			MiniDumpWithHandleData |
+//			MiniDumpFilterMemory |
+//			MiniDumpScanMemory |
+//			MiniDumpWithUnloadedModules |
+#	ifndef _EDITOR
+			MiniDumpWithIndirectlyReferencedMemory |
+#	endif // _EDITOR
+//			MiniDumpFilterModulePaths |
+//			MiniDumpWithProcessThreadData |
+//			MiniDumpWithPrivateReadWriteMemory |
+//			MiniDumpWithoutOptionalData |
+//			MiniDumpWithFullMemoryInfo |
+//			MiniDumpWithThreadInfo |
+//			MiniDumpWithCodeSegs |
+			0
+		);
+#else // #ifndef MASTER_GOLD
+		!dedicated ?
+		MiniDumpNoDump :
+		(
+			MiniDumpWithDataSegs |
+//			MiniDumpWithFullMemory |
+//			MiniDumpWithHandleData |
+//			MiniDumpFilterMemory |
+//			MiniDumpScanMemory |
+//			MiniDumpWithUnloadedModules |
+#	ifndef _EDITOR
+			MiniDumpWithIndirectlyReferencedMemory |
+#	endif // _EDITOR
+//			MiniDumpFilterModulePaths |
+//			MiniDumpWithProcessThreadData |
+//			MiniDumpWithPrivateReadWriteMemory |
+//			MiniDumpWithoutOptionalData |
+//			MiniDumpWithFullMemoryInfo |
+//			MiniDumpWithThreadInfo |
+//			MiniDumpWithCodeSegs |
+			0
+		);
+#endif // #ifndef MASTER_GOLD
+
+	BT_SetDumpType			(minidump_flags);
 	BT_SetSupportEMail		("cs-crash-report@stalker-game.com");
 //	BT_SetSupportServer		("localhost", 9999);
 //	BT_SetSupportURL		("www.gsc-game.com");
@@ -656,7 +692,8 @@ LONG WINAPI UnhandledFilter	(_EXCEPTION_POINTERS *pExceptionInfo)
 
 		string4096				assertion_info;
 		
-		gather_info				(
+		Debug.gather_info			(
+		//gather_info				(
 			"<no expression>",
 			"Unexpected application termination",
 			0,
@@ -809,7 +846,7 @@ LONG WINAPI UnhandledFilter	(_EXCEPTION_POINTERS *pExceptionInfo)
 #ifdef USE_BUG_TRAP
 		BT_SetTerminate					();
 #else // USE_BUG_TRAP
-		std::set_terminate				(_terminate);
+		//std::set_terminate				(_terminate);
 #endif // USE_BUG_TRAP
 
 		_set_abort_behavior				(0,_WRITE_ABORT_MSG | _CALL_REPORTFAULT);
@@ -836,6 +873,8 @@ LONG WINAPI UnhandledFilter	(_EXCEPTION_POINTERS *pExceptionInfo)
 
     void	xrDebug::_initialize		(const bool &dedicated)
     {
+		*g_bug_report_file				= 0;
+
 		debug_on_thread_spawn			();
 
 

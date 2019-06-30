@@ -49,6 +49,9 @@ public:
 			void	Switch				(bool light_on);
 
 	virtual bool	can_be_attached		() const;
+
+	//CAttachableItem
+	virtual	void				enable					(bool value);
  
 public:
 			void	SwitchNightVision		  ();

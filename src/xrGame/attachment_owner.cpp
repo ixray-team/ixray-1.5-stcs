@@ -82,7 +82,7 @@ void CAttachmentOwner::attach(CInventoryItem *inventory_item)
 	xr_vector<CAttachableItem*>::const_iterator	I = m_attached_objects.begin();
 	xr_vector<CAttachableItem*>::const_iterator	E = m_attached_objects.end();
 	for ( ; I != E; ++I) {
-		if( (*I)->item().object().ID() != inventory_item->object().ID() )
+		if( (*I)->item().object().ID() == inventory_item->object().ID() )
 			return; //already attached, fake, I'll repair It
 //		VERIFY								((*I)->ID() != inventory_item->object().ID());
 	}

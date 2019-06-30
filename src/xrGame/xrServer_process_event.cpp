@@ -194,6 +194,11 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 				if (C) e_src = C->owner;
 			};
 			VERIFY				(e_src);
+			if (!e_src)
+			{
+				Msg("! ERROR: SV: src killer not exist.");
+				return;
+			}
 //			R_ASSERT2			(e_dest && e_src, "Killer or/and being killed are offline or not exist at all :(");
 #ifndef MASTER_GOLD
 			if (game->Type() != eGameIDSingle)
@@ -236,6 +241,17 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 	case GE_CHANGE_POS:
 		{			
 			SendTo(SV_Client->ID, P, net_flags(TRUE, TRUE));
+		}break;
+	case GE_INSTALL_UPGRADE:
+		{
+			shared_str				upgrade_id;
+			P.r_stringZ				( upgrade_id );
+			CSE_ALifeInventoryItem* iitem = smart_cast<CSE_ALifeInventoryItem*>( receiver );
+			if ( !iitem )
+			{
+				break;
+			}
+			iitem->add_upgrade		( upgrade_id );
 		}break;
 
 	case GEG_PLAYER_DISABLE_SPRINT:

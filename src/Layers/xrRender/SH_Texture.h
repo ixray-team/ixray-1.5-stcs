@@ -55,6 +55,7 @@ private:
 #ifdef	USE_DX10
 	void								Apply			(u32 dwStage);
 	void								ProcessStaging();
+	D3D10_USAGE							GetUsage();
 #endif	//	USE_DX10
 
 	//	Class data

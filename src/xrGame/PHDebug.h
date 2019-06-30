@@ -136,7 +136,13 @@ void DBG_DrawFrameStart( );
 void PH_DBG_Render( );
 void PH_DBG_Clear( );
 LPCSTR PH_DBG_ObjectTrackName( );
+////////////////////////////////////////////////
+std::string dump_string( LPCSTR name, const Fvector &v );
+std::string dump_string( LPCSTR name, const Fmatrix &form );
+void dump( LPCSTR name, const Fmatrix &form );
+void dump( LPCSTR name, const Fvector &v );
 
+/////////////////////////////////////////////////
 void DBG_PH_NetRelcase( CObject* obj );
 
 

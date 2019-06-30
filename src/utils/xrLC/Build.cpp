@@ -139,11 +139,16 @@ void CBuild::Light_prepare()
 
 
 //.#define CFORM_ONLY
-
+#ifdef LOAD_GL_DATA
+void net_light ();
+#endif
 void CBuild::Run	(LPCSTR P)
 {
 	lc_global_data()->initialize();
-
+#ifdef LOAD_GL_DATA
+	net_light ();
+	return;
+#endif
 	//****************************************** Open Level
 	strconcat					(sizeof(path),path,P,"\\")	;
 	string_path					lfn				;
@@ -233,8 +238,7 @@ void CBuild::Run	(LPCSTR P)
 	Phase						("LIGHT: Starting MU...");
 	mem_Compact					();
 	Light_prepare				();
-	mu_base.start				(xr_new<CMUThread> (0));
-
+	StartMu						();
 	//****************************************** Resolve materials
 	FPU::m64r					();
 	Phase						("Resolving materials...");
@@ -259,9 +263,22 @@ void CBuild::Run	(LPCSTR P)
 	IsolateVertices				(TRUE);
 
 	//****************************************** All lighting + lmaps building and saving
-	Light						();
+#ifdef NET_CMP
+	mu_base.wait				(500);
+	mu_secondary.wait			(500);
+#endif
 
-	//****************************************** Merge geometry
+	Light						();
+	RunAfterLight				( fs );
+
+}
+void	CBuild::StartMu	()
+{
+  mu_base.start				(xr_new<CMUThread> (0));
+}
+void CBuild::	RunAfterLight			( IWriter* fs	)
+{
+ 	//****************************************** Merge geometry
 	FPU::m64r					();
 	Phase						("Merging geometry...");
 	mem_Compact					();

@@ -42,13 +42,13 @@ u32		R_occlusion::occq_begin		(u32&	ID		)
 	if (!enabled)		return 0;
 
 	//	Igor: prevent release crash if we issue too many queries
-#ifndef	DEBUG
+//#ifndef	DEBUG
 	if (pool.empty())
 	{
 		ID = iInvalidHandle;
 		return 0;
 	}
-#endif	//	DEBUG
+//#endif	//	DEBUG
 
 	RImplementation.stats.o_queries	++;
 	if (!fids.empty())	{

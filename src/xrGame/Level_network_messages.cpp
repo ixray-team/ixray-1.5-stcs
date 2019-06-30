@@ -365,6 +365,10 @@ void CLevel::ClientReceive()
 			{
 				map_data.ReceiveServerMapSync(*P);
 			}break;
+		case M_SV_DIGEST:
+			{
+				SendClientDigestToServer();
+			}break;
 		case M_CHANGE_LEVEL_GAME:
 			{
 				Msg("- M_CHANGE_LEVEL_GAME Received");
@@ -441,15 +445,17 @@ void CLevel::ClientReceive()
 			}break;
 		case M_STATISTIC_UPDATE:
 			{
+				Msg("--- CL: On Update Request");
 				if (!game) break;
 				if (GameID() != eGameIDSingle)
 					Game().m_WeaponUsageStatistic->OnUpdateRequest(P);
 			}break;
-		case M_STATISTIC_UPDATE_RESPOND:
+		case M_STATISTIC_UPDATE_RESPOND: //deprecated, see  xrServer::OnMessage
 			{
+				/*Msg("--- CL: On Update Respond");
 				if (!game) break;
 				if (GameID() != eGameIDSingle)
-					Game().m_WeaponUsageStatistic->OnUpdateRespond(P);
+					Game().m_WeaponUsageStatistic->OnUpdateRespond(P);*/
 			}break;
 		case M_BATTLEYE:
 			{

@@ -447,12 +447,14 @@ void game_cl_mp::TranslateGameMessage	(u32 msg, NET_Packet& P)
 
 void game_cl_mp::ChatSayAll(const shared_str &phrase)
 {
+	s16 team = ModifyTeam(local_player->team)+1;
+
 	NET_Packet	P;	
 	P.w_begin(M_CHAT_MESSAGE);
-	P.w_s16(0);
+	P.w_s16(-1); // -1 = all, 0 = green, 1 = blue
 	P.w_stringZ(local_player->getName());
 	P.w_stringZ(phrase.c_str());
-	P.w_s16(local_player->team);
+	P.w_s16(team);
 	u_EventSend(P);
 }
 
@@ -460,13 +462,14 @@ void game_cl_mp::ChatSayAll(const shared_str &phrase)
 
 void game_cl_mp::ChatSayTeam(const shared_str &phrase)
 {
+	s16 team = ModifyTeam(local_player->team)+1;
 
 	NET_Packet	P;
 	P.w_begin(M_CHAT_MESSAGE);
-	P.w_s16(local_player->team);
+	P.w_s16(local_player->team); // // -1 = all, 0 = green, 1 = blue
 	P.w_stringZ(local_player->getName());
 	P.w_stringZ(phrase.c_str());
-	P.w_s16(local_player->team);
+	P.w_s16(team);
 	u_EventSend(P);
 }
 
@@ -500,30 +503,31 @@ void game_cl_mp::OnWarnMessage(NET_Packet* P)
 
 void game_cl_mp::OnChatMessage(NET_Packet* P)
 {
-	P->r_s16();
 	shared_str PlayerName;
-	P->r_stringZ(PlayerName);
 	shared_str ChatMsg;
-	P->r_stringZ(ChatMsg);
 	s16 team;
+
+	P->r_s16();
+	P->r_stringZ(PlayerName);
+	P->r_stringZ(ChatMsg);
 	P->r_s16(team);
+
 ///#ifdef DEBUG
 	CStringTable st;
 	switch (team)
 	{
 	case 0: Msg("%s: %s : %s",		*st.translate("mp_chat"), PlayerName.c_str(), ChatMsg.c_str()); break;
 	case 1: Msg("- %s: %s : %s",	*st.translate("mp_chat"), PlayerName.c_str(), ChatMsg.c_str()); break;
-	case 2: Msg("~ %s: %s : %s",	*st.translate("mp_chat"), PlayerName.c_str(), ChatMsg.c_str()); break;
+	case 2: Msg("@ %s: %s : %s",	*st.translate("mp_chat"), PlayerName.c_str(), ChatMsg.c_str()); break;
 	}
 	
 //#endif
 	if(g_dedicated_server)	return;
 
-	int team2 = ModifyTeam(team);
-	if ( team2 < 0 || 2 < team2 )	{ team2 = 0; }
+	if ( team < 0 || 2 < team )	{ team = 0; }
 	
 	LPSTR colPlayerName;
-	STRCONCAT(colPlayerName, Color_Teams[team2], PlayerName, ":%c[default]");
+	STRCONCAT(colPlayerName, Color_Teams[team], PlayerName, ":%c[default]");
 	if (Level().CurrentViewEntity() && HUD().GetUI())
 		HUD().GetUI()->m_pMessagesWnd->AddChatMessage(ChatMsg, colPlayerName);
 };

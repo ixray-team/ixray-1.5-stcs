@@ -153,5 +153,12 @@ void CUIRankFaction::update_info( u8 sn )
 			m_relation_minus->SetProgressPos( 0.0f );
 		}
 	}
+	else
+	{
+		m_relation_minus->SetProgressPos( 0.0f );
+		m_relation_center_minus->SetProgressPos( 0.0f );
+		m_relation_center_plus->SetProgressPos( 0.0f );
+		m_relation_plus->SetProgressPos( 0.0f );
+	}
 
 }

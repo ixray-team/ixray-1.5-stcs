@@ -491,8 +491,11 @@ void CTexture::Load		()
 				//pSurface = ::RImplementation.texture_load	(*cName,mem);
 				pSurface = ::RImplementation.texture_load	(*cName,mem, true);
 
-				flags.bLoadedAsStaging = TRUE;
-				bCreateView = false;
+				if (GetUsage() == D3D10_USAGE_STAGING)
+				{
+					flags.bLoadedAsStaging = TRUE;
+					bCreateView = false;
+				}
 
 				// Calc memory usage and preload into vid-mem
 				if (pSurface) 
@@ -555,6 +558,51 @@ void CTexture::desc_update	()
 			T->GetDesc(&desc);
 		}
 	}
+}
+
+D3D10_USAGE CTexture::GetUsage()
+{
+	D3D10_USAGE	res = D3D10_USAGE_DEFAULT;
+
+	if (pSurface)
+	{
+		D3D10_RESOURCE_DIMENSION	type;
+		pSurface->GetType(&type);
+		switch(type)
+		{
+		case D3D10_RESOURCE_DIMENSION_TEXTURE1D:
+			{
+				ID3D10Texture1D*	T	= (ID3D10Texture1D*)pSurface;
+				D3D10_TEXTURE1D_DESC	descr;
+				T->GetDesc(&descr);
+				res = descr.Usage;
+			}
+			break;
+
+		case D3D10_RESOURCE_DIMENSION_TEXTURE2D:
+			{
+				ID3D10Texture2D*	T	= (ID3D10Texture2D*)pSurface;
+				D3D10_TEXTURE2D_DESC	descr;
+				T->GetDesc(&descr);
+				res = descr.Usage;
+			}
+			break;
+
+		case D3D10_RESOURCE_DIMENSION_TEXTURE3D:
+			{
+				ID3D10Texture3D*	T	= (ID3D10Texture3D*)pSurface;
+				D3D10_TEXTURE3D_DESC	descr;
+				T->GetDesc(&descr);
+				res = descr.Usage;
+			}
+			break;
+
+		default:
+			VERIFY(!"Unknown texture format???");
+		}
+	}
+
+	return res;
 }
 
 void CTexture::video_Play		(BOOL looped, u32 _time)	

@@ -341,10 +341,15 @@ bool Manager::upgrade_install( CInventoryItem& item, shared_str const& upgrade_i
 	
 	if ( res == result_ok )
 	{
+		if ( !loading )
+		{
+			item.pre_install_upgrade();
+		}
+
 		if ( item.install_upgrade( upgrade->section() ) )
 		{
 			upgrade->run_effects( loading );
-			item.add_upgrade( upgrade_id );
+			item.add_upgrade( upgrade_id, loading );
 
 			if ( g_upgrades_log == 1 )
 			{

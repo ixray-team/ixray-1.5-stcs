@@ -65,8 +65,7 @@ protected:
 	virtual		bool				Player_Check_Rank		(game_PlayerState* ps);
 	virtual		void				DestroyAllPlayerItems(ClientID id_who);
 
-	bool		assign_rp_tmp		(game_PlayerState* ps_who, xr_vector<RPoint>& points_vec, xr_vector<u32>& dest, xr_vector<u32>& rpIDEnemy, xr_vector<u32>& EnemyIt,  bool use_safe_dist);
-
+	bool		assign_rp_tmp		(game_PlayerState* ps_who, xr_vector<RPoint>& points_vec, xr_vector<u32>& dest, xr_vector<u32>& rpIDEnemy, xr_vector<ClientID>& EnemyIt,  bool use_safe_dist);
 public:
 
 									game_sv_ArtefactHunt	(){m_type = eGameIDArtefactHunt;}
@@ -143,5 +142,4 @@ public:
 	//  [7/5/2005]
 protected:
 	virtual		void				WriteGameState			(CInifile& ini, LPCSTR sect, bool bRoundResult);
-
 };

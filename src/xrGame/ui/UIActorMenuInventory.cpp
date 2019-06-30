@@ -138,6 +138,41 @@ void CUIActorMenu::DropAllCurrentItem()
 
 		SendEvent_Item_Drop( CurrentIItem(), m_pActorInvOwner->object_id() );
 	}
+	SetCurrentItem								(NULL);
+}
+
+bool CUIActorMenu::DropAllItemsFromRuck( bool quest_force )
+{
+	if ( !IsShown() || !m_pInventoryBagList || m_currMenuMode != mmInventory )
+	{
+		return false;
+	}
+
+	u32 const ci_count = m_pInventoryBagList->ItemsCount();
+	for ( u32 i = 0; i < ci_count; ++i )
+	{
+		CUICellItem* ci = m_pInventoryBagList->GetItemIdx( i );
+		VERIFY( ci );
+		PIItem item = (PIItem)ci->m_pData;
+		VERIFY( item );
+
+		if ( !quest_force && item->IsQuestItem() )
+		{
+			continue;
+		}
+	
+		u32 const cnt = ci->ChildsCount();
+		for( u32 j = 0; j < cnt; ++j )
+		{
+			CUICellItem*	child_ci   = ci->PopChild(NULL);
+			PIItem			child_item = (PIItem)child_ci->m_pData;
+			SendEvent_Item_Drop( child_item, m_pActorInvOwner->object_id() );
+		}
+		SendEvent_Item_Drop( item, m_pActorInvOwner->object_id() );
+	}
+	
+	SetCurrentItem( NULL );
+	return true;
 }
 
 bool FindItemInList(CUIDragDropListEx* lst, PIItem pItem, CUICellItem*& ci_res)

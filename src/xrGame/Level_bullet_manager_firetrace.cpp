@@ -151,7 +151,7 @@ BOOL CBulletManager::test_callback(const collide::ray_defs& rd, CObject* object,
 void CBulletManager::FireShotmark (SBullet* bullet, const Fvector& vDir, const Fvector &vEnd, collide::rq_result& R, u16 target_material, const Fvector& vNormal, bool ShowMark)
 {
 	SGameMtlPair* mtl_pair	= GMLib.GetMaterialPair(bullet->bullet_material_idx, target_material);
-	Fvector particle_dir;
+	Fvector particle_dir	= vNormal;
 
 	if (R.O)
 	{
@@ -180,7 +180,6 @@ void CBulletManager::FireShotmark (SBullet* bullet, const Fvector& vDir, const F
 	else 
 	{
 		//вычислить нормаль к пораженной поверхности
-		particle_dir		= vNormal;
 		Fvector*	pVerts	= Level().ObjectSpace.GetStaticVerts();
 		CDB::TRI*	pTri	= Level().ObjectSpace.GetStaticTris()+R.element;
 
@@ -210,9 +209,6 @@ void CBulletManager::FireShotmark (SBullet* bullet, const Fvector& vDir, const F
 
 	if( (ps_name && ShowMark) || (bullet->flags.explosive && bStatic) )
 	{
-		if (particle_dir.magnitude() < EPS_L)
-			particle_dir.set	(0.f, 1.f, 0.f);
-
 		VERIFY2					(
 			(particle_dir.x*particle_dir.x+particle_dir.y*particle_dir.y+particle_dir.z*particle_dir.z) > flt_zero,
 			make_string("[%f][%f][%f]", VPUSH(particle_dir))

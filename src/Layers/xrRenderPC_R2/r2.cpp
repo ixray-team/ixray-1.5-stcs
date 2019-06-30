@@ -191,12 +191,17 @@ void					CRender::create					()
 	else					o.albedo_wo		= TRUE	;
 
 	// nvstencil on NV40 and up
+	// nvstencil should be enabled only for GF 6xxx and GF 7xxx
+	// if hardware support early stencil (>= GF 8xxx) stencil reset trick only
+	// slows down.
 	o.nvstencil			= FALSE;
 	if ((HW.Caps.id_vendor==0x10DE)&&(HW.Caps.id_device>=0x40))	
 	{
 		//o.nvstencil = HW.support	((D3DFORMAT)MAKEFOURCC('R','A','W','Z'), D3DRTYPE_SURFACE, 0);
-		o.nvstencil = TRUE;
+		//o.nvstencil = TRUE;
+		o.nvstencil = ( S_OK==HW.pD3D->CheckDeviceFormat(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, D3DFMT_X8R8G8B8 , 0, D3DRTYPE_TEXTURE, (D3DFORMAT MAKEFOURCC('R','A','W','Z'))) );
 	}
+
 	if (strstr(Core.Params,"-nonvs"))		o.nvstencil	= FALSE;
 
 	// nv-dbt

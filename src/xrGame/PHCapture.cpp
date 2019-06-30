@@ -343,10 +343,18 @@ void CPHCapture::object_contactCallbackFun(bool& do_colide,bool bo1,dContact& c,
 
 	}
 }
-void CPHCapture::OnNetDestroyObject(CObject* O)
+void CPHCapture::RemoveConnection(CObject* O)
 {
 	if(static_cast<CObject*>(m_taget_object)==O)
 	{
 		Deactivate();
 	}
+}
+
+void	CPHCapture::NetRelcase		(CPhysicsShell *s)
+{
+	VERIFY( s );
+	VERIFY( s->get_ElementByStoreOrder(0) );
+	VERIFY( s->get_ElementByStoreOrder(0)->PhysicsRefObject() );
+	RemoveConnection(s->get_ElementByStoreOrder(0)->PhysicsRefObject());
 }

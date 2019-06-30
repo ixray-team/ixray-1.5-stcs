@@ -18,6 +18,7 @@ extern "C"
 	EXPORT_FN_DECL(void, qr2_register_natneg_callback, (qr2_t qrec, qr2_natnegcallback_t nncallback));
 	EXPORT_FN_DECL(void, qr2_register_clientmessage_callback, (qr2_t qrec, qr2_clientmessagecallback_t cmcallback));
 	EXPORT_FN_DECL(void, qr2_register_publicaddress_callback, (qr2_t qrec, qr2_publicaddresscallback_t pacallback));
+	EXPORT_FN_DECL(void, qr2_register_denyresponsetoip_callback, (qr2_t qrec, qr2_denyqr2responsetoipcallback_t dertoipcallback));
 
 //	EXPORT_FN_DECL(qr2_error_t, qr2_init, (/*[out]*/qr2_t *qrec, const gsi_char *ip, int baseport, const gsi_char *gamename, const gsi_char *secret_key,
 	EXPORT_FN_DECL(qr2_error_t, qr2_init, (/*[out]*/qr2_t *qrec, const gsi_char *ip, int baseport, 

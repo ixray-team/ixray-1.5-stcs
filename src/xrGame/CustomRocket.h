@@ -163,4 +163,7 @@ protected:
 	virtual void		StopFlyParticles();
 
 	virtual void		UpdateParticles();
+#ifdef DEBUG
+	virtual void		deactivate_physics_shell ();
+#endif
 };

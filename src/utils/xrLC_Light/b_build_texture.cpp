@@ -13,7 +13,10 @@ struct b_texture
 STextureParams	THM;
 */
 
-
+void clear( b_BuildTexture &texture )
+{
+	xr_free(texture.pSurface);
+}
 
 void	b_BuildTexture::	read	(INetReader	&r )
 {

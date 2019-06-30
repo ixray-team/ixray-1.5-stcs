@@ -163,6 +163,8 @@ public:
 	const shared_str& GetScopeName				()		{return m_sScopeName;}
 	const shared_str& GetSilencerName			()		{return m_sSilencerName;}
 
+	IC void	ForceUpdateAmmo						()		{ m_dwAmmoCurrentCalcFrame = 0; }
+
 	u8		GetAddonsState						()		const		{return m_flagsAddOnState;};
 	void	SetAddonsState						(u8 st)	{m_flagsAddOnState=st;}//dont use!!! for buy menu only!!!
 protected:
@@ -436,7 +438,7 @@ public:
 	virtual BOOL			ParentIsActor				();
 	
 private:
-			bool			install_upgrade_ammo_class	( LPCSTR section, bool test );
+	virtual	bool			install_upgrade_ammo_class	( LPCSTR section, bool test );
 			bool			install_upgrade_disp		( LPCSTR section, bool test );
 			bool			install_upgrade_hit			( LPCSTR section, bool test );
 			bool			install_upgrade_addon		( LPCSTR section, bool test );

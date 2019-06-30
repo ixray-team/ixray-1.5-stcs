@@ -47,33 +47,30 @@ public:
 	void							err_save	();
 
 	Fbox							scene_bb;
-	
-	xr_vector<b_material>			&materials()	;
 	xr_vector<b_shader>				shader_render;
 	xr_vector<b_shader>				shader_compile;
-	xr_vector<b_BuildTexture>		&textures()	;
-
-	
-
+    xr_vector<b_light_dynamic>		L_dynamic;
 	xr_vector<b_glow>				glows;
 	xr_vector<b_portal>				portals;
 	xr_vector<b_lod>				lods;
+	string_path						path;
 
+	xr_vector<b_material>			&materials()	;
+	xr_vector<b_BuildTexture>		&textures()	;
 	base_lighting					&L_static();
-	xr_vector<b_light_dynamic>		L_dynamic;
-	
 	xr_vector<xrMU_Model*>			&mu_models();
 	xr_vector<xrMU_Reference*>		&mu_refs();
 
 	Shader_xrLC_LIB					&shaders();
-	string_path						path;
+
 
 	void	mem_Compact				();
 	void	mem_CompactSubdivs		();
 public:
 	void	Load					(const b_params& P, const IReader&  fs);
 	void	Run						(LPCSTR path);
-
+	void	StartMu					();
+	void	RunAfterLight			( IWriter* fs	);
 	void	Tesselate				();
 	void	PreOptimize				();
 	void	CorrectTJunctions		();
@@ -98,7 +95,9 @@ public:
 	void	ImplicitLighting		();
 	void	Light_prepare			();
 	void	Light					();
-	void	Light_R2				();
+	void	LMapsLocal				();
+	void	LMaps					();
+	//void	Light_R2				();
 	void	LightVertex				();
 	void	xrPhase_MergeLM			();
 	void	xrPhase_MergeGeometry	();

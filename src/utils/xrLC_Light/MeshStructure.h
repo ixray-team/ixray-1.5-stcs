@@ -248,11 +248,26 @@ IC  void   _destroy_vertex( typeVertex* &v, bool unregister )
 
 
 template<typename typeVertex>
+struct remove_pred
+{
+	bool operator() ( typeVertex* &v )
+	{
+		if (v && v->m_adjacents.empty())
+		{
+			_destroy_vertex( v, false );
+			return true;
+		}
+		return false;
+	}
+} ;
+
+template<typename typeVertex>
 IC void isolate_vertices(BOOL bProgress, xr_vector<typeVertex*> &vertices )
 {
 	if (bProgress)		Status		("Isolating vertices...");
 	//g_bUnregister		= false;
 	u32 verts_old		= vertices.size();
+/*
 	for (int it=0; it<int(vertices.size()); ++it)	
 	{
 		if (bProgress)	
@@ -263,9 +278,15 @@ IC void isolate_vertices(BOOL bProgress, xr_vector<typeVertex*> &vertices )
 			
 	}
 	xr_vector<typeVertex*>::iterator	_end	= std::remove	(vertices.begin(),vertices.end(),(typeVertex*)0);
+*/
+	remove_pred<typeVertex> rp;
+	xr_vector<typeVertex*>::iterator	_end	= std::remove_if	(vertices.begin(),vertices.end(),rp);
 	vertices.erase	(_end,vertices.end());
 	//g_bUnregister		= true;
 	Memory.mem_compact	();
+	
+	if (bProgress)	
+			Progress	(1.f);
 
 	u32 verts_new		= vertices.size();
 	u32	_count			= verts_old-verts_new;

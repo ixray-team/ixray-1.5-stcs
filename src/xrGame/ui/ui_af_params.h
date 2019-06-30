@@ -19,6 +19,7 @@ public:
 protected:
 	UIArtefactParamItem*	m_immunity_item[ALife::infl_max_count];
 	UIArtefactParamItem*	m_restore_item[ALife::eRestoreTypeMax];
+	UIArtefactParamItem*	m_additional_weight;
 
 }; // class CUIArtefactParams
 
@@ -39,5 +40,8 @@ private:
 	CUIStatic*	m_value;
 	float		m_magnitude;
 	bool		m_sign_inverse;
+	shared_str	m_unit_str;
+	shared_str	m_texture_minus;
+	shared_str	m_texture_plus;
 
 }; // class UIArtefactParamItem

@@ -157,8 +157,8 @@ void CUIActorMenu::SetMenuMode(EMenuMode mode)
 
 	if ( m_pActorInvOwner )
 	{
-		UpdateActor();
 		UpdateOutfit();
+		UpdateActor();
 	}
 	UpdateButtonsLayout();
 }
@@ -456,7 +456,10 @@ bool CUIActorMenu::OnItemDbClick(CUICellItem* itm)
 	{
 		case iActorSlot:
 		{
-			ToBag( itm, false );
+			if ( m_currMenuMode == mmDeadBodySearch )
+				ToDeadBodyBag	( itm, false );
+			else
+				ToBag			( itm, false );
 			break;
 		}
 		case iActorBag:
@@ -464,6 +467,11 @@ bool CUIActorMenu::OnItemDbClick(CUICellItem* itm)
 			if ( m_currMenuMode == mmTrade )
 			{
 				ToActorTrade( itm, false );
+				break;
+			}else
+			if ( m_currMenuMode == mmDeadBodySearch )
+			{
+				ToDeadBodyBag( itm, false );
 				break;
 			}
 			if ( TryUseItem( itm ) )
@@ -540,8 +548,8 @@ void CUIActorMenu::UpdateItemsPlace()
 
 	if ( m_pActorInvOwner )
 	{
-		UpdateActor();
 		UpdateOutfit();
+		UpdateActor();
 	}
 }
 
@@ -631,7 +639,7 @@ bool CUIActorMenu::OnKeyboard(int dik, EUIMessages keyboard_action)
 		{
 
 			SendEvent_Item_Drop		(CurrentIItem(), m_pActorInvOwner->object_id());
-			//DropCurrentItem(false);
+			SetCurrentItem			(NULL);
 		}
 		return true;
 	}

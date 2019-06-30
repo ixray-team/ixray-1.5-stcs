@@ -19,3 +19,8 @@ void UVtri ::write( IWriter	&w ) const
 	VERIFY( write_faces );
 	write_faces->write( w, owner );
 }
+
+bool	UVtri::similar	( const UVtri &uv, float eps/*eps = EPS*/ ) const
+{
+	return uv.owner == owner && _TCF::similar( uv, eps );
+}

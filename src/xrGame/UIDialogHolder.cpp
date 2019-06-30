@@ -19,7 +19,7 @@ bool dlgItem::operator < (const dlgItem& itm) const
 
 bool operator == (const dlgItem& i1, const dlgItem& i2)
 {
-	return i1.wnd == i2.wnd;
+	return (i1.wnd == i2.wnd) && (i1.enabled == i2.enabled);
 }
 
 recvItem::recvItem(CUIDialogWnd* r)
@@ -121,25 +121,30 @@ void CDialogHolder::StopMenu (CUIDialogWnd* pDialog)
 
 void CDialogHolder::AddDialogToRender(CUIWindow* pDialog)
 {
-	dlgItem itm(pDialog);
-	xr_vector<dlgItem>::iterator it = std::find(m_dialogsToRender.begin(),m_dialogsToRender.end(),itm);
-	if( (it == m_dialogsToRender.end()) || ( it != m_dialogsToRender.end() && (*it).enabled==false)  )
-	{
-		if(m_b_in_update)
-			m_dialogsToRender_new.push_back(itm);
-		else
-			m_dialogsToRender.push_back(itm);
+	dlgItem itm		(pDialog);
+	itm.enabled		= true;
 
-		pDialog->Show(true);
-	}
+	bool bAdd		= (m_dialogsToRender_new.end() == std::find(m_dialogsToRender_new.begin(),m_dialogsToRender_new.end(),itm));
+	if(!bAdd)		return;
+	
+	bAdd			= (m_dialogsToRender.end() == std::find(m_dialogsToRender.begin(),m_dialogsToRender.end(),itm));
+	if(!bAdd)		return;
+
+	if(m_b_in_update)
+		m_dialogsToRender_new.push_back(itm);
+	else
+		m_dialogsToRender.push_back(itm);
+
+	pDialog->Show(true);
 }
 
 void CDialogHolder::RemoveDialogToRender(CUIWindow* pDialog)
 {
-	dlgItem itm(pDialog);
+	dlgItem itm		(pDialog);
+	itm.enabled		= true;
 	xr_vector<dlgItem>::iterator it = std::find(m_dialogsToRender.begin(),m_dialogsToRender.end(),itm);
 
-	if(it != m_dialogsToRender.end())
+	if(it!=m_dialogsToRender.end())
 	{
 		(*it).wnd->Show(false);
 		(*it).wnd->Enable(false);

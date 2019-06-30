@@ -73,13 +73,14 @@ void CUITextBanner::Out(float x, float y, const char *fmt, ...)
 	}
 
 	va_list		Print;                                                                  
-	string256	msg;
+	string512	msg;
 	xr_string buf;
 
 	va_start(Print, fmt);
-		vsprintf(msg, fmt, Print);                   
-		buf += msg;
+		vsprintf_s( msg , fmt , Print );
 	va_end(Print);
+
+	buf += msg;
 
 	R_ASSERT(m_pFont);
 	m_pFont->SetColor(m_Cl);

@@ -1,9 +1,8 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: line_edit_control.cpp
+//	Module 		: os_clipboard.cpp
 //	Created 	: 21.02.2008
-//  Modified 	: 04.03.2008
 //	Author		: Evgeniy Sokolov
-//	Description : line edit control class implementation
+//	Description : os clipboard class implementation
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"

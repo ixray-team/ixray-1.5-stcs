@@ -9,6 +9,9 @@
 #include "igame_level.h"
 #include "igame_persistent.h"
 
+#include "dedicated_server_only.h"
+#include "no_single.h"
+
 #include "xr_input.h"
 #include "xr_ioconsole.h"
 #include "x_ray.h"
@@ -20,7 +23,6 @@
 #include "CopyProtection.h"
 #include "Text_Console.h"
 #include <process.h>
-#include <locale.h>
 
 #include "xrSash.h"
 
@@ -36,11 +38,10 @@ extern	int PASCAL IntroDSHOW_wnd	(HINSTANCE hInstC, HINSTANCE hInstP, LPSTR lpCm
 XRCORE_API	LPCSTR	build_date;
 XRCORE_API	u32		build_id;
 
-//#define NO_SINGLE
-
 #ifdef MASTER_GOLD
 #	define NO_MULTI_INSTANCES
 #endif // #ifdef MASTER_GOLD
+
 
 static LPSTR month_id[12] = {
 	"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"
@@ -121,7 +122,7 @@ void InitEngine		()
 	CheckCopyProtection			( );
 }
 
-ENGINE_API void InitSettings	()
+PROTECT_API void InitSettings	()
 {
 	string_path					fname; 
 	FS.update_path				(fname,"$game_config$","system.ltx");
@@ -135,7 +136,7 @@ ENGINE_API void InitSettings	()
 	pGameIni					= xr_new<CInifile>	(fname,TRUE);
 	CHECK_OR_EXIT				(!pGameIni->sections().empty(),make_string("Cannot find file %s.\nReinstalling application may fix this problem.",fname));
 }
-ENGINE_API void InitConsole	()
+PROTECT_API void InitConsole	()
 {
 #ifdef DEDICATED_SERVER
 	{
@@ -157,7 +158,7 @@ ENGINE_API void InitConsole	()
 	}
 }
 
-ENGINE_API void InitInput		()
+PROTECT_API void InitInput		()
 {
 	BOOL bCaptureInput			= !strstr(Core.Params,"-i");
 
@@ -168,11 +169,12 @@ void destroyInput	()
 	xr_delete					( pInput		);
 }
 
-ENGINE_API void InitSound1		()
+PROTECT_API void InitSound1		()
 {
 	CSound_manager_interface::_create				(0);
 }
-ENGINE_API void InitSound2		()
+
+PROTECT_API void InitSound2		()
 {
 	CSound_manager_interface::_create				(1);
 }
@@ -581,20 +583,27 @@ int APIENTRY WinMain_impl(HINSTANCE hInstance,
 #endif // DEDICATED_SERVER
 
 	if (!IsDebuggerPresent()) {
-		ULONG		HeapFragValue = 2;
-#ifdef DEBUG
-		BOOL result	= 
-#endif // #ifdef DEBUG
-			HeapSetInformation(
-				GetProcessHeap(),
-				HeapCompatibilityInformation,
-				&HeapFragValue,
-				sizeof(HeapFragValue)
-			);
-		VERIFY2		(result, "can't set process heap low fragmentation");
-	}
 
-	setlocale( LC_CTYPE, "" );
+		HMODULE const kernel32	= LoadLibrary("kernel32.dll");
+		R_ASSERT				(kernel32);
+
+		typedef BOOL (__stdcall*HeapSetInformation_type) (HANDLE, HEAP_INFORMATION_CLASS, PVOID, SIZE_T);
+		HeapSetInformation_type const heap_set_information = 
+			(HeapSetInformation_type)GetProcAddress(kernel32, "HeapSetInformation");
+		if (heap_set_information) {
+			ULONG HeapFragValue	= 2;
+#ifdef DEBUG
+			BOOL const result	= 
+#endif // #ifdef DEBUG
+				heap_set_information(
+					GetProcessHeap(),
+					HeapCompatibilityInformation,
+					&HeapFragValue,
+					sizeof(HeapFragValue)
+				);
+			VERIFY2				(result, "can't set process heap low fragmentation");
+		}
+	}
 
 //	foo();
 #ifndef DEDICATED_SERVER
@@ -671,6 +680,12 @@ int APIENTRY WinMain_impl(HINSTANCE hInstance,
 	Core._initialize			("xray",NULL, TRUE, fsgame[0] ? fsgame : NULL);
 	InitSettings				();
 
+	// Adjust player & computer name for Asian
+	if ( pSettings->line_exist( "string_table" , "no_native_input" ) ) {
+			strcpy_s( Core.UserName , sizeof( Core.UserName ) , "Player" );
+			strcpy_s( Core.CompName , sizeof( Core.CompName ) , "Computer" );
+	}
+
 #ifndef DEDICATED_SERVER
 	{
 		damn_keys_filter		filter;
@@ -696,7 +711,8 @@ int APIENTRY WinMain_impl(HINSTANCE hInstance,
 			return 0;
 		}
 
-		LPCSTR sashName = "-sash ";
+		Msg("command line %s", lpCmdLine);
+		LPCSTR sashName = "-openautomate ";
 		if(strstr(lpCmdLine, sashName))
 		{
 			int sz = xr_strlen(sashName);
@@ -904,6 +920,8 @@ void CApplication::OnEvent(EVENT E, u64 P1, u64 P2)
 {
 	if (E==eQuit)
 	{
+		g_SASH.EndBenchmark();
+
 		PostQuitMessage	(0);
 		
 		for (u32 i=0; i<Levels.size(); i++)
@@ -932,7 +950,7 @@ void CApplication::OnEvent(EVENT E, u64 P1, u64 P2)
 					!strstr(op_server, "/alife")
 				)
 			)
-#endif	
+#endif // #ifdef NO_SINGLE
 		{		
 			Console->Execute("main_menu off");
 			Console->Hide();
@@ -1024,7 +1042,7 @@ void CApplication::destroy_loading_shaders()
 
 //u32 calc_progress_color(u32, u32, int, int);
 
-ENGINE_API void CApplication::LoadDraw		()
+PROTECT_API void CApplication::LoadDraw		()
 {
 	if(g_appLoaded)				return;
 	Device.dwFrame				+= 1;
@@ -1097,8 +1115,6 @@ void CApplication::Level_Append		(LPCSTR folder)
 
 void CApplication::Level_Scan()
 {
-#pragma todo("container is created in stack!")
-
 	for (u32 i=0; i<Levels.size(); i++)
 	{
 		xr_free(Levels[i].folder);
@@ -1127,7 +1143,7 @@ void CApplication::Level_Set(u32 L)
 	string_path					temp2;
 	strconcat					(sizeof(temp),temp,"intro\\intro_",Levels[L].folder);
 	temp[xr_strlen(temp)-1] = 0;
-	if (FS.exist(temp2, "$game_textures$", temp, ".dds"))
+	if (FS.exist(temp2, "$game_textures$", temp, ".dds") || FS.exist(temp2, "$level$", temp, ".dds"))
 		//hLevelLogo.create	("font", temp);
 		m_pRender->setLevelLogo(temp);
 	else
@@ -1138,8 +1154,9 @@ void CApplication::Level_Set(u32 L)
 	CheckCopyProtection		();
 }
 
-int CApplication::Level_ID(LPCSTR name, LPCSTR ver)
+int CApplication::Level_ID(LPCSTR name, LPCSTR ver, bool bSet)
 {
+	int result = -1;
 	CLocatorAPI::archives_it it		= FS.m_archives.begin();
 	CLocatorAPI::archives_it it_e	= FS.m_archives.end();
 	bool arch_res					= false;
@@ -1160,19 +1177,26 @@ int CApplication::Level_ID(LPCSTR name, LPCSTR ver)
 	}
 
 	if( arch_res )
-	{
 		Level_Scan							();
-		g_pGamePersistent->OnAssetsChanged	();
-	}
+	
 	string256		buffer;
 	strconcat		(sizeof(buffer),buffer,name,"\\");
 	for (u32 I=0; I<Levels.size(); ++I)
 	{
 		if (0==stricmp(buffer,Levels[I].folder))	
-			return int(I);
+		{
+			result = int(I);	
+			break;
+		}
 	}
 
-	return -1;
+	if(bSet && result!=-1)
+		Level_Set(result);
+
+	if( arch_res )
+		g_pGamePersistent->OnAssetsChanged	();
+
+	return result;
 }
 
 CInifile*  CApplication::GetArchiveHeader(LPCSTR name, LPCSTR ver)

@@ -347,6 +347,12 @@ BOOL CInventoryItem::net_Spawn			(CSE_Abstract* DC)
 
 	//!!!
 	m_fCondition = pSE_InventoryItem->m_fCondition;
+	
+	if ( IsGameTypeSingle() )
+	{
+		net_Spawn_install_upgrades( pSE_InventoryItem->m_upgrades );
+	}
+
 	if (GameID() != eGameIDSingle)
 		object().processing_activate();
 
@@ -371,7 +377,7 @@ void CInventoryItem::save(NET_Packet &packet)
 {
 	packet.w_u8				((u8)m_eItemCurrPlace);
 	packet.w_float			(m_fCondition);
-	save_data				(m_upgrades, packet);
+//--	save_data				(m_upgrades, packet);
 
 	if (object().H_Parent()) {
 		packet.w_u8			(0);
@@ -755,8 +761,8 @@ void CInventoryItem::load(IReader &packet)
 	m_eItemCurrPlace		= (EItemPlace)packet.r_u8();
 	m_fCondition			= packet.r_float();
 
-	load_data( m_upgrades, packet );
-	install_loaded_upgrades();
+//--	load_data( m_upgrades, packet );
+//--	install_loaded_upgrades();
 
 	u8						tmp = packet.r_u8();
 	if (!tmp)
@@ -863,17 +869,17 @@ void CInventoryItem::PH_A_CrPr		()
 		VERIFY(object().Visual());
 		IKinematics *K = object().Visual()->dcast_PKinematics();
 		VERIFY( K );
+		if (!object().PPhysicsShell())
+		{
+			Msg("! ERROR: PhysicsShell is NULL, object [%s][%d]", object().cName().c_str(), object().ID());
+			VERIFY2(0, "physical shell is NULL");
+			return;
+		}
 		if(!object().PPhysicsShell()->isFullActive())
 		{
 			K->CalculateBones_Invalidate();
 			K->CalculateBones(TRUE);
 		}
-		if (!object().PPhysicsShell())
-		{
-			Msg("! ERROR: PhysicsShell is NULL, object [%s][%d]", object().cName().c_str(), object().ID());
-			R_ASSERT2(0, "physical shell is NULL");
-		}
-
 		object().PPhysicsShell()->GetGlobalTransformDynamic(&object().XFORM());
 		K->CalculateBones_Invalidate();
 		K->CalculateBones(TRUE);

@@ -315,7 +315,7 @@ void CHelicopter::DieHelicopter()
 	PPhysicsShell()->set_AngularVel	(m_death_ang_vel);
 	PPhysicsShell()->Enable			();
 	K->CalculateBones_Invalidate	();
-	K->CalculateBones				();
+	K->CalculateBones				(TRUE);
 	setState						(CHelicopter::eDead);
 	m_engineSound.stop				();
 	processing_deactivate			();

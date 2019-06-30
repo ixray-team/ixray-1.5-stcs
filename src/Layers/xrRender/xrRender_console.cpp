@@ -36,8 +36,41 @@ xr_token							qsun_quality_token							[ ]={
 	{ "st_opt_low",					0												},
 	{ "st_opt_medium",				1												},
 	{ "st_opt_high",				2												},
+#ifdef	USE_DX10
+	{ "st_opt_ultra",				3												},
+#endif	//	USE_DX10
 	{ 0,							0												}
 };
+
+u32			ps_r3_msaa				=	0;			//	=	0;
+xr_token							qmsaa_token							[ ]={
+	{ "st_opt_off",					0												},
+	{ "2x",							1												},
+	{ "4x",							2												},
+//	{ "8x",							3												},
+	{ 0,							0												}
+};
+
+u32			ps_r3_msaa_atest		=	0;			//	=	0;
+xr_token							qmsaa__atest_token					[ ]={
+	{ "st_opt_off",					0												},
+	{ "st_opt_atest_msaa_dx10_0",	1												},
+	{ "st_opt_atest_msaa_dx10_1",	2												},
+	{ 0,							0												}
+};
+
+u32			ps_r3_minmax_sm			=	3;			//	=	0;
+xr_token							qminmax_sm_token					[ ]={
+	{ "off",						0												},
+	{ "on",							1												},
+	{ "auto",						2												},
+	{ "autodetect",					3												},
+	{ 0,							0												}
+};
+
+//	“Off”
+//	“DX10.0 style [Standard]”
+//	“DX10.1 style [Higher quality]”
 
 // Common
 extern int			psSkeletonUpdate;
@@ -97,7 +130,9 @@ Flags32		ps_r2_ls_flags				= { R2FLAG_SUN
 	| R2FLAG_USE_NVSTENCIL | R2FLAG_EXP_SPLIT_SCENE 
 	| R2FLAG_EXP_MT_CALC | R3FLAG_DYN_WET_SURF
 	| R3FLAG_VOLUMETRIC_SMOKE
-	| R3FLAG_MSAA //| R3FLAG_MSAA_OPT
+	//| R3FLAG_MSAA 
+	//| R3FLAG_MSAA_OPT
+	| R3FLAG_GBUFFER_OPT
 	};	// r2-only
 
 Flags32		ps_r2_ls_flags_ext			= {0};
@@ -637,7 +672,7 @@ void		xrRender_initconsole	()
 	CMD4(CCC_Float,		"r2_parallax_h",		&ps_r2_df_parallax_h,		.0f,	.5f		);
 //	CMD4(CCC_Float,		"r2_parallax_range",	&ps_r2_df_parallax_range,	5.0f,	175.0f	);
 
-	CMD4(CCC_Float,		"r2_slight_fade",		&ps_r2_slight_fade,			.02f,	2.f		);
+	CMD4(CCC_Float,		"r2_slight_fade",		&ps_r2_slight_fade,			.2f,	1.f		);
 
 	tw_min.set			(0,0,0);	tw_max.set	(1,1,1);
 	CMD4(CCC_Vector3,	"r2_aa_break",			&ps_r2_aa_barier,			tw_min, tw_max	);
@@ -673,10 +708,15 @@ void		xrRender_initconsole	()
 	CMD3(CCC_Mask,		"r2_soft_water",				&ps_r2_ls_flags,			R2FLAG_SOFT_WATER);
 	CMD3(CCC_Mask,		"r2_soft_particles",			&ps_r2_ls_flags,			R2FLAG_SOFT_PARTICLES);
 
-   CMD3(CCC_Mask,		"r3_msaa",                 &ps_r2_ls_flags,			R3FLAG_MSAA);
-   //CMD3(CCC_Mask,		"r3_msaa_opt",             &ps_r2_ls_flags,		   R3FLAG_MSAA_OPT);
-   CMD3(CCC_Mask,		"r3_gbuffer_opt",          &ps_r2_ls_flags,		   R3FLAG_GBUFFER_OPT);
-   //CMD3(CCC_Mask,		"r3_msaa_alphatest",       &ps_r2_ls_flags,		   (u32)R3FLAG_MSAA_ALPHATEST);
+	//CMD3(CCC_Mask,		"r3_msaa",						&ps_r2_ls_flags,			R3FLAG_MSAA);
+	CMD3(CCC_Token,		"r3_msaa",						&ps_r3_msaa,				qmsaa_token);
+	//CMD3(CCC_Mask,		"r3_msaa_hybrid",				&ps_r2_ls_flags,			R3FLAG_MSAA_HYBRID);
+	//CMD3(CCC_Mask,		"r3_msaa_opt",					&ps_r2_ls_flags,			R3FLAG_MSAA_OPT);
+	CMD3(CCC_Mask,		"r3_gbuffer_opt",				&ps_r2_ls_flags,			R3FLAG_GBUFFER_OPT);
+	CMD3(CCC_Mask,		"r3_use_dx10_1",				&ps_r2_ls_flags,			(u32)R3FLAG_USE_DX10_1);
+	//CMD3(CCC_Mask,		"r3_msaa_alphatest",			&ps_r2_ls_flags,			(u32)R3FLAG_MSAA_ALPHATEST);
+	CMD3(CCC_Token,		"r3_msaa_alphatest",			&ps_r3_msaa_atest,			qmsaa__atest_token);
+	CMD3(CCC_Token,		"r3_minmax_sm",					&ps_r3_minmax_sm,			qminmax_sm_token);
 
 
 

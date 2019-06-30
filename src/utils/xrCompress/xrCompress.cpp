@@ -60,7 +60,7 @@ bool xrCompressor::testSKIP(LPCSTR path)
 		)
 		return true;
 
-	if (strstr(path,"textures\\") && is_tail(p_name,"_nmap",5) )
+	if (strstr(path,"textures\\") && is_tail(p_name, "_nmap",5) && !strstr(p_name, "water_flowing_nmap") )
 		return true;
 	
 	if (0==stricmp(p_name,"build")) 
@@ -394,18 +394,8 @@ void xrCompressor::ClosePack()
 	bytesDST		= fs_pack_writer->tell	();
 	Msg				("...Writing pack desc");
 
-#ifdef MOD_COMPRESS
-	DUMMY_STUFF*	_dummy_stuff_subst = NULL;
-	_dummy_stuff_subst	= g_dummy_stuff;
-	g_dummy_stuff		 = NULL;
-#endif
-	
 	fs_pack_writer->w_chunk		(1|CFS_CompressMark, fs_desc.pointer(),fs_desc.size());
 
-#ifdef MOD_COMPRESS
-	if(_dummy_stuff_subst)
-		g_dummy_stuff	= _dummy_stuff_subst;
-#endif
 
 	Msg				("Data size: %d. Desc size: %d.",bytesDST,fs_desc.size());
 	FS.w_close		(fs_pack_writer);

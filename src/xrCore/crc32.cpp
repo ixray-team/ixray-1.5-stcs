@@ -69,3 +69,44 @@ u32				crc32		(const void* P, u32 len)
 	return ulCRC ^ 0xffffffff; 
 } 
 
+u32				crc32		(const void* P, u32 len, u32 starting_crc) 
+{
+	if (!crc32_ready)	
+	{
+		crc32_init	();
+		crc32_ready	= TRUE;
+	}
+
+	u32		ulCRC		= 0xffffffff ^ starting_crc; 
+	u8*		buffer		= (u8*)P;
+
+	while(len--) 
+		ulCRC = (ulCRC >> 8) ^ crc32_table[(ulCRC & 0xFF) ^ *buffer++]; 
+
+	return ulCRC ^ 0xffffffff; 
+} 
+
+u32				path_crc32	(const char* path, u32 len) 
+{
+	if (!crc32_ready)	
+	{
+		crc32_init	();
+		crc32_ready	= TRUE;
+	}
+
+	u32		ulCRC		= 0xffffffff;
+	u8*		buffer		= (u8*)path;
+
+	while(len--)
+	{
+		const u8 c = *buffer;
+		if ( c != '/' && c != '\\' )
+		{
+			ulCRC = (ulCRC >> 8) ^ crc32_table[(ulCRC & 0xFF) ^ *buffer];
+		}
+
+		++buffer;
+	}
+
+	return ulCRC ^ 0xffffffff;
+} 

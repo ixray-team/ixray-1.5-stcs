@@ -174,7 +174,7 @@ void CHUDManager::Render_First()
 		return;
 	}
 
-	if (!psHUD_Flags.is(HUD_WEAPON|HUD_WEAPON_RT))return;
+	if (!psHUD_Flags.is(HUD_WEAPON|HUD_WEAPON_RT|HUD_WEAPON_RT2))return;
 	if (0==pUI)						return;
 	CObject*	O					= g_pGameLevel->CurrentViewEntity();
 	if (0==O)						return;
@@ -196,7 +196,7 @@ void CHUDManager::Render_Last()
 		return;
 	}
 
-	if (!psHUD_Flags.is(HUD_WEAPON|HUD_WEAPON_RT))return;
+	if (!psHUD_Flags.is(HUD_WEAPON|HUD_WEAPON_RT|HUD_WEAPON_RT2))return;
 	if (0==pUI)						return;
 	CObject*	O					= g_pGameLevel->CurrentViewEntity();
 	if (0==O)						return;
@@ -222,7 +222,7 @@ bool   CHUDManager::RenderActiveItemUIQuery()
 		return false;
 	}
 
-	if (!psHUD_Flags.is(HUD_WEAPON|HUD_WEAPON_RT))return false;
+	if (!psHUD_Flags.is(HUD_WEAPON|HUD_WEAPON_RT|HUD_WEAPON_RT2))return false;
 	return (g_player_hud && g_player_hud->render_item_ui_query() );
 }
 

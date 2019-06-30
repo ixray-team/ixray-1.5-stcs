@@ -7,18 +7,17 @@
 
 //#define DEMO_BUILD
 
-// which is the new version ??? (sea)
 #ifdef DEMO_BUILD
 	#define	GAMESPY_GAMENAME				"stalkercsd"
 	#define GAMESPY_GAMEID					2264
 	#define GAMESPY_PRODUCTID				11528
-	#define GAME_VERSION					"1.5.03"
+	#define GAME_VERSION					"1.5.06"
 	#define REGISTRY_PATH					"Software\\GSC Game World\\STALKER-STCS_DBG\\"
 #else
 	#define	GAMESPY_GAMENAME				"stalkercs"
 	#define GAMESPY_GAMEID					2264
 	#define GAMESPY_PRODUCTID				11528
-	#define GAME_VERSION					"1.5.03"
+	#define GAME_VERSION					"1.5.06"
 	#define REGISTRY_PATH					"Software\\GSC Game World\\STALKER-STCS\\"
 #endif
 
@@ -28,7 +27,7 @@
 #define START_PORT							0
 #define END_PORT							65535
 #define START_PORT_LAN						5445
-#define END_PORT_LAN						START_PORT_LAN + 100//GameSpy only process 500 ports
+#define END_PORT_LAN						START_PORT_LAN + 250//GameSpy only process 500 ports
 
 #define REGISTRY_BASE						HKEY_LOCAL_MACHINE
 #define REGISTRY_VALUE_GSCDKEY				"InstallCDKEY"

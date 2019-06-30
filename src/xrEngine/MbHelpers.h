@@ -13,6 +13,8 @@ __inline BOOL IsNeedSpaceCharacter( wide_char wc )
 	return ( 
 		( wc == 0x0020 )  ||
 
+		( wc == 0x3000 )  ||
+
 		( wc == 0xFF01 )  ||
 		( wc == 0xFF0C )  ||
 //		( wc == 0xFF0D )  ||

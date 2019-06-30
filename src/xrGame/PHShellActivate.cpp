@@ -227,7 +227,8 @@ void CPHShell::PresetActive()
 
 void CPHShell::Deactivate(){
 
-
+	VERIFY(ph_world);
+	ph_world->NetRelcase(this);
 	
 	if (m_pPhysicsShellAnimatorC)
 	{

@@ -230,7 +230,7 @@ void CLevelSpawnConstructor::load_objects						()
 			add_space_restrictor(dynamic_object);
 		}
 
-		if (abstract->m_tClassID == CLSID_LEVEL_CHANGER)
+		if (smart_cast<CSE_ALifeLevelChanger*>(abstract))
 			add_level_changer	(abstract);
 
 //		if (xr_strlen(alife_object->m_spawn_control))

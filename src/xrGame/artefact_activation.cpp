@@ -112,6 +112,11 @@ void SArtefactActivation::UpdateActivation()
 
 void SArtefactActivation::PhDataUpdate(dReal step)
 {
+	R_ASSERT( m_af );
+	
+	if (!m_af->m_pPhysicsShell)
+		return;
+	
 	if (m_cur_activation_state==eFlying) {
 		Fvector dir	= {0, -1.f, 0};
 		if(Level().ObjectSpace.RayTest(m_af->Position(), dir, 1.0f, collide::rqtBoth,NULL,m_af) ){

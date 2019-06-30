@@ -43,7 +43,7 @@ void CHangingLamp::RespawnInit()
 		IKinematics* K = smart_cast<IKinematics*>(Visual());
 		K->LL_SetBonesVisible(u64(-1));
 		K->CalculateBones_Invalidate();
-		K->CalculateBones	();
+		K->CalculateBones	(TRUE);
 	}
 }
 
@@ -138,7 +138,7 @@ BOOL CHangingLamp::net_Spawn(CSE_Abstract* DC)
 	if (smart_cast<IKinematicsAnimated*>(Visual()))	smart_cast<IKinematicsAnimated*>	(Visual())->PlayCycle("idle");
 	if (smart_cast<IKinematics*>(Visual())){
 		smart_cast<IKinematics*>			(Visual())->CalculateBones_Invalidate	();
-		smart_cast<IKinematics*>			(Visual())->CalculateBones();
+		smart_cast<IKinematics*>			(Visual())->CalculateBones(TRUE);
 		//.intepolate_pos
 	}
 	if (lamp->flags.is(CSE_ALifeObjectHangingLamp::flPhysic)&&!Visual())
@@ -163,7 +163,7 @@ void	CHangingLamp::SpawnInitPhysics	(CSE_Abstract	*D)
 	if (lamp->flags.is(CSE_ALifeObjectHangingLamp::flPhysic))		CreateBody(lamp);
 	if (smart_cast<IKinematics*>(Visual())){
 		smart_cast<IKinematics*>			(Visual())->CalculateBones_Invalidate	();
-		smart_cast<IKinematics*>			(Visual())->CalculateBones();
+		smart_cast<IKinematics*>			(Visual())->CalculateBones(TRUE);
 		//.intepolate_pos
 	}
 }
@@ -257,7 +257,7 @@ void CHangingLamp::TurnOn	()
 		IKinematics* K				= smart_cast<IKinematics*>(Visual());
 		K->LL_SetBoneVisible		(light_bone, TRUE, TRUE);
 		K->CalculateBones_Invalidate();
-		K->CalculateBones			();
+		K->CalculateBones			(TRUE);
 //		K->LL_SetBoneVisible		(light_bone, TRUE, TRUE); //hack
 	}
 	processing_activate		();

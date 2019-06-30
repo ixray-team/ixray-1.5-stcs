@@ -15,6 +15,7 @@
 #include "seniority_hierarchy_holder.h"
 #include "hudmanager.h"
 #include "UIGameCustom.h"
+#include "string_table.h"
 
 ENGINE_API bool g_dedicated_server;
 
@@ -257,11 +258,14 @@ void CLevel::Send		(NET_Packet& P, u32 dwFlags, u32 dwTimeout)
 	if(psNET_direct_connect){
 		ClientID	_clid;
 		_clid.set	(1);
-		Server->OnMessage	(P,	_clid );
+		Server->OnMessage		(P,	_clid );
 	}else
 	if (Server && game_configured && OnServer() )
 	{
-		Server->OnMessage	(P,Game().local_svdpnid	);
+#ifdef DEBUG
+		VERIFY2(Server->IsPlayersMonitorLockedByMe() == false, "potential deadlock detected");
+#endif
+		Server->OnMessageSync	(P,Game().local_svdpnid	);
 	}else											
 		IPureClient::Send	(P,dwFlags,dwTimeout	);
 
@@ -382,8 +386,8 @@ void			CLevel::OnConnectResult				(NET_Packet*	P)
 	m_bConnectResultReceived	= true;
 	u8	result					= P->r_u8();
 	u8  res1					= P->r_u8();
-	string128 ResultStr			;	
-	P->r_stringZ(ResultStr)		;
+	string512 ResultStr			;	
+	P->r_stringZ_s(ResultStr)		;
 	if (!result)				
 	{
 		m_bConnectResult	= false			;	
@@ -406,7 +410,19 @@ void			CLevel::OnConnectResult				(NET_Packet*	P)
 		case 2:		//login+password
 			{
 				MainMenu()->SetErrorDialog(CMainMenu::ErrInvalidPassword);
-			}break;		
+			}break;
+		case 3:
+			{
+				if (!xr_strlen(ResultStr))
+				{
+					MainMenu()->OnSessionTerminate(
+						CStringTable().translate("st_you_have_been_banned").c_str()
+					);
+				} else
+				{
+					MainMenu()->OnSessionTerminate(ResultStr);
+				}
+			}break;
 		}
 	};	
 	m_sConnectResult			= ResultStr;

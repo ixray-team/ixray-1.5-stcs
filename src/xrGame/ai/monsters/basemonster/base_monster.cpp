@@ -670,6 +670,7 @@ void CBaseMonster::OnEvent(NET_Packet& P, u16 type)
 
 	u16			id;
 	switch (type){
+	case GE_TRADE_BUY:
 	case GE_OWNERSHIP_TAKE:
 		{
 			P.r_u16		(id);
@@ -686,16 +687,17 @@ void CBaseMonster::OnEvent(NET_Packet& P, u16 type)
 		break;
 		}
 	case GE_TRADE_SELL:
-
 	case GE_OWNERSHIP_REJECT:
 		{
 			P.r_u16		(id);
 			CObject* O	= Level().Objects.net_Find	(id);
 			VERIFY		(O);
 
-			bool just_before_destroy	= !P.r_eof() && P.r_u8();
+			bool just_before_destroy		= !P.r_eof() && P.r_u8();
+			bool dont_create_shell			= (type==GE_TRADE_SELL) || just_before_destroy;
+
 			O->SetTmpPreDestroy				(just_before_destroy);
-			if (inventory().DropItem(smart_cast<CGameObject*>(O), just_before_destroy) && !O->getDestroy()) 
+			if (inventory().DropItem(smart_cast<CGameObject*>(O), dont_create_shell) && !O->getDestroy()) 
 			{
 				//O->H_SetParent	(0,just_before_destroy); //moved to DropItem
 				feel_touch_deny	(O,2000);

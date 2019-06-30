@@ -17,3 +17,6 @@ void __cdecl callback_nn(int cookie, void *userdata);
 // Called when a client sends a message to the server through qr2
 //    (Not commonly used)
 void __cdecl callback_cm(char *data, int len, void *userdata);
+// Called when gamespy responds my public ip and port
+//void __cdecl callback_public(unsigned int ip, unsigned short port, void* userdata);
+void __cdecl callback_deny_ip(void *userdata, unsigned int sender_ip, int * result);

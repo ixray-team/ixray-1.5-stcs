@@ -15,10 +15,6 @@
 
 string4096			g_ca_stdout;
 
-#ifdef USE_DEBUGGER
-#	include "script_debugger.h"
-#endif
-
 CScriptProcess::CScriptProcess	(shared_str name, shared_str scripts) :
 	m_name						(name)
 {

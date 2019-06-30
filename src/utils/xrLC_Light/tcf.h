@@ -10,4 +10,5 @@ struct XRLC_LIGHT_API _TCF {
 	IC bool	isInside	(Fvector2 &P, Fvector &B)		{	barycentric(P,B);	return isInside(B);	}
 	void	read		( INetReader	&r );
 	void	write		( IWriter	&w ) const ;
+	bool	similar		(  const _TCF &_tc, float eps = EPS ) const;
 };

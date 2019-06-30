@@ -102,6 +102,20 @@ void CUIComboBox::OnListItemSelect()
 	}
 }
 
+void CUIComboBox::disable_id(int id)
+{
+	if(m_disabled.end()==std::find(m_disabled.begin(),m_disabled.end(),id))
+		m_disabled.push_back(id);
+}
+
+void CUIComboBox::enable_id(int id)
+{
+	xr_vector<int>::iterator it = std::find(m_disabled.begin(),m_disabled.end(),id);
+
+	if(m_disabled.end()!=it)
+		m_disabled.erase(it);
+}
+
 #include "../string_table.h"
 void CUIComboBox::SetCurrentValue()
 {
@@ -110,7 +124,10 @@ void CUIComboBox::SetCurrentValue()
 
 	while (tok->name)
 	{		
-		AddItem_(tok->name, tok->id);
+		if(m_disabled.end()==std::find(m_disabled.begin(),m_disabled.end(),tok->id))
+		{
+			AddItem_(tok->name, tok->id);
+		}
 		tok++;
 	}
 
@@ -150,8 +167,8 @@ void CUIComboBox::SetItem(int idx)
 	m_itoken_id				= (int)(__int64)itm->GetData();
 
 	m_text.SetText			(m_list_box.GetSelectedText());
-	
 }
+
 void CUIComboBox::OnBtnClicked()
 {
 	ShowList				(!m_list_frame.IsShown());

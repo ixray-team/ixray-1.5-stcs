@@ -13,6 +13,7 @@
 #include "ai_space.h"
 #include "alife_simulator.h"
 #include "alife_group_registry.h"
+#include "relation_registry.h"
 
 void CSE_ALifeHumanAbstract::update									()
 {
@@ -72,7 +73,9 @@ void CSE_ALifeHumanAbstract::on_register							()
 
 void CSE_ALifeHumanAbstract::on_unregister							()
 {
-	CSE_ALifeMonsterAbstract::on_unregister				();
+	CSE_ALifeMonsterAbstract::on_unregister							();
+	
+	RELATION_REGISTRY().ClearRelations								(ID);
 
 	brain().on_unregister					();
 	if (m_group_id != 0xffff)

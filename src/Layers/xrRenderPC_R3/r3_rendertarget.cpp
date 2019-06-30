@@ -10,6 +10,7 @@
 #include "blender_bloom_build.h"
 #include "blender_luminance.h"
 #include "blender_ssao.h"
+#include "dx10MinMaxSMBlender.h"
 #include "../xrRenderDX10/msaa/dx10MSAABlender.h"
 
 #include "../xrRenderDX10/DX10 Rain/dx10RainBlender.h"
@@ -413,10 +414,19 @@ CRenderTarget::CRenderTarget		()
 
 		u32	size					=RImplementation.o.smapsize	;
 		rt_smap_depth.create		(r2_RT_smap_depth,			size,size,depth_format	);
-		//rt_smap_surf.create			(r2_RT_smap_surf,			size,size,nullrt		);
+
+		if (RImplementation.o.dx10_minmax_sm)
+		{
+			rt_smap_depth_minmax.create( r2_RT_smap_depth_minmax,	size/4,size/4, D3DFMT_R32F	);
+			CBlender_createminmax TempBlender;
+			s_create_minmax_sm.create( &TempBlender, "null" );
+		}
+
+      //rt_smap_surf.create			(r2_RT_smap_surf,			size,size,nullrt		);
 		//rt_smap_ZB					= NULL;
 		s_accum_mask.create			(b_accum_mask,				"r3\\accum_mask");
 		s_accum_direct.create		(b_accum_direct,			"r3\\accum_direct");
+
 
 		if( RImplementation.o.dx10_msaa )
 		{
@@ -434,6 +444,10 @@ CRenderTarget::CRenderTarget		()
 		if (RImplementation.o.advancedpp)
 		{
 			s_accum_direct_volumetric.create("accum_volumetric_sun_nomsaa");
+
+			if (RImplementation.o.dx10_minmax_sm)
+				s_accum_direct_volumetric_minmax.create("accum_volumetric_sun_nomsaa_minmax");
+
 			if( RImplementation.o.dx10_msaa )
 			{
 				static LPCSTR snames[] = { "accum_volumetric_sun_msaa0",
@@ -959,4 +973,45 @@ void CRenderTarget::increment_light_marker()
 	
 	if ( dwLightMarkerID > iMaxMarkerValue )
 		reset_light_marker(true);
+}
+
+bool CRenderTarget::need_to_render_sunshafts()
+{
+	if ( ! (RImplementation.o.advancedpp && ps_r_sun_shafts) )
+		return false;
+
+	{
+		CEnvDescriptor&	E = *g_pGamePersistent->Environment().CurrentEnv;
+		float fValue = E.m_fSunShaftsIntensity;
+		//	TODO: add multiplication by sun color here
+		if (fValue<0.0001) return false;
+	}
+
+	return true;
+}
+
+bool CRenderTarget::use_minmax_sm_this_frame()
+{
+	switch(RImplementation.o.dx10_minmax_sm)
+	{
+	case CRender::MMSM_ON:
+		return true;
+	case CRender::MMSM_AUTO:
+		return need_to_render_sunshafts();
+	case CRender::MMSM_AUTODETECT:
+		{
+			u32 dwScreenArea = 
+				HW.m_ChainDesc.BufferDesc.Width*
+				HW.m_ChainDesc.BufferDesc.Height;
+
+			if ( ( dwScreenArea >=RImplementation.o.dx10_minmax_sm_screenarea_threshold))
+				return need_to_render_sunshafts();
+			else 
+				return false;
+		}
+		
+	default:
+		return false;
+	}
+
 }

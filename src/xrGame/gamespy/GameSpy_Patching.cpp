@@ -3,6 +3,7 @@
 #include "GameSpy_Base_Defs.h"
 #include "../MainMenu.h"
 #include "../xrGameSpy/xrGameSpy_MainDefs.h"
+#include "../xrEngine/no_single.h"
 
 CGameSpy_Patching::CGameSpy_Patching()
 {
@@ -100,6 +101,7 @@ static char const * ModifyDownloadUrl(char* dest, u32 dest_size, char const * or
 bool g_bInformUserThatNoPatchFound = true;
 void __cdecl GS_ptPatchCallback ( PTBool available, PTBool mandatory, const char * versionName, int fileID, const char * downloadURL,  void * param )
 {
+#ifndef NO_SINGLE
 	if (!MainMenu()) return;
 	if (!available)
 	{
@@ -114,6 +116,7 @@ void __cdecl GS_ptPatchCallback ( PTBool available, PTBool mandatory, const char
 	char const * new_url = ModifyDownloadUrl(new_download_url, new_url_size, downloadURL);
 	Msg("NewPatch url after updating: %s", new_url);
 	MainMenu()->OnNewPatchFound(versionName, new_url);
+#endif //#ifndef NO_SINGLE
 };
 
 void	CGameSpy_Patching::CheckForPatch(bool InformOfNoPatch)

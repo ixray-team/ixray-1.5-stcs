@@ -285,9 +285,14 @@ void CControlManagerCustom::jump(CObject *obj, const SControlJumpData &ta)
 
 void CControlManagerCustom::load_jump_data(LPCSTR s1, LPCSTR s2, LPCSTR s3, LPCSTR s4, u32 vel_mask_prepare, u32 vel_mask_ground, u32 flags)
 {
+	IKinematicsAnimated	*skel_animated = smart_cast<IKinematicsAnimated*>(m_object->Visual());
+	if ( !skel_animated )
+	{
+		return; // monster is dead, so no skeleton (early return due to bug: 18755)
+	}
+
 	m_jump->setup_data().flags.assign(flags);
 	
-	IKinematicsAnimated	*skel_animated = smart_cast<IKinematicsAnimated*>(m_object->Visual());
 	if (s1) {
 		m_jump->setup_data().state_prepare.motion = skel_animated->ID_Cycle_Safe(s1);
 		VERIFY(m_jump->setup_data().state_prepare.motion);

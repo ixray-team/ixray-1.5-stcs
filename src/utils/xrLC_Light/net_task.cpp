@@ -6,11 +6,12 @@
 
 extern xr_vector<u32> net_pool;
 
-net_task::net_task( IAgent &agent, DWORD session ):
-_agent(agent),
+net_task::net_task( IAgent *agent, DWORD session ):
+_agent(*agent),
 _session(session),
 _id(u32(-1)),
-_beak_count( _break_connection_times )
+_beak_count( _break_connection_times ),
+_D(0)
 {
 
 
@@ -18,11 +19,11 @@ _beak_count( _break_connection_times )
 
 net_task::~net_task( )
 {
-	VERIFY(!_D->_net_session);
+	VERIFY(!_D||!_D->_net_session);
 }
 bool net_task::	receive		( IGenericStream* inStream )
 {
-	INetReader r( inStream );
+	INetBlockReader r( inStream );
 	_id = r.r_u32();
 	if( std::find( net_pool.begin(), net_pool.end(), _id ) != net_pool.end() )
 		return false;
@@ -33,7 +34,7 @@ bool net_task::	receive		( IGenericStream* inStream )
 }
 bool net_task::send	( IGenericStream* outStream )
 {
-	INetWriter w( outStream, 100024 );
+	INetMemoryBuffWriter w( outStream, 1024*1024 );
 	VERIFY(_id!= u32(-1));
 	xr_vector<u32>::iterator it = std::find( net_pool.begin(), net_pool.end(), _id );
 	net_pool.erase( it );
@@ -57,9 +58,12 @@ void net_task::run()
 bool net_task::test_connection( )
 {
 	VERIFY( _session != DWORD(-1));
-	//_agent.TestConnection(_session);
-
+#ifdef	NET_CMP
+	_agent.TestConnection(_session);
+#else
 	if( !break_all() && _agent.TestConnection(_session)== S_FALSE )
 		_beak_count--;
+#endif
 	return !break_all();
 }
+

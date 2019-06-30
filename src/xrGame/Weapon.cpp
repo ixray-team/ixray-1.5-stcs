@@ -492,8 +492,6 @@ BOOL CWeapon::net_Spawn		(CSE_Abstract* DC)
 	VERIFY((u32)iAmmoElapsed == m_magazine.size());
 	m_bAmmoWasSpawned		= false;
 
-	init_upgrades();
-
 	return bResult;
 }
 
@@ -1273,7 +1271,7 @@ void CWeapon::UpdateAddonsVisibility()
 	
 
 	pWeaponVisual->CalculateBones_Invalidate				();
-	pWeaponVisual->CalculateBones							();
+	pWeaponVisual->CalculateBones							(TRUE);
 }
 
 

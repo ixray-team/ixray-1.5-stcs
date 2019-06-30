@@ -12,7 +12,9 @@
 #include "ai/stalker/ai_stalker.h"
 #include "GeometryBits.h"
 #include "characterphysicssupport.h"
-
+#ifdef DEBUG
+#include "phdebug.h"
+#endif
 CPhysicsShell*	CActor::actor_camera_shell = NULL;
 
 static bool cam_collided = false;
@@ -67,21 +69,7 @@ static void cammera_shell_character_collide_callback( bool& do_collide, bool bo1
 	do_collide =  true;
 	cammera_shell_collide_callback(do_collide,bo1,c,material_1,material_2);
 }
-std::string dump_string( LPCSTR name, const Fvector &v )
-{
-	return make_string( "%s : (%f,%f,%f) ", name, v.x, v.y, v.z );
-}
-void dump( LPCSTR name, const Fvector &v )
-{
-	Msg( "%s", dump_string( name, v ).c_str() );
-}
-void dump( LPCSTR name, const Fmatrix &form )
-{
-	Msg( "%s, _14_=%f ", dump_string( make_string( "%s.i, ", name ).c_str(), form.i ).c_str( ) , form._14_ );  
-	Msg( "%s, _24_=%f ", dump_string( make_string( "%s.j, ", name ).c_str(), form.j ).c_str( ) , form._24_ );  
-	Msg( "%s, _34_=%f ", dump_string( make_string( "%s.k, ", name ).c_str(), form.k ).c_str( ) , form._34_  );  
-	Msg( "%s, _44_=%f ", dump_string( make_string( "%s.c, ", name ).c_str(), form.c ).c_str( ) , form._44_ );  
-}
+
 
 static void get_viewport_geom(Fvector &box, Fmatrix &form, const CCameraBase &camera , float _viewport_near )
 {

@@ -21,23 +21,26 @@ public:
 */
 
 
-interface IAgent;
-class net_task
-{
-	IAgent&			_agent		;
-	DWORD			_session	;
-	u16				_beak_count	;
-static const u16	_break_connection_times = 1;
-	CDeflector *_D		;
-	u32		_id			;
-	light_execute _execute;
-public:
-	void run				( );
-	bool test_connection	( );
-IC	bool break_all			( )	{ return _beak_count==0; } 
-	bool receive			( IGenericStream* inStream) ;
-	bool send				( IGenericStream* outStream );
-	
-	net_task				( IAgent &agent, DWORD session);
-	~net_task				( );
-};
+	interface IAgent;
+	class net_task
+	{
+		IAgent&			_agent		;
+		DWORD			_session	;
+		u16				_beak_count	;
+	static const u16	_break_connection_times = 1;
+		CDeflector *_D		;
+		u32		_id			;
+		light_execute _execute;
+	public:
+		void run				( );
+		bool test_connection	( );
+	IC	bool break_all			( )	{ return _beak_count==0; } 
+		bool receive			( IGenericStream* inStream) ;
+		bool send				( IGenericStream* outStream );
+		
+		net_task				( IAgent *agent, DWORD session);
+		~net_task				( );
+	};
+
+
+

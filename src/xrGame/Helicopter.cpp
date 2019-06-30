@@ -212,7 +212,7 @@ BOOL CHelicopter::net_Spawn(CSE_Abstract*	DC)
 	IKinematicsAnimated	*A	= smart_cast<IKinematicsAnimated*>(Visual());
 	if (A) {
 		A->PlayCycle		(*heli->startup_animation);
-		K->CalculateBones	();
+		K->CalculateBones	(TRUE);
 	}
 
 	m_engineSound.create			(*heli->engine_sound,st_Effect,sg_SourceType);

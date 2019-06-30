@@ -4,6 +4,7 @@
 #include "game_base_kill_type.h"
 #include "game_base_menu_events.h"
 #include "actor_mp_server.h"
+#include "cdkey_ban_list.h"
 
 class		CItemMgr;
 class		xrClientData;
@@ -54,23 +55,22 @@ protected:
 	shared_str		m_started_player;
 
 	virtual		void				LoadRanks				();
-	virtual		void				Player_AddExperience	(game_PlayerState* ps, float Exp);
 	virtual		bool				Player_Check_Rank		(game_PlayerState* ps);
 	virtual		void				Player_Rank_Up			(game_PlayerState* ps);
 	virtual		bool				Player_RankUp_Allowed	() {return m_bRankUp_Allowed;};
-	virtual		void				Player_ExperienceFin	(game_PlayerState* ps);
 	virtual		void				Set_RankUp_Allowed		(bool RUA) {m_bRankUp_Allowed = RUA;};
 
 	virtual		void				UpdatePlayersMoney		();
 	virtual		void				DestroyAllPlayerItems(ClientID id_who);	//except rukzak and artefact :)
 
 	u8			m_u8SpectatorModes		;
+
+	cdkey_ban_list	m_cdkey_ban_list;
 	
 protected:
 
 	virtual		void				SendPlayerKilledMessage	(u16 KilledID, KILL_TYPE KillType, u16 KillerID, u16 WeaponID, SPECIAL_KILL_TYPE SpecialKill);
 	virtual		void				RespawnPlayer			(ClientID id_who, bool NoSpectator);
-				void				SpawnPlayer				(ClientID id, LPCSTR N);
 	virtual		void				SetSkin					(CSE_Abstract* E, u16 Team, u16 ID);
 				bool				GetPosAngleFromActor	(ClientID id, Fvector& Pos, Fvector &Angle);				
 				void				AllowDeadBodyRemove		(ClientID id, u16 GameID);
@@ -89,7 +89,6 @@ protected:
 //	virtual		bool				GetTeamItem_ByID		(WeaponDataStruct** pRes, TEAM_WPN_LIST* pWpnList, u16 ItemID);
 //	virtual		bool				GetTeamItem_ByName		(WeaponDataStruct** pRes,TEAM_WPN_LIST* pWpnList, LPCSTR ItemName);
 
-	virtual		void				Player_AddMoney			(game_PlayerState* ps, s32 MoneyAmount);
 	virtual		void				Player_AddBonusMoney	(game_PlayerState* ps, s32 MoneyAmount, SPECIAL_KILL_TYPE Reason, u8 Kill = 0);
 
 				u8					SpectatorModes_Pack		();
@@ -165,17 +164,49 @@ public:
 	virtual		void				DumpOnlineStatistic		();
 				void				DestroyGameItem(CSE_Abstract* entity);
 				void				RejectGameItem(CSE_Abstract* entity);
+				
+				void				DumpRoundStatisticsAsync();
+				bool				CheckStatisticsReady();
 				void				DumpRoundStatistics		();
+				
+				void				StartToDumpStatistics	();		//creates file name for statistics..
+				string_path			round_statistics_dump_fn;
+				void				FinishToDumpStatistics	();
+				void				StopToDumpStatistics	();		//removes file
+				void				AskAllToUpdateStatistics();
+
+				struct async_statistics_collector
+				{
+					typedef associative_vector<ClientID, bool> responses_t;
+					responses_t async_responses;
+					void operator()(IClient* client);
+					bool all_ready() const;
+					void set_responded(ClientID clientID);
+				};
+				async_statistics_collector			m_async_stats;
+				u32									m_async_stats_request_time;
+
 				void				SvSendChatMessage		(LPCSTR str);
+				bool				IsPlayerBanned			(char const * hexstr_digest, shared_str & by_who);
+				IClient*			BanPlayer				(ClientID const & client_id, s32 ban_time_sec, xrClientData* initiator);
+				void				BanPlayerDirectly		(char const * client_hex_digest, s32 ban_time_sec, xrClientData* initiator);
+				void				UnBanPlayer				(size_t banned_player_index);
+				void				PrintBanList			(char const * filter);
 protected:
 	virtual		void				WriteGameState			(CInifile& ini, LPCSTR sect, bool bRoundResult);
-	virtual		void				WritePlayerStats		(CInifile& ini, LPCSTR sect, xrClientData* pCl);
 				bool				CheckPlayerMapName		(ClientID const & clientID, NET_Packet & P);
 				void				ReconnectPlayer			(ClientID const & clientID);
 	
 	virtual		void				OnPlayerOpenBuyMenu		(xrClientData const * pclient) {};			//this method invokes only if player dead
 	virtual		void				OnPlayerCloseBuyMenu	(xrClientData const * pclient) {};			//if client state buyMenuPlayerReadyToSpawn respawn player
+				
+				s32					ExcludeBanTimeFromVoteStr	(char const * vote_string, char* new_vote_str, u32 new_vote_str_size);
 public:
+	virtual		void				WritePlayerStats		(CInifile& ini, LPCSTR sect, xrClientData* pCl);
+	virtual		void				Player_AddExperience	(game_PlayerState* ps, float Exp);
+	virtual		void				Player_ExperienceFin	(game_PlayerState* ps);
+	virtual		void				Player_AddMoney			(game_PlayerState* ps, s32 MoneyAmount);
+				void				SpawnPlayer				(ClientID id, LPCSTR N);
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 

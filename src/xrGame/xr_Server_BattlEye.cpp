@@ -92,17 +92,21 @@ BattlEyeServer::BattlEyeServer( xrServer* Server )
 
 void BattlEyeServer::AddConnectedPlayers() // if net_Ready
 {
-	Level().Server->clients_Lock();
-	u32	cnt	= Level().Server->game->get_players_count();
-	for( u32 it = 0; it < cnt; ++it )
+	struct ready_adder
 	{
-		xrClientData* CL = (xrClientData*)Level().Server->client_Get( it );
-		if ( CL->net_Ready )
+		BattlEyeServer* m_owner;
+		void operator()(IClient* client)
 		{
-			AddConnected_OnePlayer( CL );
+			xrClientData* tmp_client = static_cast<xrClientData*>(client);
+			if (tmp_client->net_Ready)
+			{
+				m_owner->AddConnected_OnePlayer(tmp_client);
+			}
 		}
-	}
-	Level().Server->clients_Unlock();
+	};
+	ready_adder tmp_functor;
+	tmp_functor.m_owner = this;
+	Level().Server->ForEachClientDo(tmp_functor);
 }
 
 void BattlEyeServer::AddConnected_OnePlayer( xrClientData* CL )
@@ -151,59 +155,42 @@ void BattlEyeServer::SendPacket( int player, void* packet, int len )
 
 void  BattlEyeServer::KickPlayer( int player, char* reason )
 {
-	Level().Server->clients_Lock();
+	xrClientData* tmp_client = static_cast<xrClientData*>(
+		Level().Server->GetClientByID(static_cast<ClientID>(player))
+	);
 
-	u32	cnt	= Level().Server->game->get_players_count();
-	for( u32 it = 0; it < cnt; ++it )	
-	{
-		xrClientData *l_pC = (xrClientData*)Level().Server->client_Get(it);
-		if ( l_pC->ID.value()==(u32)player )
-		{
-			LPCSTR reason2;
-			STRCONCAT( reason2, "@", l_pC->ps->getName(), " ", CStringTable().translate("ui_st_kicked_by_battleye").c_str(), " ", reason );
-			Msg( reason2 );
-			if( g_be_message_out )// self
-			{
-				if ( Level().game )
-				{
-					Level().game->CommonMessageOut( reason2 + 1 );
-				}
-			}
-
-			
-			if ( Level().Server->GetServerClient() != l_pC ) // other kick
-			{
-				Level().Server->DisconnectClient( l_pC, reason2 );
-
-				NET_Packet		P;
-				P.w_begin		( M_GAMEMESSAGE ); 
-				P.w_u32			( GAME_EVENT_SERVER_STRING_MESSAGE );
-				P.w_stringZ		( reason2 + 2 );
-				Level().Server->SendBroadcast( l_pC->ID, P ); // to all, except self
-
-				break;
-			}
-			else // self kick
-			{
-//				"  Disconnecting : %s !  Server's Client kicked by BattlEye Server.  Reason: %s",
-				NET_Packet	P;
-				P.w_begin	( M_GAMEMESSAGE ); 
-				P.w_u32		( GAME_EVENT_SERVER_DIALOG_MESSAGE );
-				P.w_stringZ	( reason2 );
-				Level().Server->SendBroadcast( l_pC->ID, P ); // to all, except self
-
-				Level().OnSessionTerminate( reason2 ); //to self
-				Engine.Event.Defer("KERNEL:disconnect");
-				break;
-			}
-		}
-	}
-	if ( it == cnt )
+	if (!tmp_client)
 	{
 		Msg( "! No such player found : %i", player );
+		return;
+	}
+	LPCSTR reason2;
+	STRCONCAT( reason2, "@", tmp_client->ps->getName(), " ", CStringTable().translate("ui_st_kicked_by_battleye").c_str(), " ", reason );
+	
+	Msg( reason2 );
+	if( g_be_message_out )// self
+	{
+		if ( Level().game )
+		{
+			Level().game->CommonMessageOut( reason2 + 1 );
+		}
 	}
 
-	Level().Server->clients_Unlock();
+	if (Level().Server->GetServerClient() == tmp_client)
+	{
+//				"  Disconnecting : %s !  Server's Client kicked by BattlEye Server.  Reason: %s",
+		NET_Packet	P;
+		P.w_begin	( M_GAMEMESSAGE ); 
+		P.w_u32		( GAME_EVENT_SERVER_DIALOG_MESSAGE );
+		P.w_stringZ	( reason2 );
+		Level().Server->SendBroadcast( tmp_client->ID, P ); // to all, except self
+
+		Level().OnSessionTerminate( reason2 ); //to self
+		Engine.Event.Defer("KERNEL:disconnect");
+		return;
+	}
+
+	Level().Server->AddCheater(shared_str(reason2), tmp_client->ID);
 }
 
 bool BattlEyeServer::Run()

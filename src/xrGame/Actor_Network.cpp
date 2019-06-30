@@ -679,6 +679,7 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 
 	spatial.type |=STYPE_REACTTOSOUND;
 	psHUD_Flags.set(HUD_WEAPON_RT,TRUE);
+	psHUD_Flags.set(HUD_WEAPON_RT2,TRUE);
 	
 	if (Level().IsDemoPlay() && OnClient())
 	{
@@ -868,7 +869,7 @@ void	CActor::ChangeVisual			( shared_str NewVisual )
 
 	g_SetAnimation(mstate_real);
 	Visual()->dcast_PKinematics()->CalculateBones_Invalidate();
-	Visual()->dcast_PKinematics()->CalculateBones();
+	Visual()->dcast_PKinematics()->CalculateBones(TRUE);
 };
 
 void ACTOR_DEFS::net_update::lerp(ACTOR_DEFS::net_update& A, ACTOR_DEFS::net_update& B, float f)

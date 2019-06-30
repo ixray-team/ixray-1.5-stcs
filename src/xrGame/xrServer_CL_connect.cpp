@@ -95,10 +95,8 @@ void xrServer::OnCL_Connected		(IClient* _CL)
 {
 	xrClientData*	CL				= (xrClientData*)_CL;
 	CL->net_Accepted = TRUE;
-///	Server_Client_Check(CL); 
-
-	csPlayers.Enter					();
-
+///	Server_Client_Check(CL);
+	//csPlayers.Enter					();	//sychronized by a parent call
 	Export_game_type(CL);
 	Perform_game_export();
 	SendConnectionData(CL);
@@ -107,14 +105,13 @@ void xrServer::OnCL_Connected		(IClient* _CL)
 	NET_Packet P;
 	P.B.count = 0;
 	P.w_clientID(CL->ID);
-	// [19.11.07] Alexander Maniluk: changed packet format
 	VERIFY2(CL->ps, "Player state not created");
 	CL->ps->net_Export(P, true);
 	//--
 	P.r_pos = 0;
 	ClientID clientID;clientID.set	(0);
 	game->AddDelayedEvent			(P,GAME_EVENT_PLAYER_CONNECTED, 0, clientID);
-	csPlayers.Leave					();
+	//csPlayers.Leave					();
 	game->ProcessDelayedEvent		();
 }
 
@@ -136,11 +133,16 @@ void	xrServer::SendConnectResult(IClient* CL, u8 res, u8 res1, char* ResultStr)
 	
 };
 
+//this method response for client validation on connect state (CLevel::net_start_client2)
+//the first validation is CDKEY, then gamedata checksum (NeedToCheckClient_BuildVersion), then 
+//banned or not...
+//WARNING ! if you will change this method see M_AUTH_CHALLENGE event handler
 void xrServer::Check_GameSpy_CDKey_Success			(IClient* CL)
 {
-	if (NeedToCheckClient_BuildVersion(CL))				return;
+	if (NeedToCheckClient_BuildVersion(CL))
+		return;
 	//-------------------------------------------------------------
-	Check_BuildVersion_Success(CL);	
+	RequestClientDigest(CL);
 };
 
 BOOL	g_SV_Disable_Auth_Check = FALSE;
@@ -191,7 +193,8 @@ void xrServer::OnBuildVersionRespond				( IClient* CL, NET_Packet& P )
 				
 		if( CL->flags.bLocal || bAccessUser )
 		{
-			Check_BuildVersion_Success( CL );
+			//Check_BuildVersion_Success( CL );
+			RequestClientDigest(CL);
 		}
 		else
 		{

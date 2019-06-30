@@ -70,7 +70,7 @@ void CStateGroupAttackAbstract::initialize()
 		squad->UpdateSquadCommands();
 	}
 
-	object->EnemyMan.update();
+	//object->EnemyMan.update(); - may cause enemy returned by EnemyMan be invalid next execute
 
 	m_time_next_run_away		= 0;
 	m_time_start_check_behinder	= 0;

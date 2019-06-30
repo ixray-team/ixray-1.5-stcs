@@ -178,8 +178,10 @@ bool CWeaponMagazined::TryReload()
 			int	AC					= GetSuitableAmmoTotal();
 			Actor()->callback(GameObject::eWeaponNoAmmoAvailable)(lua_game_object(), AC);
 		}
-
-		m_pAmmo = smart_cast<CWeaponAmmo*>(m_pInventory->GetAny(*m_ammoTypes[m_ammoType] ));
+		if (m_ammoType < m_ammoTypes.size())
+			m_pAmmo = smart_cast<CWeaponAmmo*>(m_pInventory->GetAny(*m_ammoTypes[m_ammoType] ));
+		else
+			m_pAmmo = NULL;
 
 		
 		if(IsMisfire() && iAmmoElapsed)

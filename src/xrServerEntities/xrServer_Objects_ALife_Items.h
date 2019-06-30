@@ -46,7 +46,9 @@ public:
 	float							m_fDeteriorationValue;
 	CSE_ALifeObject					*m_self;
 	u32								m_last_update_time;
+	xr_vector<shared_str>			m_upgrades;
 
+public:
 									CSE_ALifeInventoryItem	(LPCSTR caSection);
 	virtual							~CSE_ALifeInventoryItem	();
 	// we need this to prevent virtual inheritance :-(
@@ -57,6 +59,10 @@ public:
 	virtual CSE_ALifeInventoryItem	*cast_inventory_item	() {return this;};
 	virtual	u32						update_rate				() const;
 	virtual BOOL					Net_Relevant			();
+
+			bool					has_upgrade				(const shared_str& upgrade_id);
+			void					add_upgrade				(const shared_str& upgrade_id);
+
 private:
 	bool							prev_freezed;
 	bool							freezed;
@@ -64,6 +70,7 @@ private:
 	static const	u32				m_freeze_delta_time;
 	static const	u32				random_limit;
 					CRandom			m_relevent_random;
+
 public:
 	// end of the virtual inheritance dependant code
 

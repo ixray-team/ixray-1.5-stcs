@@ -368,7 +368,7 @@ void CUIMapWnd::MapLocationRelcase(CMapLocation* ml)
 	if (owner)
 	{
 		CMapSpot* ms = smart_cast<CMapSpot*>(owner);
-		if(ms->MapLocation()==ml)
+		if(ms && ms->MapLocation()==ml) //CUITaskItem also can be a HintOwner
 			m_map_location_hint->SetOwner(NULL);
 	}
 }

@@ -107,15 +107,15 @@ void CMissile::PH_A_CrPr		()
 		VERIFY(obj.Visual());
 		IKinematics *K = obj.Visual()->dcast_PKinematics();
 		VERIFY( K );
+		if (!obj.PPhysicsShell())
+		{
+			Msg("! ERROR: PhysicsShell is NULL, object [%s][%d]", obj.cName().c_str(), obj.ID());
+			return;
+		}
 		if(!obj.PPhysicsShell()->isFullActive())
 		{
 			K->CalculateBones_Invalidate();
 			K->CalculateBones(TRUE);
-		}
-		if (!obj.PPhysicsShell())
-		{
-			Msg("! ERROR: PhysicsShell is NULL, object [%s][%d]", obj.cName().c_str(), obj.ID());
-			FATAL("physical shell is NULL");
 		}
 		obj.PPhysicsShell()->GetGlobalTransformDynamic(&obj.XFORM());
 		K->CalculateBones_Invalidate();
@@ -650,7 +650,7 @@ void CMissile::activate_physic_shell()
 		l_vel.add		(parent_vel);
 	}
 
-	VERIFY								(!m_pPhysicsShell);
+	R_ASSERT							(!m_pPhysicsShell);
 	create_physic_shell					();
 	m_pPhysicsShell->Activate			(m_throw_matrix, l_vel, a_vel);
 //	m_pPhysicsShell->AddTracedGeom		();
@@ -664,7 +664,7 @@ void CMissile::activate_physic_shell()
 	IKinematics							*kinematics = smart_cast<IKinematics*>(Visual());
 	VERIFY								(kinematics);
 	kinematics->CalculateBones_Invalidate();
-	kinematics->CalculateBones			();
+	kinematics->CalculateBones			(TRUE);
 }
 void	CMissile::net_Relcase(CObject* O)
 {
@@ -687,13 +687,13 @@ void CMissile::create_physic_shell	()
 
 void CMissile::setup_physic_shell	()
 {
-	VERIFY(!m_pPhysicsShell);
+	R_ASSERT(!m_pPhysicsShell);
 	create_physic_shell();
 	m_pPhysicsShell->Activate	(XFORM(),0,XFORM());//,true 
 	IKinematics					*kinematics = smart_cast<IKinematics*>(Visual());
-	VERIFY						(kinematics);
+	R_ASSERT					(kinematics);
 	kinematics->CalculateBones_Invalidate();
-	kinematics->CalculateBones			();
+	kinematics->CalculateBones			(TRUE);
 }
 
 u32	CMissile::ef_weapon_type		() const

@@ -207,19 +207,21 @@ void CStalkerActionRetreatFromEnemy::execute		()
 	if (!object().memory().enemy().selected())
 		return;
 
-	CMemoryInfo							mem_object = object().memory().memory(object().memory().enemy().selected());
-
 	object().movement().set_movement_type			(eMovementTypeRun);
 	object().movement().set_path_type				(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
 	object().movement().set_mental_state			(eMentalStatePanic);
 	object().movement().set_body_state				(eBodyStateStand);
 
-	object().m_ce_far->setup			(mem_object.m_object_params.m_position,0.f,300.f);
-	const CCoverPoint					*point = ai().cover_manager().best_cover(object().Position(),30.f,*object().m_ce_far,CStalkerMovementRestrictor(m_object,true));
-	if (!point) {
+	CCoverPoint const* point			= 0;
+	CMemoryInfo							mem_object = object().memory().memory(object().memory().enemy().selected());
+	if ( mem_object.m_object ) {
 		object().m_ce_far->setup		(mem_object.m_object_params.m_position,0.f,300.f);
-		point							= ai().cover_manager().best_cover(object().Position(),50.f,*object().m_ce_far,CStalkerMovementRestrictor(m_object,true));
+		point							= ai().cover_manager().best_cover(object().Position(),30.f,*object().m_ce_far,CStalkerMovementRestrictor(m_object,true));
+		if (!point) {
+			object().m_ce_far->setup	(mem_object.m_object_params.m_position,0.f,300.f);
+			point						= ai().cover_manager().best_cover(object().Position(),50.f,*object().m_ce_far,CStalkerMovementRestrictor(m_object,true));
+		}
 	}
 
 	if (point) {
@@ -327,28 +329,28 @@ void CStalkerActionGetReadyToKill::execute		()
 //	else {
 //		object().movement().set_movement_type	(m_movement_type);
 //	}
-
-	CMemoryInfo							mem_object = object().memory().memory(object().memory().enemy().selected());
-	Fvector								position = mem_object.m_object_params.m_position;
-
-	const CCoverPoint					*point = object().best_cover(position);
-	if (point) {
-		setup_cover									(*point);
-//		object().movement().set_movement_type		(eMovementTypeRun);
-		if (object().movement().path_completed() || object().Position().distance_to(point->position()) < 1.f) {
-//			object().movement().set_body_state		(eBodyStateCrouch);
-			object().brain().affect_cover			(true);
+	CMemoryInfo	const mem_object					= object().memory().memory(object().memory().enemy().selected());
+	if ( mem_object.m_object ) {
+		Fvector	const position						= mem_object.m_object_params.m_position;
+		CCoverPoint const* const point				= object().best_cover(position);
+		if (point) {
+			setup_cover								(*point);
+	//		object().movement().set_movement_type	(eMovementTypeRun);
+			if (object().movement().path_completed() || object().Position().distance_to(point->position()) < 1.f) {
+	//			object().movement().set_body_state	(eBodyStateCrouch);
+				object().brain().affect_cover		(true);
+			}
+			else {
+	//			object().movement().set_body_state	(eBodyStateStand);
+				object().brain().affect_cover		(false);
+			}
 		}
 		else {
-//			object().movement().set_body_state		(eBodyStateStand);
-			object().brain().affect_cover			(false);
+			object().brain().affect_cover			(true);
+			object().movement().set_movement_type	(eMovementTypeStand);
+	//		object().movement().set_body_state		(eBodyStateCrouch);
+			object().movement().set_nearest_accessible_position	();
 		}
-	}
-	else {
-		object().brain().affect_cover				(true);
-		object().movement().set_movement_type		(eMovementTypeStand);
-//		object().movement().set_body_state			(eBodyStateCrouch);
-		object().movement().set_nearest_accessible_position	();
 	}
 
 //	if (object().memory().visual().visible_now(object().memory().enemy().selected()))
@@ -1083,6 +1085,9 @@ void CStalkerActionKillEnemyIfPlayerOnThePath::execute			()
 	fire								();
 
 	CMemoryInfo							mem_object = object().memory().memory(object().memory().enemy().selected());
+	if (!mem_object.m_object)
+		return;
+
 	Fvector								position = mem_object.m_object_params.m_position;
 	const CCoverPoint					*point = object().best_cover(position);
 	if (!point)
@@ -1249,6 +1254,9 @@ void CStalkerCombatActionSmartCover::execute					()
 		return;
 
 	CMemoryInfo const mem_object	= object().memory().memory(object().memory().enemy().selected());
+	if (!mem_object.m_object)
+		return;
+
 	Fvector const position			= mem_object.m_object_params.m_position;
 	CCoverPoint const* cover		= object().best_cover(position);
 	if (!cover) {

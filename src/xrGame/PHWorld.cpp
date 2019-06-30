@@ -548,6 +548,15 @@ void CPHWorld::NetRelcase(CPhysicsShell *s)
 {
 	CPHReqComparerHasShell c(s);
 	m_commander->remove_calls(&c);
+
+	PH_UPDATE_OBJECT_I	i_update_object;
+	for(i_update_object=m_update_objects.begin();m_update_objects.end() != i_update_object;)
+	{	CPHUpdateObject* obj=(*i_update_object);
+		++i_update_object;
+		obj->NetRelcase( s );
+		//obj->PhTune(fixed_step);
+	}
+	
 }
 void CPHWorld::AddCall(CPHCondition*c,CPHAction*a)
 {

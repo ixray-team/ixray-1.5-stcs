@@ -15,7 +15,7 @@ class CUIComboBox : public CUIWindow, public CUIOptionsItem, public pureRender
 		LIST_FONDED    
 	} E_COMBO_STATE;
 	
-
+	xr_vector<int>		m_disabled;
 public:
 						CUIComboBox				();
 	virtual				~CUIComboBox			();
@@ -40,6 +40,8 @@ public:
 	virtual void		OnFocusLost				();
 	virtual void		OnFocusReceive			();
 			int			CurrentID				()	{return m_itoken_id;}
+			void		disable_id				(int id);
+			void		enable_id				(int id);
 protected:
 	virtual void		SetState				(UIState state);	
 	virtual bool		OnMouse					(float x, float y, EUIMessages mouse_action);

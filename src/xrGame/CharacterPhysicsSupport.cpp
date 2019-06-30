@@ -178,11 +178,11 @@ void CCharacterPhysicsSupport::in_NetSpawn( CSE_Abstract* e )
 		IKinematics*	ka = smart_cast<IKinematics*>( m_EntityAlife.Visual( ) );
 		VERIFY( ka );
 		ka->CalculateBones_Invalidate( );
-		ka->CalculateBones( );
+		ka->CalculateBones( TRUE );
 		CollisionCorrectObjPos( m_EntityAlife.Position( ) );
 		m_pPhysicsShell		= P_build_Shell( &m_EntityAlife, false );
 		ka->CalculateBones_Invalidate( );
-		ka->CalculateBones( );
+		ka->CalculateBones( TRUE );
 		return;
 	}
 	CPHDestroyable::Init();//this zerows colbacks !!;
@@ -203,7 +203,7 @@ void CCharacterPhysicsSupport::in_NetSpawn( CSE_Abstract* e )
 									  ///этот хак нужен, потому что некоторым монстрам 
 									  ///анимация после спона, может быть вообще не назначена
 	pK->CalculateBones_Invalidate( );
-	pK->CalculateBones( );
+	pK->CalculateBones( TRUE );
 	
 	CPHSkeleton::Spawn( e );
 	movement( )->EnableCharacter();
@@ -302,6 +302,7 @@ void		CCharacterPhysicsSupport::					SpawnCharacterCreate			( )
 
 void CCharacterPhysicsSupport::in_NetDestroy( )
 {
+	destroy( m_interactive_motion );
 	m_PhysicMovementControl->DestroyCharacter( );
 
 	if( m_physics_skeleton )
@@ -319,7 +320,7 @@ void CCharacterPhysicsSupport::in_NetDestroy( )
 	CPHSkeleton::RespawnInit( );
 	CPHDestroyable::RespawnInit( );
 	m_eState = esAlive;
-	destroy( m_interactive_motion );
+	
 	xr_delete( m_interactive_animation );
 	destroy_animation_collision();
 	DestroyIKController( );
@@ -1039,7 +1040,7 @@ void	CCharacterPhysicsSupport::	CreateShell						( CObject* who, Fvector& dp, Fv
 			BR.set_callback_overwrite (TRUE);
 //
 	K->CalculateBones_Invalidate();
-	K->CalculateBones	();
+	K->CalculateBones	(TRUE);
 	if( m_eType != etBitting )
 		K->LL_SetBoneRoot( physics_root );
 ////////////////////////////////////////////////////////////////////////////
@@ -1244,7 +1245,7 @@ void		 CCharacterPhysicsSupport::in_NetRelcase(CObject* O)
 {
 	CPHCapture* c=m_PhysicMovementControl->PHCapture();
 	if(c)
-		c->OnNetDestroyObject( O );
+		c->RemoveConnection( O );
 
 	if( m_sv_hit.is_valide() && m_sv_hit.initiator() == O )
 		m_sv_hit = SHit();
@@ -1288,7 +1289,7 @@ void	StaticEnvironmentCB ( bool& do_colide, bool bo1, dContact& c, SGameMtl* mat
 
 void						CCharacterPhysicsSupport::FlyTo(const	Fvector &disp)
 {
-		VERIFY(m_pPhysicsShell);
+		R_ASSERT(m_pPhysicsShell);
 		float ammount=disp.magnitude();
 		if(fis_zero(ammount,EPS_L))	return;
 		ph_world->Freeze();

@@ -215,12 +215,26 @@ bool CInventory::DropItem(CGameObject *pObj, bool just_before_destroy)
 	{
 	case eItemPlaceBelt:{
 			VERIFY(InBelt(pIItem));
-			m_belt.erase(std::find(m_belt.begin(), m_belt.end(), pIItem));
+			TIItemContainer::iterator temp_iter = std::find(m_belt.begin(), m_belt.end(), pIItem);
+			if (temp_iter != m_belt.end())
+			{
+				m_belt.erase(temp_iter);
+			} else
+			{
+				Msg("! ERROR: CInventory::Drop item not found in belt...");
+			}
 			pIItem->object().processing_deactivate();
 		}break;
 	case eItemPlaceRuck:{
 			VERIFY(InRuck(pIItem));
-			m_ruck.erase(std::find(m_ruck.begin(), m_ruck.end(), pIItem));
+			TIItemContainer::iterator temp_iter = std::find(m_ruck.begin(), m_ruck.end(), pIItem);
+			if (temp_iter != m_ruck.end())
+			{
+				m_ruck.erase(temp_iter);
+			} else
+			{
+				Msg("! ERROR: CInventory::Drop item not found in ruck...");
+			}
 		}break;
 	case eItemPlaceSlot:{
 			VERIFY			(InSlot(pIItem));
@@ -285,6 +299,18 @@ bool CInventory::Slot(PIItem pIItem, bool bNotActivate, bool strict_placement)
 	if(m_slots[pIItem->GetSlot()].m_pIItem == pIItem)
 		return false;
 
+	if (!IsGameTypeSingle())
+	{
+		u16 real_parent = pIItem->object().H_Parent() ? pIItem->object().H_Parent()->ID() : u16(-1);
+		if (GetOwner()->object_id() != real_parent)
+		{
+			Msg("! WARNING: CL: actor [%d] tries to place to slot not own item [%d], that has parent [%d]",
+				GetOwner()->object_id(), pIItem->object_id(), real_parent);
+			return false;
+		}
+	}
+
+
 //.	Msg("To Slot %s[%d]", *pIItem->object().cName(), pIItem->object().ID());
 
 	if(!strict_placement && !CanPutInSlot(pIItem)) 
@@ -308,12 +334,36 @@ bool CInventory::Slot(PIItem pIItem, bool bNotActivate, bool strict_placement)
 	m_slots[pIItem->GetSlot()].m_pIItem = pIItem;
 
 	//удалить из рюкзака или пояса
-	TIItemContainer::iterator it = std::find(m_ruck.begin(), m_ruck.end(), pIItem);
-	if(m_ruck.end() != it) m_ruck.erase(it);
-	it = std::find(m_belt.begin(), m_belt.end(), pIItem);
-	if(m_belt.end() != it) m_belt.erase(it);
-
-
+	TIItemContainer::iterator it_ruck = std::find(m_ruck.begin(), m_ruck.end(), pIItem);
+	TIItemContainer::iterator it_belt = std::find(m_belt.begin(), m_belt.end(), pIItem);
+	if (!IsGameTypeSingle())
+	{
+		if (it_ruck != m_ruck.end())
+		{
+			m_ruck.erase(it_ruck);
+			R_ASSERT(it_belt == m_belt.end());
+		} else if(it_belt != m_belt.end())
+		{
+			m_belt.erase(it_belt);
+			R_ASSERT(it_ruck == m_ruck.end());
+		} else
+		{
+			u16 real_parent = pIItem->object().H_Parent() ? pIItem->object().H_Parent()->ID() : u16(-1);
+			R_ASSERT2(GetOwner()->object_id() == real_parent,
+				make_string("! ERROR: CL: actor [%d] doesn't contain [%d], real parent is [%d]", 
+					GetOwner()->object_id(), pIItem->object_id(), real_parent).c_str()
+			);
+		}
+#ifdef MP_LOGGING
+		Msg("--- Actor [%d] places to slot item [%d]", GetOwner()->object_id(), pIItem->object_id());
+#endif //#ifdef MP_LOGGING
+	} else
+	{
+		if (it_ruck != m_ruck.end())
+			m_ruck.erase(it_ruck);
+		if (it_belt != m_belt.end())
+			m_belt.erase(it_belt);
+	}
 
 	if (((m_iActiveSlot==pIItem->GetSlot()) ||(m_iActiveSlot==NO_ACTIVE_SLOT) && m_iNextActiveSlot==NO_ACTIVE_SLOT) && (!bNotActivate))
 	{
@@ -371,6 +421,17 @@ bool CInventory::Belt(PIItem pIItem, bool strict_placement)
 bool CInventory::Ruck(PIItem pIItem, bool strict_placement) 
 {
 	if(!strict_placement && !CanPutInRuck(pIItem)) return false;
+
+	if (!IsGameTypeSingle())
+	{
+		u16 real_parent = pIItem->object().H_Parent() ? pIItem->object().H_Parent()->ID() : u16(-1);
+		if (GetOwner()->object_id() != real_parent)
+		{
+			Msg("! WARNING: CL: actor [%d] tries to place to ruck not own item [%d], that has parent [%d]",
+				GetOwner()->object_id(), pIItem->object_id(), real_parent);
+			return false;
+		}
+	}
 	
 	bool in_slot = InSlot(pIItem);
 	//вещь была в слоте
@@ -384,6 +445,19 @@ bool CInventory::Ruck(PIItem pIItem, bool strict_placement)
 		//вещь была на поясе или вообще только поднята с земли
 		TIItemContainer::iterator it = std::find(m_belt.begin(), m_belt.end(), pIItem); 
 		if(m_belt.end() != it) m_belt.erase(it);
+
+		if (!IsGameTypeSingle())
+		{
+			u16 item_parent_id = pIItem->object().H_Parent() ? pIItem->object().H_Parent()->ID() : u16(-1) ;
+			u16 inventory_owner_id = GetOwner()->object_id();
+			R_ASSERT2(item_parent_id == inventory_owner_id,
+				make_string("! ERROR: CL: Actor[%d] tries to place to ruck not own item [%d], real item owner is [%d]",
+				inventory_owner_id, pIItem->object_id(), item_parent_id).c_str()
+			);
+#ifdef MP_LOGGING
+			Msg("--- Actor [%d] place to ruck item [%d]", inventory_owner_id, pIItem->object_id());
+#endif
+		}
 	}
 	
 	m_ruck.insert									(m_ruck.end(), pIItem); 
@@ -673,6 +747,7 @@ bool CInventory::Action(s32 cmd, u32 flags)
 
 	if (m_iActiveSlot < m_slots.size() && 
 			m_slots[m_iActiveSlot].m_pIItem && 
+			!m_slots[m_iActiveSlot].m_pIItem->object().getDestroy() &&
 			m_slots[m_iActiveSlot].m_pIItem->Action(cmd, flags)) 
 											return true;
 	bool b_send_event = false;
@@ -1043,12 +1118,24 @@ bool CInventory::Eat(PIItem pIItem)
 {
 	//устанаовить съедобна ли вещь
 	CEatableItem* pItemToEat = smart_cast<CEatableItem*>(pIItem);
-	if(!pItemToEat) return false;
+	if ( !pItemToEat )			return false;
 
 	CEntityAlive *entity_alive = smart_cast<CEntityAlive*>(m_pOwner);
-	if(!entity_alive) return false;
+	if ( !entity_alive )		return false;
+
+	CInventoryOwner* IO	= smart_cast<CInventoryOwner*>(entity_alive);
+	if ( !IO )					return false;
 	
-	pItemToEat->UseBy		(entity_alive);
+	CInventory* pInventory = pItemToEat->m_pInventory;
+	if ( !pInventory || pInventory != this )	return false;
+	if ( pInventory != IO->m_inventory )		return false;
+	if ( pItemToEat->object().H_Parent()->ID() != entity_alive->ID() )		return false;
+	
+	pItemToEat->UseBy			(entity_alive);
+
+#ifdef MP_LOGGING
+	Msg( "--- Actor [%d] use or eat [%d][%s]", entity_alive->ID(), pItemToEat->object().ID(), pItemToEat->object().cNameSect().c_str() );
+#endif // MP_LOGGING
 
 	if(IsGameTypeSingle() && Actor()->m_inventory == this)
 		Actor()->callback(GameObject::eUseObject)((smart_cast<CGameObject*>(pIItem))->lua_game_object());

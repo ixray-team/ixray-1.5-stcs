@@ -85,7 +85,11 @@ void CUICellItem::Update()
 	
 	if ( CursorOverWindow() )
 	{
-		GetMessageTarget()->SendMessage(this, DRAG_DROP_ITEM_FOCUSED_UPDATE, NULL);
+		Frect clientArea;
+		m_pParentList->GetClientArea(clientArea);
+		Fvector2 cp			= GetUICursor()->GetCursorPosition();
+		if(clientArea.in(cp))
+			GetMessageTarget()->SendMessage(this, DRAG_DROP_ITEM_FOCUSED_UPDATE, NULL);
 	}
 	
 	PIItem item = (PIItem)m_pData;

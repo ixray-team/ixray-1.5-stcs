@@ -160,8 +160,11 @@ public:
 	void			SetNeedVidRestart				();
 	virtual void	OnDeviceReset					();
 	LPCSTR			GetGSVer						();
-		bool		ValidateCDKey					();
-		bool		IsCDKeyIsValid();
+
+	static	LPCSTR	AddHyphens						(LPCSTR str);
+	static	LPCSTR	DelHyphens						(LPCSTR str);
+			bool	IsCDKeyIsValid					();
+			bool	ValidateCDKey					();
 
 	LPCSTR			GetPlayerNameFromRegistry		();
 	LPCSTR			GetCDKeyFromRegistry			();

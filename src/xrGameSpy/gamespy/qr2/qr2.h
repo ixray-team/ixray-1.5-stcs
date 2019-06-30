@@ -195,9 +195,17 @@ typedef void (*qr2_natnegcallback_t)(int cookie, void *userdata);
 typedef void (*qr2_clientmessagecallback_t)(gsi_char *data, int len, void *userdata);	
 typedef void (*qr2_publicaddresscallback_t)(unsigned int ip, unsigned short port, void *userdata);
 
+//#if defined(QR2_IP_FILTER)
+typedef void (*qr2_denyqr2responsetoipcallback_t)(void *userdata, unsigned int sender_ip, int * result);
+//#endif //#if defined(QR2_IP_FILTER)
+
 void qr2_register_natneg_callback(qr2_t qrec, qr2_natnegcallback_t nncallback);
 void qr2_register_clientmessage_callback(qr2_t qrec, qr2_clientmessagecallback_t cmcallback);
 void qr2_register_publicaddress_callback(qr2_t qrec, qr2_publicaddresscallback_t pacallback);
+//#if defined(QR2_IP_FILTER)
+void qr2_register_denyresponsetoip_callback(qr2_t qrec, qr2_denyqr2responsetoipcallback_t dertoipcallback);
+//#endif //#if defined(QR2_IP_FILTER)
+
 
 
 /*****************
@@ -385,6 +393,9 @@ struct qr2_implementation_s
 	qr2_natnegcallback_t nn_callback;
 	qr2_clientmessagecallback_t cm_callback;
 	qr2_publicaddresscallback_t pa_callback;
+//#if defined(QR2_IP_FILTER)
+	qr2_denyqr2responsetoipcallback_t denyresp2_ip_callback;
+//#endif //#if defined(QR2_IP_FILTER)
 
 	gsi_time lastheartbeat;
 	gsi_time lastka;

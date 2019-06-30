@@ -109,13 +109,13 @@ void CUITaskWnd::Update()
 	if ( m_pStoryLineTaskItem->show_hint && m_pStoryLineTaskItem->OwnerTask() )
 	{
 		m_pMapWnd->ShowHintTask( m_pStoryLineTaskItem->OwnerTask(), m_pStoryLineTaskItem );
-		ReloadTaskInfo();
+		//ReloadTaskInfo();
 	}
 	else if ( m_pSecondaryTaskItem->show_hint && m_pSecondaryTaskItem->OwnerTask() )
 	{
 		m_pStoryLineTaskItem->show_hint = false;
 		m_pMapWnd->ShowHintTask( m_pSecondaryTaskItem->OwnerTask(), m_pSecondaryTaskItem );
-		ReloadTaskInfo();
+		//ReloadTaskInfo();
 	}
 	else
 	{

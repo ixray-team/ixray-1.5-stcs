@@ -166,16 +166,19 @@ smart_cover::loophole *cover::best_loophole	(Fvector const &position, float &val
 
 void cover::evaluate_loophole				(Fvector const &position, smart_cover::loophole * &source, smart_cover::loophole * &result, float &value) const
 {
-	VERIFY						(source);
+	VERIFY						( source );
+	VERIFY2						( _valid(position), make_string("[%f][%f][%f]", VPUSH(position)) );
 
 	if (!source->usable())
 		return;
 
 	Fvector						fov_position = this->fov_position(*source);
+	VERIFY2						( _valid(fov_position), make_string("[%f][%f][%f]", VPUSH(fov_position)) );
 	if (fov_position.distance_to(position) > source->range())
 		return;
 
 	Fvector						direction = Fvector().sub(position, fov_position);
+	VERIFY2						( _valid(direction), make_string("[%f][%f][%f]", VPUSH(direction)) );
 	if (direction.magnitude() < 1.f)
 		return;
 

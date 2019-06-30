@@ -149,7 +149,7 @@ void CPhysicObject::RunStartupAnim(CSE_Abstract *D)
 			m_anim_blend				= m_anim_script_callback.play_cycle( PKinematicsAnimated, visual->startup_animation );
 		}
 		smart_cast<IKinematics*>(Visual())->CalculateBones_Invalidate();
-		smart_cast<IKinematics*>(Visual())->CalculateBones	();
+		smart_cast<IKinematics*>(Visual())->CalculateBones	(TRUE);
 	}
 }
 IC	bool check_blend(CBlend * b, LPCSTR name, LPCSTR sect, LPCSTR visual)
@@ -207,7 +207,7 @@ void	CPhysicObject::		anim_time_set					( float time )
 	IKinematics *K = smart_cast<IKinematics*>(Visual());
 	VERIFY( K );
 	K->CalculateBones_Invalidate();
-	K->CalculateBones();
+	K->CalculateBones(TRUE);
 }
 
 
@@ -697,6 +697,10 @@ void CPhysicObject::PH_A_CrPr		()
 		VERIFY(Visual());
 		IKinematics *K = Visual()->dcast_PKinematics();
 		VERIFY( K );
+		if (!PPhysicsShell())
+		{
+			return;
+		}
 		if(!PPhysicsShell()->isFullActive())
 		{
 			K->CalculateBones_Invalidate();

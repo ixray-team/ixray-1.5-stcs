@@ -75,6 +75,7 @@ IC		void						b_nosun_set		(bool v){	_b_nosun = v; }
 		void						destroy_write_faces()	;
 		void						create_read_faces()		;
 		void						destroy_read_faces()	;
+		void						gl_mesh_clear	()		;
 private:
 //std::pair<u32,u32>					get_id		( const _face * v ) const;
 //std::pair<u32,u32>					get_id		( const _vertex * v ) const;
@@ -84,7 +85,7 @@ public:
 
 		void						read			( INetReader &r, base_Face* &f);
 		void						write			( IWriter &r, const base_Face *f ) const ;
-
+		void						clear			();
 	//	void						cdb_read_create	() ;
 private:
 		void						close_models_read		();
@@ -99,4 +100,13 @@ extern "C" XRLC_LIGHT_API u32				InvalideFaces();
 		   XRLC_LIGHT_API void				ImplicitLighting();
 extern xrLC_GlobalData* data;
 IC xrLC_GlobalData* inlc_global_data() { return data; }
+static LPCSTR gl_data_net_file_name = "tmp_global_data";
 
+
+#ifdef _DEBUG
+static LPCSTR libraries = "XRLC_LightStab.dll,XRLC_Light.dll,xrCore.dll,xrCDB.dll,DXT.dll,BugTrapD.dll,msvcr80.dll,Microsoft.VC80.CRT.manifest";
+#else
+static LPCSTR libraries = "XRLC_LightStab.dll,XRLC_Light.dll,xrCore.dll,xrCDB.dll,DXT.dll,BugTrap.dll,msvcr80.dll,Microsoft.VC80.CRT.manifest";
+#endif
+//#define NET_CMP
+//#define LOAD_GL_DATA

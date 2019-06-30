@@ -39,7 +39,7 @@ m_poses_blending ( Fidentity, Fidentity, -1.f )
 	if( dbg_draw_animation_movement_controller )
 	{
 		m_pKinematicsC->CalculateBones_Invalidate();
-		m_pKinematicsC->CalculateBones();
+		m_pKinematicsC->CalculateBones(TRUE);
 		DBG_OpenCashedDraw();
 		DBG_DrawBones( *_pObjXForm,  _pKinematicsC );
 		DBG_ClosedCashedDraw( 50000 );
@@ -52,7 +52,7 @@ m_poses_blending ( Fidentity, Fidentity, -1.f )
 	GetInitalPositionBlenSpeed	( );
 	m_pKinematicsA->SetBlendDestroyCallback( this );
 	m_pKinematicsC->CalculateBones_Invalidate();
-	m_pKinematicsC->CalculateBones();
+	m_pKinematicsC->CalculateBones(TRUE);
 	SetPosesBlending	( );
 #ifdef	DEBUG
 	if( dbg_draw_animation_movement_controller )

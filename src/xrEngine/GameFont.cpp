@@ -86,14 +86,40 @@ void CGameFont::Initialize		(LPCSTR cShader, LPCSTR cTextureName)
 		
 		fXStep = ceil( fHeight / 2.0f );
 
+		// Searching for the first valid character
+
+		Fvector vFirstValid = {0,0,0};
+
+		if ( ini->line_exist( "mb_symbol_coords" , "09608" ) ) {
+			Fvector v = ini->r_fvector3( "mb_symbol_coords" , "09608" );
+			vFirstValid.set( v.x , v.y , 1 + v[2] - v[0] );
+		} else 
+		for ( u32 i=0 ; i < nNumChars ; i++ ) {
+			sprintf_s( buf ,sizeof(buf), "%05d" , i );
+			if ( ini->line_exist( "mb_symbol_coords" , buf ) ) {
+				Fvector v = ini->r_fvector3( "mb_symbol_coords" , buf );
+				vFirstValid.set( v.x , v.y , 1 + v[2] - v[0] );
+				break;
+			}
+		}
+
+		// Filling entire character table
+
 		for ( u32 i=0 ; i < nNumChars ; i++ ) {
 			sprintf_s( buf ,sizeof(buf), "%05d" , i );
 			if ( ini->line_exist( "mb_symbol_coords" , buf ) ) {
 				Fvector v = ini->r_fvector3( "mb_symbol_coords" , buf );
 				TCMap[i].set( v.x , v.y , 1 + v[2] - v[0] );
 			} else
-				TCMap[i].set( 0 , 0 , 0 );
+				TCMap[i] = vFirstValid; // "unassigned" unprintable characters
 		}
+
+		// Special case for space
+		TCMap[ 0x0020 ].set( 0 , 0 , 0 );
+		// Special case for ideographic space
+		TCMap[ 0x3000 ].set( 0 , 0 , 0 );
+
+
 	}else
 	if (ini->section_exist("symbol_coords"))
 	{
@@ -242,7 +268,7 @@ void CGameFont::MasterOut(
 	rs.height = fCurrentHeight;
 	rs.align = eCurrentAlignment;
 
-	int vs_sz = _vsnprintf( rs.string , sizeof( rs.string ) - 1 , fmt , p );
+	int vs_sz = vsprintf_s( rs.string , fmt , p );
 
 	//VERIFY( ( vs_sz != -1 ) && ( rs.string[ vs_sz ] == '\0' ) );
 
@@ -292,9 +318,7 @@ void CGameFont::OutSkip( float val )
 
 float CGameFont::SizeOf_( const char cChar )
 {
-	VERIFY( ! IsMultibyte() );
-
-	return ( GetCharTC( ( u16 ) ( u8 ) cChar ).z * vInterval.x );
+	return ( GetCharTC( ( u16 ) ( u8 ) ( ( IsMultibyte() && cChar == ' ' ) ) ? 0 : cChar ).z * vInterval.x );
 }
 
 float CGameFont::SizeOf_( LPCSTR s )

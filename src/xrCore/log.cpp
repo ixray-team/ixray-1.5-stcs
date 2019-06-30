@@ -159,9 +159,11 @@ void LogWinErr			(const char *msg, long err_code)	{
 	Msg					("%s: %s",msg,Debug.error2string(err_code)	);
 }
 
-void SetLogCB			(LogCallback cb)
+LogCallback SetLogCB	(LogCallback cb)
 {
+	LogCallback	result	= LogCB;
 	LogCB				= cb;
+	return				(result);
 }
 
 LPCSTR log_name			()

@@ -109,6 +109,7 @@ public:
 public:
 	// feature level
 	virtual	GenerationLevel			get_generation			()	{ return IRender_interface::GENERATION_R1; }
+	virtual DWORD					get_dx_level			()	{ return 0x00090000; }
 
 	virtual bool					is_sun_static			() {return true;}
 

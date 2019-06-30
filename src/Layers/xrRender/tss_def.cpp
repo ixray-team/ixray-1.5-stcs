@@ -276,7 +276,10 @@ void SimulatorStates::UpdateDesc( D3D10_BLEND_DESC &desc ) const
 		{
 			switch (S.v1)
 			{
-				//desc.AlphaToCoverageEnable = FALSE;
+			case XRDX10RS_ALPHATOCOVERAGE:
+				desc.AlphaToCoverageEnable = S.v2?1:0;
+				break;
+				
 			case D3DRS_SRCBLEND:
 				desc.SrcBlend = dx10StateUtils::ConvertBlendArg((D3DBLEND)S.v2);
 				break;

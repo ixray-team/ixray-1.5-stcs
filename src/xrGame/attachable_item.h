@@ -43,7 +43,7 @@ public:
 	IC		void				set_bone_id				(u16 bone_id);
 	IC		const Fmatrix		&offset					() const;
 	IC		bool				enabled					() const;
-			void				enable					(bool value);
+	virtual	void				enable					(bool value);
 
 public:
 #ifdef DEBUG

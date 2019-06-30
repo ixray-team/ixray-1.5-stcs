@@ -149,9 +149,14 @@ void R_dsgraph_structure::r_dsgraph_insert_dynamic	(dxRender_Visual *pVisual, Fv
 	}
 #endif
 
-	// the most common node
-	SPass&						pass	= *sh->passes.front	();
-	mapMatrix_T&				map		= mapMatrix			[sh->flags.iPriority/2];
+	for ( u32 iPass = 0; iPass<sh->passes.size(); ++iPass)
+	{
+		// the most common node
+		//SPass&						pass	= *sh->passes.front	();
+		//mapMatrix_T&				map		= mapMatrix			[sh->flags.iPriority/2];
+		SPass&						pass	= *sh->passes[iPass];
+		mapMatrix_T&				map		= mapMatrixPasses	[sh->flags.iPriority/2][iPass];
+		
 
 #ifdef USE_RESOURCE_DEBUGGER
 	#ifdef	USE_DX10
@@ -173,26 +178,27 @@ void R_dsgraph_structure::r_dsgraph_insert_dynamic	(dxRender_Visual *pVisual, Fv
 	#endif	//	USE_DX10
 #endif
 
-	mapMatrixCS::TNode*			Ncs		= Nps->val.insert	(pass.constants._get());
-	mapMatrixStates::TNode*		Nstate	= Ncs->val.insert	(pass.state->state);
-	mapMatrixTextures::TNode*	Ntex	= Nstate->val.insert(pass.T._get());
-	mapMatrixItems&				items	= Ntex->val;
-	items.push_back						(item);
+		mapMatrixCS::TNode*			Ncs		= Nps->val.insert	(pass.constants._get());
+		mapMatrixStates::TNode*		Nstate	= Ncs->val.insert	(pass.state->state);
+		mapMatrixTextures::TNode*	Ntex	= Nstate->val.insert(pass.T._get());
+		mapMatrixItems&				items	= Ntex->val;
+		items.push_back						(item);
 
-	// Need to sort for HZB efficient use
-	if (SSA>Ntex->val.ssa)		{ Ntex->val.ssa = SSA;
-	if (SSA>Nstate->val.ssa)	{ Nstate->val.ssa = SSA;
-	if (SSA>Ncs->val.ssa)		{ Ncs->val.ssa = SSA;
-	if (SSA>Nps->val.ssa)		{ Nps->val.ssa = SSA;
+		// Need to sort for HZB efficient use
+		if (SSA>Ntex->val.ssa)		{ Ntex->val.ssa = SSA;
+		if (SSA>Nstate->val.ssa)	{ Nstate->val.ssa = SSA;
+		if (SSA>Ncs->val.ssa)		{ Ncs->val.ssa = SSA;
+		if (SSA>Nps->val.ssa)		{ Nps->val.ssa = SSA;
 #ifdef	USE_DX10
-	if (SSA>Ngs->val.ssa)		{ Ngs->val.ssa = SSA;
+		if (SSA>Ngs->val.ssa)		{ Ngs->val.ssa = SSA;
 #endif	//	USE_DX10
-	if (SSA>Nvs->val.ssa)		{ Nvs->val.ssa = SSA;
+		if (SSA>Nvs->val.ssa)		{ Nvs->val.ssa = SSA;
 #ifdef	USE_DX10
-	} } } } } }
+		} } } } } }
 #else	//	USE_DX10
-	} } } } }
+		} } } } }
 #endif	//	USE_DX10
+	}
 
 #if RENDER!=R_R1
 	if (val_recorder)			{
@@ -277,8 +283,13 @@ void R_dsgraph_structure::r_dsgraph_insert_static	(dxRender_Visual *pVisual)
 	if	(val_feedback && counter_S==val_feedback_breakp)	val_feedback->rfeedback_static(pVisual);
 
 	counter_S					++;
-	SPass&						pass	= *sh->passes.front	();
-	mapNormal_T&				map		= mapNormal			[sh->flags.iPriority/2];
+
+	for ( u32 iPass = 0; iPass<sh->passes.size(); ++iPass)
+	{
+		//SPass&						pass	= *sh->passes.front	();
+		//mapNormal_T&				map		= mapNormal			[sh->flags.iPriority/2];
+		SPass&						pass	= *sh->passes[iPass];
+		mapNormal_T&				map		= mapNormalPasses[sh->flags.iPriority/2][iPass];
 
 //#ifdef USE_RESOURCE_DEBUGGER
 //	mapNormalVS::TNode*			Nvs		= map.insert		(pass.vs);
@@ -294,47 +305,48 @@ void R_dsgraph_structure::r_dsgraph_insert_static	(dxRender_Visual *pVisual)
 
 #ifdef USE_RESOURCE_DEBUGGER
 #ifdef	USE_DX10
-	mapNormalVS::TNode*			Nvs		= map.insert		(pass.vs);
-	mapNormalGS::TNode*			Ngs		= Nvs->val.insert	(pass.gs);
-	mapNormalPS::TNode*			Nps		= Ngs->val.insert	(pass.ps);
+		mapNormalVS::TNode*			Nvs		= map.insert		(pass.vs);
+		mapNormalGS::TNode*			Ngs		= Nvs->val.insert	(pass.gs);
+		mapNormalPS::TNode*			Nps		= Ngs->val.insert	(pass.ps);
 #else	//	USE_DX10
-	mapNormalVS::TNode*			Nvs		= map.insert		(pass.vs);
-	mapNormalPS::TNode*			Nps		= Nvs->val.insert	(pass.ps);
+		mapNormalVS::TNode*			Nvs		= map.insert		(pass.vs);
+		mapNormalPS::TNode*			Nps		= Nvs->val.insert	(pass.ps);
 #endif	//	USE_DX10
 #else
 #ifdef	USE_DX10
-	mapNormalVS::TNode*			Nvs		= map.insert		(&*pass.vs);
-	mapNormalGS::TNode*			Ngs		= Nvs->val.insert	(pass.gs->gs);
-	mapNormalPS::TNode*			Nps		= Ngs->val.insert	(pass.ps->ps);
+		mapNormalVS::TNode*			Nvs		= map.insert		(&*pass.vs);
+		mapNormalGS::TNode*			Ngs		= Nvs->val.insert	(pass.gs->gs);
+		mapNormalPS::TNode*			Nps		= Ngs->val.insert	(pass.ps->ps);
 #else	//	USE_DX10
-	mapNormalVS::TNode*			Nvs		= map.insert		(pass.vs->vs);
-	mapNormalPS::TNode*			Nps		= Nvs->val.insert	(pass.ps->ps);
+		mapNormalVS::TNode*			Nvs		= map.insert		(pass.vs->vs);
+		mapNormalPS::TNode*			Nps		= Nvs->val.insert	(pass.ps->ps);
 #endif	//	USE_DX10
 #endif
 
-	mapNormalCS::TNode*			Ncs		= Nps->val.insert	(pass.constants._get());
-	mapNormalStates::TNode*		Nstate	= Ncs->val.insert	(pass.state->state);
-	mapNormalTextures::TNode*	Ntex	= Nstate->val.insert(pass.T._get());
-	mapNormalItems&				items	= Ntex->val;
-	_NormalItem					item	= {SSA,pVisual};
-	items.push_back						(item);
+		mapNormalCS::TNode*			Ncs		= Nps->val.insert	(pass.constants._get());
+		mapNormalStates::TNode*		Nstate	= Ncs->val.insert	(pass.state->state);
+		mapNormalTextures::TNode*	Ntex	= Nstate->val.insert(pass.T._get());
+		mapNormalItems&				items	= Ntex->val;
+		_NormalItem					item	= {SSA,pVisual};
+		items.push_back						(item);
 
-	// Need to sort for HZB efficient use
-	if (SSA>Ntex->val.ssa)		{ Ntex->val.ssa = SSA;
-	if (SSA>Nstate->val.ssa)	{ Nstate->val.ssa = SSA;
-	if (SSA>Ncs->val.ssa)		{ Ncs->val.ssa = SSA;
-	if (SSA>Nps->val.ssa)		{ Nps->val.ssa = SSA;
+		// Need to sort for HZB efficient use
+		if (SSA>Ntex->val.ssa)		{ Ntex->val.ssa = SSA;
+		if (SSA>Nstate->val.ssa)	{ Nstate->val.ssa = SSA;
+		if (SSA>Ncs->val.ssa)		{ Ncs->val.ssa = SSA;
+		if (SSA>Nps->val.ssa)		{ Nps->val.ssa = SSA;
 //	if (SSA>Nvs->val.ssa)		{ Nvs->val.ssa = SSA;
 //	} } } } }
 #ifdef	USE_DX10
-	if (SSA>Ngs->val.ssa)		{ Ngs->val.ssa = SSA;
+		if (SSA>Ngs->val.ssa)		{ Ngs->val.ssa = SSA;
 #endif	//	USE_DX10
-	if (SSA>Nvs->val.ssa)		{ Nvs->val.ssa = SSA;
+		if (SSA>Nvs->val.ssa)		{ Nvs->val.ssa = SSA;
 #ifdef	USE_DX10
-	} } } } } }
+		} } } } } }
 #else	//	USE_DX10
-	} } } } }
+		} } } } }
 #endif	//	USE_DX10
+	}
 
 #if RENDER!=R_R1
 	if (val_recorder)			{

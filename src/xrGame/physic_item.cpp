@@ -82,7 +82,7 @@ BOOL CPhysicItem::net_Spawn			(CSE_Abstract* DC)
 		return (FALSE);
 	IKinematics* pK = smart_cast<IKinematics*>(Visual());
 	pK->CalculateBones_Invalidate();
-	pK->CalculateBones();
+	pK->CalculateBones(TRUE);
 	CSE_Abstract *abstract = (CSE_Abstract*)DC;
 	if (0xffff == abstract->ID_Parent)
 	{
@@ -125,7 +125,7 @@ void CPhysicItem::activate_physic_shell()
 	if(K)
 	{
 		K->CalculateBones_Invalidate();
-		K->CalculateBones();
+		K->CalculateBones(TRUE);
 	}
 	///m_pPhysicsShell->Update		();	
 }
@@ -137,7 +137,7 @@ void CPhysicItem::setup_physic_shell	()
 	if(K)
 	{
 		K->CalculateBones_Invalidate();
-		K->CalculateBones();
+		K->CalculateBones(TRUE);
 	}
 	//m_pPhysicsShell->Update		();
 }

@@ -12,11 +12,22 @@
 #include "MainMenu.h"
 #include "string_table.h"
 
+extern	void	GetPlayerName_FromRegistry	(char* name);
+
 BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 {
 	net_start_result_total				= TRUE;
 
 	pApp->LoadBegin				();
+
+	string64	player_name;
+	GetPlayerName_FromRegistry( player_name );
+
+	if ( xr_strlen(player_name) == 0 )
+	{
+		strcpy_s( player_name, xr_strlen(Core.UserName) ? Core.UserName : Core.CompName );
+	}
+	VERIFY( xr_strlen(player_name) );
 
 	//make Client Name if options doesn't have it
 	LPCSTR	NameStart	= strstr(op_client,"/name=");
@@ -25,7 +36,7 @@ BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 		string512 tmp;
 		strcpy_s(tmp, op_client);
 		strcat_s(tmp, "/name=");
-		strcat_s(tmp, xr_strlen(Core.UserName) ? Core.UserName : Core.CompName);
+		strcat_s(tmp, player_name);
 		m_caClientOptions			= tmp;
 	} else {
 		string1024	ret="";
@@ -36,7 +47,7 @@ BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 			string1024 tmpstr;
 			strcpy_s(tmpstr, op_client);
 			*(strstr(tmpstr, "name=")+5) = 0;
-			strcat_s(tmpstr, xr_strlen(Core.UserName) ? Core.UserName : Core.CompName);
+			strcat_s(tmpstr, player_name);
 			const char* ptmp = strstr(strstr(op_client, "name="), "/");
 			if (ptmp)
 				strcat_s(tmpstr, ptmp);
@@ -112,14 +123,13 @@ bool CLevel::net_start1				()
 			
 			map_data.m_name				= game_sv_GameState::parse_level_name(m_caServerOptions);
 
-			int							id = pApp->Level_ID(map_data.m_name.c_str(), l_ver.c_str());
+			int							id = pApp->Level_ID(map_data.m_name.c_str(), l_ver.c_str(), true);
 
 			if (id<0) {
 				Log						("Can't find level: ",map_data.m_name.c_str());
 				net_start_result_total	= FALSE;
 				return true;
 			}
-			pApp->Level_Set			(id);
 		}
 	}
 	return true;

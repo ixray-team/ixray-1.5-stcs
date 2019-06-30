@@ -127,7 +127,7 @@ void			xrGameSpyServer::Update				()
 
 int				xrGameSpyServer::GetPlayersCount()
 {
-	int NumPlayers = client_Count();
+	int NumPlayers = net_players.ClientsCount();
 	if (!g_dedicated_server || NumPlayers < 1) return NumPlayers;
 	return NumPlayers - 1;
 };
@@ -148,15 +148,11 @@ void			xrGameSpyServer::OnCL_Disconnected	(IClient* _CL)
 {
 	inherited::OnCL_Disconnected(_CL);
 
-	csPlayers.Enter			();
-
 	if (m_bCDKey_Initialized)
 	{
 		Msg("Server : Disconnecting Client");
 		m_GCDServer.DisconnectUser(int(_CL->ID.value()));
 	};
-
-	csPlayers.Leave			();
 }
 
 u32				xrGameSpyServer::OnMessage(NET_Packet& P, ClientID sender)			// Non-Zero means broadcasting with "flags" as returned
