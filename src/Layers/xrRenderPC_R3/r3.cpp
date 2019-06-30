@@ -63,12 +63,10 @@ static class cl_parallax		: public R_constant_setup		{	virtual void setup	(R_con
 
 static class cl_pos_decompress_params		: public R_constant_setup		{	virtual void setup	(R_constant* C)
 {
-	//float VertTan =  -1.0f * tanf( deg2rad(67.5f/2.0f ) );
 	float VertTan =  -1.0f * tanf( deg2rad(Device.fFOV/2.0f ) );
 	float HorzTan =  - VertTan / Device.fASPECT;
 
 	RCache.set_c	( C, HorzTan, VertTan, ( 2.0f * HorzTan )/(float)Device.dwWidth, ( 2.0f * VertTan ) /(float)Device.dwHeight );
-	//RCache.set_c	( C, HorzTan, VertTan, ( 2.0f * HorzTan )/(float)1024, ( 2.0f * VertTan )/(float)768 );
 
 }}	binder_pos_decompress_params;
 
@@ -274,6 +272,14 @@ void					CRender::create					()
 	o.forceskinw		= (strstr(Core.Params,"-skinw"))?		TRUE	:FALSE	;
 
 	o.ssao_blur_on		= ps_r2_ls_flags_ext.test(R2FLAGEXT_SSAO_BLUR) && (ps_r_ssao != 0);
+	o.ssao_opt_data		= ps_r2_ls_flags_ext.test(R2FLAGEXT_SSAO_OPT_DATA) && (ps_r_ssao != 0);
+	o.ssao_half_data	= ps_r2_ls_flags_ext.test(R2FLAGEXT_SSAO_HALF_DATA) && o.ssao_opt_data && (ps_r_ssao != 0);
+	o.ssao_hdao			= ps_r2_ls_flags_ext.test(R2FLAGEXT_SSAO_HDAO) && (ps_r_ssao != 0);
+	o.ssao_hbao			= !o.ssao_hdao && ps_r2_ls_flags_ext.test(R2FLAGEXT_SSAO_HBAO) && (ps_r_ssao != 0);
+
+	//	TODO: fix hbao shader to allow to perform per-subsample effect!
+	if (o.ssao_hbao || o.ssao_hdao)
+		o.ssao_opt_data = true;
 
 	o.dx10_sm4_1		= ps_r2_ls_flags.test((u32)R3FLAG_USE_DX10_1);
 	o.dx10_sm4_1		= o.dx10_sm4_1 && ( HW.pDevice1 != 0 );
@@ -328,7 +334,7 @@ void					CRender::create					()
 		{
 			if (ps_r_sun_quality>=3)
 				o.dx10_minmax_sm=MMSM_AUTO;
-			else if (ps_r_ssao>=2)
+			else if (ps_r_sun_shafts>=2)
 			{
 				o.dx10_minmax_sm=MMSM_AUTODETECT;
 				//	Check resolution in runtime in use_minmax_sm_this_frame
@@ -339,7 +345,7 @@ void					CRender::create					()
 		//	NVidia boards
 		if (HW.Caps.id_vendor==0x10DE)
 		{
-			if ((ps_r_ssao>=2))
+			if ((ps_r_sun_shafts>=2))
 			{
 				o.dx10_minmax_sm=MMSM_AUTODETECT;
 				//	Check resolution in runtime in use_minmax_sm_this_frame
@@ -358,6 +364,8 @@ void					CRender::create					()
 
 	c_lmaterial					= "L_material";
 	c_sbase						= "s_base";
+
+	m_bMakeAsyncSS				= false;
 
 	Target						= xr_new<CRenderTarget>		();	// Main target
 
@@ -391,6 +399,7 @@ void					CRender::create					()
 
 void					CRender::destroy				()
 {
+	m_bMakeAsyncSS				= false;
 	FluidManager.Destroy();
 	::PortalTraverser.destroy	();
 	//_RELEASE					(q_sync_point[1]);
@@ -777,6 +786,30 @@ HRESULT	CRender::shader_compile			(
 	if (o.ssao_blur_on)
 	{
 		defines[def_it].Name		=	"USE_SSAO_BLUR";
+		defines[def_it].Definition	=	"1";
+		def_it						++;
+	}
+
+	if (o.ssao_opt_data)
+	{
+		defines[def_it].Name		=	"SSAO_OPT_DATA";
+		if (o.ssao_half_data)
+			defines[def_it].Definition	=	"2";
+		else
+			defines[def_it].Definition	=	"1";
+		def_it						++;
+	}
+
+	if (o.ssao_hdao)
+	{
+		defines[def_it].Name		=	"HDAO";
+		defines[def_it].Definition	=	"1";
+		def_it						++;
+	}
+
+	if (o.ssao_hbao)
+	{
+		defines[def_it].Name		=	"USE_HBAO";
 		defines[def_it].Definition	=	"1";
 		def_it						++;
 	}

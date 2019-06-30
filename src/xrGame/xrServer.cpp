@@ -17,6 +17,8 @@
 #include "../xrEngine/XR_IOConsole.h"
 //#include "script_engine.h"
 #include "ui/UIInventoryUtilities.h"
+#include "file_transfer.h"
+#include "screenshot_server.h"
 
 #pragma warning(push)
 #pragma warning(disable:4995)
@@ -53,6 +55,7 @@ xrClientData::~xrClientData()
 xrServer::xrServer():IPureServer(Device.GetTimerGlobal(), g_dedicated_server)
 {
 	m_iCurUpdatePacket = 0;
+	m_file_transfers = NULL;
 	m_aUpdatePackets.push_back(NET_Packet());
 	m_aDelayedPackets.clear();
 }
@@ -225,6 +228,22 @@ void		xrServer::client_Destroy	(IClient* C)
 		};
 	}
 }
+void xrServer::clear_DisconnectedClients()
+{
+	struct true_generator
+	{
+		bool operator()(IClient* client)
+		{
+			return true;
+		}
+	};
+	IClient* deleting_client = net_players.FindAndEraseDisconnectedClient(true_generator());
+	while (deleting_client)
+	{
+		xr_delete(deleting_client);
+		deleting_client = net_players.FindAndEraseDisconnectedClient(true_generator());
+	}
+}
 
 //--------------------------------------------------------------------
 int	g_Dump_Update_Write = 0;
@@ -235,6 +254,9 @@ INT g_sv_SendUpdate = 0;
 
 void xrServer::Update	()
 {
+	if (Level().IsDemoPlayStarted() || Level().IsDemoPlayFinished())
+		return;								//diabling server when demo is playing
+
 	NET_Packet		Packet;
 
 	VERIFY						(verify_entities());
@@ -430,6 +452,12 @@ void xrServer::SendUpdatesToAll()
 	m_iCurUpdatePacket				= 0;
 
 	ForEachClientDoSender(sendtofd);
+	
+	if (m_file_transfers)
+	{
+		m_file_transfers->update_transfer();
+		m_file_transfers->stop_obsolete_receivers();
+	}
 
 #ifdef DEBUG
 	g_sv_SendUpdate = 0;
@@ -452,8 +480,6 @@ void console_log_cb(LPCSTR text)
 
 u32 xrServer::OnDelayedMessage	(NET_Packet& P, ClientID sender)			// Non-Zero means broadcasting with "flags" as returned
 {
-	if (g_pGameLevel && Level().IsDemoSave()) 
-		Level().Demo_StoreServerData(P.B.data, P.B.count);
 	u16						type;
 	P.r_begin				(type);
 
@@ -504,6 +530,10 @@ u32 xrServer::OnDelayedMessage	(NET_Packet& P, ClientID sender)			// Non-Zero me
 				SendTo				(sender,P_answ,net_flags(TRUE,TRUE));
 			}
 		}break;
+		case M_FILE_TRANSFER:
+		{
+			m_file_transfers->on_message(&P, sender);
+		}break;
 	}
 	VERIFY							(verify_entities());
 
@@ -522,7 +552,6 @@ u32	xrServer::OnMessageSync(NET_Packet& P, ClientID sender)
 extern	float	g_fCatchObjectTime;
 u32 xrServer::OnMessage	(NET_Packet& P, ClientID sender)			// Non-Zero means broadcasting with "flags" as returned
 {
-	if (g_pGameLevel && Level().IsDemoSave()) Level().Demo_StoreServerData(P.B.data, P.B.count);
 	u16			type;
 	P.r_begin	(type);
 
@@ -747,7 +776,15 @@ u32 xrServer::OnMessage	(NET_Packet& P, ClientID sender)			// Non-Zero means bro
 				Level().battleye_system.ReadPacketServer( sender.value(), &P );
 			}
 #endif // BATTLEYE
-		}
+		}break;
+	case M_FILE_TRANSFER:
+		{
+			AddDelayedPacket(P, sender);
+		}break;
+	case M_SECURE_MESSAGE:
+		{
+			OnSecureMessage(P, CL);
+		}break;
 	}
 
 	VERIFY							(verify_entities());
@@ -783,7 +820,7 @@ bool xrServer::CheckAdminRights(const shared_str& user, const shared_str& pass, 
 
 void xrServer::SendTo_LL			(ClientID ID, void* data, u32 size, u32 dwFlags, u32 dwTimeout)
 {
-	if (SV_Client && SV_Client->ID==ID)
+	if ((SV_Client && SV_Client->ID==ID) || psNET_direct_connect)
 	{
 		// optimize local traffic
 		Level().OnMessage			(data,size);
@@ -797,7 +834,43 @@ void xrServer::SendTo_LL			(ClientID ID, void* data, u32 size, u32 dwFlags, u32 
 		IPureServer::SendTo_Buf(ID,data,size,dwFlags,dwTimeout);
 	}
 }
-
+void xrServer::SendBroadcast(ClientID exclude, NET_Packet& P, u32 dwFlags)
+{
+	struct ClientExcluderPredicate
+	{
+		ClientID id_to_exclude;
+		ClientExcluderPredicate(ClientID exclude) :
+			id_to_exclude(exclude)
+		{}
+		bool operator()(IClient* client)
+		{
+			xrClientData* tmp_client = static_cast<xrClientData*>(client);
+			if (client->ID == id_to_exclude)
+				return false;
+			if (!client->flags.bConnected)
+				return false;
+			if (!tmp_client->net_Accepted)
+				return false;
+			return true;
+		}
+	};
+	struct ClientSenderFunctor
+	{
+		xrServer*		m_owner;
+		void*			m_data;
+		u32				m_size;
+		u32				m_dwFlags;
+		ClientSenderFunctor(xrServer* owner, void* data, u32 size, u32 dwFlags) :
+			m_owner(owner), m_data(data), m_size(size), m_dwFlags(dwFlags)
+		{}
+		void operator()(IClient* client)
+		{
+			m_owner->SendTo_LL(client->ID, m_data, m_size, m_dwFlags);			
+		}
+	};
+	ClientSenderFunctor temp_functor(this, P.B.data, P.B.count, dwFlags);
+	net_players.ForFoundClientsDo(ClientExcluderPredicate(exclude), temp_functor);
+}
 //--------------------------------------------------------------------
 CSE_Abstract*	xrServer::entity_Create		(LPCSTR name)
 {
@@ -1028,13 +1101,16 @@ void xrServer::PerformCheckClientsForMaxPing()
 			game_PlayerState*	ps = Client->ps;
 			if (!ps)
 				return;
+			
+			if (client == m_owner->GetServerClient())
+				return;
 
 			if(	ps->ping > g_sv_dwMaxClientPing && 
 				Client->m_ping_warn.m_dwLastMaxPingWarningTime+g_sv_time_for_ping_check < Device.dwTimeGlobal )
 			{
 				++Client->m_ping_warn.m_maxPingWarnings;
 				Client->m_ping_warn.m_dwLastMaxPingWarningTime	= Device.dwTimeGlobal;
-
+				
 				if(Client->m_ping_warn.m_maxPingWarnings >= g_sv_maxPingWarningsCount)
 				{  //kick
 					LPSTR	reason;
@@ -1156,4 +1232,56 @@ void xrServer::KickCheaters			()
 		Level().Server->SendBroadcast( tmp_client_id, P );
 	}
 	m_cheaters.clear();
+}
+
+void xrServer::MakeScreenshot(ClientID const & admin_id, ClientID const & cheater_id)
+{
+	if ((cheater_id == SV_Client->ID) && g_dedicated_server)
+	{
+		return;
+	}
+	for (int i = 0; i < sizeof(m_screenshot_proxies)/sizeof(clientdata_proxy*); ++i)
+	{
+		if (!m_screenshot_proxies[i]->is_active())
+		{
+			m_screenshot_proxies[i]->make_screenshot(admin_id, cheater_id);
+			Msg("* admin [%d] is making screeshot of client [%d]", admin_id, cheater_id);
+			return;
+		}
+	}
+	Msg("! ERROR: SV: not enough file transfer proxies for downloading screenshot, please try later ...");
+}
+
+void xrServer::MakeConfigDump(ClientID const & admin_id, ClientID const & cheater_id)
+{
+	if ((cheater_id == SV_Client->ID) && g_dedicated_server)
+	{
+		return;
+	}
+	for (int i = 0; i < sizeof(m_screenshot_proxies)/sizeof(clientdata_proxy*); ++i)
+	{
+		if (!m_screenshot_proxies[i]->is_active())
+		{
+			m_screenshot_proxies[i]->make_config_dump(admin_id, cheater_id);
+			Msg("* admin [%d] is making config dump of client [%d]", admin_id, cheater_id);
+			return;
+		}
+	}
+	Msg("! ERROR: SV: not enough file transfer proxies for downloading file, please try later ...");
+}
+
+
+void xrServer::initialize_screenshot_proxies()
+{
+	for (int i = 0; i < sizeof(m_screenshot_proxies)/sizeof(clientdata_proxy*); ++i)
+	{
+		m_screenshot_proxies[i] = xr_new<clientdata_proxy>(m_file_transfers);
+	}
+}
+void xrServer::deinitialize_screenshot_proxies()
+{
+	for (int i = 0; i < sizeof(m_screenshot_proxies)/sizeof(clientdata_proxy*); ++i)
+	{
+		xr_delete(m_screenshot_proxies[i]);
+	}
 }

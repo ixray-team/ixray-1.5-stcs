@@ -19,6 +19,7 @@
 #define		r2_T_sky1			"$user$sky1" 
 
 #define		r2_RT_ssao_temp		"$user$ssao_temp"		//temporary rt for ssao calculation
+#define		r2_RT_half_depth	"$user$half_depth"		//temporary rt for ssao calculation
 
 #define		r2_RT_generic0		"$user$generic0"		// ---
 #define		r2_RT_generic0_r	"$user$generic0_r"	// ---
@@ -60,7 +61,7 @@ const		u32					TEX_material_LdotN	= 128	;	// diffuse,		X, almost linear = small 
 const		u32					TEX_material_LdotH	= 256	;	// specular,	Y
 const		u32					TEX_material_Count	= 4		;	// Number of materials,	Z
 const		u32					TEX_jitter			= 64	;
-const		u32					TEX_jitter_count	= 4		;
+const		u32					TEX_jitter_count	= 5		;	// for HBAO
 
 const		u32					BLOOM_size_X		= 256	;
 const		u32					BLOOM_size_Y		= 256	;

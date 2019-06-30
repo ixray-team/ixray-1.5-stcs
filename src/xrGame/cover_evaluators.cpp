@@ -32,7 +32,8 @@ void CCoverEvaluatorBase::evaluate							(CCoverPoint const *cover_point, float 
 #endif // #ifndef MASTER_GOLD
 
 	smart_cover::cover const	*tmp = static_cast<smart_cover::cover const *>(cover_point);
-	evaluate_smart_cover		(tmp, weight);
+	if ( tmp->is_combat_cover() )
+		evaluate_smart_cover	(tmp, weight);
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -95,6 +95,11 @@ void xrServer::OnCL_Connected		(IClient* _CL)
 {
 	xrClientData*	CL				= (xrClientData*)_CL;
 	CL->net_Accepted = TRUE;
+	/*if (Level().IsDemoPlay())
+	{
+		Level().StartPlayDemo();
+		return;
+	};*/
 ///	Server_Client_Check(CL);
 	//csPlayers.Enter					();	//sychronized by a parent call
 	Export_game_type(CL);
@@ -130,6 +135,22 @@ void	xrServer::SendConnectResult(IClient* CL, u8 res, u8 res1, char* ResultStr)
 	P.w_stringZ(Level().m_caServerOptions);
 	
 	SendTo		(CL->ID, P);
+
+	if (!res)
+	{
+#ifdef MP_LOGGING
+		Msg("* Server disconnecting client, reason: %s", ResultStr);
+#endif
+		Flush_Clients_Buffers	();
+		DisconnectClient		(CL, ResultStr);
+	}
+
+	if (Level().IsDemoPlay())
+	{
+		Level().StartPlayDemo();
+
+		return;
+	}
 	
 };
 
@@ -149,11 +170,13 @@ BOOL	g_SV_Disable_Auth_Check = FALSE;
 
 bool xrServer::NeedToCheckClient_BuildVersion		(IClient* CL)	
 {
-#ifdef DEBUG
+/*#ifdef DEBUG
 
 	return false; 
-
-#else
+#endif*/
+	xrClientData* tmp_client	= smart_cast<xrClientData*>(CL);
+	VERIFY						(tmp_client);
+	PerformSecretKeysSync		(tmp_client);
 
 	if (g_SV_Disable_Auth_Check) return false;
 	CL->flags.bVerified = FALSE;
@@ -161,8 +184,6 @@ bool xrServer::NeedToCheckClient_BuildVersion		(IClient* CL)
 	P.w_begin	(M_AUTH_CHALLENGE);
 	SendTo		(CL->ID, P);
 	return true;
-
-#endif
 };
 
 void xrServer::OnBuildVersionRespond				( IClient* CL, NET_Packet& P )
@@ -175,6 +196,7 @@ void xrServer::OnBuildVersionRespond				( IClient* CL, NET_Packet& P )
 #ifdef DEBUG
 	Msg("_our = %d", _our);
 	Msg("_him = %d", _him);
+	_our = MP_DEBUG_AUTH;
 #endif // DEBUG
 
 	if ( _our != _him )

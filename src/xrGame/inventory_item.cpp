@@ -49,7 +49,8 @@ CInventoryItem::CInventoryItem()
 	SetDropManual		(FALSE);
 
 	m_flags.set			(FCanTake,TRUE);
-	m_flags.set			(FCanTrade,TRUE);
+	m_can_trade			= TRUE;
+	m_flags.set			(FCanTrade, m_can_trade);
 	m_flags.set			(FUsingCondition,FALSE);
 	m_fCondition		= 1.0f;
 
@@ -105,7 +106,8 @@ void CInventoryItem::Load(LPCSTR section)
 
 	m_flags.set(Fbelt,			READ_IF_EXISTS(pSettings, r_bool, section, "belt",		FALSE));
 	m_flags.set(FCanTake,		READ_IF_EXISTS(pSettings, r_bool, section, "can_take",	TRUE));
-	m_flags.set(FCanTrade,		READ_IF_EXISTS(pSettings, r_bool, section, "can_trade",	TRUE));
+	m_can_trade = READ_IF_EXISTS(pSettings, r_bool, section, "can_trade",	TRUE);
+	m_flags.set(FCanTrade, m_can_trade);
 	m_flags.set(FIsQuestItem,	READ_IF_EXISTS(pSettings, r_bool, section, "quest_item",FALSE));
 
 
@@ -1485,6 +1487,13 @@ void CInventoryItem::SetDropManual(BOOL val)
 		}
 	}
 #endif // #ifdef DEBUG
+	if (!IsGameTypeSingle())
+	{
+		if (val == TRUE)
+			DenyTrade();
+		else
+			AllowTrade();
+	}
 }
 
 bool CInventoryItem::has_network_synchronization	() const

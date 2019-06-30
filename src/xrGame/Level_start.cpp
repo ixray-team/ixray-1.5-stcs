@@ -12,7 +12,10 @@
 #include "MainMenu.h"
 #include "string_table.h"
 
-extern	void	GetPlayerName_FromRegistry	(char* name);
+extern	void	GetPlayerName_FromRegistry	(char* name, u32 const name_size);
+
+#define DEMO_PLAY_OPT "mpdemoplay:"
+#define DEMO_SAVE_KEY "-mpdemosave"
 
 BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 {
@@ -21,7 +24,7 @@ BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 	pApp->LoadBegin				();
 
 	string64	player_name;
-	GetPlayerName_FromRegistry( player_name );
+	GetPlayerName_FromRegistry( player_name, sizeof(player_name) );
 
 	if ( xr_strlen(player_name) == 0 )
 	{
@@ -60,33 +63,30 @@ BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 	};
 	m_caServerOptions			    = op_server;
 	//---------------------------------------------------------------------
-	m_bDemoPlayMode = FALSE;
-	m_aDemoData.clear();
-	m_bDemoStarted	= FALSE;
-	if (strstr(Core.Params,"-tdemo ") || strstr(Core.Params,"-tdemof "))
+	const char* pdemok = NULL;
+	if (op_server)
+		pdemok = strstr(op_server, DEMO_PLAY_OPT);
+
+	if (pdemok != NULL)
 	{
-		string1024				f_name;
-		if (strstr(Core.Params,"-tdemo "))
-		{
-			sscanf					(strstr(Core.Params,"-tdemo ")+7,"%[^ ] ",f_name);
-			m_bDemoPlayByFrame = FALSE;
-
-			Demo_Load	(f_name);	
-		}
-		else
-		{
-			sscanf					(strstr(Core.Params,"-tdemof ")+8,"%[^ ] ",f_name);
-			m_bDemoPlayByFrame = TRUE;
-
-			m_lDemoOfs = 0;
-			Demo_Load_toFrame(f_name, 100, m_lDemoOfs);
-		};		
+		string_path	f_name;
+		
+		sscanf(pdemok + sizeof(DEMO_PLAY_OPT) - 1,
+			"%[^ ] ",f_name
+		);
+		PrepareToPlayDemo(f_name);
+		m_caServerOptions = m_demo_header.m_server_options;
 	}
 	else
 	{
-		if (m_caServerOptions.size() == 0 || !strstr(*m_caServerOptions, "single"))
+		pdemok = strstr(Core.Params, DEMO_SAVE_KEY);
+		bool is_single = m_caServerOptions.size() != 0 ? 
+			(strstr(m_caServerOptions.c_str(), "single") != NULL) :
+			false;
+		
+		if ((pdemok != NULL) && !is_single)
 		{
-			Demo_PrepareToStore();
+			PrepareToSaveDemo();
 		}
 	}
 	//---------------------------------------------------------------------------
@@ -98,8 +98,8 @@ BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 	g_loading_events.push_back	(LOADING_EVENT(this,&CLevel::net_start6));
 	
 	return net_start_result_total;
-
 }
+
 shared_str level_version(const shared_str &server_options);
 shared_str level_name(const shared_str &server_options);
 bool CLevel::net_start1				()

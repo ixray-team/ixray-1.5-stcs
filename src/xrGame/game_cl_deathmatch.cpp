@@ -231,7 +231,11 @@ void game_cl_Deathmatch::OnSkinMenu_Cancel		()
 
 BOOL game_cl_Deathmatch::CanCallBuyMenu			()
 {
-	if (Phase()!=GAME_PHASE_INPROGRESS) return false;	
+	if (Phase()!=GAME_PHASE_INPROGRESS) return false;
+
+	if (!is_buy_menu_ready())
+		return FALSE;
+
 	if (Level().CurrentEntity() && !smart_cast<CSpectator*>(Level().CurrentEntity()))
 	{
 		return FALSE;
@@ -440,6 +444,19 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 		m_game_ui->SetForceRespawnTimeCaption("");
 		m_game_ui->SetWarmUpCaption("");
 	};
+	if ((Level().IsDemoPlayStarted() || Level().IsDemoPlayFinished()) && m_game_ui)
+	{
+		LPCSTR		demo_play_string = NULL;
+		string32	tmp_buf1;
+		string32	tmp_buf2;
+		//st.translate("demo play active : ").c_str() (need to translate ?)
+		STRCONCAT(demo_play_string, "demo play active : ",
+			itoa( int(Level().GetDemoPlayPos() * 100), tmp_buf1, 10),
+			"%%, play speed: ",
+			itoa( int(Level().GetDemoPlaySpeed()), tmp_buf2, 10),
+			"x");
+		m_game_ui->SetDemoPlayCaption(demo_play_string);
+	}
 
 //	if (HUD().GetUI() && HUD().GetUI()->UIMainIngameWnd)
 //		HUD().GetUI()->UIMainIngameWnd->ZoneCounter().SetText("");
@@ -469,20 +486,21 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 						m_game_ui->SetTimeMsgCaption("00:00:00");
 				}
 			};
-			
+			game_PlayerState* lookat_player = Game().lookat_player();
 			if(local_player && !local_player->IsSkip())
 			{
 				if (m_bFirstRun)
 				{
 					m_bFirstRun = FALSE;
-					if (m_game_ui->m_pMapDesc) StartStopMenu(m_game_ui->m_pMapDesc, TRUE);
+					if (m_game_ui->m_pMapDesc && !Level().IsDemoPlayStarted())
+						StartStopMenu(m_game_ui->m_pMapDesc, TRUE);
 					GetActiveVoting();
 				};
 
-				if (m_game_ui)
+				if (m_game_ui && lookat_player)
 				{
 					string256 MoneyStr;
-					sprintf_s(MoneyStr, "%d", local_player->money_for_round);
+					sprintf_s(MoneyStr, "%d", lookat_player->money_for_round);
 					m_game_ui->ChangeTotalMoneyIndicator(MoneyStr);
 				}				
 
@@ -667,6 +685,8 @@ void	game_cl_Deathmatch::SetScore				()
 
 bool	game_cl_Deathmatch::OnKeyboardPress			(int key)
 {
+	if (Level().IsDemoPlay() && (key != kSCORES))
+		return false;
 	if (kSCORES == key && Phase() == GAME_PHASE_INPROGRESS)
 	{
 		if(m_game_ui)
@@ -922,7 +942,8 @@ bool		game_cl_Deathmatch::IsEnemy					(CEntityAlive* ea1, CEntityAlive* ea2)
 
 void		game_cl_Deathmatch::OnRender				()
 {
-	if (m_bDamageBlockIndicators && local_player)
+	game_PlayerState* lookat_player = Game().lookat_player();
+	if (m_bDamageBlockIndicators && local_player && (local_player == lookat_player))
 	{
 		PLAYERS_MAP_IT it = players.begin();
 		for(;it!=players.end();++it)
@@ -1128,6 +1149,7 @@ void game_cl_Deathmatch::OnGameMenuRespond_ChangeSkin(NET_Packet& P)
 
 	if (m_game_ui->m_pMapDesc && m_game_ui->m_pMapDesc->IsShown())
 		StartStopMenu				(m_game_ui->m_pMapDesc, TRUE);
+	
 
 	SetCurrentSkinMenu				();
 	if (pCurSkinMenu)				pCurSkinMenu->SetCurSkin(local_player->skin);

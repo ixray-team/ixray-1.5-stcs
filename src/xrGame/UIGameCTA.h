@@ -64,6 +64,7 @@ private:
 	shared_str					m_spectrmode_caption;
 	shared_str					m_warm_up_caption;
 	shared_str					m_time_caption;
+	shared_str					m_demo_play_caption;
 
 	struct PresetItem
 	{
@@ -171,6 +172,7 @@ public:
 			void		SetSpectrModeMsgCaption			(LPCSTR str);
 			void		SetWarmUpCaption				(LPCSTR str);
 			void		SetTimeMsgCaption				(LPCSTR str);
+			void		SetDemoPlayCaption				(LPCSTR str);
 			void		ResetCaptions();
 
 			void		SetVoteMessage(LPCSTR str);

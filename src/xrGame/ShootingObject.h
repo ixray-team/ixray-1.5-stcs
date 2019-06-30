@@ -8,6 +8,7 @@
 
 #include "alife_space.h"
 #include "../xrEngine/render.h"
+#include "anticheat_dumpable_object.h"
 
 class CCartridge;
 class CParticlesObject;
@@ -17,7 +18,7 @@ extern const Fvector zero_vel;
 
 #define WEAPON_MATERIAL_NAME "objects\\bullet"
 
-class CShootingObject
+class CShootingObject : public IAnticheatDumpable
 {
 protected:
 			CShootingObject			();
@@ -185,4 +186,6 @@ protected:
 	
 	//имя партиклов следа от пули
 	shared_str				m_sShotParticles;
+public:
+	virtual void			DumpActiveParams(shared_str const & section_name, CInifile & dst_ini) const;
 };

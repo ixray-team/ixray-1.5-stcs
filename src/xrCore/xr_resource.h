@@ -94,7 +94,7 @@ template<class T, typename D>			inline bool operator	!=	(resptr_core<T,D> const 
 template<class T, typename D>			inline bool operator	==	(T * a, resptr_core<T,D> const & b)								{ return a == b._get();								}
 template<class T, typename D>			inline bool operator	!=	(T * a, resptr_core<T,D> const & b)								{ return a != b._get();								}
 template<class T, typename D>			inline bool operator	<	(resptr_core<T,D> const & a, resptr_core<T,D> const & b)		{ return std::less<T *>()(a._get(), b._get());		}
-template<class T, typename D>			inline bool operator	>	(resptr_core<T,D> const & a, resptr_core<T,D> const & b)		{ return std::greater<T *>()(a._get(), b._get());	}
+template<class T, typename D>			inline bool operator	>	(resptr_core<T,D> const & a, resptr_core<T,D> const & b)		{ return std::less<T *>()(b._get(), a._get());	}
 
 // externally visible swap
 template<class T, typename D> void swap	(resptr_core<T,D> & lhs, resptr_core<T,D> & rhs)									{ lhs.swap(rhs);	}

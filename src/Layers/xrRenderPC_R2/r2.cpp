@@ -58,6 +58,15 @@ static class cl_parallax		: public R_constant_setup		{	virtual void setup	(R_con
 	RCache.set_c	(C,h,-h/2.f,1.f/r_dtex_range,1.f/r_dtex_range);
 }}	binder_parallax;
 
+static class cl_pos_decompress_params		: public R_constant_setup		{	virtual void setup	(R_constant* C)
+{
+	float VertTan =  -1.0f * tanf( deg2rad(Device.fFOV/2.0f ) );
+	float HorzTan =  - VertTan / Device.fASPECT;
+
+	RCache.set_c	( C, HorzTan, VertTan, ( 2.0f * HorzTan )/(float)Device.dwWidth, ( 2.0f * VertTan ) /(float)Device.dwHeight );
+
+}}	binder_pos_decompress_params;
+
 static class cl_water_intensity : public R_constant_setup		
 {	
 	virtual void setup	(R_constant* C)
@@ -239,14 +248,26 @@ void					CRender::create					()
 	o.forceskinw		= (strstr(Core.Params,"-skinw"))?		TRUE	:FALSE	;
 	
 	o.ssao_blur_on		= ps_r2_ls_flags_ext.test(R2FLAGEXT_SSAO_BLUR) && ps_r_ssao != 0;
+	o.ssao_opt_data		= ps_r2_ls_flags_ext.test(R2FLAGEXT_SSAO_OPT_DATA) && (ps_r_ssao != 0);
+	o.ssao_half_data	= ps_r2_ls_flags_ext.test(R2FLAGEXT_SSAO_HALF_DATA) && o.ssao_opt_data && (ps_r_ssao != 0);
+	o.ssao_hbao			= ps_r2_ls_flags_ext.test(R2FLAGEXT_SSAO_HBAO) && (ps_r_ssao != 0);
+	
+	if ((HW.Caps.id_vendor==0x1002)&&(HW.Caps.id_device<=0x72FF))	
+	{
+		o.ssao_opt_data = false;
+		o.ssao_hbao = false;
+	}
 
 	// constants
 	dxRenderDeviceRender::Instance().Resources->RegisterConstantSetup	("parallax",	&binder_parallax);
 	dxRenderDeviceRender::Instance().Resources->RegisterConstantSetup	("water_intensity",	&binder_water_intensity);
 	dxRenderDeviceRender::Instance().Resources->RegisterConstantSetup	("sun_shafts_intensity",	&binder_sun_shafts_intensity);
+	dxRenderDeviceRender::Instance().Resources->RegisterConstantSetup	("pos_decompression_params",	&binder_pos_decompress_params);
 
 	c_lmaterial					= "L_material";
 	c_sbase						= "s_base";
+
+	m_bMakeAsyncSS				= false;
 
 	Target						= xr_new<CRenderTarget>		();	// Main target
 
@@ -268,6 +289,7 @@ void					CRender::create					()
 
 void					CRender::destroy				()
 {
+	m_bMakeAsyncSS				= false;
 	::PortalTraverser.destroy	();
 	//_RELEASE					(q_sync_point[1]);
 	//_RELEASE					(q_sync_point[0]);
@@ -669,6 +691,23 @@ HRESULT	CRender::shader_compile			(
 	if (o.ssao_blur_on)
 	{
 		defines[def_it].Name		=	"USE_SSAO_BLUR";
+		defines[def_it].Definition	=	"1";
+		def_it						++;
+	}
+
+	if (o.ssao_opt_data)
+	{
+		defines[def_it].Name		=	"SSAO_OPT_DATA";
+		if (o.ssao_half_data)
+			defines[def_it].Definition	=	"2";
+		else
+			defines[def_it].Definition	=	"1";
+		def_it						++;
+	}
+
+	if (o.ssao_hbao)
+	{
+		defines[def_it].Name		=	"USE_HBAO";
 		defines[def_it].Definition	=	"1";
 		def_it						++;
 	}

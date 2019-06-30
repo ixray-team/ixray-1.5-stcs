@@ -6,7 +6,8 @@
 #include "spectator.h"
 #include "effectorfall.h"
 #include "CameraLook.h"
-#include "CameraFirstEye.h"
+//#include "CameraFirstEye.h"
+#include "spectator_camera_first_eye.h"
 #include "actor.h"
 #include "hudmanager.h"
 #include "xrServer_Objects.h"
@@ -33,6 +34,8 @@ const float	CSpectator::cam_inert_value = 0.7f;
 //////////////////////////////////////////////////////////////////////
 CSpectator::CSpectator() : CGameObject()
 {
+	m_timer.Start			();
+	m_fTimeDelta			= EPS_S;	
 	// Cameras
 	cameras[eacFirstEye]	= xr_new<CCameraFirstEye>	(this);
 	cameras[eacFirstEye]->Load("actor_firsteye_cam");
@@ -43,11 +46,12 @@ CSpectator::CSpectator() : CGameObject()
 	cameras[eacFreeLook]	= xr_new<CCameraLook>		(this);
 	cameras[eacFreeLook]->Load("actor_free_cam");
 
-	cameras[eacFreeFly]		= xr_new<CCameraFirstEye>	(this);
+	cameras[eacFreeFly]		= xr_new<CSpectrCameraFirstEye>	(m_fTimeDelta, this, 0);
 	cameras[eacFreeFly]->Load("actor_firsteye_cam");
 
 //	cam_active				= eacFreeFly;
 	cam_active				= eacFreeLook;
+	m_last_camera			= eacFreeLook;
 	look_idx				= 0;
 	m_pActorToLookAt			= NULL;
 }
@@ -60,10 +64,48 @@ CSpectator::~CSpectator()
 void CSpectator::UpdateCL()
 {
 	inherited::UpdateCL();
+	
+	float fPreviousFrameTime = m_timer.GetElapsed_sec();
+	m_timer.Start();
+	m_fTimeDelta = 0.3f * m_fTimeDelta + 0.7f * fPreviousFrameTime;
+	
+	if (m_fTimeDelta > 0.1f)
+		m_fTimeDelta = 0.1f;	//maximum 10 fps
+	if (m_fTimeDelta < 0.0f)
+		m_fTimeDelta = EPS_S;
+
+	if (Device.Paused())
+	{
+
+#ifdef DEBUG
+		dbg_update_cl = 0;
+#endif
+		if (m_pActorToLookAt)
+		{
+#ifdef DEBUG
+			m_pActorToLookAt->dbg_update_cl			= 0;
+			m_pActorToLookAt->dbg_update_shedule	= 0;
+			Game().dbg_update_shedule				= 0;
+#endif
+			Device.dwTimeDelta					= 0;
+			m_pActorToLookAt->UpdateCL();
+			m_pActorToLookAt->shedule_Update	(0);
+			Game().shedule_Update				(0);
+#ifdef DEBUG
+			m_pActorToLookAt->dbg_update_cl			= 0;
+			m_pActorToLookAt->dbg_update_shedule	= 0;
+			Game().dbg_update_shedule				= 0;
+#endif
+		}
+	}
 
 	if (GameID() != eGameIDSingle)
 	{
-		if (Game().local_player && Game().local_player->GameID == ID())
+		if (Game().local_player && (
+					(Game().local_player->GameID == ID()) ||
+					Level().IsDemoPlay()
+				)
+			)
 		{
 			if (cam_active != eacFreeFly)
 			{
@@ -71,12 +113,15 @@ void CSpectator::UpdateCL()
 					cam_Set(eacFreeLook);
 				if (!m_pActorToLookAt)
 				{
-					SelectNextPlayerToLook();
-					if (!m_pActorToLookAt)
-						cam_Set(eacFreeFly);
+					SelectNextPlayerToLook(false);
+					if (m_pActorToLookAt)
+						cam_Set(m_last_camera);
 				};
 			}
-			if (Level().CurrentViewEntity() == this) cam_Update(m_pActorToLookAt);
+			if (Level().CurrentViewEntity() == this) 
+			{
+				cam_Update(m_pActorToLookAt);
+			}
 			return;
 		}		
 		
@@ -85,7 +130,7 @@ void CSpectator::UpdateCL()
 	if (g_pGameLevel->CurrentViewEntity()==this){
 		if (eacFreeFly!=cam_active){
 			//-------------------------------------
-			
+		
 			//-------------------------------------
 			int idx			= 0;
 			game_PlayerState* P = Game().local_player;
@@ -131,41 +176,34 @@ static float Accel_mul = START_ACCEL;
 void CSpectator::IR_OnKeyboardPress(int cmd)
 {
 	if (Remote())												return;
-
-
+	
 	switch(cmd) 
 	{
 	case kACCEL:
 		{
 			Accel_mul = START_ACCEL*2;
 		}break;
-	case kCAM_1:	
-		{
-			SelectNextPlayerToLook();
-			if (m_pActorToLookAt)
-				cam_Set			(eacFirstEye);
-			else
-				cam_Set			(eacFreeFly);			
-		}break;
-	case kCAM_2:	if (cam_active == eacFreeFly && SelectNextPlayerToLook())	cam_Set			(eacLookAt);		break;
-	case kCAM_3:	if (cam_active == eacFreeFly && SelectNextPlayerToLook())	cam_Set			(eacFreeLook);		break;
+	case kCAM_1:	if (cam_active == eacFreeFly && SelectNextPlayerToLook(false))	cam_Set			(eacFirstEye);		break;
+	case kCAM_2:	if (cam_active == eacFreeFly && SelectNextPlayerToLook(false))	cam_Set			(eacLookAt);		break;
+	case kCAM_3:	if (cam_active == eacFreeFly && SelectNextPlayerToLook(false))	cam_Set			(eacFreeLook);		break;
 	case kCAM_4:	cam_Set			(eacFreeFly);	m_pActorToLookAt = NULL;	break;
 	case kWPN_FIRE:	
 		{
-			if (cam_active != eacFreeFly)
+			if ((cam_active != eacFreeFly) || (!m_pActorToLookAt))
 			{
 				++look_idx;
-				SelectNextPlayerToLook();
+				SelectNextPlayerToLook(true);
 				if (cam_active == eacFirstEye && m_pActorToLookAt)
 					FirstEye_ToPlayer(m_pActorToLookAt);
-			}			
+			}	
 		}break;
 	case kWPN_ZOOM:
 		{
 			game_cl_mp* pMPGame = smart_cast<game_cl_mp*> (&Game());
 			if (!pMPGame) break;
 			game_PlayerState* PS = Game().local_player;
-			if (!PS || PS->GameID != ID()) break;
+			if (!Level().IsDemoPlay() && (!PS || PS->GameID != ID())) break;
+			
 
 			EActorCameras new_camera = EActorCameras((cam_active+1)%eacMaxCam);
 			
@@ -184,11 +222,15 @@ void CSpectator::IR_OnKeyboardPress(int cmd)
 			}
 			else
 			{
-				if (!m_pActorToLookAt) SelectNextPlayerToLook();
+				if (!m_pActorToLookAt) SelectNextPlayerToLook(false);
 				if (!m_pActorToLookAt)
-					cam_Set			(eacFreeFly);	
-				else
-					cam_Set			(new_camera);	
+				{
+					cam_Set			(eacFreeFly);
+				} else
+				{
+					cam_Set			(new_camera);
+					m_last_camera	= new_camera;
+				}
 			}
 		}break;
 	}
@@ -226,20 +268,20 @@ void CSpectator::IR_OnKeyboardHold(int cmd)
 		case kRIGHT:
 			if (eacFreeLook!=cam_active) cameras[cam_active]->Move(cmd); break;
 		case kFWD:			
-			vmove.mad( C->vDirection, Device.fTimeDelta*Accel_mul );
+			vmove.mad( C->vDirection, m_fTimeDelta*Accel_mul );
 			break;
 		case kBACK:
-			vmove.mad( C->vDirection, -Device.fTimeDelta*Accel_mul );
+			vmove.mad( C->vDirection, -m_fTimeDelta*Accel_mul );
 			break;
 		case kR_STRAFE:{
 			Fvector right;
 			right.crossproduct(C->vNormal,C->vDirection);
-			vmove.mad( right, Device.fTimeDelta*Accel_mul );
+			vmove.mad( right, m_fTimeDelta*Accel_mul );
 			}break;
 		case kL_STRAFE:{
 			Fvector right;
 			right.crossproduct(C->vNormal,C->vDirection);
-			vmove.mad( right, -Device.fTimeDelta*Accel_mul );
+			vmove.mad( right, -m_fTimeDelta*Accel_mul );
 			}break;
 		}
 		if (cam_active != eacFreeFly || (pMPGame->Is_Spectator_Camera_Allowed(eacFreeFly) || (PS && PS->testFlag(GAME_PLAYER_FLAG_SPECTATOR))))
@@ -250,7 +292,6 @@ void CSpectator::IR_OnKeyboardHold(int cmd)
 void CSpectator::IR_OnMouseMove(int dx, int dy)
 {
 	if (Remote())	return;
-
 	CCameraBase* C	= cameras	[cam_active];
 	float scale		= (C->f_fov/g_fov)*psMouseSens * psMouseSensScale/50.f;
 	if (dx){
@@ -265,10 +306,11 @@ void CSpectator::IR_OnMouseMove(int dx, int dy)
 
 void CSpectator::FirstEye_ToPlayer(CObject* pObject)
 {
-	CObject* pCurViewEntity = Level().CurrentEntity();
+	CObject*	pCurViewEntity = Level().CurrentEntity();
+	CActor*		pOldActor = NULL;
 	if (pCurViewEntity)
 	{
-		CActor* pOldActor = smart_cast<CActor*>(pCurViewEntity);
+		pOldActor = smart_cast<CActor*>(pCurViewEntity);
 		if (pOldActor)
 		{
 			pOldActor->inventory().Items_SetCurrentEntityHud(false);
@@ -298,6 +340,20 @@ void CSpectator::FirstEye_ToPlayer(CObject* pObject)
 			}*/
 		}
 	};
+	if (Device.Paused() && pOldActor)
+	{
+#ifdef DEBUG
+		pOldActor->dbg_update_cl		= 0;
+		pOldActor->dbg_update_shedule	= 0;
+#endif
+		Device.dwTimeDelta				= 0;
+		pOldActor->UpdateCL				();
+		pOldActor->shedule_Update		(0);
+#ifdef DEBUG
+		pOldActor->dbg_update_cl		= 0;
+		pOldActor->dbg_update_shedule	= 0;
+#endif
+	}
 };
 
 void CSpectator::cam_Set	(EActorCameras style)
@@ -357,7 +413,15 @@ void CSpectator::cam_Update	(CActor* A)
 		cameras[eacFreeFly]->Set(cam->yaw, cam->pitch, 0);
 		P.y -= 1.6f;
 		XFORM().translate_over(P);
-		g_pGameLevel->Cameras().UpdateFromCamera(cam);
+		if (Device.Paused())
+		{
+			Device.fTimeDelta = m_fTimeDelta;	//fake, to update cam (problem with fov)
+			g_pGameLevel->Cameras().UpdateFromCamera(cam);
+			Device.fTimeDelta = 0.0f;			//fake, to update cam (problem with fov)
+		} else
+		{
+			g_pGameLevel->Cameras().UpdateFromCamera(cam);
+		}
 		//-----------------------------------
 	}else{
 		CCameraBase* cam			= cameras[eacFreeFly];
@@ -370,7 +434,15 @@ void CSpectator::cam_Update	(CActor* A)
 		
 		cam->Update					(point,dangle);
 //		cam->vPosition.set(point0);
-		g_pGameLevel->Cameras().UpdateFromCamera	(cam);
+		if (Device.Paused())
+		{
+			Device.fTimeDelta = m_fTimeDelta;	//fake, to update cam (problem with fov)
+			g_pGameLevel->Cameras().UpdateFromCamera(cam);
+			Device.fTimeDelta = 0.0f;			//fake, to update cam (problem with fov)
+		} else
+		{
+			g_pGameLevel->Cameras().UpdateFromCamera(cam);
+		}
 		// hud output
 	};
 }
@@ -404,7 +476,7 @@ void			CSpectator::net_Destroy	()
 		Level().MapManager		().OnObjectDestroyNotify(ID());
 }
 
-bool			CSpectator::SelectNextPlayerToLook	()
+bool			CSpectator::SelectNextPlayerToLook	(bool const search_next)
 {
 	if (GameID() == eGameIDSingle) return false;
 	
@@ -414,13 +486,15 @@ bool			CSpectator::SelectNextPlayerToLook	()
 
 	game_cl_mp* pMPGame = smart_cast<game_cl_mp*> (&Game());
 
-	game_cl_GameState::PLAYERS_MAP_IT it = Game().players.begin();
+	game_cl_GameState::PLAYERS_MAP_IT it = Game().players.begin(),
+		ite = Game().players.end();
 	u16 PPCount = 0;
 	CActor*	PossiblePlayers[32];
-	for(;it!=Game().players.end();++it)
+	int last_player_idx = -1;
+	for(; it!=ite; ++it)
 	{
 		game_PlayerState* ps = it->second;
-		if (!ps || ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD) || ps==PS) continue;
+		if (!ps || ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD) /*|| (ps==PS)*/) continue;
 		if (pMPGame && pMPGame->Is_Spectator_TeamCamera_Allowed())
 		{
 			if (ps->team != PS->team && !PS->testFlag(GAME_PLAYER_FLAG_SPECTATOR)) continue;
@@ -430,12 +504,31 @@ bool			CSpectator::SelectNextPlayerToLook	()
 		if (!pObject) continue;
 		CActor* A = smart_cast<CActor*>(pObject);
 		if (!A) continue;
+		if (m_last_player_name.size() && (m_last_player_name == ps->name))
+		{
+			last_player_idx		= PPCount;
+		}
 		PossiblePlayers[PPCount++] = A;
 	};
+	if (!search_next)
+	{
+		if (last_player_idx != -1)
+		{
+			m_pActorToLookAt = PossiblePlayers[last_player_idx];
+			return true;
+		} else
+		{
+			return false;
+		}
+	} 
+
 	if (PPCount > 0)
 	{
 		look_idx %= PPCount;
 		m_pActorToLookAt = PossiblePlayers[look_idx];
+		game_PlayerState* tmp_state = Game().GetPlayerByGameID(m_pActorToLookAt->ID());
+		if (tmp_state)
+			m_last_player_name = tmp_state->name;
 		return true;
 	};
 	return false;
@@ -455,7 +548,7 @@ void			CSpectator::net_Relcase				(CObject *O)
 	m_pActorToLookAt = NULL;
 	if (cam_active != eacFreeFly)
 	{
-		SelectNextPlayerToLook();
+		SelectNextPlayerToLook(false);
 		if (m_pActorToLookAt == O)	//selected to look at player that will be destroyed
 		{
 			m_pActorToLookAt = NULL;

@@ -9,6 +9,7 @@
 #include "../../xrEngine/xr_IOConsole.h"
 #include "../RegistryFuncs.h"
 #include "../../xrGameSpy/xrGameSpy_MainDefs.h"
+#include "player_name_modifyer.h"
 
 extern string64	gsCDKey;
 
@@ -157,7 +158,9 @@ void CUIMPPlayerName::OnFocusLost()
 	}
 	string64 name;
 	strcpy_s( name, GetText() );
-	WritePlayerName_ToRegistry( name );
+	string256 new_name;
+	modify_player_name(name, new_name);
+	WritePlayerName_ToRegistry( new_name );
 }
 
 // -------------------------------------------------------------------------------------------------
@@ -180,9 +183,15 @@ void WriteCDKey_ToRegistry(LPSTR cdkey)
 	WriteRegistry_StrValue(REGISTRY_VALUE_GSCDKEY, cdkey);
 }
 
-void GetPlayerName_FromRegistry(char* name)
+void GetPlayerName_FromRegistry(char* name, u32 const name_size)
 {
-	ReadRegistry_StrValue(REGISTRY_VALUE_USERNAME, name);
+	string256	new_name;
+	if (!ReadRegistry_StrValue(REGISTRY_VALUE_USERNAME, name))
+	{
+		name[0] = 0;
+		Msg( "! Player name registry key (%s) not found !", REGISTRY_VALUE_USERNAME );
+		return;
+	}
 	if ( xr_strlen(name) > 17 )
 	{
 		name[17] = 0;
@@ -191,6 +200,8 @@ void GetPlayerName_FromRegistry(char* name)
 	{
 		Msg( "! Player name in registry is empty! (%s)", REGISTRY_VALUE_USERNAME );
 	}
+	modify_player_name(name, new_name);
+	strncpy_s(name, name_size, new_name, 17);
 }
 
 void WritePlayerName_ToRegistry(LPSTR name)

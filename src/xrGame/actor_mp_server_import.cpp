@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "actor_mp_server.h"
+#include "Physics.h"
+#include "mathutils.h"
 
 void CSE_ActorMP::UPDATE_Read	(NET_Packet &packet)
 {
@@ -14,6 +16,7 @@ void CSE_ActorMP::UPDATE_Read	(NET_Packet &packet)
 		return;
 	}
 	m_state_holder.read			(packet);
+	R_ASSERT2(valid_pos(m_state_holder.state().position,phBoundaries), "read bad position");
 
 	m_AliveState.quaternion		= m_state_holder.state().physics_quaternion;
 	m_AliveState.angular_vel	= m_state_holder.state().physics_angular_velocity;

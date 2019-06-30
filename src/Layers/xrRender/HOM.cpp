@@ -149,19 +149,6 @@ public:
 
 void CHOM::Render_DB			(CFrustum& base)
 {
-	// Query DB
-	xrc.frustum_options			(0);
-	xrc.frustum_query			(m_pModel,base);
-	if (0==xrc.r_count())		return;
-
-	// Prepare
-	CDB::RESULT*	it			= xrc.r_begin	();
-	CDB::RESULT*	end			= xrc.r_end		();
-	
-	Fvector			COP			= Device.vCameraPosition;
-	end				= std::remove_if	(it,end,pred_fb(m_pTris));
-	std::sort		(it,end,pred_fb(m_pTris,COP));
-
 	float			view_dim	= occ_dim_0;
 	Fmatrix			m_viewport		= {
 		view_dim/2.f,			0.0f,					0.0f,		0.0f,
@@ -177,6 +164,19 @@ void CHOM::Render_DB			(CFrustum& base)
 	};
 	m_xform.mul					(m_viewport,	Device.mFullTransform);
 	m_xform_01.mul				(m_viewport_01,	Device.mFullTransform);
+
+	// Query DB
+	xrc.frustum_options			(0);
+	xrc.frustum_query			(m_pModel,base);
+	if (0==xrc.r_count())		return;
+
+	// Prepare
+	CDB::RESULT*	it			= xrc.r_begin	();
+	CDB::RESULT*	end			= xrc.r_end		();
+	
+	Fvector			COP			= Device.vCameraPosition;
+	end				= std::remove_if	(it,end,pred_fb(m_pTris));
+	std::sort		(it,end,pred_fb(m_pTris,COP));
 
 	// Build frustum with near plane only
 	CFrustum					clip;

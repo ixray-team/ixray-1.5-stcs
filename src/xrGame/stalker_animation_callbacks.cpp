@@ -66,13 +66,16 @@ static void callback_rotation_blend	(CBoneInstance* const bone)
 	VERIFY							(parameter->m_rotation);
 	VERIFY							(parameter->m_object);
 	VERIFY							(parameter->m_blend);
-	VERIFY							(*parameter->m_blend);
+//	VERIFY							(*parameter->m_blend);
 
-	CBlend const&					blend = **parameter->m_blend;
-	float							multiplier = blend.timeCurrent/blend.timeTotal;
+	float multiplier				= 1.f;
+	if ( *parameter->m_blend ) {
+		CBlend const&				blend = **parameter->m_blend;
+		multiplier					= blend.timeCurrent/blend.timeTotal;
+	}
+
 	VERIFY							(multiplier >= 0.f);
 	VERIFY							(multiplier <= 1.f);
-
 	multiplier						= parameter->m_forward ? multiplier : (1.f - multiplier);
 
 #if 0

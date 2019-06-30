@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "xrserver.h"
 #include "xrserver_objects.h"
+#include "xrServer_svclient_validation.h"
 
 bool xrServer::Process_event_reject	(NET_Packet& P, const ClientID sender, const u32 time, const u16 id_parent, const u16 id_entity, bool send_message)
 {
@@ -11,16 +12,28 @@ bool xrServer::Process_event_reject	(NET_Packet& P, const ClientID sender, const
 //	R_ASSERT2( e_entity, make_string( "entity not found. parent_id = [%d], entity_id = [%d], frame = [%d]", id_parent, id_entity, Device.dwFrame ).c_str() );
 	VERIFY2  ( e_entity, make_string( "entity not found. parent_id = [%d], entity_id = [%d], frame = [%d]", id_parent, id_entity, Device.dwFrame ).c_str() );
 	if ( !e_entity ) {
-		Msg                ( "! ERROR: entity not found. parent_id = [%d], entity_id = [%d], frame = [%d]. Process_event_reject()", id_parent, id_entity, Device.dwFrame );
+		Msg                ( "! ERROR on rejecting: entity not found. parent_id = [%d], entity_id = [%d], frame = [%d]", id_parent, id_entity, Device.dwFrame );
 		return false;
 	}
 
 //	R_ASSERT2( e_parent, make_string( "parent not found. parent_id = [%d], entity_id = [%d], frame = [%d]", id_parent, id_entity, Device.dwFrame ).c_str() );
 	VERIFY2  ( e_parent, make_string( "parent not found. parent_id = [%d], entity_id = [%d], frame = [%d]", id_parent, id_entity, Device.dwFrame ).c_str() );
 	if ( !e_parent ) {
-		Msg                ( "! ERROR: parent not found. parent_id = [%d], entity_id = [%d], frame = [%d]. Process_event_reject()", id_parent, id_entity, Device.dwFrame );
+		Msg                ( "! ERROR on rejecting: parent not found. parent_id = [%d], entity_id = [%d], frame = [%d]", id_parent, id_entity, Device.dwFrame );
 		return false;
 	}
+
+	/*if (!is_object_valid_on_svclient(id_parent))
+	{
+		Msg( "! ERROR on rejecting: parent object is not valid on sv client. parent_id = [%d], entity_id = [%d], frame = [%d]", id_parent, id_entity, Device.dwFrame );
+		return false;
+	}
+
+	if (!is_object_valid_on_svclient(id_entity))
+	{
+		Msg( "! ERROR on rejecting: entity object is not valid on sv client. parent_id = [%d], entity_id = [%d], frame = [%d]", id_parent, id_entity, Device.dwFrame );
+		return false;
+	}*/
 
 #ifdef MP_LOGGING
 	Msg ( "--- SV: Process reject: parent[%d][%s], item[%d][%s]", id_parent, e_parent->name_replace(), id_entity, e_entity->name());

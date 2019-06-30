@@ -281,7 +281,7 @@
 				Optimization="0"
 				EnableFiberSafeOptimizations="true"
 				AdditionalIncludeDirectories="../../sdk/include/stlport;../../sdk/include/"
-				PreprocessorDefinitions="DEBUG;WIN32;_WINDOWS;XR_NETSERVER_EXPORTS;_SECURE_SCL=0"
+				PreprocessorDefinitions="DEBUG;WIN32;_WINDOWS;XR_NETSERVER_EXPORTS;"
 				StringPooling="false"
 				MinimalRebuild="true"
 				ExceptionHandling="1"

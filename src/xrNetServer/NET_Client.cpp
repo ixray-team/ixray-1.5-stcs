@@ -52,7 +52,7 @@ static u32 LastTimeCreate = 0;
 NET_Packet*		INetQueue::Create	()
 {
 	NET_Packet*	P			= 0;
-	cs.Enter		();
+	//cs.Enter		();
 //#ifdef _DEBUG
 //		Msg ("- INetQueue::Create - ready %d, unused %d", ready.size(), unused.size());
 //#endif
@@ -68,7 +68,7 @@ NET_Packet*		INetQueue::Create	()
 		unused.pop_back		();
 		P					= ready.back	();
 	}
-	cs.Leave		();
+	//cs.Leave		();
 	return	P;
 }
 NET_Packet*		INetQueue::Create	(const NET_Packet& _other)
@@ -97,7 +97,7 @@ NET_Packet*		INetQueue::Create	(const NET_Packet& _other)
 NET_Packet*		INetQueue::Retreive	()
 {
 	NET_Packet*	P			= 0;
-	cs.Enter		();
+	//cs.Enter		();
 //#ifdef _DEBUG
 //			Msg ("INetQueue::Retreive - ready %d, unused %d", ready.size(), unused.size());
 //#endif
@@ -114,12 +114,12 @@ NET_Packet*		INetQueue::Retreive	()
 		}		
 	}
 	//---------------------------------------------	
-	cs.Leave		();
+	//cs.Leave		();
 	return	P;
 }
 void			INetQueue::Release	()
 {
-	cs.Enter		();
+	//cs.Enter		();
 //#ifdef _DEBUG
 //		Msg ("INetQueue::Release - ready %d, unused %d", ready.size(), unused.size());
 //#endif
@@ -136,7 +136,7 @@ void			INetQueue::Release	()
 		unused.push_back(ready.front());
 	//---------------------------------------------	
 	ready.pop_front	();
-	cs.Leave		();
+	//cs.Leave		();
 }
 
 //
@@ -840,6 +840,7 @@ HRESULT	IPureClient::net_Handler(u32 dwMessageType, PVOID pMessage)
 void	IPureClient::OnMessage(void* data, u32 size)
 {
 	// One of the messages - decompress it
+	net_Queue.Lock();
 	NET_Packet* P = net_Queue.Create();
 
 	P->construct( data, size );	
@@ -847,6 +848,7 @@ void	IPureClient::OnMessage(void* data, u32 size)
 
 	u16			m_type;
 	P->r_begin	(m_type);
+	net_Queue.Unlock();
 }
 
 void	IPureClient::timeServer_Correct(u32 sv_time, u32 cl_time)

@@ -117,6 +117,7 @@ void CInventory::Take(CGameObject *pObj, bool bNotActivate, bool strict_placemen
 	
 	pIItem->m_pInventory				= this;
 	pIItem->SetDropManual				(FALSE);
+	pIItem->AllowTrade					();
 	//if net_Import for pObj arrived then the pObj will pushed to CrPr list (correction prediction)
 	//usually net_Import arrived for objects that not has a parent object..
 	//for unknown reason net_Import arrived for object that has a parent, so correction prediction schema will crash
@@ -725,6 +726,14 @@ bool CInventory::Action(s32 cmd, u32 flags)
 		
 		case kDROP:		
 			{
+				if ((flags & CMD_STOP) && !IsGameTypeSingle())
+				{
+					PIItem tmp_item = ActiveItem();
+					if (tmp_item)
+					{
+						tmp_item->DenyTrade();
+					}
+				}
 				SendActionEvent	(cmd, flags);
 				return			true;
 			}break;
@@ -887,9 +896,20 @@ void CInventory::Update()
 				}
 			}
 
-			if ( (m_iNextActiveSlot!=NO_ACTIVE_SLOT) && m_slots[m_iNextActiveSlot].m_pIItem )
-				m_slots[m_iNextActiveSlot].m_pIItem->ActivateItem();
-
+			if (GetNextActiveSlot() != NO_ACTIVE_SLOT)
+			{
+				PIItem tmp_next_active = ItemFromSlot(GetNextActiveSlot());
+				if (tmp_next_active)
+				{
+					u32 tmp_slot = tmp_next_active->GetSlot();
+					if ((tmp_slot != NO_ACTIVE_SLOT) && (m_slots[tmp_slot].IsBlocked()))
+					{
+						Activate(m_iActiveSlot);
+						return;
+					}			
+					tmp_next_active->ActivateItem();
+				}
+			}
 			m_iActiveSlot			= m_iNextActiveSlot;
 		}
 		if((m_iNextActiveSlot!=NO_ACTIVE_SLOT) && m_slots[m_iActiveSlot].m_pIItem && m_slots[m_iActiveSlot].m_pIItem->cast_hud_item()->IsHidden())
@@ -931,6 +951,7 @@ void CInventory::UpdateDropItem(PIItem pIItem)
 	if( pIItem->GetDropManual() )
 	{
 		pIItem->SetDropManual(FALSE);
+		pIItem->DenyTrade();
 
 		if ( OnServer() ) 
 		{
@@ -1341,7 +1362,7 @@ void  CInventory::SetPrevActiveSlot(u32 ActiveSlot)
 //call this only via Actor()->SetWeaponHideState()
 void CInventory::SetSlotsBlocked(u16 mask, bool bBlock)
 {
-	R_ASSERT(OnServer());
+	R_ASSERT(OnServer() || Level().IsDemoPlayStarted());
 
 	bool bChanged = false;
 	for(u32 i =0; i<m_slots.size(); ++i)

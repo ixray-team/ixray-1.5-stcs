@@ -112,6 +112,27 @@ void game_cl_CaptureTheArtefact::shedule_Update(u32 dt)
 	if (g_dedicated_server)
 		return;
 
+	if ((Level().IsDemoPlayStarted() || Level().IsDemoPlayFinished())  && m_game_ui)
+	{
+		LPCSTR		demo_play_string = NULL;
+		string32	tmp_buf1;
+		string32	tmp_buf2;
+		//st.translate("demo play active : ").c_str() (need to translate ?)
+		STRCONCAT(demo_play_string, "demo play active : ",
+			itoa( int(Level().GetDemoPlayPos() * 100), tmp_buf1, 10),
+			"%%, play speed: ",
+			itoa( int(Level().GetDemoPlaySpeed()), tmp_buf2, 10),
+			"x");
+		m_game_ui->SetDemoPlayCaption(demo_play_string);
+		game_PlayerState* lookat_player = Game().lookat_player();
+		if (lookat_player)
+		{
+			m_game_ui->SetRank(static_cast<ETeam>(lookat_player->team),
+									lookat_player->rank);
+			UpdateMoneyIndicator();
+		}
+	}
+
 	switch (Phase())
 	{
 		case GAME_PHASE_INPROGRESS:
@@ -208,17 +229,23 @@ void game_cl_CaptureTheArtefact::shedule_Update(u32 dt)
 void game_cl_CaptureTheArtefact::UpdateMoneyIndicator()
 {
 	string256 MoneyStr;
-	R_ASSERT(local_player);
-	if (local_player && local_player->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD))
+	game_PlayerState* lookat_player = Game().lookat_player();
+	if (!lookat_player)
+		return;
+	//R_ASSERT(lookat_player);
+	if (lookat_player->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD))
 	{
-		total_money = local_player->money_for_round + buy_amount;
+		total_money = (lookat_player == local_player) ?
+			local_player->money_for_round + buy_amount :
+			lookat_player->money_for_round;
+			
 	} else
 	{
-		total_money = local_player->money_for_round;
+		total_money = lookat_player->money_for_round;
 	}
 	if (total_money != last_money)
 	{
-		sprintf_s(MoneyStr, "%d", total_money);
+		itoa(total_money, MoneyStr, 10);
 		m_game_ui->ChangeTotalMoneyIndicator(MoneyStr);
 		last_money = total_money;
 	}
@@ -521,6 +548,9 @@ void game_cl_CaptureTheArtefact::LoadSndMessages()
 
 BOOL game_cl_CaptureTheArtefact::CanCallBuyMenu()
 {
+	if (!is_buy_menu_ready())
+		return FALSE;
+
 	if (!local_player->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD))
 	{
 		return m_allow_buy;
@@ -897,6 +927,8 @@ void game_cl_CaptureTheArtefact::OnNewPlayerConnected(ClientID const & newClient
 
 bool game_cl_CaptureTheArtefact::OnKeyboardPress(int key)
 {
+	if (Level().IsDemoPlay() && (key != kSCORES))
+		return false;
 	if ((Phase() == GAME_PHASE_INPROGRESS) && 
 		(m_game_ui) && 
 		(local_player && !local_player->IsSkip())
@@ -1504,7 +1536,9 @@ bool game_cl_CaptureTheArtefact::IsEnemy(game_PlayerState* ps)
 #define PLAYER_NAME_COLOR 0xff40ff40
 void game_cl_CaptureTheArtefact::OnRender()
 {
-	if (local_player)
+	game_PlayerState* lookat_player = Game().lookat_player();
+	if (local_player && (local_player == lookat_player) &&
+		(m_bShowPlayersNames || m_bFriendlyIndicators))
 	{
 		cl_TeamStruct *pTS = &TeamList[ModifyTeam(local_player->team)]; 
 		PLAYERS_MAP_IT it = players.begin();
@@ -1534,9 +1568,9 @@ void game_cl_CaptureTheArtefact::OnRender()
 
 			if (IsEnemy(ps))
 				continue;
-
-			if (ps == local_player) continue;
-
+			
+			if (ps == local_player)
+				continue;
 
 			float dup = 0.0f;
 			if (m_bShowPlayersNames)

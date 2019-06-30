@@ -100,6 +100,10 @@ ICF void CBackend::set_Indices(ID3DIndexBuffer* _ib)
 
 ICF void CBackend::Render(D3DPRIMITIVETYPE T, u32 baseV, u32 startV, u32 countV, u32 startI, u32 PC)
 {
+	//Fix D3D ERROR
+	if (PC==0)
+		return;
+
 	stat.calls			++;
 	stat.verts			+= countV;
 	stat.polys			+= PC;
@@ -110,6 +114,10 @@ ICF void CBackend::Render(D3DPRIMITIVETYPE T, u32 baseV, u32 startV, u32 countV,
 
 ICF void CBackend::Render(D3DPRIMITIVETYPE T, u32 startV, u32 PC)
 {
+	//Fix D3D ERROR
+	if (PC==0)
+		return;
+
 	stat.calls			++;
 	stat.verts			+= 3*PC;
 	stat.polys			+= PC;

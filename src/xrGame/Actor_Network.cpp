@@ -43,6 +43,7 @@
 
 #ifdef DEBUG
 #	include "debug_renderer.h"
+#	include "Physics.h"
 #endif
 
 int			g_cl_InterpolationType		= 0;
@@ -472,6 +473,7 @@ void		CActor::net_Import_Physic			( NET_Packet& P)
 			}
 			else
 			{
+				VERIFY(valid_pos(N_A.State.position,phBoundaries));
 				NET_A.push_back			(N_A);
 				if (NET_A.size()>5) NET_A.pop_front();
 			};

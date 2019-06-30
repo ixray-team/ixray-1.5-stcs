@@ -60,8 +60,8 @@ protected:
 		etiStoredCursorState= (1<<6),
 		eti_last			= 7,
 	};
-	xr_vector<luabind::functor<void> >	m_start_lua_functions;
-	xr_vector<luabind::functor<void> >	m_stop_lua_functions;
+	xr_vector<shared_str>		m_start_lua_functions;
+	xr_vector<shared_str>		m_stop_lua_functions;
 
 	Flags32					m_flags;
 	CUISequencer*			m_owner;
@@ -99,7 +99,7 @@ class CUISequenceSimpleItem: public CUISequenceItem
 	SubItemVec				m_subitems;
 	struct SActionItem{
 		EGameActions			m_action;
-		luabind::functor<void>	m_functor;
+		shared_str				m_functor;
 		bool					m_bfinalize;
 	};
 public:

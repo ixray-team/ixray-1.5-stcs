@@ -6,6 +6,34 @@
 
 #define STENCIL_CULL 0
 
+void CRenderTarget::DoAsyncScreenshot()
+{
+	//	Igor: screenshot will not have postprocess applied.
+	//	TODO: fox that later
+	if (RImplementation.m_bMakeAsyncSS)
+	{
+		HRESULT hr;
+
+		//	HACK: unbind RT. CopyResourcess needs src and targetr to be unbound.
+		//u_setrt				( Device.dwWidth,Device.dwHeight,HW.pBaseRT,NULL,NULL,HW.pBaseZB);
+
+		//ID3DTexture2D *pTex = 0;
+		//if (RImplementation.o.dx10_msaa)
+		//	pTex = rt_Generic->pSurface;
+		//else
+		//	pTex = rt_Color->pSurface;
+
+
+		//HW.pDevice->CopyResource( t_ss_async, pTex );
+		ID3D10Texture2D*	pBuffer;
+		hr = HW.m_pSwapChain->GetBuffer( 0, __uuidof( ID3D10Texture2D ), (LPVOID*)&pBuffer );
+		HW.pDevice->CopyResource( t_ss_async, pBuffer );
+		
+
+		RImplementation.m_bMakeAsyncSS = false;
+	}
+}
+
 float	hclip(float v, float dim)		{ return 2.f*v/dim - 1.f; }
 void	CRenderTarget::phase_combine	()
 {
@@ -24,7 +52,12 @@ void	CRenderTarget::phase_combine	()
 		t_LUM_dest->surface_set		(rt_LUM_pool[gpu_id*2+1]->pSurface);
 	}
 
-	if (RImplementation.o.ssao_blur_on)
+	if (RImplementation.o.ssao_opt_data)
+	{
+		phase_downsamp();
+		//phase_ssao();
+	} 
+	else if (RImplementation.o.ssao_blur_on)
 		phase_ssao();
 
 	// low/hi RTs
@@ -105,12 +138,12 @@ void	CRenderTarget::phase_combine	()
 		Fvector4	sunclr,sundir;
 
 		float		fSSAONoise = 2.0f;
-					fSSAONoise *= tan(deg2rad(67.5f));
-					fSSAONoise /= tan(deg2rad(Device.fFOV));
+					fSSAONoise *= tan(deg2rad(67.5f/2.0f));
+					fSSAONoise /= tan(deg2rad(Device.fFOV/2.0f));
 
 		float		fSSAOKernelSize = 150.0f;
-					fSSAOKernelSize *= tan(deg2rad(67.5f));
-					fSSAOKernelSize /= tan(deg2rad(Device.fFOV));
+					fSSAOKernelSize *= tan(deg2rad(67.5f/2.0f));
+					fSSAOKernelSize /= tan(deg2rad(Device.fFOV/2.0f));
 
 
 		// sun-params
@@ -282,11 +315,12 @@ void	CRenderTarget::phase_combine	()
    */
 
 	// PP enabled ?
-	BOOL	PP_Complex		= u_need_PP	();
+	//	Render to RT texture to be able to copy RT even in windowed mode.
+	BOOL	PP_Complex		= u_need_PP	() | (BOOL)RImplementation.m_bMakeAsyncSS;
 	if (_menu_pp)			PP_Complex	= FALSE;
 
    // HOLGER - HACK
-   //PP_Complex = TRUE;
+   PP_Complex = TRUE;
 
 	// Combine everything + perform AA
    if( RImplementation.o.dx10_msaa )

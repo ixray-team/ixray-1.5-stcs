@@ -6,6 +6,12 @@
 #include "../xrSound/Sound.h"
 #include "ui/UISpeechMenu.h"
 #include "Spectator.h"
+#include "file_transfer.h"
+#include "screenshot_manager.h"
+#include "configs_dumper.h"
+#include "configs_dump_verifyer.h"
+#include "screenshot_server.h"
+
 
 class CUISpeechMenu;
 class CUIMessageBoxEx;
@@ -170,7 +176,7 @@ protected:
 	bool		m_bSpectator_TeamCamera;
 
 	u32			m_cur_MenuID;
-
+	
 	virtual		void		LoadBonuses				();
 
 public:
@@ -239,11 +245,66 @@ public:
 	virtual		u8					GetTeamCount			() { return 0; };
 	virtual		s16					ModifyTeam				(s16 Team)	{return Team;};
 
-	virtual		bool				Is_Spectator_TeamCamera_Allowed () {return m_bSpectator_TeamCamera;};
+	virtual		bool				Is_Spectator_TeamCamera_Allowed () {return m_bSpectator_TeamCamera && !Level().IsDemoPlay();};
 	virtual		bool				Is_Spectator_Camera_Allowed			(CSpectator::EActorCameras Camera);
 				
 				void				SendPlayerStarted();
 	virtual		void				OnConnected				();
+				
+	screenshot_manager				ss_manager;
+	mp_anticheat::configs_dumper	cd_manager;
+	mp_anticheat::configs_verifyer	cd_verifyer;
+private:
+				u8*					buffer_for_compress;
+				u32					buffer_for_compress_size;
+				CMemoryWriter		upload_memory_writer;
+				void				reinit_compress_buffer(u32 need_size);
+				void				deinit_compress_buffer();
+public:
+				void __stdcall		SendCollectedData	(u8 const* buffer, u32 buffer_size, u32 uncompressed_size);
+				void				PrepareToReceiveFile(ClientID const & from_client, shared_str const & client_session_id, clientdata_event_t response_event);
+				
+				struct fr_callback_binder
+				{
+					file_transfer::filereceiver_node*	m_frnode;
+					shared_str							m_file_name;
+					clientdata_event_t					m_response_type;
+					bool								m_active;
+					u32									m_downloaded_size;
+					u32									m_max_size;
+					game_cl_mp*							m_owner;
+					CMemoryWriter						m_writer;
+					fr_callback_binder() : m_frnode(NULL), m_active(false) {};
+					void __stdcall		receiving_file_callback(file_transfer::receiving_status_t status, u32 bytes_received, u32 data_size);
+				};
+				struct detected_cheater_t
+				{
+					shared_str			m_file_name;
+					string256			m_diff;
+					u32					m_detect_time;
+					static u32	const	max_showing_time = 10000;	//10 seconds
+				};//struct detected_cheater_t
+				void	add_detected_cheater	(shared_str const & file_name, string256 diff);
+private:
+				fr_callback_binder				m_client_receiver_cbs[MAX_PLAYERS_COUNT];
+				typedef	xr_vector<detected_cheater_t> cheaters_collection_t;
+				cheaters_collection_t			m_detected_cheaters;
+				bool							m_ready_to_open_buy_menu;
+public:
+				bool				is_buy_menu_ready				() const { return m_ready_to_open_buy_menu; };
+				void				set_buy_menu_not_ready			() { m_ready_to_open_buy_menu = false; };
+
+				void				decompress_and_save_screenshot	(LPCSTR file_name, u8* data, u32 data_size, u32 file_size);
+				void				decompress_and_process_config	(LPCSTR file_name, u8* data, u32 data_size, u32 file_size);
+
+				fr_callback_binder*	get_receiver_cb_binder			();
+				void				draw_all_active_binder_states	();
+				void				draw_downloads					(bool draw);
+				
+				void __stdcall		sending_screenshot_callback(file_transfer::sending_status_t status, u32 bytes_sent, u32 data_size);
+//-------------------------------------------------------------------------------------------------
+				static void	generate_file_name(string_path& file_name, LPCSTR file_suffix, SYSTEMTIME const& date_time);
+				static LPCSTR	make_file_name(LPCSTR session_id, string_path & dest);
 //-------------------------------------------------------------------------------------------------
 #include "game_cl_mp_messages_menu.h"
 

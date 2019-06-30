@@ -302,8 +302,11 @@ void CObjectList::Update		(bool bForce)
 void CObjectList::net_Register		(CObject* O)
 {
 	R_ASSERT		(O);
+	R_ASSERT		(O->ID() < 0xffff);
 
 	map_NETID[O->ID()] = O;
+	
+	
 
 //.	map_NETID.insert(mk_pair(O->ID(),O));
 	//Msg			("-------------------------------- Register: %s",O->cName());
@@ -311,7 +314,9 @@ void CObjectList::net_Register		(CObject* O)
 
 void CObjectList::net_Unregister	(CObject* O)
 {
-	map_NETID[O->ID()] = NULL;
+	//R_ASSERT		(O->ID() < 0xffff);
+	if (O->ID() < 0xffff)				//demo_spectator can have 0xffff
+		map_NETID[O->ID()] = NULL;
 /*
 	xr_map<u32,CObject*>::iterator	it = map_NETID.find(O->ID());
 	if ((it!=map_NETID.end()) && (it->second == O))	{

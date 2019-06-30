@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "actor_mp_client.h"
 #include "actorcondition.h"
+#include "../xrEngine/CameraBase.h"
 
 CActorMP::CActorMP			()
 {
@@ -29,4 +30,14 @@ void CActorMP::Die			(CObject *killer)
 	{ //transfer all items to bag
 	
 	}
+}
+
+void CActorMP::cam_Set		(EActorCameras style)
+{
+	if (style != eacFirstEye)
+		return;
+	CCameraBase* old_cam = cam_Active();
+	cam_active = style;
+	old_cam->OnDeactivate();
+	cam_Active()->OnActivate(old_cam);
 }

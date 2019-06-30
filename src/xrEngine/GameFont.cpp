@@ -318,7 +318,7 @@ void CGameFont::OutSkip( float val )
 
 float CGameFont::SizeOf_( const char cChar )
 {
-	return ( GetCharTC( ( u16 ) ( u8 ) ( ( IsMultibyte() && cChar == ' ' ) ) ? 0 : cChar ).z * vInterval.x );
+	return ( GetCharTC( ( u16 ) ( u8 ) ( ( ( IsMultibyte() && cChar == ' ' ) ) ? 0 : cChar) ).z * vInterval.x );
 }
 
 float CGameFont::SizeOf_( LPCSTR s )

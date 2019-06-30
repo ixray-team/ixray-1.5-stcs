@@ -135,7 +135,9 @@ Flags32		ps_r2_ls_flags				= { R2FLAG_SUN
 	| R3FLAG_GBUFFER_OPT
 	};	// r2-only
 
-Flags32		ps_r2_ls_flags_ext			= {0};
+Flags32		ps_r2_ls_flags_ext			= {
+		/*R2FLAGEXT_SSAO_OPT_DATA |*/ R2FLAGEXT_SSAO_HALF_DATA
+	};
 
 float		ps_r2_df_parallax_h			= 0.02f;
 float		ps_r2_df_parallax_range		= 75.f;
@@ -290,6 +292,9 @@ class CCC_Screenshot : public IConsole_Command
 public:
 	CCC_Screenshot(LPCSTR N) : IConsole_Command(N)  { };
 	virtual void Execute(LPCSTR args) {
+		if (g_dedicated_server)
+			return;
+
 		string_path	name;	name[0]=0;
 		sscanf		(args,"%s",	name);
 		LPCSTR		image	= xr_strlen(name)?name:0;
@@ -699,6 +704,10 @@ void		xrRender_initconsole	()
 	CMD3(CCC_Token,		"r2_sun_shafts",				&ps_r_sun_shafts,			qsun_shafts_token);
 	CMD3(CCC_Token,		"r2_ssao",						&ps_r_ssao,					qssao_token);
 	CMD3(CCC_Mask,		"r2_ssao_blur",                 &ps_r2_ls_flags_ext,		R2FLAGEXT_SSAO_BLUR);//Need restart
+	CMD3(CCC_Mask,		"r2_ssao_opt_data",				&ps_r2_ls_flags_ext,		R2FLAGEXT_SSAO_OPT_DATA);//Need restart
+	CMD3(CCC_Mask,		"r2_ssao_half_data",			&ps_r2_ls_flags_ext,		R2FLAGEXT_SSAO_HALF_DATA);//Need restart
+	CMD3(CCC_Mask,		"r2_ssao_hbao",					&ps_r2_ls_flags_ext,		R2FLAGEXT_SSAO_HBAO);//Need restart
+	CMD3(CCC_Mask,		"r2_ssao_hdao",					&ps_r2_ls_flags_ext,		R2FLAGEXT_SSAO_HDAO);//Need restart
 	CMD3(CCC_Mask,		"r2_steep_parallax",			&ps_r2_ls_flags,			R2FLAG_STEEP_PARALLAX);
 	CMD3(CCC_Mask,		"r2_detail_bump",				&ps_r2_ls_flags,			R2FLAG_DETAIL_BUMP);
 

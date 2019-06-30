@@ -22,7 +22,7 @@ extern ENGINE_API string_path	g_sLaunchWorkingFolder;
 
 LPCSTR GameTypeToString(EGameIDs gt, bool bShort);
 
-extern	void	GetPlayerName_FromRegistry	(char* name);
+extern	void	GetPlayerName_FromRegistry	(char* name, u32 const name_size);
 
 CUIMapList::CUIMapList(){
 	m_pMapInfo		= NULL;
@@ -201,7 +201,7 @@ const char* CUIMapList::GetCommandLine(LPCSTR player_name){
 	if (player_name == NULL || 0 == xr_strlen(player_name))
 	{
 		string64	player_name2;
-		GetPlayerName_FromRegistry( player_name2 );
+		GetPlayerName_FromRegistry( player_name2, sizeof(player_name2) );
 
 		if ( xr_strlen(player_name2) == 0 )
 		{

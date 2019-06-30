@@ -91,9 +91,7 @@ void CUISequenceSimpleItem::Load(CUIXml* xml, int idx)
 		LPCSTR str					= xml->ReadAttrib("action", idx, "id");
 		itm.m_action				= action_name_to_id(str);
 		itm.m_bfinalize				= !!xml->ReadAttribInt("action", idx, "finalize", FALSE);
-		str							= xml->Read(xml->GetLocalRoot(), "action", idx, "");
-		bool functor_exists			= ai().script_engine().functor(str ,itm.m_functor);
-		THROW3						(functor_exists, "Cannot find script function described in tutorial item ", str);
+		itm.m_functor				= xml->Read(xml->GetLocalRoot(), "action", idx, "");
 	}
 
 	//ui-components
@@ -304,7 +302,11 @@ void CUISequenceSimpleItem::OnKeyboardPress	(int dik)
 		bool b = is_binded(itm.m_action, dik);
 		if(b)
 		{
-			itm.m_functor();
+			luabind::functor<void>		functor_to_call;
+			bool functor_exists			= ai().script_engine().functor(itm.m_functor.c_str() ,functor_to_call);
+			THROW3						(functor_exists, "Cannot find script function described in tutorial item ", itm.m_functor.c_str());
+			functor_to_call();
+
 			if(itm.m_bfinalize)
 			{
 				m_flags.set					(etiCanBeStopped, TRUE);

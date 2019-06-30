@@ -89,9 +89,29 @@ void Weapon_Statistic::net_save(NET_Packet* P, victims_table const & vt, bone_ta
 {
 	struct CompleteFilter
 	{
-		bool operator()(HitData const & hit)
+		u32&					complete_hits_count;
+		NET_Packet*				packet_to_write;
+		victims_table const &	vtable;
+		bone_table const &		btable;
+
+		CompleteFilter(u32& hits_count_result, NET_Packet* P, victims_table const & vt, bone_table const & bt) :
+			packet_to_write(P),
+			vtable(vt),
+			btable(bt),
+			complete_hits_count(hits_count_result)
 		{
-			return hit.Completed;
+		};
+		bool operator()(HitData & hit)
+		{
+			if (hit.Completed)
+			{
+				if (NET_PacketSizeLimit - packet_to_write->w_tell() < HitData::net_packet_size)
+					return false;
+				hit.net_save(packet_to_write, vtable, btable);
+				++complete_hits_count;
+				return true;
+			}
+			return false;
 		}
 	};
 	m_dwRoundsFired_d = m_dwRoundsFired - m_dwRoundsFired_d;
@@ -101,23 +121,18 @@ void Weapon_Statistic::net_save(NET_Packet* P, victims_table const & vt, bone_ta
 	P->w_u32(m_dwKillsScored_d);	m_dwKillsScored_d = 0;
 	
 	u32 hit_count_position = P->w_tell();
+	u32 complete_hits = 0;
 	P->w_u32(0); // <- complete_hits_count
 
 	//P->w_u16(m_explosion_kills);
 	//P->w_u16(m_bleed_kills);
 	
-	u32 complete_hits_count = 0;
-	HITS_VEC::iterator new_end = std::remove_if(m_Hits.begin(), m_Hits.end(),  CompleteFilter());
-	HITS_VEC::iterator i = new_end;
-	for (HITS_VEC::iterator real_end = m_Hits.end(); i != real_end; ++i)
-	{
-		if (NET_PacketSizeLimit - P->w_tell() < HitData::net_packet_size)
-			break;
-		i->net_save(P, vt, bt);
-		++complete_hits_count;
-	}
-	m_Hits.erase(new_end, i);
-	P->w_seek(hit_count_position, &complete_hits_count, sizeof(complete_hits_count));
+	CompleteFilter	tmp_filter(complete_hits, P, vt, bt);
+	m_Hits.erase(
+		std::remove_if(m_Hits.begin(), m_Hits.end(),  tmp_filter),
+		m_Hits.end()
+	);
+	P->w_seek(hit_count_position, &complete_hits, sizeof(complete_hits));
 };
 
 void Weapon_Statistic::net_load(NET_Packet* P, victims_table const & vt, bone_table const & bt)

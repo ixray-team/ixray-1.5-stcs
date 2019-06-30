@@ -74,6 +74,7 @@ CPHMovementControl::CPHMovementControl(CObject* parent)
 	fCollisionDamageFactor=1.f;
 	in_dead_area_count	=0;
 	bNonInteractiveMode =false;
+	block_damage_step_end = u64(-1);
 }
 
 CPHMovementControl::~CPHMovementControl(void)
@@ -160,23 +161,8 @@ void CPHMovementControl::Calculate(Fvector& vAccel,const Fvector& camDir,float /
 	fActualVelocity=vVelocity.magnitude();
 	//Msg("saved avel %f", fActualVelocity);
 	gcontact_Was=m_character->ContactWas();
-	fContactSpeed=0.f;
 //////
-
-	const ICollisionDamageInfo* di=m_character->CollisionDamageInfo();
- 
-	fContactSpeed=di->ContactVelocity();
-
-	gcontact_Power				= fContactSpeed/fMaxCrashSpeed;
-
-	gcontact_HealthLost			= 0;
-	if (fContactSpeed>fMinCrashSpeed) 
-	{
-			gcontact_HealthLost = 
-			((fContactSpeed-fMinCrashSpeed))/(fMaxCrashSpeed-fMinCrashSpeed);
-			VERIFY( m_character );
-			m_character->SetHitType( DefineCollisionHitType( m_character->LastMaterialIDX() ) );
-	}
+	UpdateCollisionDamage();
 
 /*
 	u16 mat_injurios = m_character->InjuriousMaterialIDX();
@@ -206,6 +192,57 @@ void CPHMovementControl::Calculate(Fvector& vAccel,const Fvector& camDir,float /
 	CheckEnvironment(vPosition);
 	bSleep=false;
 	m_character->Reinit();
+}
+
+void CPHMovementControl::UpdateCollisionDamage( )
+{
+//reset old
+	fContactSpeed				= 0.f;
+	gcontact_HealthLost			= 0;
+	gcontact_Power				= 0;
+	const ICollisionDamageInfo* di=m_character->CollisionDamageInfo();
+ 	fContactSpeed=di->ContactVelocity();
+
+	if(block_damage_step_end!=u64(-1))
+	{
+		VERIFY(ph_world);
+		if( ph_world->m_steps_num < block_damage_step_end )
+		{
+			fContactSpeed = 0.f;
+			return;
+		} else 
+			block_damage_step_end = u64(-1);
+	}
+
+// calc new
+	gcontact_Power				= fContactSpeed/fMaxCrashSpeed;
+	if (fContactSpeed>fMinCrashSpeed) 
+	{
+			gcontact_HealthLost = 
+			((fContactSpeed-fMinCrashSpeed))/(fMaxCrashSpeed-fMinCrashSpeed);
+			VERIFY( m_character );
+			m_character->SetHitType( DefineCollisionHitType( m_character->LastMaterialIDX() ) );
+	}
+
+
+
+	//const ICollisionDamageInfo* di=m_character->CollisionDamageInfo();
+	//fContactSpeed=0.f;
+	//{
+	//	fContactSpeed=di->ContactVelocity();
+	//	gcontact_Power				= fContactSpeed/fMaxCrashSpeed;
+	//	gcontact_HealthLost			= 0;
+	//	if (fContactSpeed>fMinCrashSpeed) 
+	//	{
+	//		gcontact_HealthLost = 
+	//			((fContactSpeed-fMinCrashSpeed))/(fMaxCrashSpeed-fMinCrashSpeed);
+	//		m_character->SetHitType( DefineCollisionHitType( m_character->LastMaterialIDX() ) );
+	//	}
+	//}
+
+
+
+
 }
 
 void CPHMovementControl::Calculate(const xr_vector<DetailPathManager::STravelPathPoint>& path,float speed,  u32& travel_point,  float& precision  )
@@ -1437,4 +1474,12 @@ void	CPHMovementControl::SetNonInteractive(bool v)
 	}
 	bNonInteractiveMode =v;
 
+}
+
+
+void			CPHMovementControl::BlockDamageSet		( u64 steps_num )
+{
+	VERIFY(ph_world);
+	block_damage_step_end = ph_world->m_steps_num + steps_num;
+	UpdateCollisionDamage();//reset all saved values
 }

@@ -69,9 +69,9 @@ void CLevel::IR_OnMouseHold(int btn)
 
 void CLevel::IR_OnMouseMove( int dx, int dy )
 {
-	if(g_bDisableAllInput)						return;
-	if (pHUD->GetUI()->IR_OnMouseMove(dx,dy))	return;
-	if (Device.Paused())							return;
+	if(g_bDisableAllInput)							return;
+	if (pHUD->GetUI()->IR_OnMouseMove(dx,dy))		return;
+	if (Device.Paused() && !IsDemoPlay() )	return;
 	if (CURRENT_ENTITY())		{
 		IInputReceiver*		IR	= smart_cast<IInputReceiver*>	(smart_cast<CGameObject*>(CURRENT_ENTITY()));
 		if (IR)				IR->IR_OnMouseMove					(dx,dy);
@@ -125,7 +125,7 @@ void CLevel::IR_OnKeyboardPress	(int key)
 			if (Device.editor())	return;
 		#endif // INGAME_EDITOR
 
-		if (!g_block_pause && IsGameTypeSingle() )
+		if (!g_block_pause && (IsGameTypeSingle() || IsDemoPlay()))
 			Device.Pause(!Device.Paused(), TRUE, TRUE, "li_pause_key");
 		return;
 	}
@@ -166,9 +166,9 @@ void CLevel::IR_OnKeyboardPress	(int key)
 
 	if ( b_ui_exist && pHUD->GetUI()->IR_OnKeyboardPress(key)) return;
 
-	if( Device.Paused() )		return;
+	if ( Device.Paused() && !IsDemoPlay() )	return;
 
-	if ( game && Game().IR_OnKeyboardPress(key) ) return;
+	if ( game && Game().IR_OnKeyboardPress(key) )	return;
 
 	if(_curr == kQUICK_SAVE && IsGameTypeSingle())
 	{
@@ -479,7 +479,7 @@ void CLevel::IR_OnKeyboardHold(int key)
 
 	if (b_ui_exist && pHUD->GetUI()->IR_OnKeyboardHold(key)) return;
 	if ( b_ui_exist && HUD().GetUI()->MainInputReceiver() )return;
-	if ( Device.Paused() ) return;
+	if ( Device.Paused() && !Level().IsDemoPlay()) return;
 	if (CURRENT_ENTITY())		{
 		IInputReceiver*		IR	= smart_cast<IInputReceiver*>	(smart_cast<CGameObject*>(CURRENT_ENTITY()));
 		if (IR)				IR->IR_OnKeyboardHold				(get_binded_action(key));

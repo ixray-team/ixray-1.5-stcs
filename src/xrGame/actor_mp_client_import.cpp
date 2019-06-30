@@ -5,12 +5,14 @@
 #include "GamePersistent.h"
 #include "game_cl_base.h"
 #include "../xrEngine/camerabase.h"
+#include "Physics.h"
 
 void CActorMP::net_Import	( NET_Packet &P)
 {
 	net_update			N;
 
 	m_state_holder.read	(P);
+	R_ASSERT2(valid_pos(m_state_holder.state().position,phBoundaries), "imported bad position");
 
 	
 	/*if (m_i_am_dead)
@@ -18,10 +20,10 @@ void CActorMP::net_Import	( NET_Packet &P)
 
 	if (OnClient())
 	{
-#ifdef DEBUG
+/*#ifdef DEBUG
 		if (GetfHealth() != m_state_holder.state().health)
 			Msg("net_Import: [%d][%s], is going to set health to %2.04f", this->ID(), Name(), m_state_holder.state().health);
-#endif
+#endif*/
 		
 		game_PlayerState* ps = Game().GetPlayerByGameID(this->object_id());
 		float new_health = m_state_holder.state().health;
@@ -141,6 +143,7 @@ void CActorMP::postprocess_packet	(net_update_A &N_A)
 		}
 		else
 		{
+			VERIFY(valid_pos(N_A.State.position,phBoundaries));
 			NET_A.push_back			(N_A);
 			if (NET_A.size()>5) NET_A.pop_front();
 		};

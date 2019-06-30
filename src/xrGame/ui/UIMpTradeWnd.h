@@ -74,6 +74,7 @@ public:
 		bf_check_rank_restr		= (1<<1),
 		bf_check_count_restr	= (1<<2),
 		bf_own_itm				= (1<<3),
+		bf_ignore_team			= (1<<4),
 
 		bf_normal				= bf_check_money | bf_check_rank_restr | bf_check_count_restr,
 	};

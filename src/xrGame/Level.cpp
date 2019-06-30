@@ -44,6 +44,8 @@
 #include "actor.h"
 #include "player_hud.h"
 #include "UI/UIGameTutorial.h"
+#include "file_transfer.h"
+#include "message_filter.h"
 
 #ifdef DEBUG
 #	include "level_debug.h"
@@ -161,12 +163,15 @@ CLevel::CLevel():IPureClient	(Device.GetTimerGlobal())
 	m_dwRealPing = 0;
 
 	//---------------------------------------------------------	
-	m_sDemoName[0] = 0;
-	m_bDemoSaveMode = FALSE;
-	m_dwStoredDemoDataSize = 0;
-	m_pStoredDemoData = NULL;
-	m_pOldCrashHandler = NULL;
-	m_we_used_old_crach_handler	= false;
+	m_writer = NULL;
+	m_reader = NULL;
+	m_DemoPlay = FALSE;
+	m_DemoPlayStarted	= FALSE;
+	m_DemoPlayStoped	= FALSE;
+	m_DemoSave = FALSE;
+	m_DemoSaveStarted = FALSE;
+	m_current_spectator = NULL;
+	m_msg_filter = NULL;
 
 	R_ASSERT				(NULL==g_player_hud);
 	g_player_hud			= xr_new<player_hud>();
@@ -205,6 +210,7 @@ CLevel::CLevel():IPureClient	(Device.GetTimerGlobal())
 	}
 	*/
 	//---------------------------------------------------------	
+	m_file_transfer = NULL;
 }
 
 extern CAI_Space *g_ai_space;
@@ -292,23 +298,27 @@ CLevel::~CLevel()
 	xr_delete					(m_map_manager);
 	delete_data					(m_game_task_manager);
 //	xr_delete					(m_pFogOfWarMngr);
-	//-----------------------------------------------------------
-	Demo_Clear					();
-	m_aDemoData.clear			();
-
+	
 	// here we clean default trade params
 	// because they should be new for each saved/loaded game
 	// and I didn't find better place to put this code in
 	CTradeParameters::clean		();
-
-	if (m_we_used_old_crach_handler)
-		Debug.set_crashhandler	(m_pOldCrashHandler);
 
 	if(g_tutorial && g_tutorial->m_pStoredInputReceiver==this)
 		g_tutorial->m_pStoredInputReceiver = NULL;
 
 	if(g_tutorial2 && g_tutorial2->m_pStoredInputReceiver==this)
 		g_tutorial2->m_pStoredInputReceiver = NULL;
+
+	if (IsDemoPlay())
+	{
+		StopPlayDemo();
+	}
+	xr_delete(m_msg_filter);
+	if (IsDemoSave())
+	{
+		StopSaveDemo();
+	}
 }
 
 shared_str	CLevel::name		() const
@@ -456,6 +466,39 @@ void CLevel::ProcessGameEvents		()
 			case M_EVENT:
 				{
 					cl_Process_Event(dest, type, P);
+				}break;
+			case M_MOVE_PLAYERS:
+				{
+					u8 Count = P.r_u8();
+					for (u8 i=0; i<Count; i++)
+					{
+						u16 ID = P.r_u16();					
+						Fvector NewPos, NewDir;
+						P.r_vec3(NewPos);
+						P.r_vec3(NewDir);
+
+						CActor*	OActor	= smart_cast<CActor*>(Objects.net_Find		(ID));
+						if (0 == OActor)		break;
+						OActor->MoveActor(NewPos, NewDir);
+					};
+
+					NET_Packet PRespond;
+					PRespond.w_begin(M_MOVE_PLAYERS_RESPOND);
+					Send(PRespond, net_flags(TRUE, TRUE));
+				}break;
+			case M_STATISTIC_UPDATE:
+				{
+					if (GameID() != eGameIDSingle)
+						Game().m_WeaponUsageStatistic->OnUpdateRequest(&P);
+				}break;
+			case M_FILE_TRANSFER:
+				{
+					if (m_file_transfer)			//in case of net_Stop
+						m_file_transfer->on_message(&P);
+				}break;
+			case M_GAMEMESSAGE:
+				{
+					Game().OnGameMessage(P);
 				}break;
 			default:
 				{
@@ -644,8 +687,29 @@ void CLevel::OnFrame	()
 					net_Statistic.dwBytesSended,
 					net_Statistic.dwBytesPerSec
 					);
+#ifdef DEBUG
+				if (!pStatGraphR)
+				{
+					pStatGraphR = xr_new<CStatGraph>();
+					pStatGraphR->SetRect(50, 700, 300, 68, 0xff000000, 0xff000000);
+					//m_stat_graph->SetGrid(0, 0.0f, 10, 1.0f, 0xff808080, 0xffffffff);
+					pStatGraphR->SetMinMax(0.0f, 65536.0f, 1000);
+					pStatGraphR->SetStyle(CStatGraph::stBarLine);
+					pStatGraphR->AppendSubGraph(CStatGraph::stBarLine);
+				}
+				pStatGraphR->AppendItem(float(net_Statistic.getBPS()), 0xff00ff00, 0);
+				F->OutSet(20.f, 700.f);
+				F->OutNext("64 KBS");
+
+#endif
 			}
 		}
+	} else
+	{
+#ifdef DEBUG
+		if (pStatGraphR)
+			xr_delete(pStatGraphR);
+#endif
 	}
 	
 //	g_pGamePersistent->Environment().SetGameTime	(GetGameDayTimeSec(),GetGameTimeFactor());
@@ -1117,24 +1181,22 @@ void CLevel::SetGameTime(ALife::_TIME_ID GameTime)
 bool CLevel::IsServer ()
 {
 //	return (!!Server);
-	if (IsDemoPlay())
-	{
-		return IsServerDemo();
-	};	
-	if (!Server) return false;
-	return (Server->GetClientsCount() != 0);
-
+	if (!Server || IsDemoPlayStarted()) return false;
+	//return (Server->GetClientsCount() != 0);
+	return true;
 }
 
 bool CLevel::IsClient ()
 {
 //	return (!Server);
-	if (IsDemoPlay())
-	{
-		return IsClientDemo();
-	};	
-	if (!Server) return true;
-	return (Server->GetClientsCount() == 0);
+	if (IsDemoPlayStarted())
+		return true;
+	
+	if (Server)
+		return false;
+	
+	//return (Server->GetClientsCount() == 0);
+	return true;
 }
 
 void CLevel::OnAlifeSimulatorUnLoaded()

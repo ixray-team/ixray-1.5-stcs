@@ -17,6 +17,7 @@
 
 #include "ActorEffector.h"
 #include "actor.h"
+#include "spectator.h"
 
 #include "../xrEngine/xrSASH.h"
 
@@ -518,8 +519,16 @@ void CGamePersistent::OnFrame	()
 
 	if(Device.Paused())
 	{
+		if (Level().IsDemoPlay())
+		{
+			CSpectator* tmp_spectr = smart_cast<CSpectator*>(Level().CurrentControlEntity());
+			if (tmp_spectr)
+			{
+				tmp_spectr->UpdateCL();	//updating spectator in pause (pause ability of demo play)
+			}
+		}
 #ifndef MASTER_GOLD
-		if (Level().CurrentViewEntity()) {
+		if (Level().CurrentViewEntity() && IsGameTypeSingle()) {
 			if (!g_actor || (g_actor->ID() != Level().CurrentViewEntity()->ID())) {
 				CCustomMonster	*custom_monster = smart_cast<CCustomMonster*>(Level().CurrentViewEntity());
 				if (custom_monster) // can be spectator in multiplayer
@@ -541,7 +550,7 @@ void CGamePersistent::OnFrame	()
 			}
 		}
 #else // MASTER_GOLD
-		if (g_actor)
+		if (g_actor && IsGameTypeSingle())
 		{
 			CCameraBase* C = NULL;
 			if(!Actor()->Holder())
@@ -707,7 +716,7 @@ void CGamePersistent::LoadTitle(LPCSTR str)
 
 bool CGamePersistent::CanBePaused()
 {
-	return IsGameTypeSingle	();
+	return IsGameTypeSingle	() || (g_pGameLevel && Level().IsDemoPlay());
 }
 void CGamePersistent::SetPickableEffectorDOF(bool bSet)
 {

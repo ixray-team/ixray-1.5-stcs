@@ -67,6 +67,7 @@ public:
 	virtual void	seek		(u32 pos)	{	if (0!=hf) fseek(hf,pos,SEEK_SET);		};
 	virtual u32		tell		()			{	return (0!=hf)?ftell(hf):0;				};
 	virtual bool	valid		()			{	return (0!=hf);}
+	virtual	void	flush		()			{	if (hf)	fflush(hf);						};
 };
 
 // It automatically frees memory after destruction

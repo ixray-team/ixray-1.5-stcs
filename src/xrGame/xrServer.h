@@ -12,6 +12,7 @@
 #include "id_generator.h"
 #include "battleye.h"
 #include "../xrEngine/mp_logging.h"
+#include "secure_messaging.h"
 
 #ifdef DEBUG
 //. #define SLOW_VERIFY_ENTITIES
@@ -46,6 +47,7 @@ public:
 	}m_admin_rights;
 
 	shared_str					m_cdkey_digest;
+	secure_messaging::key_t		m_secret_key;
 
 							xrClientData			();
 	virtual					~xrClientData			();
@@ -68,6 +70,13 @@ struct CheaterToKick
 };
 typedef xr_vector<CheaterToKick> cheaters_t;
 
+namespace file_transfer
+{
+	class server_site;
+};//namespace file_transfer
+
+class clientdata_proxy;
+
 class xrServer	: public IPureServer  
 {
 private:
@@ -75,7 +84,12 @@ private:
 	xr_multiset<svs_respawn>	q_respawn;
 	xr_vector<u16>				conn_spawned_ids;
 	cheaters_t					m_cheaters;
-
+	
+	file_transfer::server_site*	m_file_transfers;
+	clientdata_proxy*			m_screenshot_proxies[MAX_PLAYERS_COUNT];
+	void	initialize_screenshot_proxies();
+	void	deinitialize_screenshot_proxies();
+	
 	u16							m_iCurUpdatePacket;
 	xr_vector<NET_Packet>		m_aUpdatePackets;
 	u32							m_first_packet_size;
@@ -118,7 +132,8 @@ private:
 		> id_generator_type;
 
 private:
-	id_generator_type		m_tID_Generator;
+	id_generator_type					m_tID_Generator;
+	secure_messaging::seed_generator	m_seed_generator;
 
 protected:
 	void					Server_Client_Check				(IClient* CL);
@@ -174,13 +189,18 @@ protected:
 			void			RequestClientDigest					(IClient* CL);
 			void			ProcessClientDigest					(xrClientData* xrCL, NET_Packet* P);
 			void			KickCheaters						();
-	
+
 	virtual bool			NeedToCheckClient_BuildVersion		(IClient* CL);
 	virtual void			Check_BuildVersion_Success			(IClient* CL);
 
 	void					SendConnectionData		(IClient* CL);
 	void					OnChatMessage			(NET_Packet* P, xrClientData* CL);
 	void					OnProcessClientMapData	(NET_Packet& P, ClientID const & clientID);
+
+private:
+	void					PerformSecretKeysSync				(xrClientData* xrCL);
+protected:
+	void					OnSecureMessage						(NET_Packet & P, xrClientData* xrClSender);
 
 public:
 	// constr / destr
@@ -194,11 +214,14 @@ public:
 	virtual void			OnCL_Disconnected	(IClient* CL);
 	virtual bool			OnCL_QueryHost		();
 	virtual void			SendTo_LL			(ClientID ID, void* data, u32 size, u32 dwFlags=DPNSEND_GUARANTEED, u32 dwTimeout=0);
+		void			SecureSendTo			(xrClientData* xrCL, NET_Packet& P, u32 dwFlags=DPNSEND_GUARANTEED, u32 dwTimeout=0);
+	virtual	void			SendBroadcast		(ClientID exclude, NET_Packet& P, u32 dwFlags=DPNSEND_GUARANTEED);
 
 	virtual IClient*		client_Create		();								// create client info
 	virtual void			client_Replicate	();								// replicate current state to client
 	virtual IClient*		client_Find_Get		(ClientID ID);					// Find earlier disconnected client
 	virtual void			client_Destroy		(IClient* C);					// destroy client info
+			void			clear_DisconnectedClients();
 
 	// utilities
 	CSE_Abstract*			entity_Create		(LPCSTR name);
@@ -229,6 +252,8 @@ public:
 	virtual bool			HasProtected		()	{ return false; }
 			bool			HasBattlEye			();
 			void			AddCheater			(shared_str const & reason, ClientID const & cheaterID);
+			void			MakeScreenshot		(ClientID const & admin_id, ClientID const & cheater_id);
+			void			MakeConfigDump		(ClientID const & admin_id, ClientID const & cheater_id);
 
 	virtual void			GetServerInfo		( CServerInfo* si );
 public:

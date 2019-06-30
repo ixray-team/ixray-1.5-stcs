@@ -4,6 +4,7 @@
 #include "level.h"
 #include "xrServer.h"
 #include "game_cl_base.h"
+#include "game_cl_mp.h"
 #include "actor.h"
 #include "xrServer_Object_base.h"
 #include "RegistryFuncs.h"
@@ -62,7 +63,6 @@ extern	BOOL	g_sv_tdm_bAutoTeamSwap			;
 extern	BOOL	g_sv_tdm_bFriendlyIndicators	;
 extern	BOOL	g_sv_tdm_bFriendlyNames			;
 extern	float	g_sv_tdm_fFriendlyFireModifier	;
-extern	BOOL	g_bLeaveTDemo;
 extern	int		g_sv_tdm_iTeamKillLimit			;
 extern	int		g_sv_tdm_bTeamKillPunishment	;
 extern	u32		g_sv_ah_dwArtefactRespawnDelta	;
@@ -72,7 +72,6 @@ extern	int		g_sv_ah_iReinforcementTime		;
 extern	BOOL	g_sv_ah_bBearerCantSprint		;
 extern	BOOL	g_sv_ah_bShildedBases			;
 extern	BOOL	g_sv_ah_bAfReturnPlayersToBases ;
-extern	u32		g_dwDemoDeltaFrame;
 extern u32		g_sv_dwMaxClientPing;
 extern	int		g_be_message_out;
 
@@ -89,6 +88,10 @@ extern	u32		g_sv_cta_artefactReturningTime;
 extern	u32		g_sv_cta_activatedArtefactRet;
 //extern	s32		g_sv_cta_ScoreLimit;
 extern	u32		g_sv_cta_PlayerScoresDelayTime;
+
+extern	BOOL	g_draw_downloads;
+extern	BOOL	g_sv_mp_save_proxy_screenshots;
+extern	BOOL	g_sv_mp_save_proxy_configs;
 
 
 void XRNETSERVER_API DumpNetCompressorStats	(bool brief);
@@ -424,7 +427,7 @@ static xrClientData* exclude_command_initiator(LPCSTR args)
 	if (clientidstr)
 	{
 		clientidstr += sizeof(RAPREFIX) - 1;
-		u32 client_id = atoi(clientidstr);
+		u32 client_id = static_cast<u32>(strtoul(clientidstr, NULL, 10));
 		ClientID tmp_id;
 		tmp_id.set(client_id);
 		if (g_pGameLevel && Level().Server)
@@ -449,6 +452,230 @@ static char const * exclude_raid_from_args(LPCSTR args, LPSTR dest, size_t dest_
 	dest[dest_size - 1] = 0;
 	return dest;
 }
+
+class CCC_MakeScreenshot : public IConsole_Command {
+public:
+	CCC_MakeScreenshot (LPCSTR N) : IConsole_Command(N) { bEmptyArgsHandled = false; };
+	virtual void	Execute		(LPCSTR args_) 
+	{
+		if (!g_pGameLevel || !Level().Server || !Level().Server->game) return;
+		u32 len	= xr_strlen(args_);
+		if ((len == 0) || (len >= 256))		//two digits and raid:%u
+			return;
+
+		ClientID client_id = 0;
+		if (!strncmp(args_, LAST_PRINTED_PLAYER_STR, sizeof(LAST_PRINTED_PLAYER_STR) - 1))
+		{
+			client_id = last_printed_player;
+		} else
+		{
+			u32 tmp_client_id;
+			if (sscanf_s(args_, "%u", &tmp_client_id) != 1)
+			{
+				Msg("! ERROR: bad command parameters.");
+				Msg("Make screenshot. Format: \"make_screenshot <player session id | \'%s\'> <ban_time_in_sec>\". To receive list of players ids see sv_listplayers",
+					LAST_PRINTED_PLAYER_STR
+				);
+				return;
+			}
+			client_id.set(tmp_client_id);
+		}
+		xrClientData* admin_client = exclude_command_initiator(args_);
+		if (!admin_client)
+		{
+			Msg("! ERROR: only radmin can make screenshots ...");
+			return;
+		}
+		Level().Server->MakeScreenshot(admin_client->ID, client_id);
+	}
+	virtual void	Info		(TInfo& I)
+	{
+		strcpy_s(I, 
+			make_string(
+				"Make screenshot. Format: \"make_screenshot <player session id | \'%s\'> <ban_time_in_sec>\". To receive list of players ids see sv_listplayers",
+				LAST_PRINTED_PLAYER_STR
+			).c_str()
+		);
+	}
+
+}; //class CCC_MakeScreenshot
+
+class CCC_MakeConfigDump : public IConsole_Command {
+public:
+	CCC_MakeConfigDump(LPCSTR N) : IConsole_Command(N) { bEmptyArgsHandled = false; };
+	virtual void	Execute		(LPCSTR args_) 
+	{
+		if (!g_pGameLevel || !Level().Server || !Level().Server->game) return;
+		u32 len	= xr_strlen(args_);
+		if ((len == 0) || (len >= 256))		//two digits and raid:%u
+			return;
+
+		ClientID client_id = 0;
+		if (!strncmp(args_, LAST_PRINTED_PLAYER_STR, sizeof(LAST_PRINTED_PLAYER_STR) - 1))
+		{
+			client_id = last_printed_player;
+		} else
+		{
+			u32 tmp_client_id;
+			if (sscanf_s(args_, "%u", &tmp_client_id) != 1)
+			{
+				Msg("! ERROR: bad command parameters.");
+				Msg("Make screenshot. Format: \"make_config_dump <player session id | \'%s\'> <ban_time_in_sec>\". To receive list of players ids see sv_listplayers",
+					LAST_PRINTED_PLAYER_STR
+				);
+				return;
+			}
+			client_id.set(tmp_client_id);
+		}
+		xrClientData* admin_client = exclude_command_initiator(args_);
+		if (!admin_client)
+		{
+			Msg("! ERROR: only radmin can make config dumps ...");
+			return;
+		}
+		Level().Server->MakeConfigDump(admin_client->ID, client_id);
+	}
+	virtual void	Info		(TInfo& I)
+	{
+		strcpy_s(I, 
+			make_string(
+				"Make config dump. Format: \"make_config_dump <player session id | \'%s\'> <ban_time_in_sec>\". To receive list of players ids see sv_listplayers",
+				LAST_PRINTED_PLAYER_STR
+			).c_str()
+		);
+	}
+
+}; //class CCC_MakeConfigDump
+
+class CCC_SetDemoPlaySpeed : public IConsole_Command {
+public:
+					CCC_SetDemoPlaySpeed	(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = false; };
+	virtual void	Execute					(LPCSTR args) 
+	{
+		if (!Level().IsDemoPlayStarted())
+		{
+			Msg("! Demo play not started.");
+			return;
+		}
+		float new_speed;
+		sscanf(args, "%f", &new_speed);
+		Level().SetDemoPlaySpeed(new_speed);
+	};
+
+	virtual void	Info	(TInfo& I){strcpy_s(I,"Set demo play speed (0.0, 8.0]"); }
+};
+
+/*
+class CCC_MulDemoPlaySpeed : public IConsole_Command {
+public:
+					CCC_MulDemoPlaySpeed(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
+	virtual void	Execute(LPCSTR args) 
+	{
+		if (!Level().IsDemoPlayStarted())
+		{
+			Msg("! Demo play not started.");
+			return;
+		}
+		Level().SetDemoPlaySpeed(Level().GetDemoPlaySpeed() * 2);
+	};
+
+	virtual void	Info	(TInfo& I){strcpy_s(I,"Increases demo play speed"); };
+};
+
+class CCC_DivDemoPlaySpeed : public IConsole_Command {
+public:
+					CCC_DivDemoPlaySpeed(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
+	virtual void	Execute(LPCSTR args) 
+	{
+		if (!Level().IsDemoPlayStarted())
+		{
+			Msg("! Demo play not started.");
+			return;
+		}
+		Level().SetDemoPlaySpeed(Level().GetDemoPlaySpeed() / 2);
+	};
+
+	virtual void	Info	(TInfo& I){strcpy_s(I,"Decreases demo play speed"); };
+};
+*/
+class CCC_ScreenshotAllPlayers : public IConsole_Command {
+public:
+	CCC_ScreenshotAllPlayers (LPCSTR N) : IConsole_Command(N) { bEmptyArgsHandled = true; };
+	virtual void	Execute		(LPCSTR args_) 
+	{
+		if (!g_pGameLevel || !Level().Server) return;
+		struct ScreenshotMaker
+		{
+			xrClientData* admin_client;
+			void operator()(IClient* C)
+			{
+				Level().Server->MakeScreenshot(admin_client->ID, C->ID);
+			}
+		};
+		ScreenshotMaker tmp_functor;
+		tmp_functor.admin_client = exclude_command_initiator(args_);
+		if (!tmp_functor.admin_client)
+		{
+			Msg("! ERROR: only radmin can make screenshots (use \"ra login\")");
+			return;
+		}
+		Level().Server->ForEachClientDo(tmp_functor);
+	}
+	virtual void	Info		(TInfo& I)
+	{
+		strcpy_s(I, 
+			"Make screenshot of each player in the game. Format: \"screenshot_all");
+	}
+
+}; //class CCC_ScreenshotAllPlayers
+
+class CCC_ConfigsDumpAll : public IConsole_Command {
+public:
+	CCC_ConfigsDumpAll (LPCSTR N) : IConsole_Command(N) { bEmptyArgsHandled = true; };
+	virtual void	Execute		(LPCSTR args_) 
+	{
+		if (!g_pGameLevel || !Level().Server) return;
+		struct ConfigDumper
+		{
+			xrClientData* admin_client;
+			void operator()(IClient* C)
+			{
+				Level().Server->MakeConfigDump(admin_client->ID, C->ID);
+			}
+		};
+		ConfigDumper tmp_functor;
+		tmp_functor.admin_client = exclude_command_initiator(args_);
+		if (!tmp_functor.admin_client)
+		{
+			Msg("! ERROR: only radmin can make config dumps (use \"ra login\")");
+			return;
+		}
+		Level().Server->ForEachClientDo(tmp_functor);
+	}
+	virtual void	Info		(TInfo& I)
+	{
+		strcpy_s(I, 
+			"Make config dump of each player in the game. Format: \"config_dump_all");
+	}
+}; //class CCC_ConfigsDumpAll
+
+
+
+#ifdef DEBUG
+
+class CCC_DbgMakeScreenshot : public IConsole_Command
+{
+public:
+	CCC_DbgMakeScreenshot(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
+	virtual void Execute(LPCSTR args) {
+		if (!g_pGameLevel || !Level().Server)
+			return;
+		ClientID server_id(Level().Server->GetServerClient()->ID);
+		Level().Server->MakeScreenshot(server_id, server_id);
+	}
+}; //CCC_DbgMakeScreenshot
+
+#endif //#ifdef DEBUG
 
 class CCC_BanPlayerByCDKEY : public IConsole_Command {
 public:
@@ -1320,6 +1547,9 @@ public:
 	CCC_RadminCmd(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = false; };
 	virtual void Execute(LPCSTR arguments)
 	{
+		if (!g_pGameLevel)
+			return;
+
 		if(IsGameTypeSingle())
 			return;
 
@@ -1635,6 +1865,19 @@ void register_mp_console_commands()
 	CMD1(CCC_BanPlayerByCDKEY,			"sv_banplayer"				);
 	CMD1(CCC_BanPlayerByCDKEYDirectly,	"sv_banplayer_by_digest"	);
 	CMD1(CCC_BanPlayerByIP,				"sv_banplayer_ip"			);
+	CMD1(CCC_MakeScreenshot,			"make_screenshot"			);
+	CMD1(CCC_MakeConfigDump,			"make_config_dump"			);
+
+	CMD1(CCC_SetDemoPlaySpeed,			"mpdemoplay_speed_set"		);
+
+	CMD1(CCC_ScreenshotAllPlayers,		"screenshot_all"			);
+	CMD1(CCC_ConfigsDumpAll,			"config_dump_all"			);
+#ifdef DEBUG
+	CMD1(CCC_DbgMakeScreenshot,			"dbg_make_screenshot"		);
+#endif
+	CMD4(CCC_Integer,					"draw_downloads",		&g_draw_downloads, 0, 1);
+	CMD4(CCC_Integer,					"sv_savescreenshots",	&g_sv_mp_save_proxy_screenshots, 0, 1);
+	CMD4(CCC_Integer,					"sv_saveconfigs",		&g_sv_mp_save_proxy_configs, 0, 1);
 	
 
 	CMD1(CCC_UnBanPlayerByIP,	"sv_unbanplayer_ip"			);
@@ -1684,8 +1927,6 @@ void register_mp_console_commands()
 	CMD1(CCC_GetServerAddress,"get_server_address");		
 
 #ifdef DEBUG
-	CMD4(CCC_Integer,		"cl_leave_tdemo",		&g_bLeaveTDemo, 0, 1);
-
 	CMD4(CCC_Integer,		"sv_skip_winner_waiting",		&g_sv_Skip_Winner_Waiting, 0, 1);
 
 	CMD4(CCC_Integer,		"sv_wait_for_players_ready",	&g_sv_Wait_For_Players_Ready, 0, 1);
@@ -1740,7 +1981,6 @@ void register_mp_console_commands()
 	CMD4(CCC_SV_Integer,	"sv_returnplayers"			,	(int*)&g_sv_ah_bAfReturnPlayersToBases		, 0, 1)	;
 	CMD1(CCC_SwapTeams,		"g_swapteams"				);
 #ifdef DEBUG
-	CMD4(CCC_SV_Integer,	"sv_demo_delta_frame"	,	(int*)&g_dwDemoDeltaFrame	,	0,100);
 	CMD4(CCC_SV_Integer,	"sv_ignore_money_on_buy"	,	(int*)&g_sv_dm_bDMIgnore_Money_OnBuy,	0, 1);
 #endif
 

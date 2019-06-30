@@ -168,6 +168,7 @@ const animation_movement_controller* animation_movement		( ) const	{ return	m_an
 	virtual	void			reinit				();
 	virtual	void			reload				(LPCSTR section);
 	///////////////////// network /////////////////////////////////////////
+	bool					object_removed		() const { return m_bObjectRemoved; };
 private:
 	bool					m_bCrPr_Activated;
 	u32						m_dwCrPr_ActivationStep;

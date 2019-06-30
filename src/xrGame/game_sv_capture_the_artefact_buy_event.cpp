@@ -40,6 +40,7 @@ void game_sv_CaptureTheArtefact::OnPlayerBuyFinished(ClientID id_who, NET_Packet
 	{
 		SpawnWeaponsForActor(e_Actor, ps);
 	}
+	SetCanOpenBuyMenu(id_who);
 }
 
 void game_sv_CaptureTheArtefact::OnCloseBuyMenuFromAll()

@@ -157,7 +157,23 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemWeapon,CSE_ALifeItem)
 	u8								ammo_type;
 	u16								a_current;
 	u16								a_elapsed;
-	u8								a_elapsed_grenades;	//count of grenades to spawn in grenade launcher
+	//count of grenades to spawn in grenade launcher [ttcccccc]
+	//WARNING! hight 2 bits (tt bits) indicate type of grenade, so maximum grenade count is 2^6 = 64
+	struct grenade_count_t
+	{
+		u8	grenades_count	:	6;
+		u8	grenades_type	:	2;
+		u8	pack_to_byte() const
+		{
+			return (grenades_type << 6) | grenades_count;
+		}
+		void unpack_from_byte(u8 const b)
+		{
+			grenades_type	=	(b >> 6);
+			grenades_count	=	b & 0x3f; //111111
+		}
+	}; //struct grenade_count_t
+	grenade_count_t					a_elapsed_grenades;
 	float							m_fHitPower;
 	ALife::EHitType					m_tHitType;
 	LPCSTR							m_caAmmoSections;

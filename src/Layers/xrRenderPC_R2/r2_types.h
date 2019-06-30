@@ -21,6 +21,7 @@
 #define		r2_RT_generic2		"$user$generic2"		// ---	//	Igor: for volumetric lights
 
 #define		r2_RT_ssao_temp		"$user$ssao_temp"		//temporary rt for ssao calculation
+#define		r2_RT_half_depth	"$user$half_depth"		//temporary rt for hbao calculation
 
 #define		r2_RT_bloom1		"$user$bloom1"			// ---
 #define		r2_RT_bloom2		"$user$bloom2"			// ---
@@ -53,7 +54,7 @@ const		u32					SMAP_adapt_max		= 1536	;
 const		u32					TEX_material_LdotN	= 128	;	// diffuse,		X, almost linear = small res
 const		u32					TEX_material_LdotH	= 256	;	// specular,	Y
 const		u32					TEX_jitter			= 64	;
-const		u32					TEX_jitter_count	= 4		;
+const		u32					TEX_jitter_count	= 5		;	// for HBAO
 
 const		u32					BLOOM_size_X		= 256	;
 const		u32					BLOOM_size_Y		= 256	;

@@ -6,6 +6,29 @@
 
 #define STENCIL_CULL 0
 
+void CRenderTarget::DoAsyncScreenshot()
+{
+	if (RImplementation.m_bMakeAsyncSS)
+	{
+		HRESULT hr;
+
+		IDirect3DSurface9*	pFBSrc = HW.pBaseRT;
+
+		//	Don't addref, no need to release.
+	//	ID3DTexture2D *pTex = rt_Color->pSurface;
+
+	//	hr = pTex->GetSurfaceLevel(0, &pFBSrc);
+
+		//	SHould be async function
+		hr = HW.pDevice->GetRenderTargetData( pFBSrc, pFB );
+
+	//	pFBSrc->Release();
+
+		RImplementation.m_bMakeAsyncSS = false;
+	}
+}
+
+
 float	hclip(float v, float dim)		{ return 2.f*v/dim - 1.f; }
 void	CRenderTarget::phase_combine	()
 {
@@ -23,7 +46,12 @@ void	CRenderTarget::phase_combine	()
 
 	RCache.set_CullMode	( CULL_NONE );
 
-	if (RImplementation.o.ssao_blur_on)
+	if (RImplementation.o.ssao_opt_data)
+	{
+		phase_downsamp();
+		//phase_ssao();
+	}
+	else if (RImplementation.o.ssao_blur_on)
 		phase_ssao();
 
 	// low/hi RTs
@@ -89,12 +117,12 @@ void	CRenderTarget::phase_combine	()
 		Fvector4	sunclr,sundir;
 
 		float		fSSAONoise = 2.0f;
-		fSSAONoise *= tan(deg2rad(67.5f));
-		fSSAONoise /= tan(deg2rad(Device.fFOV));
+		fSSAONoise *= tan(deg2rad(67.5f/2.0f));
+		fSSAONoise /= tan(deg2rad(Device.fFOV/2.0f));
 
 		float		fSSAOKernelSize = 150.0f;
-		fSSAOKernelSize *= tan(deg2rad(67.5f));
-		fSSAOKernelSize /= tan(deg2rad(Device.fFOV));
+		fSSAOKernelSize *= tan(deg2rad(67.5f/2.0f));
+		fSSAOKernelSize /= tan(deg2rad(Device.fFOV/2.0f));
 
 		// sun-params
 		{
@@ -195,7 +223,8 @@ void	CRenderTarget::phase_combine	()
 	}
 
 	// PP enabled ?
-	BOOL	PP_Complex		= u_need_PP	();
+	//	Render to RT texture to be able to copy RT even in windowed mode.
+	BOOL	PP_Complex		= u_need_PP	() | (BOOL)RImplementation.m_bMakeAsyncSS;
 	if (_menu_pp)			PP_Complex	= FALSE;
 
 	// Combine everything + perform AA
@@ -260,6 +289,9 @@ void	CRenderTarget::phase_combine	()
 
 	//	if FP16-BLEND !not! supported - draw flares here, overwise they are already in the bloom target
 	/* if (!RImplementation.o.fp16_blend)*/	g_pGamePersistent->Environment().RenderFlares	();	// lens-flares
+
+	//	Igor: screenshot will not have postprocess applied.
+	//	TODO: fox that later
 
 	//	PP-if required
 	if (PP_Complex)		{

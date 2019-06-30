@@ -490,6 +490,9 @@ INT g_sv_Wait_For_Players_Ready = 1;
 
 bool game_sv_Deathmatch::checkForRoundStart()
 {
+	if (!Level().m_bGameConfigStarted)	//in case of starting server stage (net_start 1..6) we can't do restart ....
+		return false;
+
 	if (m_bFastRestart ||
 		(AllPlayers_Ready() || (
 #ifdef DEBUG
@@ -566,7 +569,6 @@ bool game_sv_Deathmatch::checkForRoundEnd()
 	return false;
 }
 
-#define MAX_PLAYERS_COUNT 32
 void	game_sv_Deathmatch::SM_SwitchOnNextActivePlayer()
 {
 	struct next_active_player_switcher
@@ -965,6 +967,7 @@ void	game_sv_Deathmatch::OnPlayerBuyFinished		(ClientID id_who, NET_Packet& P)
 	{
 		SpawnWeaponsForActor(e_Actor, ps);
 	}
+	SetCanOpenBuyMenu(id_who);
 
 	/*game_PlayerState*	ps		= get_id	(id_who);
 	if (!ps || ps->IsSkip())		return;	

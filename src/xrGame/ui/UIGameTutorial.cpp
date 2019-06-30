@@ -19,23 +19,17 @@ void CUISequenceItem::Load(CUIXml* xml, int idx)
 		m_disabled_actions.push_back( action_name_to_id(str) );
 	};
 
-	LPCSTR		str;
-	bool		functor_exists;
 	int			j;
 	int			f_num				= xml->GetNodesNum(xml->GetLocalRoot(),"function_on_start");
 	m_start_lua_functions.resize	(f_num);
 	for(j=0; j<f_num; ++j){
-		str							= xml->Read(xml->GetLocalRoot(), "function_on_start", j, NULL);
-		functor_exists				= ai().script_engine().functor(str ,m_start_lua_functions[j]);
-		THROW3						(functor_exists, "Cannot find script function described in tutorial item ", str);
+		m_start_lua_functions[j]	= xml->Read(xml->GetLocalRoot(), "function_on_start", j, NULL);
 	}
 	
 	f_num							= xml->GetNodesNum(xml->GetLocalRoot(),"function_on_stop");
 	m_stop_lua_functions.resize	(f_num);
 	for(j=0; j<f_num; ++j){
-		str							= xml->Read(xml->GetLocalRoot(), "function_on_stop", j, NULL);
-		functor_exists				= ai().script_engine().functor(str ,m_stop_lua_functions[j]);
-		THROW3						(functor_exists, "Cannot find script function described in tutorial item ", str);
+		m_stop_lua_functions[j]		= xml->Read(xml->GetLocalRoot(), "function_on_stop", j, NULL);
 	}
 
 	xml->SetLocalRoot				(_stored_root);
@@ -50,11 +44,16 @@ bool CUISequenceItem::AllowKey(int dik)
 		return false;
 }
 
-void CallFunctions	(xr_vector<luabind::functor<void> >& v)
+void CallFunctions	(xr_vector<shared_str>& v)
 {
-	xr_vector<luabind::functor<void> >::iterator it	= v.begin();
-	for(;it!=v.end();++it){
-		if( (*it).is_valid() ) (*it)();
+	xr_vector<shared_str>::iterator it	= v.begin();
+	for(;it!=v.end();++it)
+	{
+		luabind::functor<void>		lua_functor;
+		bool functor_exists			= ai().script_engine().functor((*it).c_str(),lua_functor);
+		THROW3						(functor_exists, "Cannot find script function described in tutorial item ", (*it).c_str());
+		if( lua_functor.is_valid() ) 
+			lua_functor();
 	}
 }
 

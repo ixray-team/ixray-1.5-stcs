@@ -12,8 +12,6 @@
 #include <direct.h>
 #pragma warning(pop)
 
-#include <exception>
-
 extern bool shared_str_initialized;
 
 #ifdef __BORLANDC__
@@ -25,10 +23,14 @@ extern bool shared_str_initialized;
         static BOOL			bException	= TRUE;
     #   define USE_BUG_TRAP
 #else
-//    #   define USE_BUG_TRAP
+    #   define USE_BUG_TRAP
     #	define DEBUG_INVOKE	__asm int 3
         static BOOL			bException	= FALSE;
 #endif
+
+#ifndef USE_BUG_TRAP
+#	include <exception>
+#endif // #ifndef USE_BUG_TRAP
 
 #ifndef _M_AMD64
 #	ifndef __BORLANDC__
@@ -846,7 +848,7 @@ LONG WINAPI UnhandledFilter	(_EXCEPTION_POINTERS *pExceptionInfo)
 #ifdef USE_BUG_TRAP
 		BT_SetTerminate					();
 #else // USE_BUG_TRAP
-		//std::set_terminate				(_terminate);
+//		std::set_terminate				(_terminate);
 #endif // USE_BUG_TRAP
 
 		_set_abort_behavior				(0,_WRITE_ABORT_MSG | _CALL_REPORTFAULT);

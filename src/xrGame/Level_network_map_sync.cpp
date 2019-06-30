@@ -36,7 +36,7 @@ bool CLevel::IsChecksumsEqual(u32 check_sum) const
 
 bool CLevel::synchronize_map_data()
 {
-	if (!OnClient())
+	if (!OnClient() && !IsDemoSave())
 	{
 		deny_m_spawn		= FALSE;
 		map_data.m_map_sync_received	= true;
@@ -54,7 +54,7 @@ bool CLevel::synchronize_map_data()
 #endif // #ifdef DEBUG
 	ClientReceive(); 
 
-	if ((map_data.m_wait_map_time >= 1000) && (!map_data.m_map_sync_received))//about 5 seconds
+	if ((map_data.m_wait_map_time >= 1000) && (!map_data.m_map_sync_received) && !IsDemoPlay())//about 5 seconds
 	{
 		Msg("Wait map data time out: reconnecting...");
 		MakeReconnect();

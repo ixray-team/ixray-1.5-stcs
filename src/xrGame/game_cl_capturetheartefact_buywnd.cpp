@@ -68,6 +68,7 @@ void game_cl_CaptureTheArtefact::OnBuyMenu_Ok()
 		P.w_u16(GAME_EVENT_PLAYER_BUYMENU_CLOSE);
 		u_EventSend(P);
 	}
+	set_buy_menu_not_ready();
 }
 
 

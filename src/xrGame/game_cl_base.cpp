@@ -253,6 +253,16 @@ void	game_cl_GameState::OnGameMessage	(NET_Packet& P)
 	TranslateGameMessage(msg, P);
 };
 
+game_PlayerState* game_cl_GameState::lookat_player()
+{
+	CObject* current_entity = Level().CurrentEntity();
+	if (current_entity)
+	{
+		return GetPlayerByGameID(current_entity->ID());
+	}
+	return NULL;
+}
+
 game_PlayerState* game_cl_GameState::GetPlayerByGameID(u32 GameID)
 {
 	PLAYERS_MAP_IT I=players.begin();

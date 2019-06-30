@@ -16,6 +16,7 @@
 #include "hudmanager.h"
 #include "UIGameCustom.h"
 #include "string_table.h"
+#include "file_transfer.h"
 
 ENGINE_API bool g_dedicated_server;
 
@@ -109,8 +110,21 @@ void CLevel::net_Stop		()
 	bReady						= false;
 	m_bGameConfigStarted		= FALSE;
 
-	remove_objects				();
+	if (m_file_transfer)
+	{
+		xr_delete(m_file_transfer);
+	}
 
+
+	if (IsDemoPlay() && m_current_spectator)	//destroying demo spectator ...
+	{
+		m_current_spectator->setDestroy	(TRUE);
+		SetControlEntity(NULL); //m_current_spectator == CurrentControlEntity()
+		m_current_spectator = NULL;
+		
+	}
+	remove_objects				();
+	
 	//WARNING ! remove_objects() uses this flag, so position of this line must e here ..
 	game_configured				= FALSE;
 	
@@ -163,21 +177,17 @@ void CLevel::ClientSend()
 
 				if (P.B.count>9)				
 				{
-					if (OnServer())
-					{
-						if (net_IsSyncronised() && IsDemoSave()) 
-						{
-							DemoCS.Enter();
-							Demo_StoreData(P.B.data, P.B.count, DATA_CLIENT_PACKET);
-							DemoCS.Leave();
-						}						
-					}
-					else
+					if (!OnServer())
 						Send	(P, net_flags(FALSE));
 				}				
 			}			
 		}		
 	};
+	if (m_file_transfer)
+	{
+		m_file_transfer->update_transfer();
+		m_file_transfer->stop_obsolete_receivers();
+	}
 	if (OnClient()) 
 	{
 		Flush_Send_Buffer();
@@ -197,7 +207,6 @@ void CLevel::ClientSend()
 		}else
 			break;
 	}
-	
 }
 
 u32	CLevel::Objects_net_Save	(NET_Packet* _Packet, u32 start, u32 max_object_size)
@@ -251,9 +260,14 @@ void CLevel::ClientSave	()
 extern		float		phTimefactor;
 extern		BOOL		g_SV_Disable_Auth_Check;
 
+#pragma todo("remove next deadlock checking after testing...")
+#ifdef DEBUG
+extern	bool csMessagesAndNetQueueDeadLockDetect;
+#endif
+
 void CLevel::Send		(NET_Packet& P, u32 dwFlags, u32 dwTimeout)
 {
-	if (IsDemoPlay() && m_bDemoStarted) return;
+	if (IsDemoPlayStarted() || IsDemoPlayFinished()) return;
 	// optimize the case when server located in our memory
 	if(psNET_direct_connect){
 		ClientID	_clid;
@@ -265,6 +279,7 @@ void CLevel::Send		(NET_Packet& P, u32 dwFlags, u32 dwTimeout)
 #ifdef DEBUG
 		VERIFY2(Server->IsPlayersMonitorLockedByMe() == false, "potential deadlock detected");
 #endif
+		VERIFY2(csMessagesAndNetQueueDeadLockDetect == false, "deadlock detected!");
 		Server->OnMessageSync	(P,Game().local_svdpnid	);
 	}else											
 		IPureClient::Send	(P,dwFlags,dwTimeout	);
@@ -375,9 +390,13 @@ void			CLevel::OnBuildVersionChallenge		()
 {
 	NET_Packet P;
 	P.w_begin				(M_CL_AUTH);
+#ifdef DEBUG
+	u64 auth = MP_DEBUG_AUTH;
+#else
 	u64 auth = FS.auth_get();
+#endif //#ifdef DEBUG
 	P.w_u64					(auth);
-	Send					(P, net_flags(TRUE, TRUE, TRUE, TRUE));
+	SecureSend				(P, net_flags(TRUE, TRUE, TRUE, TRUE));
 };
 
 void			CLevel::OnConnectResult				(NET_Packet*	P)
@@ -426,26 +445,13 @@ void			CLevel::OnConnectResult				(NET_Packet*	P)
 		}
 	};	
 	m_sConnectResult			= ResultStr;
-	
 	if (IsDemoSave())
 	{
-//		P->r_stringZ(m_sDemoHeader.LevelName);
-//		P->r_stringZ(m_sDemoHeader.GameType);
-		m_sDemoHeader.bServerClient = P->r_u8();
-		P->r_stringZ(m_sDemoHeader.ServerOptions);
-		//-----------------------------------------
-		FILE* fTDemo = fopen(m_sDemoName, "ab");
-		if (fTDemo)
-		{
-			fwrite(&m_sDemoHeader.bServerClient, 32, 1, fTDemo);
-			
-			DWORD OptLen = m_sDemoHeader.ServerOptions.size();
-			fwrite(&OptLen, 4, 1, fTDemo);
-			fwrite(*m_sDemoHeader.ServerOptions, OptLen, 1, fTDemo);
-			fclose(fTDemo);
-		};
-		//-----------------------------------------
-	};	
+		P->r_u8(); //server client or not
+		shared_str server_options;
+		P->r_stringZ(server_options);
+		StartSaveDemo(server_options);
+	}
 };
 
 void			CLevel::ClearAllObjects				()

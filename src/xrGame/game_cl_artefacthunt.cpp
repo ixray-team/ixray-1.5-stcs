@@ -528,6 +528,9 @@ BOOL game_cl_ArtefactHunt::CanCallBuyMenu			()
 {
 	if (!m_bBuyEnabled) return FALSE;
 	if (Phase()!=GAME_PHASE_INPROGRESS) return false;
+
+	if (!is_buy_menu_ready())
+		return FALSE;
 	
 	if (m_game_ui->m_pUITeamSelectWnd && m_game_ui->m_pUITeamSelectWnd->IsShown())
 	{

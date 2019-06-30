@@ -11,16 +11,15 @@
 
 bool CUIMpTradeWnd::TryToSellItem(SBuyItemInfo* sell_itm, bool do_destroy, SBuyItemInfo*& itm_res)
 {
-	SellItemAddons						(sell_itm, at_scope);
-	SellItemAddons						(sell_itm, at_silencer);
-	SellItemAddons						(sell_itm, at_glauncher);
-
-	u32		_item_cost					= m_item_mngr->GetItemCost(sell_itm->m_name_sect, GetRank() );
-
 	const bool is_helper_item			= sell_itm->m_cell_item->IsHelper();
-	if ( is_helper_item )
+	u32	_item_cost						= 0;
+	if ( !is_helper_item )
 	{
-		_item_cost = 0;
+		SellItemAddons					  (sell_itm, at_scope);
+		SellItemAddons					  (sell_itm, at_silencer);
+		SellItemAddons					  (sell_itm, at_glauncher);
+
+		_item_cost						= m_item_mngr->GetItemCost(sell_itm->m_name_sect, GetRank() );
 	}
 
 	SetMoneyAmount						(GetMoneyAmount() + _item_cost);
@@ -39,7 +38,7 @@ bool CUIMpTradeWnd::TryToSellItem(SBuyItemInfo* sell_itm, bool do_destroy, SBuyI
 
 	iinfo->SetState						(SBuyItemInfo::e_sold);
 
-	_itm->SetIsHelper(false);
+	_itm->SetIsHelper					(false);
 
 	if(cnt_in_shop!=0 )
 	{
@@ -98,7 +97,7 @@ bool CUIMpTradeWnd::BuyItemAction(SBuyItemInfo* itm)
 			if(!b_res)
 			{
 				to_sell->SetState	(SBuyItemInfo::e_undefined);	//hack
-				bool b_res2			= TryToBuyItem(to_sell, bf_check_money, NULL);
+				bool b_res2			= TryToBuyItem(to_sell, bf_check_money|bf_ignore_team|bf_own_itm, NULL);
 				R_ASSERT			(b_res2);
 				to_sell->SetState	(SBuyItemInfo::e_undefined);	//hack
 				to_sell->SetState	(_stored_state);				//hack
@@ -123,17 +122,21 @@ bool CUIMpTradeWnd::TryToBuyItem(SBuyItemInfo* buy_itm, u32 buy_flags, SBuyItemI
 	if(!b_can_buy)
 		return				false;
 	
-	if (GameID() == eGameIDCaptureTheArtefact)
+	if (0==(bf_ignore_team&buy_flags))
 	{
-		game_cl_CaptureTheArtefact* cta_game = smart_cast<game_cl_CaptureTheArtefact*>(&Game());
-		if (cta_game && !cta_game->LocalPlayerCanBuyItem(buy_item_name))
-			return			false;
-	} else
-	{
-		game_cl_Deathmatch* dm_game = smart_cast<game_cl_Deathmatch*>(&Game());
-		if (dm_game && !dm_game->LocalPlayerCanBuyItem(buy_item_name))
-			return			false;
+		if (GameID() == eGameIDCaptureTheArtefact)
+		{
+			game_cl_CaptureTheArtefact* cta_game = smart_cast<game_cl_CaptureTheArtefact*>(&Game());
+			if (cta_game && !cta_game->LocalPlayerCanBuyItem(buy_item_name))
+				return			false;
+		} else
+		{
+			game_cl_Deathmatch* dm_game = smart_cast<game_cl_Deathmatch*>(&Game());
+			if (dm_game && !dm_game->LocalPlayerCanBuyItem(buy_item_name))
+				return			false;
+		}
 	}
+
 
 
 	u32 _item_cost			= m_item_mngr->GetItemCost(buy_item_name, GetRank() );

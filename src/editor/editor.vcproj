@@ -204,7 +204,7 @@
 		/>
 		<AssemblyReference
 			RelativePath="..\..\..\binaries\editor_controls.dll"
-			AssemblyName="editor_controls, Version=1.0.3117.21116, processorArchitecture=x86"
+			AssemblyName="editor_controls, Version=1.0.3406.29962, processorArchitecture=x86"
 		/>
 		<AssemblyReference
 			RelativePath="..\..\sdk\binaries\WeifenLuo.WinFormsUI.Docking.dll"

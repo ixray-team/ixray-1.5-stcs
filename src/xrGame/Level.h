@@ -20,6 +20,7 @@
 #include "customdetector.h"
 
 #include "Level_network_map_sync.h"
+#include "secure_messaging.h"
 
 class	CHUDManager;
 class	CParticlesObject;
@@ -37,6 +38,7 @@ class	CLevelDebug;
 class	CLevelSoundManager;
 class	CGameTaskManager;
 class	CZoneList;
+class	message_filter;
 
 #ifdef DEBUG
 	class	CDebugRenderer;
@@ -51,6 +53,11 @@ const int maxTeams				= 32;
 class CFogOfWarMngr;
 class CBulletManager;
 class CMapManager;
+
+namespace file_transfer
+{
+	class client_site;
+}; //namespace file_transfer
 
 class CLevel					: public IGame_Level, public IPureClient
 {
@@ -118,6 +125,14 @@ public:
 	virtual void				OnInvalidPassword		();
 	virtual void				OnSessionFull			();
 	virtual void				OnConnectRejected		();
+
+private:
+			
+			void				OnSecureMessage			(NET_Packet & P);
+			void				OnSecureKeySync			(NET_Packet & P);
+			void				SecureSend				(NET_Packet& P, u32 dwFlags=DPNSEND_GUARANTEED, u32 dwTimeout=0);
+			
+	secure_messaging::key_t		m_secret_key;
 private:
 	BOOL						m_bNeed_CrPr;
 	u32							m_dwNumSteps;
@@ -149,6 +164,10 @@ private:
 
 	BOOL						Connect2Server					(LPCSTR options);
 	void						SendClientDigestToServer		();
+	shared_str					m_client_digest;	//for screenshots
+public:
+	shared_str const			get_cdkey_digest() const { return m_client_digest; };
+
 private:
 	bool						m_bConnectResultReceived;
 	bool						m_bConnectResult;
@@ -356,6 +375,8 @@ public:
 public:
 			void			remove_objects				();
 			virtual void	OnSessionTerminate		(LPCSTR reason);
+			
+			file_transfer::client_site*					m_file_transfer;
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

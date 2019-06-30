@@ -18,6 +18,8 @@ class CSpectator:
 {
 private:
 	typedef CGameObject		inherited;
+	CTimer			m_timer;			//for pause case (in demo mode)
+	float			m_fTimeDelta;
 protected:
 public:
 	enum EActorCameras {
@@ -39,12 +41,14 @@ private:
 	void					cam_Update				(CActor* A=0);
 
 	CActor*					m_pActorToLookAt;
-	bool					SelectNextPlayerToLook	();
+	bool					SelectNextPlayerToLook	(bool const search_next);
 
 	void					FirstEye_ToPlayer		(CObject* pObject);
 
 	static const float		cam_inert_value;
 	float					prev_cam_inert_value;
+	shared_str				m_last_player_name;
+	EActorCameras			m_last_camera;
 public:
 							CSpectator				( );
 	virtual					~CSpectator				( );
@@ -67,9 +71,11 @@ public:
 	virtual void			net_Relcase				(CObject *O);
 			void			GetSpectatorString		(string1024& pStr);
 
+			
+	virtual void			On_SetEntity			();
+	virtual void			On_LostEntity			();
 
-	virtual void						On_SetEntity		();
-	virtual void						On_LostEntity		();
+	inline	EActorCameras	GetActiveCam			() const {return cam_active;};
 };
 
 #endif // __SPECTATOR_H__

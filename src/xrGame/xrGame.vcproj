@@ -94,7 +94,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="true"
-				AdditionalOptions="/MACHINE:I386 &#x0D;&#x0A;"
+				AdditionalOptions="/MACHINE:I386 &#x0D;&#x0A;/ignore:4075"
 				ShowProgress="0"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
@@ -18755,14 +18755,6 @@
 						</FileConfiguration>
 					</File>
 					<File
-						RelativePath=".\Level_network_Demo.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Level_network_Demo.h"
-						>
-					</File>
-					<File
 						RelativePath="Level_network_messages.cpp"
 						>
 					</File>
@@ -18891,6 +18883,10 @@
 								DisableSpecificWarnings="4511,4512"
 							/>
 						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\Level_secure_messaging.cpp"
+						>
 					</File>
 					<File
 						RelativePath="Level_SLS_Default.cpp"
@@ -19245,6 +19241,26 @@
 									UsePrecompiledHeader="0"
 								/>
 							</FileConfiguration>
+						</File>
+					</Filter>
+					<Filter
+						Name="LevelNetworkDemo"
+						>
+						<File
+							RelativePath=".\Level_network_Demo.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\Level_network_Demo.h"
+							>
+						</File>
+						<File
+							RelativePath=".\Message_Filter.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\Message_Filter.h"
+							>
 						</File>
 					</Filter>
 				</Filter>
@@ -24424,6 +24440,30 @@
 								>
 							</File>
 						</Filter>
+						<Filter
+							Name="MPAnticheat"
+							>
+							<File
+								RelativePath=".\anticheat_dumpable_object.h"
+								>
+							</File>
+							<File
+								RelativePath=".\mpactor_dump_impl.cpp"
+								>
+							</File>
+							<File
+								RelativePath=".\shootingObject_dump_impl.cpp"
+								>
+							</File>
+							<File
+								RelativePath=".\weapon_ammo_dump_impl.cpp"
+								>
+							</File>
+							<File
+								RelativePath=".\weapon_dump_impl.cpp"
+								>
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="searchlight"
@@ -25787,15 +25827,23 @@
 						RelativePath="Spectator.h"
 						>
 					</File>
+					<Filter
+						Name="Cameras"
+						>
+						<File
+							RelativePath=".\spectator_camera_first_eye.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\spectator_camera_first_eye.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 			</Filter>
 			<Filter
 				Name="Common"
 				>
-				<File
-					RelativePath=".\xrGame.cpp"
-					>
-				</File>
 				<Filter
 					Name="Console Commands"
 					>
@@ -25947,6 +25995,34 @@
 						RelativePath="..\xrServerEntities\xrMessages.h"
 						>
 					</File>
+					<Filter
+						Name="SecureMessages"
+						>
+						<File
+							RelativePath=".\secure_messaging.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\secure_messaging.h"
+							>
+						</File>
+						<File
+							RelativePath=".\xr_dsa_signer.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\xr_dsa_signer.h"
+							>
+						</File>
+						<File
+							RelativePath=".\xr_dsa_verifyer.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\xr_dsa_verifyer.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="ObjectBroker"
@@ -26501,6 +26577,26 @@
 				Name="Server"
 				>
 				<File
+					RelativePath=".\file_transfer.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\file_transfer.h"
+					>
+				</File>
+				<File
+					RelativePath=".\screenshot_server.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\screenshot_server.h"
+					>
+				</File>
+				<File
+					RelativePath=".\xrGame.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\xrServer.cpp"
 					>
 					<FileConfiguration
@@ -27025,6 +27121,70 @@
 								RelativePath=".\game_cl_mp_snd_messages.h"
 								>
 							</File>
+							<Filter
+								Name="screenshots"
+								>
+								<File
+									RelativePath=".\screenshot_manager.cpp"
+									>
+								</File>
+								<File
+									RelativePath=".\screenshot_manager.h"
+									>
+								</File>
+								<File
+									RelativePath=".\screenshots_common.cpp"
+									>
+								</File>
+								<File
+									RelativePath=".\screenshots_common.h"
+									>
+								</File>
+								<File
+									RelativePath=".\screenshots_writer.cpp"
+									>
+								</File>
+								<File
+									RelativePath=".\screenshots_writer.h"
+									>
+								</File>
+							</Filter>
+							<Filter
+								Name="anticheat"
+								>
+								<File
+									RelativePath=".\configs_common.cpp"
+									>
+								</File>
+								<File
+									RelativePath=".\configs_common.h"
+									>
+								</File>
+								<File
+									RelativePath=".\configs_dump_verifyer.cpp"
+									>
+								</File>
+								<File
+									RelativePath=".\configs_dump_verifyer.h"
+									>
+								</File>
+								<File
+									RelativePath=".\configs_dumper.cpp"
+									>
+								</File>
+								<File
+									RelativePath=".\configs_dumper.h"
+									>
+								</File>
+								<File
+									RelativePath=".\mp_config_sections.cpp"
+									>
+								</File>
+								<File
+									RelativePath=".\mp_config_sections.h"
+									>
+								</File>
+							</Filter>
 						</Filter>
 						<Filter
 							Name="mp_script"
@@ -28532,6 +28692,10 @@
 						>
 					</File>
 					<File
+						RelativePath=".\xrServer_secure_messaging.cpp"
+						>
+					</File>
+					<File
 						RelativePath="xrServer_sls_clear.cpp"
 						>
 					</File>
@@ -28565,6 +28729,14 @@
 					</File>
 					<File
 						RelativePath="xrServer_process_update.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\xrServer_svclient_validation.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\xrServer_svclient_validation.h"
 						>
 					</File>
 				</Filter>
@@ -33815,6 +33987,14 @@
 					<Filter
 						Name="CDkey"
 						>
+						<File
+							RelativePath=".\player_name_modifyer.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\player_name_modifyer.h"
+							>
+						</File>
 						<File
 							RelativePath=".\ui\UICDkey.cpp"
 							>

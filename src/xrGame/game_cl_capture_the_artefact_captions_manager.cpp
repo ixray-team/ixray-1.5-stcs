@@ -70,6 +70,17 @@ void CTAGameClCaptionsManager::ShowInProgressCaptions()
 		}
 		return;
 	}
+	if (Level().IsDemoPlayStarted())
+	{
+		CSpectator* pSpectator = smart_cast<CSpectator*>(control_entity);
+		if (pSpectator)
+		{
+			string1024 SpectatorStr;
+			pSpectator->GetSpectatorString(SpectatorStr);
+			parent_game_ui->SetSpectatorMsgCaption(SpectatorStr);
+		}
+		return;
+	}
 
 	if (m_can_show_buy)
 	{

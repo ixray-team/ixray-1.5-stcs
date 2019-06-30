@@ -303,11 +303,12 @@ void cdkey_ban_list::erase_expired_ban_items()
 	struct expire_searcher_predicate
 	{
 		time_t current_time;
-		bool operator()(banned_client const * bclient)
+		bool operator()(banned_client* bclient)
 		{
 			if (bclient->ban_end_time < current_time)
 			{
 				Msg("- Ban of %s is expired", bclient->client_name.c_str());
+				xr_delete(bclient);
 				return true;
 			}
 			return false;
@@ -316,10 +317,5 @@ void cdkey_ban_list::erase_expired_ban_items()
 	expire_searcher_predicate tmp_predicate;
 	time(&tmp_predicate.current_time);
 	ban_list_t::iterator new_end_iter = std::remove_if(m_ban_list.begin(), m_ban_list.end(), tmp_predicate);
-	for (ban_list_t::iterator i = new_end_iter,
-		ie = m_ban_list.end(); i != ie; ++i)
-	{
-		xr_delete(*i);
-	}
 	m_ban_list.erase(new_end_iter, m_ban_list.end());
 }

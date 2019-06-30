@@ -124,11 +124,21 @@ void CGameObject::net_Destroy	()
 
 	inherited::net_Destroy						();
 	setReady									(FALSE);
-	g_pGameLevel->Objects.net_Unregister		(this);
+	
+	if (Level().IsDemoPlayStarted() && ID() == u16(-1))
+	{
+		Msg("Destroying demo_spectator object");
+	} else
+	{
+		g_pGameLevel->Objects.net_Unregister		(this);
+	}
 	
 	if (this == Level().CurrentEntity())
 	{
-		Level().SetControlEntity				(0);
+		if (!Level().IsDemoPlayStarted())
+		{
+			Level().SetControlEntity			(0);
+		}
 		Level().SetEntity						(0);	// do not switch !!!
 	}
 
@@ -253,8 +263,21 @@ BOOL CGameObject::net_Spawn		(CSE_Abstract*	DC)
 	cNameSect_set					(E->s_name);
 	if (E->name_replace()[0])
 		cName_set					(E->name_replace());
+	bool demo_spectator = false;
+	
+	if (Level().IsDemoPlayStarted() && E->ID == u16(-1))
+	{
+		Msg("* Spawning demo spectator ...");
+		demo_spectator = true;
+	} else {
+		CObject* prev_obj = Level().Objects.net_Find(E->ID);
+		R_ASSERT2(prev_obj == NULL, 
+			make_string("previous object ID=%d is %s, hasn't been destroyed but (to destroy = %d)",
+				E->ID, prev_obj->cName().c_str(), prev_obj->getDestroy()
+			).c_str()
+		);
+	}
 
-	R_ASSERT(Level().Objects.net_Find(E->ID) == NULL);
 
 	setID							(E->ID);
 //	if (GameID() != eGameIDSingle)
@@ -291,13 +314,17 @@ BOOL CGameObject::net_Spawn		(CSE_Abstract*	DC)
 
 	// Net params
 	setLocal						(E->s_flags.is(M_SPAWN_OBJECT_LOCAL));
-	if (Level().IsDemoPlay() && OnClient())
+	if (Level().IsDemoPlay()) //&& OnClient())
 	{
-		setLocal(FALSE);
+		if (!demo_spectator)
+		{
+			setLocal(FALSE);
+		}
 	};
 
 	setReady						(TRUE);
-	g_pGameLevel->Objects.net_Register	(this);
+	if (!demo_spectator)
+		g_pGameLevel->Objects.net_Register	(this);
 
 	m_server_flags.one				();
 	if (O) {

@@ -93,6 +93,9 @@ public:
 //	TODO: DX10: CHeck if we need old-style SMAP
 //	IDirect3DSurface9*			rt_smap_ZB;		//
 
+	//	Igor: for async screenshots
+	ID3DTexture2D*			t_ss_async;				//32bit		(r,g,b,a) is situated in the system memory
+
 	// Textures
 	ID3DTexture3D*			t_material_surf;
 	ref_texture					t_material;
@@ -106,8 +109,9 @@ private:
 
 	ref_shader					s_occq;
 
-	//
+	// SSAO
 	ref_rt						rt_ssao_temp;
+	ref_rt						rt_half_depth;
 	ref_shader					s_ssao;
 	ref_shader					s_ssao_msaa[8];
 
@@ -233,6 +237,7 @@ public:
 	void						phase_scene_end			();
 	void						phase_occq				();
 	void						phase_ssao				();
+	void						phase_downsamp			();
 	void						phase_wallmarks			();
 	void						phase_smap_direct		(light* L,	u32 sub_phase);
 	void						phase_smap_direct_tsh	(light* L,	u32 sub_phase);
@@ -294,6 +299,8 @@ public:
 	//	Don't clear when render for the first time
 	void						reset_light_marker( bool bResetStencil = false);
 	void						increment_light_marker();
+
+	void						DoAsyncScreenshot		();
 
 #ifdef DEBUG
 	IC void						dbg_addline				(Fvector& P0, Fvector& P1, u32 c)					{

@@ -71,6 +71,11 @@ enum {
 	M_SV_MAP_NAME,				//request and responce
 	M_SV_DIGEST,				//request and responce
 
+	M_FILE_TRANSFER,
+	M_MAKE_SCREENSHOT,
+	M_SECURE_KEY_SYNC,
+	M_SECURE_MESSAGE,
+
 	MSG_FORCEDWORD				= u32(-1)
 };
 
@@ -210,6 +215,7 @@ enum EGameMessages {  //game_cl <----> game_sv messages
 	GAME_EVENT_SERVER_DIALOG_MESSAGE,
 
 	GAME_EVENT_PLAYER_STARTED,
+	GAME_EVENT_MAKE_DATA,
 
 	//-----------------------------------------
 	GAME_EVENT_SCRIPT_BEGINS_FROM,		// don't add messages after this

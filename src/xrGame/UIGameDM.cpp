@@ -61,7 +61,7 @@ CUIGameDM::CUIGameDM()
 	m_spectrmode_caption = "spetatormode";
 	GameCaptions()->addCustomMessage(m_spectrmode_caption, DI2PX(0.0f), DI2PY(-0.7f), SZ(0.03f), HUD().Font().pFontGraffiti19Russian, CGameFont::alCenter, SPECTRMODE_MSG_COLOR, "");
 	m_spectator_caption = "spectator";
-	GameCaptions()->addCustomMessage(m_spectator_caption, DI2PX(0.0f), DI2PY(0.0f), SZ(0.03f), HUD().Font().pFontGraffiti19Russian, CGameFont::alCenter, NORMAL_MSG_COLOR, "");
+	GameCaptions()->addCustomMessage(m_spectator_caption, DI2PX(0.0f), DI2PY(-0.7f), SZ(0.03f), HUD().Font().pFontGraffiti19Russian, CGameFont::alCenter, NORMAL_MSG_COLOR, "");
 	m_pressjump_caption = "pressjump";
 	GameCaptions()->addCustomMessage(m_pressjump_caption, DI2PX(0.0f), DI2PY(0.9f), SZ(0.02f), HUD().Font().pFontGraffiti19Russian, CGameFont::alCenter, NORMAL_MSG_COLOR, "");
 	m_pressbuy_caption = "pressbuy";
@@ -71,7 +71,7 @@ CUIGameDM::CUIGameDM()
 	m_force_respawn_time_caption =	"force_respawn_time";
 	GameCaptions()->addCustomMessage(m_force_respawn_time_caption, DI2PX(0.0f), DI2PY(-0.9f), SZ(0.02f), HUD().Font().pFontGraffiti19Russian, CGameFont::alCenter, NORMAL_MSG_COLOR, "");
 	m_demo_play_caption =	"demo_play";
-	GameCaptions()->addCustomMessage(m_demo_play_caption, DI2PX(-1.0f), DI2PY(-0.95f), SZ(0.05f), HUD().Font().pFontGraffiti19Russian, CGameFont::alLeft, DEMOPLAY_COLOR, "");
+	GameCaptions()->addCustomMessage(m_demo_play_caption, DI2PX(-1.0f), DI2PY(-0.5f), SZ(0.05f), HUD().Font().pFontGraffiti19Russian, CGameFont::alLeft, DEMOPLAY_COLOR, "");
 	
 	m_warm_up_caption =	"warm_up";
 	GameCaptions()->addCustomMessage(m_warm_up_caption, DI2PX(0.0f), DI2PY(-0.75f), SZ(0.05f), HUD().Font().pFontGraffiti19Russian, CGameFont::alCenter, WARM_UP_COLOR, "");

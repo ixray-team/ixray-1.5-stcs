@@ -77,6 +77,7 @@ protected:
 				void				SpawnWeapon4Actor		(u16 actorId,  LPCSTR N, u8 Addons, game_PlayerState::PLAYER_ITEMS_LIST & playerItems);
 	virtual		bool				CanChargeFreeAmmo		(char const * ammo_section) { return false; };
 				//void				SpawnWeaponForActor		(u16 actorId,  LPCSTR N, bool isScope, bool isGrenadeLauncher, bool isSilencer);
+				void				SetCanOpenBuyMenu		(ClientID id);
 				
 // spawning weapons 	
 	typedef		std::pair<shared_str, u16> ammo_diff_t;

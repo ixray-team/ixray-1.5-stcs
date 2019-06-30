@@ -116,6 +116,7 @@ void game_cl_Deathmatch::OnBuyMenu_Ok	()
 	{
 		OnKeyboardPress(kJUMP);
 	}
+	set_buy_menu_not_ready();
 };
 
 void	game_cl_Deathmatch::OnBuyMenu_DefaultItems	()
@@ -166,6 +167,10 @@ void game_cl_Deathmatch::SetBuyMenuItems		(PRESET_ITEMS* pItems, BOOL OnlyPreset
 			if(!pItem)																	continue;
 			//if (pItem->IsInvalid() || pItem->object().CLS_ID == CLSID_OBJECT_W_KNIFE)	continue;
 			if ( pItem->IsInvalid() || smart_cast<CWeaponKnife*>( &pItem->object() ) )	continue;
+			if (!pItem->CanTrade())
+			{
+				continue;
+			}
 			
 			if(pSettings->line_exist(GetBaseCostSect(), pItem->object().cNameSect()))
 			{
@@ -192,6 +197,10 @@ void game_cl_Deathmatch::SetBuyMenuItems		(PRESET_ITEMS* pItems, BOOL OnlyPreset
 			PIItem pItem = (*IBelt);
 			//if (pItem->IsInvalid() || pItem->object().CLS_ID == CLSID_OBJECT_W_KNIFE) continue;
 			if ( pItem->IsInvalid() || smart_cast<CWeaponKnife*>( &pItem->object() ) )	continue;
+			if (!pItem->CanTrade())
+			{
+				continue;
+			}
 
 			if(pSettings->line_exist(GetBaseCostSect(), pItem->object().cNameSect()))
 			{
@@ -213,6 +222,10 @@ void game_cl_Deathmatch::SetBuyMenuItems		(PRESET_ITEMS* pItems, BOOL OnlyPreset
 			PIItem pItem = *IRuck;
 			//if (pItem->IsInvalid() || pItem->object().CLS_ID == CLSID_OBJECT_W_KNIFE) continue;
 			if ( pItem->IsInvalid() || smart_cast<CWeaponKnife*>( &pItem->object() ) )	continue;
+			if (!pItem->CanTrade())
+			{
+				continue;
+			}
 			
 			if(pSettings->line_exist(GetBaseCostSect(), pItem->object().cNameSect()))
 			{

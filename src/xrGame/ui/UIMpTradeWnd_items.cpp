@@ -184,6 +184,7 @@ void CUIMpTradeWnd::DeleteHelperItems ()
 void CUIMpTradeWnd::DeleteHelperItems (CUIDragDropListEx* list)
 {
 	ITEMS_vec to_sell;
+
 	for ( ITEMS_vec::iterator it	=	m_all_items.begin();
 							  it	!=	m_all_items.end();
 							  ++it )
@@ -202,7 +203,10 @@ void CUIMpTradeWnd::DeleteHelperItems (CUIDragDropListEx* list)
 
 		if ( item->m_cell_item->IsHelper() )
 		{
-			to_sell.push_back(item);
+			if ( std::find(to_sell.begin(), to_sell.end(), item) == to_sell.end() )
+			{
+				to_sell.push_back(item);
+			}
 		}
 	}
 

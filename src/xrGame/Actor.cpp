@@ -1045,7 +1045,7 @@ void CActor::shedule_Update	(u32 DT)
 	
 	//----------- for E3 -----------------------------
 //	if (Local() && (OnClient() || Level().CurrentEntity()==this))
-	if (Level().CurrentControlEntity() == this && (!Level().IsDemoPlay() || Level().IsServerDemo()))
+	if (Level().CurrentControlEntity() == this && !Level().IsDemoPlay())
 	//------------------------------------------------
 	{
 		g_cl_CheckControls		(mstate_wishful,NET_SavedAccel,NET_Jump,dt);
@@ -1488,6 +1488,9 @@ void CActor::ForceTransform(const Fmatrix& m)
 			character_physics_support()->movement()->EnableCharacter();
 	character_physics_support()->set_movement_position( m.c );
 	character_physics_support()->movement()->SetVelocity( 0, 0, 0 );
+	const float block_damage_time_seconds = 2.f;
+	if(!IsGameTypeSingle())
+		character_physics_support()->movement()->BlockDamageSet( u64( block_damage_time_seconds/fixed_step ) );
 }
 
 ENGINE_API extern float		psHUD_FOV;

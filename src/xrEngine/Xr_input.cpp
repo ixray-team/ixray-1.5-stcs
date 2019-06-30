@@ -190,18 +190,29 @@ void CInput::KeyUpdate	( )
 		if ( hr != S_OK ) return;
 	}
 
+	bool b_alt_tab = false;
 	for (u32 i = 0; i < dwElements; i++)
 	{
 		key					= od[i].dwOfs;
 		KBState[key]		= od[i].dwData & 0x80;
 		if ( KBState[key])	
 			cbStack.back()->IR_OnKeyboardPress	( key );
+
 		if (!KBState[key])	
+		{
 			cbStack.back()->IR_OnKeyboardRelease	( key );
+			if(key==DIK_TAB  && (iGetAsyncKeyState(DIK_RMENU) || iGetAsyncKeyState(DIK_LMENU)) )
+				b_alt_tab = true;
+		}
 	}
+
 	for ( i = 0; i < COUNT_KB_BUTTONS; i++ )
 		if (KBState[i]) 
 			cbStack.back()->IR_OnKeyboardHold( i );
+
+	if(b_alt_tab)
+		SendMessage(Device.m_hWnd, WM_SYSCOMMAND, SC_MINIMIZE, 0);
+
 /*
 #ifndef _EDITOR
 //update xinput if exist

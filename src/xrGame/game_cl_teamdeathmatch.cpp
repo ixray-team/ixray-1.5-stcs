@@ -490,7 +490,9 @@ bool		game_cl_TeamDeathmatch::IsEnemy					(CEntityAlive* ea1, CEntityAlive* ea2)
 
 void	game_cl_TeamDeathmatch::OnRender				()
 {
-	if (local_player)
+	game_PlayerState* lookat_player = Game().lookat_player();
+	if (local_player && (local_player == lookat_player) && 
+		(m_bShowPlayersNames || m_bFriendlyIndicators))
 	{
 		cl_TeamStruct *pTS = &TeamList[ModifyTeam(local_player->team)]; 
 		PLAYERS_MAP_IT it = players.begin();
@@ -503,7 +505,11 @@ void	game_cl_TeamDeathmatch::OnRender				()
 			if (!pObject) continue;
 			if (!pObject || !smart_cast<CActor*>(pObject)) continue;
 			if (IsEnemy(ps)) continue;
-			if (ps == local_player) continue;
+			
+			
+			if (ps == local_player)
+				continue;
+						
 
 			float dup = 0.0f;
 			if (/*m_bFriendlyNames &&*/ m_bShowPlayersNames)

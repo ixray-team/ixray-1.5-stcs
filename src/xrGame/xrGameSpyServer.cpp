@@ -167,7 +167,17 @@ u32				xrGameSpyServer::OnMessage(NET_Packet& P, ClientID sender)			// Non-Zero 
 	case M_GAMESPY_CDKEY_VALIDATION_CHALLENGE_RESPOND:
 		{
 			string128 ResponseStr;
+			if ((P.r_elapsed() == 0) ||
+				(P.r_elapsed() >= sizeof(ResponseStr)))
+			{
+				return 0;
+			}
+			strcpy_s(ResponseStr, "");
 			P.r_stringZ(ResponseStr);
+			if (xr_strlen(ResponseStr) == 0)
+			{
+				return 0;
+			}
 			
 			if (!CL->m_bCDKeyAuth)
 			{

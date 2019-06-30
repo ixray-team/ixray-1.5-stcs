@@ -3,8 +3,11 @@
 
 #include "actor.h"
 #include "actor_mp_state.h"
+#include "anticheat_dumpable_object.h"
 
-class CActorMP : public CActor {
+class CActorMP :
+	public IAnticheatDumpable,
+	public CActor {
 private:
 	typedef CActor			inherited;
 
@@ -24,6 +27,10 @@ public:
 	virtual BOOL			net_Relevant		();
 	virtual void			OnEvent				(NET_Packet		&packet, u16 type);
 	virtual void			Die					(CObject		*killer);
+	virtual void			DumpActiveParams	(shared_str const & section_name, CInifile & dst_ini) const;
+	shared_str const 		GetAnticheatSectionName	() const { return "mp_actor"; };
+protected:
+	virtual	void			cam_Set					(EActorCameras style);
 };
 
 #endif // ACTOR_MP_CLIENT_H

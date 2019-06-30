@@ -53,6 +53,7 @@
 #define SPECTRMODE_MSG_COLOR	0xffff0000
 #define WARM_UP_COLOR			0xff00ff00
 #define TIME_MSG_COLOR			0xffff0000
+#define DEMOPLAY_COLOR			0xff00ff00
 
 #define DI2PX(x) float(iFloor((x+1)*float(UI_BASE_WIDTH)*0.5f))
 #define DI2PY(y) float(iFloor((y+1)*float(UI_BASE_HEIGHT)*0.5f))
@@ -96,13 +97,15 @@ CUIGameCTA::CUIGameCTA()
 	m_pressjump_caption = "pressjump";
 	GameCaptions()->addCustomMessage(m_pressjump_caption, DI2PX(0.0f), DI2PY(0.9f), SZ(0.02f), HUD().Font().pFontGraffiti19Russian, CGameFont::alCenter, NORMAL_MSG_COLOR, "");
 	m_spectator_caption = "spectator";
-	GameCaptions()->addCustomMessage(m_spectator_caption, DI2PX(0.0f), DI2PY(0.0f), SZ(0.03f), HUD().Font().pFontGraffiti19Russian, CGameFont::alCenter, NORMAL_MSG_COLOR, "");
+	GameCaptions()->addCustomMessage(m_spectator_caption, DI2PX(0.0f), DI2PY(-0.7f), SZ(0.03f), HUD().Font().pFontGraffiti19Russian, CGameFont::alCenter, NORMAL_MSG_COLOR, "");
 	m_spectrmode_caption = "spetatormode";
 	GameCaptions()->addCustomMessage(m_spectrmode_caption, DI2PX(0.0f), DI2PY(-0.7f), SZ(0.03f), HUD().Font().pFontGraffiti19Russian, CGameFont::alCenter, SPECTRMODE_MSG_COLOR, "");
 	m_warm_up_caption =	"warm_up";
 	GameCaptions()->addCustomMessage(m_warm_up_caption, DI2PX(0.0f), DI2PY(-0.75f), SZ(0.05f), HUD().Font().pFontGraffiti19Russian, CGameFont::alCenter, WARM_UP_COLOR, "");
 	m_time_caption = "timelimit";
 	GameCaptions()->addCustomMessage(m_time_caption, DI2PX(0.0f), DI2PY(-0.8f), SZ(0.03f), HUD().Font().pFontGraffiti19Russian, CGameFont::alCenter, TIME_MSG_COLOR, "");
+	m_demo_play_caption = "demo_play";
+	GameCaptions()->addCustomMessage(m_demo_play_caption, DI2PX(-1.0f), DI2PY(-0.5f), SZ(0.05f), HUD().Font().pFontGraffiti19Russian, CGameFont::alLeft, DEMOPLAY_COLOR, "");
 
 	m_pMapDesc			= NULL;
 	m_pCurBuyMenu		= NULL;
@@ -231,6 +234,8 @@ bool CUIGameCTA::IsTeamSelectShown()
 }
 void CUIGameCTA::ShowTeamSelectMenu()
 {
+	if (Level().IsDemoPlay())
+		return;
 	VERIFY(m_pUITeamSelectWnd);
 	if (!m_pUITeamSelectWnd->IsShown())
 	{
@@ -245,6 +250,8 @@ bool CUIGameCTA::IsMapDescShown()
 }
 void CUIGameCTA::ShowMapDesc()
 {
+	if (Level().IsDemoPlay())
+		return;
 	VERIFY(m_pMapDesc);
 	if (!m_pMapDesc->IsShown())
 	{
@@ -314,6 +321,8 @@ void CUIGameCTA::HideBuyMenu()
 
 void CUIGameCTA::ShowBuyMenu()
 {
+	if (Level().IsDemoPlay())
+		return;
 	R_ASSERT2(m_pCurBuyMenu, "buy menu not initialized");
 	if (!m_pCurBuyMenu->IsShown())
 	{
@@ -504,6 +513,9 @@ void CUIGameCTA::BuyMenuItemInserter(PIItem const & item)
 	if (!pSettings->line_exist(m_costSection, item->object().cNameSect()))
 		return;
 
+	if (!item->CanTrade())
+		return;
+
 	u8 addons = 0;
 	CWeapon* pWeapon = smart_cast<CWeapon*>(item);
 	if (pWeapon)
@@ -675,6 +687,8 @@ CUIGameCTA::BuyMenuItemPair	CUIGameCTA::GetBuyMenuItem(shared_str const & itemSe
 
 void CUIGameCTA::ShowSkinMenu(s8 currentSkin)
 {
+	if (Level().IsDemoPlay())
+		return;
 	//VERIFY2(m_pCurSkinMenu, "skin menu not initialized");
 	if (!m_pCurSkinMenu)
 	{
@@ -804,6 +818,11 @@ void CUIGameCTA::SetWarmUpCaption(LPCSTR str)
 void CUIGameCTA::SetTimeMsgCaption(LPCSTR str)
 {
 	GameCaptions()->setCaption(m_time_caption, str, TIME_MSG_COLOR, true);
+}
+
+void CUIGameCTA::SetDemoPlayCaption(LPCSTR str)
+{
+	GameCaptions()->setCaption(m_demo_play_caption, str, DEMOPLAY_COLOR, true);
 }
 
 void CUIGameCTA::ResetCaptions()

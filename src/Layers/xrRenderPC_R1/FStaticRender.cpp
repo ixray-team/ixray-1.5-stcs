@@ -76,6 +76,8 @@ void					CRender::create					()
 	o.no_detail_textures		= ps_r2_ls_flags.test(R1FLAG_NO_DETAIL_TEXTURES);
 	c_ldynamic_props			= "L_dynamic_props";
 
+	m_bMakeAsyncSS				= false;
+
 //---------
 	Target						= xr_new<CRenderTarget>		();
 //---------
@@ -91,6 +93,7 @@ void					CRender::create					()
 
 void					CRender::destroy				()
 {
+	m_bMakeAsyncSS				= false;
 	::PortalTraverser.destroy	();
 //.	HWOCC.occq_destroy			();
 	PSLibrary.OnDestroy			();

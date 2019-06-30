@@ -23,6 +23,7 @@
 #include "CopyProtection.h"
 #include "Text_Console.h"
 #include <process.h>
+#include <locale.h>
 
 #include "xrSash.h"
 

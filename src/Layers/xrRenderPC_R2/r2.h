@@ -38,6 +38,9 @@ public:
 		u32		bug					: 1;
 		
 		u32		ssao_blur_on		: 1;
+		u32		ssao_opt_data		: 1;
+		u32		ssao_half_data		: 1;
+		u32		ssao_hbao			: 1;
 
 		u32		smapsize			: 16;
 		u32		depth16				: 1;
@@ -124,6 +127,8 @@ public:
 	float														o_sun			;
 	IDirect3DQuery9*											q_sync_point[CHWCaps::MAX_GPUS];
 	u32															q_sync_count	;
+
+	bool														m_bMakeAsyncSS;
 private:
 	// Loading / Unloading
 	void							LoadBuffers					(CStreamReader	*fs,	BOOL	_alternative);
@@ -286,7 +291,10 @@ public:
 	virtual void					Calculate					();
 	virtual void					Render						();
 	virtual void					Screenshot					(ScreenshotMode mode=SM_NORMAL, LPCSTR name = 0);
-	virtual void					OnFrame					();
+	virtual void					Screenshot					(ScreenshotMode mode, CMemoryWriter& memory_writer);
+	virtual void					ScreenshotAsyncBegin		();
+	virtual void					ScreenshotAsyncEnd			(CMemoryWriter& memory_writer);
+	virtual void					OnFrame						();
 
 	// Render mode
 	virtual void					rmNear						();
@@ -296,6 +304,8 @@ public:
 	// Constructor/destructor/loader
 	CRender							();
 	virtual ~CRender				();
+protected:
+	virtual	void					ScreenshotImpl				(ScreenshotMode mode, LPCSTR name, CMemoryWriter* memory_writer);
 };
 
 extern CRender						RImplementation;

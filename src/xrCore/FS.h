@@ -92,6 +92,7 @@ public:
 	void			w_compressed(void* ptr, u32 count);
 	void			w_chunk		(u32 type, void* data, u32 size);
 	virtual bool	valid		()									{return true;}
+	virtual	void	flush		() = 0;
 };
 
 class XRCORE_API CMemoryWriter : public IWriter
@@ -124,6 +125,7 @@ public:
 	IC void			free		()			{	file_size=0; position=0; mem_size=0; xr_free(data);	}
 #pragma warning(pop)
 	bool			save_to		(LPCSTR fn);
+	virtual	void	flush		()			{ };
 };
 
 //------------------------------------------------------------------------------------

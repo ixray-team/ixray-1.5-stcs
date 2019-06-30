@@ -18,6 +18,8 @@ public:
 	NET_Packet*			Create	(const NET_Packet& _other);
 	NET_Packet*			Retreive();
 	void				Release	();
+	inline void			Lock	() { cs.Enter(); };
+	inline void			Unlock	() { cs.Leave(); };
 };
 
 
@@ -88,8 +90,10 @@ public:
 	LPCSTR					net_SessionName			()	{ return *(net_Hosts.front().dpSessionName); }
 
 	// receive
-	IC virtual	NET_Packet*			net_msg_Retreive		()	{ return net_Queue.Retreive();	}
-	IC void					net_msg_Release			()	{ net_Queue.Release();			}
+	IC void							StartProcessQueue		()	{ net_Queue.Lock(); }; // WARNING ! after Start mast be End !!! <-
+	IC virtual	NET_Packet*			net_msg_Retreive		()	{ return net_Queue.Retreive();	};//							|
+	IC void							net_msg_Release			()	{ net_Queue.Release();			};//							|
+	IC void							EndProcessQueue			()	{ net_Queue.Unlock();			};//							<-
 
 	// send
 	virtual	void			Send					(NET_Packet& P, u32 dwFlags=DPNSEND_GUARANTEED, u32 dwTimeout=0);
@@ -101,7 +105,7 @@ public:
 	virtual void			OnConnectRejected		()	{};
 	BOOL					net_HasBandwidth		();
 	void					ClearStatistic			();
-	IClientStatistic		GetStatistic			() const {return  net_Statistic; }
+	IClientStatistic&		GetStatistic			() {return  net_Statistic; }
 	void					UpdateStatistic			();
 
 			bool			GetServerAddress		(ip_address& pAddress, DWORD* pPort);

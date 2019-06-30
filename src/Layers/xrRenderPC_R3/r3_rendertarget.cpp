@@ -606,6 +606,28 @@ CRenderTarget::CRenderTarget		()
 		u_setrt						( Device.dwWidth,Device.dwHeight,HW.pBaseRT,NULL,NULL,HW.pBaseZB);
 	}
 
+	// HBAO
+	if (RImplementation.o.ssao_opt_data)
+	{
+		u32		w = 0;
+		u32		h = 0;
+		if (RImplementation.o.ssao_half_data)
+		{
+			w = Device.dwWidth / 2;
+			h = Device.dwHeight / 2;
+		}
+		else
+		{
+			w = Device.dwWidth;
+			h = Device.dwHeight;
+		}
+
+		D3DFORMAT	fmt = HW.Caps.id_vendor==0x10DE?D3DFMT_R32F:D3DFMT_R16F;
+		rt_half_depth.create		(r2_RT_half_depth, w, h, fmt);
+
+		s_ssao.create				(b_ssao, "r2\\ssao");
+	}
+
 	if (RImplementation.o.ssao_blur_on)
 	{
 		u32		w = Device.dwWidth, h = Device.dwHeight;
@@ -651,6 +673,23 @@ CRenderTarget::CRenderTarget		()
 
 	// Build textures
 	{
+		// Testure for async sreenshots
+		{
+			D3D10_TEXTURE2D_DESC	desc;
+			desc.Width = Device.dwWidth;
+			desc.Height = Device.dwHeight;
+			desc.MipLevels = 1;
+			desc.ArraySize = 1;
+			desc.SampleDesc.Count = 1;
+			desc.SampleDesc.Quality = 0;
+			desc.Format = DXGI_FORMAT_R8G8B8A8_SNORM;
+			desc.Usage = D3D10_USAGE_STAGING;
+			desc.BindFlags = 0;
+			desc.CPUAccessFlags = D3D10_CPU_ACCESS_READ;
+			desc.MiscFlags = 0;
+
+			R_CHK( HW.pDevice->CreateTexture2D(&desc, 0, &t_ss_async) );
+		}
 		// Build material(s)
 		{
 			//	Create immutable texture. 
@@ -780,7 +819,7 @@ CRenderTarget::CRenderTarget		()
 
 			D3D10_SUBRESOURCE_DATA	subData[TEX_jitter_count];
 			
-			for (int it=0; it<TEX_jitter_count; it++)
+			for (int it=0; it<TEX_jitter_count-1; it++)
 			{
 				subData[it].pSysMem = tempData[it];
 				subData[it].SysMemPitch = desc.Width*sampleSize;
@@ -791,9 +830,9 @@ CRenderTarget::CRenderTarget		()
 			{
 				for (u32 x=0; x<TEX_jitter; x++)
 				{
-					DWORD	data	[TEX_jitter_count];
-					generate_jitter	(data,TEX_jitter_count);
-					for (u32 it=0; it<TEX_jitter_count; it++)
+					DWORD	data	[TEX_jitter_count-1];
+					generate_jitter	(data,TEX_jitter_count-1);
+					for (u32 it=0; it<TEX_jitter_count-1; it++)
 					{
 						u32*	p	=	(u32*)	
 							(LPBYTE (subData[it].pSysMem) 
@@ -809,7 +848,7 @@ CRenderTarget::CRenderTarget		()
 			//	R_CHK						(t_noise_surf[it]->UnlockRect(0));
 			//}
 
-			for (int it=0; it<TEX_jitter_count; it++)
+			for (int it=0; it<TEX_jitter_count-1; it++)
 			{
 				string_path					name;
 				sprintf						(name,"%s%d",r2_jitter,it);
@@ -819,6 +858,61 @@ CRenderTarget::CRenderTarget		()
 				t_noise[it]->surface_set	(t_noise_surf[it]);
 				//R_CHK						(t_noise_surf[it]->LockRect	(0,&R[it],0,0));
 			}
+
+			float tempDataHBAO[TEX_jitter*TEX_jitter*4];
+
+			// generate HBAO jitter texture (last)
+			D3D10_TEXTURE2D_DESC	descHBAO;
+			descHBAO.Width = TEX_jitter;
+			descHBAO.Height = TEX_jitter;
+			descHBAO.MipLevels = 1;
+			descHBAO.ArraySize = 1;
+			descHBAO.SampleDesc.Count = 1;
+			descHBAO.SampleDesc.Quality = 0;
+			descHBAO.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+			//desc.Usage = D3D10_USAGE_IMMUTABLE;
+			descHBAO.Usage = D3D10_USAGE_DEFAULT;
+			descHBAO.BindFlags = D3D10_BIND_SHADER_RESOURCE;
+			descHBAO.CPUAccessFlags = 0;
+			descHBAO.MiscFlags = 0;
+			
+			it = TEX_jitter_count-1;
+			subData[it].pSysMem = tempDataHBAO;
+			subData[it].SysMemPitch = descHBAO.Width*sampleSize * sizeof(float);
+			
+			// Fill it,
+			for (u32 y=0; y<TEX_jitter; y++)
+			{
+				for (u32 x=0; x<TEX_jitter; x++)
+				{
+					float numDir = 1.0f;
+					switch (ps_r_ssao)
+					{
+					case 1: numDir = 4.0f; break;
+					case 2: numDir = 6.0f; break;
+					case 3: numDir = 8.0f; break;
+					}
+					float angle = 2 * PI * ::Random.randF(0.0f, 1.0f) / numDir;
+					float dist = ::Random.randF(0.0f, 1.0f);
+
+					float *p	=	(float*)	
+						(LPBYTE (subData[it].pSysMem) 
+						+ y*subData[it].SysMemPitch 
+						+ x*4*sizeof(float));
+					*p = (float)(cos(angle));
+					*(p+1) = (float)(sin(angle));
+					*(p+2) = (float)(dist);
+					*(p+3) = 0;
+				}
+			}			
+			
+			string_path					name;
+			sprintf						(name,"%s%d",r2_jitter,it);
+			//R_CHK	(D3DXCreateTexture	(HW.pDevice,TEX_jitter,TEX_jitter,1,0,D3DFMT_Q8W8V8U8,D3DPOOL_MANAGED,&t_noise_surf[it]));
+			R_CHK( HW.pDevice->CreateTexture2D(&descHBAO, &subData[it], &t_noise_surf[it]) );
+			t_noise[it]					= dxRenderDeviceRender::Instance().Resources->_CreateTexture	(name);
+			t_noise[it]->surface_set	(t_noise_surf[it]);
+
 
 			//	Create noise mipped
 			{
@@ -852,6 +946,8 @@ CRenderTarget::CRenderTarget		()
 
 CRenderTarget::~CRenderTarget	()
 {
+	_RELEASE					(t_ss_async);
+
 	// Textures
 	t_material->surface_set		(NULL);
 

@@ -326,6 +326,8 @@ void dxRenderDeviceRender::Clear()
 #endif	//	USE_DX10
 }
 
+void DoAsyncScreenshot();
+
 void dxRenderDeviceRender::End()
 {
 	VERIFY	(HW.pDevice);
@@ -334,6 +336,8 @@ void dxRenderDeviceRender::End()
 
 	RCache.OnFrameEnd	();
 	Memory.dbg_check		();
+
+	DoAsyncScreenshot();
 
 #ifdef	USE_DX10
 	HW.m_pSwapChain->Present( 0, 0 );

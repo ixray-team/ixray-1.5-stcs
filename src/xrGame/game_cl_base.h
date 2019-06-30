@@ -42,6 +42,7 @@ public:
 	PLAYERS_MAP							players;
 	ClientID							local_svdpnid;
 	game_PlayerState*					local_player;
+	game_PlayerState*					lookat_player();
 //.	xr_vector<CGameObject*>				targets;
 
 

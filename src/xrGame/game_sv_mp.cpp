@@ -21,6 +21,7 @@
 #include "xrGameSpyServer.h"
 
 #include "game_sv_mp_vote_flags.h"
+#include "player_name_modifyer.h"
 
 u32		g_dwMaxCorpses = 10;
 //-----------------------------------------------------------------
@@ -34,6 +35,8 @@ int			g_sv_mp_iDumpStats_last			= 0;
 BOOL		g_sv_mp_bCountParticipants		= FALSE;
 float		g_sv_mp_fVoteQuota			= VOTE_QUOTA;
 float		g_sv_mp_fVoteTime				= VOTE_LENGTH_TIME;
+BOOL		g_sv_mp_save_proxy_screenshots	= FALSE;
+BOOL		g_sv_mp_save_proxy_configs		= FALSE;
 //-----------------------------------------------------------------
 
 extern xr_token	round_end_result_str[];
@@ -139,9 +142,11 @@ void game_sv_mp::OnRoundStart()
 			tmp_ps->m_online_time = Level().timeServer();
 		}
 	};
+	m_server->clear_DisconnectedClients();
 	ready_clearer tmp_functor;
 	m_server->ForEachClientDo(tmp_functor);
 	m_async_stats_request_time = 0;
+	
 	
 	// 1. We have to destroy all delayed events
 	CleanDelayedEvents();
@@ -441,6 +446,7 @@ void game_sv_mp::ReconnectPlayer(ClientID const & clientID)
 
 bool g_bConsoleCommandsCreated = false;
 extern	float	g_fTimeFactor;
+#define SAVE_SCREENSHOTS_KEY "-savescreenshots"
 void game_sv_mp::Create (shared_str &options)
 {
 	SetVotingActive(false);
@@ -456,6 +462,10 @@ void game_sv_mp::Create (shared_str &options)
 	//------------------------------------------------------------------
 	Set_RankUp_Allowed(false);
 	m_cdkey_ban_list.load();
+	if (strstr(Core.Params, SAVE_SCREENSHOTS_KEY))
+	{
+		g_sv_mp_save_proxy_screenshots = TRUE;
+	}
 };
 
 u8	game_sv_mp::SpectatorModes_Pack		()
@@ -777,7 +787,13 @@ void game_sv_mp::ChargeAmmo(CSE_ALifeItemWeapon* weapon,
 void game_sv_mp::ChargeGrenades(CSE_ALifeItemWeapon* weapon, LPCSTR grenade_string, game_PlayerState::PLAYER_ITEMS_LIST & playerItems)
 {
 	int grenades_count		= _GetItemCount(grenade_string);
-	weapon->a_elapsed_grenades	= 0;
+	R_ASSERT2(grenades_count <= 4,
+		make_string("weapon [%s] has greater than 4 types of grenade [%s]",
+			weapon->s_name.c_str(),
+			grenade_string
+		).c_str()
+	);
+	weapon->a_elapsed_grenades.unpack_from_byte(0);
 
 	string512	temp_ammo_class;
 	for (int i = 0; i < grenades_count; ++i)
@@ -792,7 +808,8 @@ void game_sv_mp::ChargeGrenades(CSE_ALifeItemWeapon* weapon, LPCSTR grenade_stri
 		if (temp_iter != playerItems.end())
 		{
 			playerItems.erase(temp_iter);
-			weapon->a_elapsed_grenades = 1;
+			weapon->a_elapsed_grenades.grenades_count	=	1;
+			weapon->a_elapsed_grenades.grenades_type	=	i;
 			break;
 		}
 	}
@@ -835,7 +852,7 @@ void	game_sv_mp::SetAmmoForWeapon(CSE_ALifeItemWeapon* weapon,
 #ifdef DEBUG
 		Msg("! WARNING: not found grenade_class for [%s]", weapon->s_name.c_str());
 #endif
-			weapon->a_elapsed_grenades	= 0;
+			weapon->a_elapsed_grenades.unpack_from_byte(0);
 			return;
 		} else
 		{
@@ -1456,7 +1473,7 @@ void	game_sv_mp::SendPlayerKilledMessage	(u16 KilledID, KILL_TYPE KillType, u16 
 			game_PlayerState* ps = tmp_client->ps;
 			if (!ps || !tmp_client->net_Ready)
 				return;
-			server_for_send->SendTo(client->ID, *P);
+			server_for_send->SecureSendTo(tmp_client, *P);
 		}
 	};
 
@@ -1468,8 +1485,11 @@ void	game_sv_mp::SendPlayerKilledMessage	(u16 KilledID, KILL_TYPE KillType, u16 
 
 void	game_sv_mp::OnPlayerChangeName		(NET_Packet& P, ClientID sender)
 {
-	string1024 NewName = "";
-	P.r_stringZ(NewName);
+	string1024 received_name = "";
+	P.r_stringZ			(received_name);
+	string256 NewName;
+	modify_player_name	(received_name, NewName);
+
 	xrClientData*	pClient	= (xrClientData*)m_server->ID_to_client	(sender);
 	
 	if (!pClient || !pClient->net_Ready) return;
@@ -2259,4 +2279,12 @@ void game_sv_mp::UnBanPlayer(size_t banned_player_index)
 void game_sv_mp::PrintBanList(char const * filter = NULL)
 {
 	m_cdkey_ban_list.print_ban_list(filter);
+}
+
+void game_sv_mp::SetCanOpenBuyMenu(ClientID id)
+{
+	NET_Packet bm_ready;
+	bm_ready.w_begin	( M_GAMEMESSAGE ); 
+	bm_ready.w_u32		( GAME_EVENT_PLAYER_BUYMENU_CLOSE );
+	m_server->SendTo	(id, bm_ready, net_flags(TRUE, TRUE));
 }

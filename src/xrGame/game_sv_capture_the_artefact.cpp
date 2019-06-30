@@ -142,7 +142,7 @@ void game_sv_CaptureTheArtefact::Update()
 			break;
 		case GAME_PHASE_PENDING:
 			CheckStatisticsReady();
-			if (!roundStarted)
+			if (!roundStarted && Level().m_bGameConfigStarted) ////in case of starting server stage (net_start 1..6) we can't do restart ....
 			{
 				if (CheckForAllPlayersReady())
 				{
@@ -220,7 +220,6 @@ void game_sv_CaptureTheArtefact::SM_SwitchOnPlayer(CObject* pNewObject)
 	m_dwSM_LastSwitchTime			= Level().timeServer() + m_dwSM_SwitchDelta;
 }
 
-#define MAX_PLAYERS_COUNT 32
 void game_sv_CaptureTheArtefact::SM_SwitchOnNextActivePlayer()
 {
 	struct next_active_player_switcher
@@ -828,6 +827,7 @@ void game_sv_CaptureTheArtefact::OnPlayerSelectTeam(NET_Packet& P, ClientID send
 {
 	xrClientData * l_pC = m_server->ID_to_client(sender);
 	R_ASSERT2(l_pC, make_string("Client data not found, id = <%d>", sender.value()));
+	s8 prev_team = l_pC->ps->team;
 	s8 selectedTeam;
 	P.r_s8(selectedTeam);
 	OnPlayerChangeTeam(l_pC->ps, selectedTeam);
@@ -838,6 +838,8 @@ void game_sv_CaptureTheArtefact::OnPlayerSelectTeam(NET_Packet& P, ClientID send
 	selTeamRespPacket.w_u8(PLAYER_CHANGE_TEAM);
 	selTeamRespPacket.w_u8(l_pC->ps->team);
 	m_server->SendTo(sender,selTeamRespPacket,net_flags(TRUE,TRUE));
+	if (prev_team != selectedTeam)
+		KillPlayer(l_pC->ID, l_pC->ps->GameID);
 }
 void game_sv_CaptureTheArtefact::OnPlayerChangeTeam(game_PlayerState * playerState, s8 team)
 {
@@ -2541,6 +2543,7 @@ void game_sv_CaptureTheArtefact::ClearReadyFlagFromAll()
 
 void game_sv_CaptureTheArtefact::WriteGameState(CInifile& ini, LPCSTR sect, bool bRoundResult)
 {
+	inherited::WriteGameState(ini, sect, bRoundResult);
 	ini.w_u32(sect, "team_0_score", teams[etGreenTeam].score);
 	ini.w_u32(sect, "team_1_score", teams[etBlueTeam].score);
 	ini.w_s32(sect,"timelimit_mins", GetTimeLimit());

@@ -196,12 +196,13 @@ ICF static BOOL grenade_hit_callback(collide::rq_result& result, LPVOID params)
 		mtl_idx			= T->material;
 	}	
 	SGameMtl* mtl		= GMLib.GetMaterialByIdx(mtl_idx);
-	ep.shoot_factor		*=mtl->fShootFactor;
+	float shoot_factor = 1.f - mtl->fShootFactor;
+	ep.shoot_factor		*=shoot_factor;
 #ifdef DEBUG
 	if(ph_dbg_draw_mask.test(phDbgDrawExplosions))
 	{
 		Fvector p;p.set(ep.l_dir);p.mul(result.range);p.add(ep.source_p);
-		u8 c	=u8(mtl->fShootFactor*255.f);
+		u8 c	=u8(shoot_factor*255.f);
 		DBG_DrawPoint(p,0.1f,D3DCOLOR_XRGB(255-c,0,c));
 	}
 #endif
