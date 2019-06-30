@@ -62,6 +62,11 @@ struct SActorSprintState
 	MotionID		legs_fwd;
 	MotionID		legs_ls;
 	MotionID		legs_rs;
+	
+	MotionID		legs_jump_fwd;
+	MotionID		legs_jump_ls;
+	MotionID		legs_jump_rs;
+
 	void Create		(IKinematicsAnimated* K);
 };
 

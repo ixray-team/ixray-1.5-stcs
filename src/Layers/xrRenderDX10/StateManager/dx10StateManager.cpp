@@ -50,6 +50,7 @@ void dx10StateManager::Reset()
 
 	m_bOverrideScissoring = false;
 	m_bOverrideScissoringValue = FALSE;
+   m_uiSampleMask = 0xffffffff;
 }
 
 void dx10StateManager::UnmapConstants()
@@ -198,9 +199,8 @@ void dx10StateManager::Apply()
 		}
 
 		static const FLOAT BlendFactor[4] = {0.000f, 0.000f, 0.000f, 0.000f};
-		static const UINT SampleMask = 0xffffffff;
 
-		HW.pDevice->OMSetBlendState(m_pBlendState, BlendFactor, SampleMask);
+		HW.pDevice->OMSetBlendState(m_pBlendState, BlendFactor, m_uiSampleMask);
 		m_bBSNeedApply = false;
 	}
 }
@@ -237,7 +237,7 @@ void dx10StateManager::SetStencil(u32 Enable, u32 Func, u32 Ref, u32 Mask, u32 W
 
 	//if (stencil_mask		!= _mask)		{ stencil_mask=_mask;			CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILMASK,		_mask				)); }
 	UINT8	SMask = (UINT8)Mask;
-	if( m_DSDesc.StencilReadMask != SMask)
+	if( m_DSDesc.StencilReadMask != SMask )
 	{
 		m_bDSSChanged = true;
 		m_DSDesc.StencilReadMask = SMask;
@@ -248,7 +248,7 @@ void dx10StateManager::SetStencil(u32 Enable, u32 Func, u32 Ref, u32 Mask, u32 W
 	if( m_DSDesc.StencilWriteMask != SMask)
 	{
 		m_bDSSChanged = true;
-		m_DSDesc.StencilWriteMask = SMask;
+      m_DSDesc.StencilWriteMask = SMask;
 	}
 
 	//if (stencil_fail		!= _fail)		{ stencil_fail=_fail;			CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFAIL,		_fail				)); }
@@ -351,6 +351,15 @@ void dx10StateManager::SetColorWriteEnable(u32 WriteMask)
 	}
 }
 
+void dx10StateManager::SetSampleMask( u32 SampleMask )
+{
+   if( m_uiSampleMask != SampleMask )
+   {
+      m_uiSampleMask = SampleMask;
+		m_bBSNeedApply = true;
+   }
+}
+
 void dx10StateManager::SetCullMode(u32 Mode)
 {
 	ValidateRDesc();
@@ -362,6 +371,17 @@ void dx10StateManager::SetCullMode(u32 Mode)
 	{
 		m_bRSChanged = true;
 		m_RDesc.CullMode = CMode;
+	}
+}
+
+void dx10StateManager::SetMultisample(u32 Enable)
+{
+	ValidateRDesc();
+
+	if (m_RDesc.MultisampleEnable!=BOOL(Enable))
+	{
+		m_bRSChanged = true;
+		m_RDesc.MultisampleEnable=BOOL(Enable);
 	}
 }
 

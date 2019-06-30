@@ -178,6 +178,14 @@ bool CUIXmlInit::InitStatic(CUIXml& xml_doc, LPCSTR path,
 	int flag = xml_doc.ReadAttribInt(path, index, "heading", 0);
 	pWnd->EnableHeading( (flag)?true:false);
 
+	float heading_angle = xml_doc.ReadAttribFlt(path, index, "heading_angle", 0.0f);
+	if ( !fis_zero( heading_angle ) )
+	{
+		pWnd->EnableHeading( true );
+		pWnd->SetConstHeading( true );
+		pWnd->SetHeading( deg2rad( heading_angle ) );
+	}
+
 	LPCSTR str_flag				= xml_doc.ReadAttrib(path, index, "light_anim",		"");
 	int flag_cyclic				= xml_doc.ReadAttribInt(path, index, "la_cyclic",	1);
 	int flag_text				= xml_doc.ReadAttribInt(path, index, "la_text",		1);
@@ -881,16 +889,17 @@ bool CUIXmlInit::InitCustomEdit(CUIXml& xml_doc, const char* path, int index, CU
 //		pWnd->SetDbClickMode();
 
 	int max_count = xml_doc.ReadAttribInt(path, index, "max_symb_count", 0);
-	bool num_only = (xml_doc.ReadAttribInt(path, index, "num_only", 0) == 1);
-	bool read_only = (xml_doc.ReadAttribInt(path, index, "read_only", 0) == 1);
+	bool num_only       = (xml_doc.ReadAttribInt(path, index, "num_only", 0) == 1);
+	bool read_only      = (xml_doc.ReadAttribInt(path, index, "read_only", 0) == 1);
+	bool file_name_mode = (xml_doc.ReadAttribInt(path, index, "file_name_mode", 0) == 1);
 
-	if ( read_only || num_only || 0 < max_count )
+	if ( file_name_mode || read_only || num_only || 0 < max_count )
 	{
 		if ( max_count <= 0 )
 		{
 			max_count = 32;
 		}
-		pWnd->Init( max_count, num_only, read_only );
+		pWnd->Init( max_count, num_only, read_only, file_name_mode );
 	}
 
 //-		if (xml_doc.ReadAttribInt(path,index,"float",0))

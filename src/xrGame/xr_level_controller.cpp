@@ -502,10 +502,18 @@ public:
 			pbinding->m_keyboard[0]	= NULL;
 			pbinding->m_keyboard[1]	= NULL;
 		}
-
 		bindConsoleCmds.clear();
-//.		Console->Execute("cfg_load default_controls.ltx");
+	}
+};
 
+class CCC_DefControls : public CCC_UnBindAll
+{
+public:
+	CCC_DefControls(LPCSTR N) : CCC_UnBindAll(N){}
+
+	virtual void Execute(LPCSTR args) 
+	{
+		CCC_UnBindAll::Execute(args);
 		string_path				_cfg;
 		string_path				cmd;
 		FS.update_path			(_cfg,"$game_config$","default_controls.ltx");
@@ -623,6 +631,7 @@ void CCC_RegisterInput()
 	CMD2(CCC_UnBind,			"unbind",				0);
 	CMD2(CCC_UnBind,			"unbind_sec",			1);
 	CMD1(CCC_UnBindAll,			"unbindall"				);
+	CMD1(CCC_DefControls,		"default_controls"		);
 	CMD1(CCC_ListActions,		"list_actions"			);
 
 	CMD1(CCC_BindList,			"bind_list"				);

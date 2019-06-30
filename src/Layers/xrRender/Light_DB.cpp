@@ -3,6 +3,7 @@
 #include "../../xrEngine/xrLevel.h"
 #include "../../xrEngine/igame_persistent.h"
 #include "../../xrEngine/environment.h"
+#include "../../utils/xrLC_Light/R_light.h"
 #include "light_db.h"
 
 CLight_DB::CLight_DB()
@@ -98,9 +99,67 @@ void CLight_DB::Load			(IReader *fs)
 	*/
 }
 
+#if RENDER != R_R1
+void	CLight_DB::LoadHemi	()
+{
+	string_path fn_game;
+	if ( FS.exist( fn_game, "$level$", "build.lights" ) )
+	{
+		IReader *F	= FS.r_open( fn_game );
+
+		{
+			IReader* chunk = F->open_chunk(1);//Hemispheric light chunk
+			
+			if (chunk)
+			{
+				u32 size		= chunk->length();
+				u32 element		= sizeof(R_Light);
+				u32 count		= size/element;
+				VERIFY			(count*element == size);
+				v_hemi.reserve(count);
+				for (u32 i=0; i<count; i++) 
+				{
+					R_Light		Ldata;
+
+					chunk->r(&Ldata, sizeof(R_Light));
+
+					if (Ldata.type == D3DLIGHT_POINT)
+					//if (Ldata.type!=0)
+					{
+						light*		L				= Create	();
+						L->flags.bStatic			= true;
+						L->set_type					(IRender_Light::POINT);
+
+						Fvector tmp_D,tmp_R;
+						tmp_D.set			(0,0,-1);	// forward
+						tmp_R.set			(1,0,0);	// right
+
+						// point
+						v_hemi.push_back	(L);
+						L->set_position		(Ldata.position		);
+						L->set_rotation		(tmp_D, tmp_R		);
+						L->set_range		(Ldata.range		);
+						L->set_color		(Ldata.diffuse.x, Ldata.diffuse.y, Ldata.diffuse.z);
+						L->set_active		(true				);
+						L->set_attenuation_params(Ldata.attenuation0, Ldata.attenuation1, Ldata.attenuation2, Ldata.falloff);
+						L->spatial.type = STYPE_LIGHTSOURCEHEMI;
+						//				R_ASSERT			(L->spatial.sector	);
+					}
+				}
+
+				chunk->close			();
+			}
+		}
+
+		FS.r_close(F);
+	}
+}
+#endif
+
 void			CLight_DB::Unload	()
 {
 	v_static.clear			();
+	v_hemi.clear			();
 	sun_original.destroy	();
 	sun_adapted.destroy		();
 }

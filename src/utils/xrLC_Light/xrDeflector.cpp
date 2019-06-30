@@ -107,7 +107,7 @@ IC BOOL UVpointInside(Fvector2 &P, UVtri &T)
 	return T.isInside(P,B);
 }
 
-CDeflector::CDeflector()
+CDeflector::CDeflector(): _net_session(0)
 {
 	Deflector		= this;
 	normal.set		(0,1,0);
@@ -178,9 +178,9 @@ void CDeflector::OA_Export()
 	size.sub		(max,min);
 
 	// Surface
-	VERIFY(lc_global_data());
-	u32 dwWidth		= iCeil(size.x*lc_global_data()->g_params().m_lm_pixels_per_meter*density+.5f); clamp(dwWidth, 1u,512u-2*BORDER);
-	u32 dwHeight	= iCeil(size.y*lc_global_data()->g_params().m_lm_pixels_per_meter*density+.5f); clamp(dwHeight,1u,512u-2*BORDER);
+	VERIFY(inlc_global_data());
+	u32 dwWidth		= iCeil(size.x*inlc_global_data()->g_params().m_lm_pixels_per_meter*density+.5f); clamp(dwWidth, 1u,512u-2*BORDER);
+	u32 dwHeight	= iCeil(size.y*inlc_global_data()->g_params().m_lm_pixels_per_meter*density+.5f); clamp(dwHeight,1u,512u-2*BORDER);
 	layer.create	(dwWidth,dwHeight);
 }
 
@@ -188,8 +188,8 @@ BOOL CDeflector::OA_Place	(Face *owner)
 {
 	// It is not correct to rely solely on normal-split-angle for lmaps - imagine smooth sphere
 	float cosa = normal.dotproduct(owner->N);
-	VERIFY( lc_global_data() );
-	if (cosa<_cos(deg2rad(lc_global_data()->g_params().m_sm_angle+1))) return FALSE;
+	VERIFY( inlc_global_data() );
+	if (cosa<_cos(deg2rad(inlc_global_data()->g_params().m_sm_angle+1))) return FALSE;
 
 	UVtri				T;
 	T.owner				= owner;
@@ -329,7 +329,7 @@ u16	CDeflector:: GetBaseMaterial		()
 
 
 
-void	CDeflector::read				( IReader	&r )
+void	CDeflector::read				( INetReader	&r )
 {
 	u32 sz_polys = r.r_u32();
 	UVpolys.resize( sz_polys );
@@ -338,7 +338,7 @@ void	CDeflector::read				( IReader	&r )
 	{
 		UVpolys[i].read( r );
 		VERIFY( UVpolys[i].owner );
-		VERIFY( !UVpolys[i].owner->pDeflector );
+		//VERIFY( !UVpolys[i].owner->pDeflector );
 		UVpolys[i].owner->pDeflector = this;
 	}
 
@@ -374,3 +374,16 @@ CDeflector*		CDeflector::read_create					()
 	return xr_new<CDeflector>();
 }
 
+void DumpDeflctor( u32 id )
+{
+	VERIFY( inlc_global_data()->g_deflectors().size()>id );
+	const CDeflector &D = *inlc_global_data()->g_deflectors()[id];
+	clMsg( "deflector id: %d - faces num: %d ", id, D.UVpolys.size() );
+}
+void DeflectorsStats ()
+{
+	u32 size =  inlc_global_data()->g_deflectors().size();
+	clMsg( "num deflectors: %d", size);
+	for( u32 i = 0; i <size ; i++ )
+			DumpDeflctor( i ); 
+}

@@ -3,8 +3,7 @@
 #include "../../common/face_smoth_flags.h"
 
 
-extern bool g_using_smooth_groups;
-extern bool g_smooth_groups_by_faces;
+
 
 
 template<typename  typeVertex>

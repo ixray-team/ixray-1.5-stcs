@@ -150,6 +150,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemWeapon,CSE_ALifeItem)
 	u8								ammo_type;
 	u16								a_current;
 	u16								a_elapsed;
+	u8								a_elapsed_grenades;	//count of grenades to spawn in grenade launcher
 	float							m_fHitPower;
 	ALife::EHitType					m_tHitType;
 	LPCSTR							m_caAmmoSections;

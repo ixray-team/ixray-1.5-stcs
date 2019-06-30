@@ -1229,11 +1229,11 @@ void	game_sv_ArtefactHunt::check_Player_for_Invincibility	(game_PlayerState* ps)
 void	game_sv_ArtefactHunt::Check_ForClearRun		(game_PlayerState* ps)
 {
 	if (!ps) return;
-	if (!ps->m_bClearRun)
+	/*if (!ps->m_bClearRun)
 	{
 		ps->m_bClearRun = true;
 		return;
-	};
+	};*/
 	TeamStruct* pTeam		= GetTeamData(u8(ps->team));
 	if (!pTeam) return;	
 

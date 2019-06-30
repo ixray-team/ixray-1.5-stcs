@@ -724,7 +724,7 @@ void CPHElement::InterpolateGlobalTransform(Fmatrix* m){
 	m_flags.set(flUpdate,FALSE);
 	VERIFY(_valid(*m));
 }
-void CPHElement::GetGlobalTransformDynamic(Fmatrix* m)
+void CPHElement::GetGlobalTransformDynamic(Fmatrix* m) const
 {
 	PHDynamicData::DMXPStoFMX(dBodyGetRotation(m_body),dBodyGetPosition(m_body),*m);
 	MulB43InverceLocalForm(*m);

@@ -8,6 +8,9 @@
 #include "../string_table.h"
 #include "UIMpItemsStoreWnd.h"
 
+#include "../Weapon.h"
+#include "../WeaponMagazinedWGrenade.h"
+#include "UICellCustomItems.h"
 
 extern "C"
 DLL_Pure*	__cdecl xrFactory_Create		(CLASS_ID clsid);
@@ -163,6 +166,159 @@ SBuyItemInfo* CUIMpTradeWnd::FindItem(CUICellItem* item)
 	return			NULL;
 }
 
+bool CUIMpTradeWnd::HasItemInGroup(shared_str const & section_name)
+{
+	return m_store_hierarchy->FindItem(section_name) ? true : false;
+}
+
+void CUIMpTradeWnd::DeleteHelperItems ()
+{
+	int lists[] = { e_medkit, e_granade, e_rifle_ammo, e_pistol_ammo };
+
+	for ( int i=0; i<sizeof(lists)/sizeof(lists[0]); ++i )
+	{
+		DeleteHelperItems(m_list[lists[i]]);
+	}
+}
+
+void CUIMpTradeWnd::DeleteHelperItems (CUIDragDropListEx* list)
+{
+	ITEMS_vec to_sell;
+	for ( ITEMS_vec::iterator it	=	m_all_items.begin();
+							  it	!=	m_all_items.end();
+							  ++it )
+	{
+		SBuyItemInfo*		  item			=	*it;
+
+		if ( item->m_cell_item->OwnerList() != list )
+		{
+			continue;
+		}
+
+		if ( item->GetState() != SBuyItemInfo::e_bought && item->GetState() != SBuyItemInfo::e_own )
+		{
+			continue;
+		}
+
+		if ( item->m_cell_item->IsHelper() )
+		{
+			to_sell.push_back(item);
+		}
+	}
+
+	for ( ITEMS_vec::iterator it	=	to_sell.begin();
+							  it	!=	to_sell.end();
+							  ++it )
+	{
+		SBuyItemInfo* tempo = NULL;
+		TryToSellItem(*it, true, tempo);
+	}
+}
+
+void CUIMpTradeWnd::UpdateHelperItems ()
+{
+	DeleteHelperItems();
+
+	int lists[] = { e_medkit, e_granade, e_rifle_ammo, e_pistol_ammo };
+
+	for ( int i=0; i<sizeof(lists)/sizeof(lists[0]); ++i )
+	{
+		CreateHelperItems(m_list[lists[i]]);
+	}
+}
+
+void CUIMpTradeWnd::CreateHelperItems (xr_vector<shared_str>& ammo_types)
+{
+	for ( xr_vector<shared_str>::iterator it	=	ammo_types.begin(); 
+										  it   !=	ammo_types.end();
+										++it )
+	{
+		const shared_str&	ammo_name			=	*it;
+		if ( !m_store_hierarchy->FindItem			(ammo_name) )
+		{
+			continue;
+		}
+
+		SBuyItemInfo*		ammo_item			=	CreateItem(ammo_name, SBuyItemInfo::e_undefined, false);
+		ammo_item->m_cell_item->SetIsHelper			(true);
+		TryToBuyItem								(ammo_item, bf_normal, NULL);
+	}
+}
+
+void CUIMpTradeWnd::CreateHelperItems (CUIDragDropListEx* list, const CStoreHierarchy::item* shop_level)
+{
+	for ( xr_vector<shared_str>::const_iterator	
+										it		=	shop_level->m_items_in_group.begin();
+										it	   !=	shop_level->m_items_in_group.end();
+										++it )
+	{
+		shared_str item_name					=	*it;
+		CUIDragDropListEx*	match_list			=	GetMatchedListForItem(item_name);
+
+		if ( match_list == list )
+		{
+			SBuyItemInfo*	new_item			=	CreateItem(item_name, SBuyItemInfo::e_undefined, false);
+
+			CUIInventoryCellItem* inventory_cell_item;
+			if ( (inventory_cell_item = dynamic_cast<CUIInventoryCellItem*>(new_item->m_cell_item)) != NULL )
+			{
+				inventory_cell_item->SetIsHelper(true);
+				inventory_cell_item->UpdateItemText();
+
+				TryToBuyItem						(new_item, bf_normal, NULL);
+			}
+		}
+	}
+
+	for ( u32								i	=	0; 
+											i	<	shop_level->ChildCount(); 
+										  ++i )
+	{
+		const CStoreHierarchy::item* child		=	&shop_level->ChildAtIdx(i);
+		CreateHelperItems							(list, child);
+	}
+}
+
+void CUIMpTradeWnd::CreateHelperItems (CUIDragDropListEx* list)
+{
+	CUIDragDropListEx* parent_list = NULL;
+
+	if ( list == m_list[e_pistol_ammo] )
+	{
+		parent_list								=	m_list[e_pistol];
+	}
+	else if ( list == m_list[e_rifle_ammo] )
+	{
+		parent_list								=	m_list[e_rifle];
+	}
+
+	if ( list == m_list[e_medkit] || list == m_list[e_granade] )
+	{
+		CreateHelperItems(list, &m_store_hierarchy->GetRoot());
+		return;
+	}
+
+	VERIFY(parent_list);
+	if ( !parent_list->ItemsCount() )
+	{
+		return;
+	}
+
+	CInventoryItem* parent_item					=	(CInventoryItem*)parent_list->GetItemIdx(0)->m_pData;
+	CWeapon*		wpn							=	smart_cast<CWeapon*>(parent_item);
+	R_ASSERT	   (wpn);
+
+	CreateHelperItems								(wpn->m_ammoTypes);
+
+	if ( CWeaponMagazinedWGrenade* wpn2			=	smart_cast<CWeaponMagazinedWGrenade*>(parent_item) )
+	{
+		if ( wpn2->IsGrenadeLauncherAttached() )
+		{
+			CreateHelperItems						(wpn2->m_ammoTypes2);
+		}
+	}
+}
+
 void CUIMpTradeWnd::UpdateCorrespondingItemsForList(CUIDragDropListEx* _list)
 {
 	CUIDragDropListEx* dependent_list	= NULL;
@@ -176,6 +332,8 @@ void CUIMpTradeWnd::UpdateCorrespondingItemsForList(CUIDragDropListEx* _list)
 
 	if(!dependent_list)	return;
 
+	DeleteHelperItems(dependent_list);
+
 	xr_list<SBuyItemInfo*>	_tmp_list;
 	while(dependent_list->ItemsCount()!=0)
 	{
@@ -185,6 +343,8 @@ void CUIMpTradeWnd::UpdateCorrespondingItemsForList(CUIDragDropListEx* _list)
 		_tmp_list.push_back		( bi );
 		bag_list->SetItem		( ci2 );
 	};
+
+	CreateHelperItems(dependent_list);
 
 	if(_list->ItemsCount()!=0)
 	{
@@ -302,7 +462,7 @@ struct eq_group_state_comparer
 	eq_group_state_comparer	(const shared_str& _group, SBuyItemInfo::EItmState _state):m_group(_group),m_state(_state){}
 	bool	operator	() (SBuyItemInfo* info)
 	{
-		if((info->GetState()==m_state))
+		if( !info->m_cell_item->IsHelper() && (info->GetState()==m_state))
 		{
 			const shared_str& _grp = g_mp_restrictions.GetItemGroup(info->m_name_sect);
 			return			(_grp==m_group);
@@ -391,8 +551,13 @@ struct preset_eq {
 	};
 };
 
-void CUIMpTradeWnd::StorePreset(ETradePreset idx, bool bSilent, bool check_allowed_items)
+void CUIMpTradeWnd::StorePreset(ETradePreset idx, bool bSilent, bool check_allowed_items, bool flush_helpers)
 {
+	if ( flush_helpers )
+	{
+		DeleteHelperItems();
+	}
+
 	if(!bSilent)
 	{
 		string512						buff;
@@ -410,6 +575,11 @@ void CUIMpTradeWnd::StorePreset(ETradePreset idx, bool bSilent, bool check_allow
 		SBuyItemInfo* iinfo			= *it;
 		if(	!(iinfo->GetState()==SBuyItemInfo::e_bought || iinfo->GetState()==SBuyItemInfo::e_own)	)
 		continue;
+
+		if ( iinfo->m_cell_item->IsHelper() )
+		{
+			continue;
+		}
 
 		u8 addon_state				= GetItemAddonsState_ext(iinfo);
 
@@ -444,11 +614,18 @@ void CUIMpTradeWnd::StorePreset(ETradePreset idx, bool bSilent, bool check_allow
 	}
 
 	std::sort						(v.begin(), v.end(), preset_sorter(m_item_mngr));
+
+	if ( flush_helpers )
+	{
+		UpdateHelperItems();
+	}
+
 }
 
 void CUIMpTradeWnd::ApplyPreset(ETradePreset idx)
 {
 	SellAll								();
+	UpdateHelperItems();
 
 	const preset_items&		v			=  GetPreset(idx);
 	preset_items::const_iterator it		= v.begin();
@@ -582,6 +759,8 @@ void CUIMpTradeWnd::ResetToOrigin()
 	SBuyItemInfo*	tmp_iinfo	= NULL;
 	bool			b_ok		= true;
 
+	DeleteHelperItems	();
+
 	do{
 		iinfo			= FindItem(SBuyItemInfo::e_bought);
 		if(iinfo)
@@ -623,11 +802,13 @@ void CUIMpTradeWnd::SetupPlayerItemsBegin()
 		CUIDragDropListEx* lst			= m_list[idx];
 		R_ASSERT(0==lst->ItemsCount());
 	}
+
+	UpdateHelperItems();
 }
 
 void CUIMpTradeWnd::SetupPlayerItemsEnd()
 {
-	StorePreset			(_preset_idx_origin, true, false);
+	StorePreset			(_preset_idx_origin, true, false, true);
 }
 
 void CUIMpTradeWnd::SetupDefaultItemsBegin()
@@ -636,7 +817,7 @@ void CUIMpTradeWnd::SetupDefaultItemsBegin()
 }
 void CUIMpTradeWnd::SetupDefaultItemsEnd()
 {
-	StorePreset			(_preset_idx_default, true, false);
+	StorePreset			(_preset_idx_default, true, false, true);
 }
 
 void CUIMpTradeWnd::CheckDragItemToDestroy()

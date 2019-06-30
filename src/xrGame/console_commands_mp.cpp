@@ -15,6 +15,7 @@
 #include "game_sv_capture_the_artefact.h"
 #include "date_time.h"
 #include "game_cl_base_weapon_usage_statistic.h"
+#include "string_table.h"
 #include "../xrGameSpy/xrGameSpy_MainDefs.h"
 
 EGameIDs ParseStringToGameType(LPCSTR str);
@@ -307,7 +308,9 @@ public:
 					if (Level().Server->GetServerClient() != l_pC)
 					{
 						Msg("Disconnecting : %s", l_pC->ps->getName());
-						Level().Server->DisconnectClient(l_pC);
+						LPSTR	reason;
+						STRCONCAT( reason, CStringTable().translate("st_kicked_by_server").c_str() );
+						Level().Server->DisconnectClient( l_pC, reason );
 						break;
 					}else
 						Msg("! Can't disconnect server's client");
@@ -388,7 +391,9 @@ public:
 					{
 						Msg("Disconnecting and Banning: %s", l_pC->ps->getName());
 						Level().Server->BanClient(l_pC, ban_time);
-						Level().Server->DisconnectClient(l_pC);
+						LPSTR	reason;
+						STRCONCAT( reason, CStringTable().translate("st_kicked_by_server").c_str() );
+						Level().Server->DisconnectClient( l_pC, reason );
 						break;
 					}else
 					{
@@ -453,7 +458,11 @@ public:
 		Level().Server->clients_Lock		();
 		Msg									("Disconnecting and Banning: %s",Address.to_string().c_str() ); 
 		Level().Server->BanAddress			(Address, ban_time);
-		Level().Server->DisconnectAddress	(Address);
+
+		LPSTR	reason;
+		STRCONCAT( reason, CStringTable().translate("st_kicked_by_server").c_str() );
+		Level().Server->DisconnectAddress	(Address, reason);
+
 		Level().Server->clients_Unlock		();
 	};
 

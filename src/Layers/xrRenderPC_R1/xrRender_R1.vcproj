@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="8,00"
 	Name="xrRender_R1"
 	ProjectGUID="{57A498C9-A741-4DDF-8EFC-BFB9EB6B00E2}"
 	RootNamespace="xrRender_R1"
@@ -1648,11 +1648,27 @@
 					>
 				</File>
 				<File
+					RelativePath="..\xrRender\R_Backend_hemi.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\xrRender\R_Backend_hemi.h"
+					>
+				</File>
+				<File
 					RelativePath="..\xrRender\R_Backend_Runtime.cpp"
 					>
 				</File>
 				<File
 					RelativePath="..\xrRender\R_Backend_Runtime.h"
+					>
+				</File>
+				<File
+					RelativePath="..\xrRender\R_Backend_tree.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\xrRender\R_Backend_tree.h"
 					>
 				</File>
 				<File

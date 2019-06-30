@@ -289,7 +289,7 @@ CComplexMapSpot::CComplexMapSpot( CMapLocation* ml )
 {
 	m_infinity_time = false;
 	m_last_delay	= 0;
-	m_time_end		= 0;
+	m_timer_finish	= 0;
 	m_left_icon		= NULL;
 	m_right_icon	= NULL;
 	m_top_icon		= NULL;
@@ -330,17 +330,17 @@ void CComplexMapSpot::Load( CUIXml* xml, LPCSTR path ) // complex_spot_template
 //	m_pin_point.mul( 0.5f );
 }
 
-void CComplexMapSpot::SetTTL( ALife::_TIME_ID time ) // sec
+void CComplexMapSpot::SetTimerFinish( ALife::_TIME_ID time ) // ms
 {
-	if ( time == 0 )
+	if ( time <= 0 )
 	{
-		m_time_end = time;
+		m_timer_finish = 0;
 		m_infinity_time = true;
 		m_timer->Show( false );
 	}
 	else
 	{
-		m_time_end = Level().GetGameTime() + time;
+		m_timer_finish = time;
 		m_infinity_time = false;
 		m_timer->Show( true );
 	}
@@ -354,7 +354,7 @@ void CComplexMapSpot::Update()
 	if ( m_last_delay > 310 )
 	{
 		m_last_delay = 0;
-		if ( Level().GetGameTime() > m_time_end )
+		if ( Level().GetGameTime() > m_timer_finish )
 		{
 			/*if ( !m_infinity_time )
 			{
@@ -365,7 +365,7 @@ void CComplexMapSpot::Update()
 		{
 			if ( !m_infinity_time )
 			{
-				ALife::_TIME_ID dt = m_time_end - Level().GetGameTime();
+				ALife::_TIME_ID dt = m_timer_finish - Level().GetGameTime();
 				m_timer->SetText( GetTimeAsString( dt, InventoryUtilities::etpTimeToMinutes, ':', false ).c_str() );
 			}
 		}
@@ -373,7 +373,7 @@ void CComplexMapSpot::Update()
 
 	if ( MapLocation()->SpotEnabled() )
 	{
-		m_timer->Show( (m_timer->GetWndSize().x > 5.0f) && (Level().GetGameTime() < m_time_end) );
+		m_timer->Show( (m_timer->GetWndSize().x > 5.0f) && (Level().GetGameTime() < m_timer_finish) );
 	}
 }
 

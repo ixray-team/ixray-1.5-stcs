@@ -214,7 +214,8 @@ private:
 protected:
 	virtual	void ReadOptions(shared_str &options);
 	virtual void FillDeathActorRejectItems(CSE_ActorMP *actor, xr_vector<CSE_Abstract*> & to_reject);
-
+	shared_str m_not_free_ammo_str;
+	virtual	bool CanChargeFreeAmmo(char const * ammo_section);
 public:
 	game_sv_CaptureTheArtefact();
 	virtual ~game_sv_CaptureTheArtefact();

@@ -1,8 +1,8 @@
 object fraPortal: TfraPortal
-  Left = 103
-  Top = 58
+  Left = 129
+  Top = 69
   Width = 225
-  Height = 277
+  Height = 290
   VertScrollBar.ButtonSize = 11
   VertScrollBar.Range = 257
   VertScrollBar.Smooth = True
@@ -23,8 +23,8 @@ object fraPortal: TfraPortal
     Left = 0
     Top = 0
     Width = 217
-    Height = 68
-    Align = alTop
+    Height = 257
+    Align = alClient
     ParentColor = True
     TabOrder = 0
     object APHeadLabel1: TLabel
@@ -63,11 +63,11 @@ object fraPortal: TfraPortal
       OnClick = PanelMinClick
     end
     object ebInvertOrient: TExtBtn
-      Left = 2
-      Top = 18
+      Left = 1
+      Top = 14
       Width = 215
       Height = 15
-      Align = alNone
+      Align = alTop
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
@@ -81,11 +81,11 @@ object fraPortal: TfraPortal
       OnClick = ebInvertOrientClick
     end
     object ebComputeAllPortals: TExtBtn
-      Left = 2
-      Top = 34
+      Left = 1
+      Top = 29
       Width = 215
       Height = 15
-      Align = alNone
+      Align = alTop
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
@@ -99,11 +99,11 @@ object fraPortal: TfraPortal
       OnClick = ebComputeAllPortalsClick
     end
     object ebComputeSelPortals: TExtBtn
-      Left = 2
-      Top = 50
+      Left = 1
+      Top = 44
       Width = 215
       Height = 15
-      Align = alNone
+      Align = alTop
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
@@ -115,6 +115,24 @@ object fraPortal: TfraPortal
       Font.Style = []
       ParentFont = False
       OnClick = ebComputeClick
+    end
+    object ExtBtn1: TExtBtn
+      Left = 1
+      Top = 59
+      Width = 215
+      Height = 15
+      Align = alTop
+      BevelShow = False
+      HotTrack = True
+      HotColor = 15790320
+      Caption = 'Remove Similar'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      OnClick = ExtBtn1Click
     end
   end
   object fsStorage: TFormStorage

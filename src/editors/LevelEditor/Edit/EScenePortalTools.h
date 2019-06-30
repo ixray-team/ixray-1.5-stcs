@@ -34,7 +34,7 @@ public:
 	virtual void   		SaveLTX            		(CInifile&);
     virtual bool		LoadSelection      		(IReader&);
     virtual void		SaveSelection      		(IWriter&);
-
+    void 				RemoveSimilar			();
     virtual CCustomObject* CreateObject			(LPVOID data, LPCSTR name);
 };
 //---------------------------------------------------------------------------

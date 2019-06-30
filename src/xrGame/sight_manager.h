@@ -105,10 +105,10 @@ private:
 			void	adjust_orientation					();
 			void	slerp_rotations						(float time_delta, float angular_speed);
 			void	compute_aiming						(float time_delta, float angular_speed);
-			Fvector	object_position						() const;
 
 public:
 			Fvector	aiming_position						() const;
+			Fvector	object_position						() const;
 
 public:
 	IC		Fmatrix	const&	current_spine_rotation		() const;

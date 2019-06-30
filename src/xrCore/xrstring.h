@@ -13,21 +13,32 @@ struct		XRCORE_API	str_value
 	u32					dwReference		;
 	u32					dwLength		;
 	u32					dwCRC			;
+	str_value*          next            ;
 	char				value		[]	;
 };
+
 struct		XRCORE_API	str_value_cmp	{ // less
 	IC bool		operator ()	(const str_value* A, const str_value* B) const	{ return A->dwCRC<B->dwCRC;	};
 };
+
+struct		XRCORE_API	str_hash_function {
+	IC u32		operator ()	(str_value const* const value) const	{ return value->dwCRC;	};
+};
+
 #pragma warning(default : 4200)
+
+struct str_container_impl;
 
 //////////////////////////////////////////////////////////////////////////
 class		XRCORE_API	str_container
 {
 private:
-	typedef xr_multiset<str_value*,str_value_cmp>	cdb;
-	xrCriticalSection								cs;
-	cdb												container;
+	xrCriticalSection					cs;
+	str_container_impl*                 impl;
 public:
+						str_container	();
+						~str_container  ();
+
 	str_value*			dock			(str_c value);
 	void				clean			();
 	void				dump			();
@@ -36,7 +47,6 @@ public:
 #ifdef PROFILE_CRITICAL_SECTIONS
 						str_container	():cs(MUTEX_PROFILE_ID(str_container)){}
 #endif // PROFILE_CRITICAL_SECTIONS
-						~str_container	();
 };
 XRCORE_API	extern		str_container*	g_pStringContainer;
 
@@ -51,6 +61,10 @@ protected:
 public:
 	void				_set		(str_c rhs) 					{	str_value* v = g_pStringContainer->dock(rhs); if (0!=v) v->dwReference++; _dec(); p_ = v;	}
 	void				_set		(shared_str const &rhs)			{	str_value* v = rhs.p_; if (0!=v) v->dwReference++; _dec(); p_ = v;							}
+//	void				_set		(shared_str const &rhs)			{	str_value* v = g_pStringContainer->dock(rhs.c_str()); if (0!=v) v->dwReference++; _dec(); p_ = v;							}
+	
+
+
 	const str_value*	_get		()	const						{	return p_;																					}
 public:
 	// construction

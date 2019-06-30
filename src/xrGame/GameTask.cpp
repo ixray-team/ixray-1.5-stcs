@@ -24,6 +24,7 @@ CGameTask::CGameTask()
 {
 	m_ReceiveTime			= 0;
 	m_FinishTime			= 0;
+	m_timer_finish			= 0;
 	m_Title					= NULL;
 	m_ID					= NULL;
 	m_task_state			= eTaskStateDummy;
@@ -54,28 +55,22 @@ void CGameTask::SetTaskState(ETaskState state)
 	ChangeStateCallback();
 }
 
-void CGameTask::OnArrived( ALife::_TIME_ID ttl_timer )
+void CGameTask::OnArrived()
 {
-	m_task_state = eTaskStateInProgress;
-	m_read       = false;
+	m_task_state   = eTaskStateInProgress;
+	m_read         = false;
 	
-	//ALife::_TIME_ID ttl = 0; // allways
-	//if ( m_TimeToComplete > m_ReceiveTime )
-	//{
-	//	ttl = m_TimeToComplete - m_ReceiveTime;
-	//}
-
-	CreateMapLocation( ttl_timer, false );
+	CreateMapLocation( false );
 }
 
-void CGameTask::CreateMapLocation( ALife::_TIME_ID ttl_timer, bool on_load )
+void CGameTask::CreateMapLocation( bool on_load )
 {
 	if ( m_map_object_id == u16(-1) || m_map_location.size() == 0 )
 	{
 		return;
 	}
 
-	if(on_load)
+	if ( on_load )
 	{
 		m_linked_map_location =	Level().MapManager().GetMapLocation(m_map_location, m_map_object_id);
 	}
@@ -91,17 +86,21 @@ void CGameTask::CreateMapLocation( ALife::_TIME_ID ttl_timer, bool on_load )
 		}
 		m_linked_map_location =	Level().MapManager().AddMapLocation(m_map_location, m_map_object_id);
 	}
+	VERIFY( m_linked_map_location );
 
-	if(!on_load)
+	if ( !on_load )
 	{
 		if ( m_map_hint.size() )
+		{
 			m_linked_map_location->SetHint( m_map_hint );
-
+		}
 		m_linked_map_location->DisablePointer();
 		m_linked_map_location->SetSerializable( true );
+	}
 
-		if ( m_linked_map_location->complex_spot() )
-			m_linked_map_location->complex_spot()->SetTTL( ttl_timer );
+	if ( m_linked_map_location->complex_spot() )
+	{
+		m_linked_map_location->complex_spot()->SetTimerFinish( m_timer_finish );
 	}
 }
 
@@ -124,33 +123,14 @@ void CGameTask::RemoveMapLocations(bool notify)
 
 void CGameTask::ChangeMapLocation( LPCSTR new_map_location, u16 new_map_object_id )
 {
-	ALife::_TIME_ID ttl = 0;
-	if ( m_linked_map_location && m_linked_map_location->complex_spot() )
-	{
-		ttl = m_linked_map_location->complex_spot()->GetTimeEnd() - Level().GetGameTime();
-		if ( ttl < 0 )
-		{
-			ttl = 0;
-		}
-	}
 	RemoveMapLocations( false );
 
 	m_map_location._set( new_map_location );
 	m_map_object_id = new_map_object_id;
-	
-/*	ALife::_TIME_ID ttl = 0;
-	if( m_ReceiveTime != m_TimeToComplete )
-	{
-		if ( m_TimeToComplete > Level().GetGameTime() )
-		{
-			ttl = m_TimeToComplete - Level().GetGameTime();
-		}
-	}
-*/
-	m_task_state = eTaskStateInProgress;
-	CreateMapLocation( ttl, false );
-}
 
+	m_task_state = eTaskStateInProgress;
+	CreateMapLocation( false );
+}
 
 void CGameTask::ChangeStateCallback()
 {
@@ -244,6 +224,8 @@ void CGameTask::save_task(IWriter &stream)
 	save_data				(m_ReceiveTime,		stream);
 	save_data				(m_FinishTime,		stream);
 	save_data				(m_TimeToComplete,	stream);
+	save_data				(m_timer_finish,	stream);
+
 	save_data				(m_Title,			stream);
 	save_data				(m_Description,		stream);
 	save_data				(m_pScriptHelper,	stream);
@@ -261,6 +243,8 @@ void CGameTask::load_task(IReader &stream)
 	load_data				(m_ReceiveTime,		stream);
 	load_data				(m_FinishTime,		stream);
 	load_data				(m_TimeToComplete,	stream);
+	load_data				(m_timer_finish,	stream);
+
 	load_data				(m_Title,			stream);
 	load_data				(m_Description,		stream);
 	load_data				(m_pScriptHelper,	stream);
@@ -270,7 +254,7 @@ void CGameTask::load_task(IReader &stream)
 	load_data				(m_map_object_id,	stream);
 	load_data				(m_priority,		stream);
 	CommitScriptHelperContents();
-	CreateMapLocation		(1, true);
+	CreateMapLocation		(true);
 }
 
 void CGameTask::CommitScriptHelperContents()

@@ -102,7 +102,10 @@ void CRenderTarget::phase_pp		()
 {
 	// combination/postprocess
 	u_setrt				( Device.dwWidth,Device.dwHeight,HW.pBaseRT,NULL,NULL,HW.pBaseZB);
-	RCache.set_Shader	(s_postprocess	);
+   if( !RImplementation.o.dx10_msaa )
+   	RCache.set_Shader	(s_postprocess	);
+   else
+      RCache.set_Shader( s_postprocess_msaa );
 
 	int		gblend		= clampr		(iFloor((1-param_gray)*255.f),0,255);
 	int		nblend		= clampr		(iFloor((1-param_noise)*255.f),0,255);

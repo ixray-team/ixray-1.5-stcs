@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "xrMU_Model.h"
+#include "xrMU_Model_Reference.h"
+
 #include "../../xrcdb/xrcdb.h"
 #include "../shader_xrlc.h"
 void xrMU_Model::export_cform_rcast	(CDB::CollectorPacked& CL, Fmatrix& xform)
@@ -47,12 +49,8 @@ void xrMU_Model::export_cform_rcast	(CDB::CollectorPacked& CL, Fmatrix& xform)
 			xform.transform_tiny	(P[0],F->v[0]->P);
 			xform.transform_tiny	(P[1],F->v[1]->P);
 			xform.transform_tiny	(P[2],F->v[2]->P);
-			CL.add_face_D			(P[0],P[1],P[2],*((u32*)&F), F->sm_group );
+			CL.add_face_D			(P[0],P[1],P[2],*((u32*)&F), F->sm_group );//
 		}
 	}
 }
 
-void xrMU_Reference::export_cform_rcast(CDB::CollectorPacked& CL)
-{
-	model->export_cform_rcast(CL,xform);
-}

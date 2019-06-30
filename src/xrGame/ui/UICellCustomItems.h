@@ -9,6 +9,12 @@ class CUIInventoryCellItem :public CUICellItem
 public:
 								CUIInventoryCellItem		(CInventoryItem* itm);
 	virtual		bool			EqualTo						(CUICellItem* itm);
+	virtual		void			UpdateItemText				();
+				CUIDragItem*	CreateDragItem				();
+	virtual		bool			IsHelper					();
+	virtual		void			SetIsHelper					(bool is_helper);
+				bool			IsHelperOrHasHelperChild	();
+				void			Update						();
 				CInventoryItem* object						() {return (CInventoryItem*)m_pData;}
 };
 
@@ -16,14 +22,15 @@ class CUIAmmoCellItem :public CUIInventoryCellItem
 {
 	typedef  CUIInventoryCellItem	inherited;
 protected:
-	virtual		void			UpdateItemText			();
+	virtual		void			 UpdateItemText				();
 public:
-								CUIAmmoCellItem				(CWeaponAmmo* itm);
-	virtual		void			Update						();
-	virtual		bool			EqualTo						(CUICellItem* itm);
-				CWeaponAmmo*	object						() {return (CWeaponAmmo*)m_pData;}
-};
+								 CUIAmmoCellItem			(CWeaponAmmo* itm);
 
+				u32				 CalculateAmmoCount			();
+	virtual		bool			 EqualTo						(CUICellItem* itm);
+	virtual		CUIDragItem*	 CreateDragItem				();
+				CWeaponAmmo*	 object						() {return (CWeaponAmmo*)m_pData;}
+};
 
 class CUIWeaponCellItem :public CUIInventoryCellItem
 {

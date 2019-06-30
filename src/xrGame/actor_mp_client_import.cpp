@@ -24,9 +24,16 @@ void CActorMP::net_Import	( NET_Packet &P)
 #endif
 		
 		game_PlayerState* ps = Game().GetPlayerByGameID(this->object_id());
-		if (!ps || !ps->testFlag(GAME_PLAYER_FLAG_INVINCIBLE))
+		float new_health = m_state_holder.state().health;
+		if (GetfHealth() < new_health)
 		{
-			SetfHealth		(m_state_holder.state().health);
+			SetfHealth(new_health);
+		} else
+		{
+			if (!ps || !ps->testFlag(GAME_PLAYER_FLAG_INVINCIBLE))
+			{
+				SetfHealth(new_health);
+			}
 		}
 	}
 

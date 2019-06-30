@@ -1,9 +1,11 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////
 #include "StdAfx.h"
+
+#include "PHCapture.h"
 #include "phcharacter.h"
 #include "Physics.h"
 #include "ExtendedGeom.h"
-#include "PHCapture.h"
+
 #include "entity_alive.h"
 #include "phmovementcontrol.h"
 #include "../Include/xrRender/Kinematics.h"
@@ -27,6 +29,15 @@ CPHCapture::~CPHCapture()
 {
 	Deactivate();
 }
+
+bool CPHCapture::Invalid()
+{
+	return 
+		!m_taget_object->PPhysicsShell()||
+		!m_taget_object->PPhysicsShell()->isActive()||
+		!m_character->b_exist;
+}
+
 void CPHCapture::PhDataUpdate(dReal /**step/**/)
 {
 
@@ -53,8 +64,17 @@ void CPHCapture::PhTune(dReal /**step/**/)
 	//	b_failed=true;
 	//	return;			//. hack
 	//}
+	VERIFY(m_character && m_character->b_exist);
+	VERIFY(m_taget_object);
+	VERIFY(m_taget_object->PPhysicsShell());
+	VERIFY(m_taget_object->PPhysicsShell()->isFullActive());
+	VERIFY( m_taget_element );
+	VERIFY( m_taget_element->isFullActive());
+	VERIFY( m_island.DActiveIsland() == &m_island );
+
 	bool act_capturer=m_character->CPHObject::is_active();
 	bool act_taget=m_taget_object->PPhysicsShell()->isEnabled();
+	
 	b_disabled=!act_capturer&&!act_taget;
 	if(act_capturer)
 	{
@@ -75,6 +95,7 @@ void CPHCapture::PhTune(dReal /**step/**/)
 				{
 					m_character->Island().Merge(&m_island);
 					m_taget_element->PhysicsShell()->PIsland()->Merge(&m_island);
+					VERIFY(!m_island.IsActive());
 				}
 		}
 		break;
@@ -82,7 +103,7 @@ void CPHCapture::PhTune(dReal /**step/**/)
 		break;
 	default: NODEFAULT;
 	}
-
+	
 }
 
 void CPHCapture::PullingUpdate()
@@ -322,7 +343,7 @@ void CPHCapture::object_contactCallbackFun(bool& do_colide,bool bo1,dContact& c,
 
 	}
 }
-void CPHCapture::net_Relcase(CObject* O)
+void CPHCapture::OnNetDestroyObject(CObject* O)
 {
 	if(static_cast<CObject*>(m_taget_object)==O)
 	{

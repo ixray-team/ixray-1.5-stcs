@@ -354,7 +354,7 @@ MStatus CXRayObjectExport::ExportPart(CEditableObject* O, MDagPath& mdagPath, MO
 			// between object-relative vertex indices and face-relative
 			// vertex indices
 			ptMap.clear();
-			for (u32 i=0; i<meshPoly.polygonVertexCount(); i++)
+			for (int i=0; i<(int)meshPoly.polygonVertexCount(); i++)
 				ptMap.insert (PtLookupMap::value_type(meshPoly.vertexIndex(i), i) );
 
 			// verify polygon zero area

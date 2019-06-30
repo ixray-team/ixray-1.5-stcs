@@ -31,24 +31,6 @@ void xrLC_GlobalData	::destroy_vertex	(Vertex* &f)
 
 
 
-u32			xrLC_GlobalData	::get_id			( Face* f )
-{
-	/*
-	if(b_writting)
-	{
-		vecFaceIt F = std::find( g_faces().begin(), g_faces().end(), f );
-		if( F == g_faces().end() )
-			return u32(-1);
-		return F - g_faces().begin();
-	}
-	
-*/
-	return 0;
-}
-u32			xrLC_GlobalData	::get_id			( Vertex* v )
-{
-	return 0;
-}
 
 
 

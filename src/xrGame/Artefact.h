@@ -54,6 +54,7 @@ protected:
 	float							m_fTrailLightRange;
 	u8								m_af_rank;
 	bool							m_bLightsEnabled;
+	float							m_additional_weight;
 
 	virtual void					UpdateLights					();
 public:
@@ -71,6 +72,7 @@ public:
 	virtual void					PhDataUpdate					(dReal step);
 	virtual void					PhTune							(dReal step)	{};
 
+	float							AdditionalInventoryWeight		() const {return m_additional_weight;}
 	bool							m_bCanSpawnZone;
 	float							m_fHealthRestoreSpeed;
 	float 							m_fRadiationRestoreSpeed;
@@ -131,6 +133,7 @@ struct SArtefactDetectorsSupport
 	void	SetVisible						(bool);
 	void	FollowByPath					(LPCSTR path_name, int start_idx, Fvector force);
 	void	UpdateOnFrame					();
+	void	Blink							();
 };
 
 add_to_type_list(CArtefact)

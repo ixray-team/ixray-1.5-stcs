@@ -408,6 +408,100 @@ void CInventory::Activate_deffered	(u32 slot, u32 _frame)
 	 m_iLoadActiveSlotFrame		= _frame;
 }*/
 
+PIItem CInventory::GetNextItemInActiveSlot( bool first_call )
+{
+	PIItem current_item	= m_slots[m_iActiveSlot].m_pIItem;
+	PIItem new_item		= NULL;
+	bool b				= (current_item == NULL);
+	bool found			= false;
+
+	TIItemContainer::const_iterator it		= m_all.begin();
+	TIItemContainer::const_iterator it_e	= m_all.end();
+	for ( ; it != it_e; ++it )
+	{
+		PIItem item = *it;
+		if ( item == current_item )
+		{
+			b = true;
+			if ( new_item )
+			{
+				return new_item;
+			}
+			continue;
+		}
+
+		if ( item->GetSlot() == m_iActiveSlot )
+		{
+			found = true;
+			if ( std::find( m_activ_last_items.begin(), m_activ_last_items.end(), item ) == m_activ_last_items.end() )
+			{
+				new_item = item;
+				if ( b )
+				{
+					return new_item;
+				}
+			}
+		}
+	}
+	
+	m_activ_last_items.clear_not_free();
+
+	if ( first_call && found )
+	{
+		return GetNextItemInActiveSlot( false ); //m_activ_last_items is full
+	}
+	return NULL; //only 1 item for this slot
+}
+
+bool CInventory::ActivateNextItemInActiveSlot()
+{
+	if ( m_iActiveSlot == NO_ACTIVE_SLOT )
+	{
+		return false;
+	}
+	
+	CObject* pActor_owner = smart_cast<CObject*>(m_pOwner);
+	if ( Level().CurrentViewEntity() != pActor_owner )
+	{
+		return false;
+	}
+
+	PIItem new_item = GetNextItemInActiveSlot( true );
+
+	if ( new_item == NULL )
+	{
+		return false; //only 1 item for this slot
+	}
+
+	m_activ_last_items.push_back		( new_item );
+	PIItem current_item					= m_slots[m_iActiveSlot].m_pIItem;
+	
+	NET_Packet	P;
+	bool		res;
+	if ( current_item )
+	{
+		res = Ruck							(current_item);
+		R_ASSERT							(res);
+		current_item->object().u_EventGen	(P, GEG_PLAYER_ITEM2RUCK, current_item->object().H_Parent()->ID());
+		P.w_u16								(current_item->object().ID());
+		current_item->object().u_EventSend	(P);
+	}
+
+	res = Slot							(new_item);
+	R_ASSERT							(res);
+	new_item->object().u_EventGen		(P, GEG_PLAYER_ITEM2SLOT, new_item->object().H_Parent()->ID());
+	P.w_u16								(new_item->object().ID());
+	new_item->object().u_EventSend		(P);
+
+	//activate
+	new_item->object().u_EventGen		(P, GEG_PLAYER_ACTIVATE_SLOT, new_item->object().H_Parent()->ID());
+	P.w_u32								(new_item->GetSlot());
+	new_item->object().u_EventSend		(P);
+
+//	Msg( "Weapon change" );
+	return true;
+}
+
 void CInventory::Activate(u32 slot, /*EActivationReason reason, */bool bForce) 
 {	
 	if(!OnServer())
@@ -590,23 +684,14 @@ bool CInventory::Action(s32 cmd, u32 flags)
 	case kWPN_4:
 	case kWPN_5:
 	case kWPN_6:
-       {
-		   b_send_event = true;
-		   if (cmd == kWPN_6 && !IsGameTypeSingle()) return false;
-			u32 _slot = cmd - kWPN_1;
+		{
+			b_send_event = true;
+			if (cmd == kWPN_6 && !IsGameTypeSingle()) return false;
 			
-			if(flags&CMD_START)
+			u32 slot = cmd - kWPN_1;
+			if ( flags & CMD_START )
 			{
-                if((int)m_iActiveSlot == _slot &&
-					m_slots[m_iActiveSlot].m_pIItem && IsGameTypeSingle() )
-				{
-					Activate(NO_ACTIVE_SLOT);
-				}else{ 					
-					if ((int)m_iActiveSlot == _slot && !IsGameTypeSingle())
-						break;
-
-					Activate(_slot);
-				}
+				ActiveWeapon( slot );
 			}
 		}break;
 	case kARTEFACT:
@@ -631,6 +716,44 @@ bool CInventory::Action(s32 cmd, u32 flags)
 	return false;
 }
 
+void CInventory::ActiveWeapon( u32 slot )
+{
+	// weapon is in active slot
+	if ( m_iActiveSlot == slot && m_slots[m_iActiveSlot].m_pIItem )
+	{
+		if ( IsGameTypeSingle() )
+		{
+			Activate(NO_ACTIVE_SLOT);
+		}
+		else
+		{
+			ActivateNextItemInActiveSlot();
+		}
+		return;
+	}
+
+	if ( IsGameTypeSingle() )
+	{
+		Activate(slot);
+		return;
+	}
+	if ( m_iActiveSlot == slot )
+	{
+		return;
+	}
+
+	Activate(slot);
+	if ( slot != NO_ACTIVE_SLOT && m_slots[slot].m_pIItem == NULL )
+	{
+		u32 prev_activ = m_iActiveSlot;
+		m_iActiveSlot  = slot;
+		if ( !ActivateNextItemInActiveSlot() )
+		{
+			m_iActiveSlot = prev_activ;
+		}
+	}
+
+}
 
 void CInventory::Update() 
 {

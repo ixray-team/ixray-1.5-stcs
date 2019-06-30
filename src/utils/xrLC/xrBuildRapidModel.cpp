@@ -1,7 +1,8 @@
 #include "stdafx.h"
 //#include "cl_collector.h"
 #include "build.h"
-#include "xrMU_Model.h"
+#include "../xrLC_Light/xrMU_Model.h"
+#include "../xrLC_Light/xrMU_Model_Reference.h"
 
 #include "../xrLC_Light/xrLC_GlobalData.h"
 #include "../../xrcdb/xrcdb.h"
@@ -103,8 +104,8 @@ void CBuild::BuildRapid		(BOOL bSaveForOtherCompilers)
 	// Export references
 	if (bSaveForOtherCompilers)		Phase	("Building rcast-CFORM-mu model...");
 	Status					("Models...");
-	for (u32 ref=0; ref<mu_refs.size(); ref++)
-		mu_refs[ref]->export_cform_rcast	(CL);
+	for (u32 ref=0; ref<mu_refs().size(); ref++)
+		mu_refs()[ref]->export_cform_rcast	(CL);
 
 	// "Building tree..
 	Status					("Building search tree...");

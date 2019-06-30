@@ -6,7 +6,8 @@
 
 #include "build.h"
 
-#include "xrMU_Model.h"
+#include "../xrLC_Light/xrMU_Model.h"
+#include "../xrLC_Light/xrMU_Model_Reference.h"
 
 #include "../xrlc_light/xrThread.h"
 #include "../../xrcore/xrSyncronize.h"
@@ -15,12 +16,18 @@
 #include "../xrLC_Light/xrLC_GlobalData.h"
 #include "../xrLC_Light/xrface.h"
 
+void	calc_ogf		( xrMU_Model &	mu_model );
+void	export_geometry	( xrMU_Model &	mu_model );
+
+void	export_ogf		( xrMU_Reference& mu_reference );
+
 using namespace			std;
 struct OGF_Base;
 xr_vector<OGF_Base *>	g_tree;
 BOOL					b_R2		= FALSE;
 BOOL					b_noise		= FALSE;
 BOOL					b_radiosity	= FALSE;
+BOOL					b_net_light	= FALSE;
 vec2Face				g_XSplit;
 
 CThreadManager			mu_base;
@@ -88,7 +95,7 @@ public:
 		// Light references
 		for (u32 m=low; m<high; m++)
 		{
-			pBuild->mu_refs[m]->calc_lighting	();
+			pBuild->mu_refs()[m]->calc_lighting	();
 			thProgress							= (float(m-low)/float(high-low));
 		}
 	}
@@ -110,15 +117,15 @@ public:
 		Sleep				(0);
 
 		// Light models
-		for (m=0; m<pBuild->mu_models.size(); m++)
+		for (m=0; m<pBuild->mu_models().size(); m++)
 		{
-			pBuild->mu_models[m]->calc_materials();
-			pBuild->mu_models[m]->calc_lighting	();
+			pBuild->mu_models()[m]->calc_materials();
+			pBuild->mu_models()[m]->calc_lighting	();
 		}
 
 		// Light references
-		u32	stride			= pBuild->mu_refs.size()/MU_THREADS;
-		u32	last			= pBuild->mu_refs.size()-stride*(MU_THREADS-1);
+		u32	stride			= pBuild->mu_refs().size()/MU_THREADS;
+		u32	last			= pBuild->mu_refs().size()-stride*(MU_THREADS-1);
 		for (u32 thID=0; thID<MU_THREADS; thID++)
 			mu_secondary.start	(xr_new<CMULight> (thID,thID*stride,thID*stride+((thID==(MU_THREADS-1))?last:stride)));
 	}
@@ -127,7 +134,7 @@ public:
 void CBuild::Light_prepare()
 {
 	for (vecFaceIt I=lc_global_data()->g_faces().begin();	I!=lc_global_data()->g_faces().end(); I++) (*I)->CacheOpacity();
-	for (u32 m=0; m<mu_models.size(); m++)	mu_models[m]->calc_faceopacity();
+	for (u32 m=0; m<mu_models().size(); m++)	mu_models()[m]->calc_faceopacity();
 }
 
 
@@ -280,14 +287,14 @@ void CBuild::Run	(LPCSTR P)
 	{
 		u32 m;
 		Status			("MU : Models...");
-		for (m=0; m<mu_models.size(); m++)	{
-			mu_models[m]->calc_ogf			();
-			mu_models[m]->export_geometry	();
+		for (m=0; m<mu_models().size(); m++)	{
+			calc_ogf			(*mu_models()[m]);
+			export_geometry		(*mu_models()[m]);
 		}
 
 		Status			("MU : References...");
-		for (m=0; m<mu_refs.size(); m++)
-			mu_refs[m]->export_ogf		();
+		for (m=0; m<mu_refs().size(); m++)
+			export_ogf(*mu_refs()[m]);
 	}
 
 	//****************************************** Destroy RCast-model
@@ -356,4 +363,27 @@ void CBuild::err_save	()
 	err.w_u32		(err_invalid().size()/(3*sizeof(Fvector)));
 	err.w			(err_invalid().pointer(), err_invalid().size());
 	err.close_chunk	();
+}
+
+void CBuild::MU_ModelsCalculateNormals()
+{
+		for		(u32 m=0; m<mu_models().size(); m++)
+			calc_normals( *mu_models()[m] );
+}
+
+xr_vector<xrMU_Model*>&CBuild::mu_models()
+{
+	VERIFY(lc_global_data()); 
+	return lc_global_data()->mu_models(); 
+}
+
+xr_vector<xrMU_Reference*>&CBuild::mu_refs()
+{
+	VERIFY(lc_global_data()); 
+	return lc_global_data()->mu_refs(); 
+}
+
+void CBuild::ImplicitLighting()
+{
+	::ImplicitLighting();
 }

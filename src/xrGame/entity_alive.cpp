@@ -349,13 +349,13 @@ float CEntityAlive::CalcCondition(float /**hit/**/)
 ///////////////////////////////////////////////////////////////////////
 u16	CEntityAlive::PHGetSyncItemsNumber()
 {
-	if(character_physics_support()->movement()->CharacterExist()) return 1;
-	else										  return inherited::PHGetSyncItemsNumber();
+	return
+		character_physics_support()->PHGetSyncItemsNumber();
 }
 CPHSynchronize* CEntityAlive::PHGetSyncItem	(u16 item)
 {
-	if(character_physics_support()->movement()->CharacterExist()) return character_physics_support()->movement()->GetSyncItem();
-	else										 return inherited::PHGetSyncItem(item);
+	return
+		character_physics_support()->PHGetSyncItem( item );
 }
 void CEntityAlive::PHUnFreeze()
 {

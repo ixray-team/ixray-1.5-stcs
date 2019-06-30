@@ -13,11 +13,8 @@ CUINewsItemWnd::CUINewsItemWnd()
 CUINewsItemWnd::~CUINewsItemWnd()
 {}
 
-void CUINewsItemWnd::Init		(LPCSTR xml_name, LPCSTR start_from)
+void CUINewsItemWnd::Init(CUIXml& uiXml, LPCSTR start_from)
 {
-	CUIXml						uiXml;
-	uiXml.Load					(CONFIG_PATH, UI_PATH, xml_name);
-
 	CUIXmlInit::InitWindow		(uiXml,start_from,0,this);
 
 	XML_NODE* stored_root		= uiXml.GetLocalRoot();

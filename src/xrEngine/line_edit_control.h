@@ -37,7 +37,10 @@ enum init_mode
 {
 	im_standart = 0,
 	im_number_only,
-	im_read_only
+	im_read_only,
+	im_file_name_mode, // not "/\\:*?\"<>|^()[]%" 
+
+	im_count
 };// init_mode
 
 
@@ -111,7 +114,7 @@ private:
 			
 			void	assign_char_pairs	( init_mode mode );
 			void	create_key_state	( u32 const dik, key_state state );
-			void	create_char_pair	( u32 const dik, char c, char c_shift, bool translate=false);
+			void	create_char_pair	( u32 const dik, char c, char c_shift, bool translate = false );
 			void	assign_action		( u32 const dik, Base* const action );
 
 			void	clear_inserted		();

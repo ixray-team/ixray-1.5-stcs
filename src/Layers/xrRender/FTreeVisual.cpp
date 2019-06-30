@@ -120,23 +120,23 @@ void FTreeVisual::Render	(float LOD)
 #if RENDER!=R_R1
 	Fmatrix					xform_v			;
 							xform_v.mul_43	(RCache.get_xform_view(),xform);
-							RCache.set_c	(m_xform_v,	xform_v);									// matrix
+							RCache.tree.set_m_xform_v	(xform_v);									// matrix
 #endif
 	float	s				= ps_r__Tree_SBC;
-	RCache.set_c			(m_xform,	xform);														// matrix
-	RCache.set_c			(c_consts,	tvs.scale,tvs.scale,0,0);									// consts/scale
-	RCache.set_c			(c_wave,	tvs.wave);													// wave
-	RCache.set_c			(c_wind,	tvs.wind);													// wind
+	RCache.tree.set_m_xform	(xform);														// matrix
+	RCache.tree.set_consts	(tvs.scale,tvs.scale,0,0);									// consts/scale
+	RCache.tree.set_wave	(tvs.wave);													// wave
+	RCache.tree.set_wind	(tvs.wind);													// wind
 #if RENDER!=R_R1
 	s *= 1.3333f;
-	RCache.set_c			(c_c_scale,	s*c_scale.rgb.x,	s*c_scale.rgb.y,	s*c_scale.rgb.z,	s*c_scale.hemi);	// scale
-	RCache.set_c			(c_c_bias,	s*c_bias.rgb.x,		s*c_bias.rgb.y,		s*c_bias.rgb.z,		s*c_bias.hemi);		// bias
+	RCache.tree.set_c_scale	(s*c_scale.rgb.x,	s*c_scale.rgb.y,	s*c_scale.rgb.z,	s*c_scale.hemi);	// scale
+	RCache.tree.set_c_bias	(s*c_bias.rgb.x,	s*c_bias.rgb.y,		s*c_bias.rgb.z,		s*c_bias.hemi);		// bias
 #else
 	CEnvDescriptor&	desc	= *g_pGamePersistent->Environment().CurrentEnv;
-	RCache.set_c			(c_c_scale,	s*c_scale.rgb.x,					s*c_scale.rgb.y,					s*c_scale.rgb.z,				s*c_scale.hemi);	// scale
-	RCache.set_c			(c_c_bias,	s*c_bias.rgb.x + desc.ambient.x,	s*c_bias.rgb.y + desc.ambient.y,	s*c_bias.rgb.z+desc.ambient.z,	s*c_bias.hemi);		// bias
+	RCache.tree.set_c_scale	(s*c_scale.rgb.x,					s*c_scale.rgb.y,					s*c_scale.rgb.z,				s*c_scale.hemi);	// scale
+	RCache.tree.set_c_bias	(s*c_bias.rgb.x + desc.ambient.x,	s*c_bias.rgb.y + desc.ambient.y,	s*c_bias.rgb.z+desc.ambient.z,	s*c_bias.hemi);		// bias
 #endif
-	RCache.set_c			(c_c_sun,	s*c_scale.sun,  s*c_bias.sun,0,0);							// sun
+	RCache.tree.set_c_sun	(s*c_scale.sun,  s*c_bias.sun,0,0);							// sun
 }
 
 #define PCOPY(a)	a = pFrom->a

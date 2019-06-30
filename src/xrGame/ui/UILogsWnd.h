@@ -13,6 +13,7 @@
 
 #include "../ai_space.h"
 #include "../../xrServerEntities/alife_space.h"
+#include "xrUIXmlParser.h"
 
 class CUIStatic;
 class CUIXml;
@@ -23,6 +24,7 @@ class CUIScrollView;
 class CUI3tButtonEx;
 class CUICheckButton;
 struct GAME_NEWS_DATA;
+class CUINewsItemWnd;
 
 class CUILogsWnd : public CUIWindow, public CUIWndCallback
 {
@@ -49,31 +51,45 @@ private:
 
 	CUI3tButtonEx*		m_prev_period;
 	CUI3tButtonEx*		m_next_period;
+	bool				m_ctrl_press;
 	
 	CUIScrollView*		m_list;
 	u32					m_previous_time;
-	bool				m_need_add;
+	bool				m_need_reload;
+	WINDOW_LIST			m_items_cache;
+	xr_vector<u32>		m_news_in_queue;
+
+	CUIWindow*			CreateItem			();
+	CUIWindow*			ItemFromCache		();
+	void				ItemToCache			(CUIWindow* w);
+	CUIXml				m_uiXml;
 
 public:
 						CUILogsWnd			();
 	virtual				~CUILogsWnd			();
 
+			void		Init				();
+
 	virtual void 		Show				( bool status );
 	virtual void		Update				();
 	virtual void		SendMessage			( CUIWindow* pWnd, s16 msg, void* pData );
 
-			void		Init				();
+	virtual bool		OnKeyboard			(int dik, EUIMessages keyboard_action);
+	virtual bool		OnKeyboardHold		(int dik);
 
-	IC		void		UpdateNews			()	{ m_need_add = true; }
+	IC		void		UpdateNews			()	{ m_need_reload = true; }
+	void	xr_stdcall	PerformWork			();
 
 protected:
 			void		ReLoadNews			();
-			void		AddNewsItem			( GAME_NEWS_DATA& news_data );
+			void		AddNewsItem			( GAME_NEWS_DATA& news_data, CUIWindow* item );
 	ALife::_TIME_ID		GetShiftPeriod		( ALife::_TIME_ID datetime, int shift_day );
 
-			void __stdcall	UpdateChecks	( CUIWindow* w, void* d);
-			void __stdcall	PrevPeriod		( CUIWindow* w, void* d);
-			void __stdcall	NextPeriod		( CUIWindow* w, void* d);
+			void xr_stdcall	UpdateChecks	( CUIWindow* w, void* d);
+			void xr_stdcall	PrevPeriod		( CUIWindow* w, void* d);
+			void xr_stdcall	NextPeriod		( CUIWindow* w, void* d);
+	
+			void 		on_scroll_keys		( int dik );
 
 /*
 protected:

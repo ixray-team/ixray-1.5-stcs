@@ -225,7 +225,7 @@ public:
 	virtual		void				SmoothElementsInertia			(float k);
 	virtual		void				InterpolateGlobalTransform		(Fmatrix* m);
 	virtual		void				InterpolateGlobalPosition		(Fvector* v);
-	virtual		void				GetGlobalTransformDynamic		(Fmatrix* m);
+	virtual		void				GetGlobalTransformDynamic		(Fmatrix* m) ;
 	virtual		void				GetGlobalPositionDynamic		(Fvector* v);
 	virtual		Fmatrix&			ObjectInRoot					(){return m_object_in_root;}
 	virtual		void				ObjectToRootForm				(const Fmatrix& form);

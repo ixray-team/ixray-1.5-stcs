@@ -194,13 +194,13 @@ void CUICharacterInfo::InitCharacter(u16 id)
 	if ( m_icons[eIcon            ] ) { m_icons[eIcon            ]->InitTexture( m_texture_name.c_str()     ); }
 	if ( m_icons[eRankIcon        ] ) { m_icons[eRankIcon        ]->InitTexture( chInfo.Rank().id().c_str() ); }
 	
-	if ( Actor()->ID() != m_ownerID )
+	if ( Actor()->ID() != m_ownerID && !ignore_community( comm_id ) )
 	{
 		if ( m_icons[eCommunityIcon   ] ) { m_icons[eCommunityIcon   ]->InitTexture( community1 ); }
 		if ( m_icons[eCommunityBigIcon] ) { m_icons[eCommunityBigIcon]->InitTexture( community2 ); }
 		return;
 	}
-		
+
 	shared_str our_comm, enemy;
 	if ( CUICharacterInfo::get_actor_community( &our_comm, &enemy ) )
 	{
@@ -374,4 +374,22 @@ bool CUICharacterInfo::get_actor_community( shared_str* our, shared_str* enemy )
 	our->_set( our_fract );
 	enemy->_set( enemy_fract );
 	return true;
+}
+
+bool CUICharacterInfo::ignore_community( shared_str const& check_community )
+{
+	LPCSTR comm_section_str = "ignore_icons_communities";
+	VERIFY2( pSettings->section_exist( comm_section_str ), make_string( "Section [%s] does not exist !", comm_section_str ) );
+
+	CInifile::Sect&		faction_section = pSettings->r_section( comm_section_str );
+	CInifile::SectIt_	ib = faction_section.Data.begin();
+	CInifile::SectIt_	ie = faction_section.Data.end();
+	for ( ; ib != ie ; ++ib )
+	{
+		if ( check_community == (*ib).first )
+		{
+			return true;
+		}
+	}
+	return false;
 }

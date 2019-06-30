@@ -113,19 +113,19 @@ void CConsole::Find_cmd_back() // DIK_TAB+shift
 
 void CConsole::Prev_cmd() // DIK_UP
 {
+	prev_cmd_history_idx();
 	SelectCommand();
-	--cmd_delta;
 }
 
 void CConsole::Next_cmd() // DIK_DOWN
 {
-	++cmd_delta;
+	next_cmd_history_idx();
 	SelectCommand();
 }
 
 void CConsole::Execute_cmd() // DIK_RETURN, DIK_NUMPADENTER
 {
-	ExecuteCommand();
+	ExecuteCommand( ec().str_edit() );
 }
 
 void CConsole::Show_cmd()

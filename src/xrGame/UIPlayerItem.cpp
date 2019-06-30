@@ -133,7 +133,7 @@ void UIPlayerItem::GetTextParamValue(game_PlayerState const * ps,
 		strcpy_s(dest.begin(), dest.size(), ps->name);
 	} else if (param_name.equal("mp_frags"))
 	{
-		sprintf_s(dest.begin(), dest.size(), "%d", ps->m_iRivalKills);
+		sprintf_s(dest.begin(), dest.size(), "%d", ps->m_iRivalKills - ps->m_iSelfKills);
 	} else if (param_name.equal("mp_deaths"))
 	{
 		sprintf_s(dest.begin(), dest.size(), "%d", ps->m_iDeaths);

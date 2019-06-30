@@ -216,6 +216,10 @@ void SActorSprintState::Create(IKinematicsAnimated* K)
 	legs_fwd=K->ID_Cycle("norm_escape_00");
 	legs_ls=K->ID_Cycle("norm_escape_ls_00");
 	legs_rs=K->ID_Cycle("norm_escape_rs_00");
+
+	legs_jump_fwd	=K->ID_Cycle("norm_escape_jump_00");
+	legs_jump_ls	=K->ID_Cycle("norm_escape_ls_jump_00");
+	legs_jump_rs	=K->ID_Cycle("norm_escape_rs_jump_00");
 }
 
 void SActorMotions::Create(IKinematicsAnimated* V)
@@ -281,10 +285,16 @@ void legs_play_callback		(CBlend *blend)
 void CActor::g_SetSprintAnimation( u32 mstate_rl,MotionID &head,MotionID &torso,MotionID &legs)
 {
 	SActorSprintState& sprint			= m_anims->m_sprint;
-
-	if		(mstate_rl & mcFwd)		legs = sprint.legs_fwd;
-	else if (mstate_rl & mcLStrafe) legs = sprint.legs_ls;
-	else if (mstate_rl & mcRStrafe)	legs = sprint.legs_rs;	
+	
+	bool jump = (mstate_rl&mcFall)		||
+				(mstate_rl&mcLanding)	||
+				(mstate_rl&mcLanding)	||
+				(mstate_rl&mcLanding2)	||
+				(mstate_rl&mcJump)		;
+	
+	if		(mstate_rl & mcFwd)		legs = (!jump) ? sprint.legs_fwd	: sprint.legs_jump_fwd;
+	else if (mstate_rl & mcLStrafe) legs = (!jump) ? sprint.legs_ls		: sprint.legs_jump_ls;
+	else if (mstate_rl & mcRStrafe)	legs = (!jump) ? sprint.legs_rs		: sprint.legs_jump_rs;	
 }
 
 CMotion*        FindMotionKeys(MotionID motion_ID,IRenderVisual* V)

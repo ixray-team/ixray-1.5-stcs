@@ -297,7 +297,7 @@ void xrGameSpyServer::GetServerInfo( CServerInfo* si )
 	{
 		if ( HasProtected() )			strcat_s( res, "protected  " );
 		if ( Password.size() > 0 )		strcat_s( res, "password  " );
-		if ( HasBattlEye() )			strcat_s( res, "battleye  " );
+		if ( HasBattlEye() )			strcat_s( res, "BattlEye  " );
 	}
 	else
 	{

@@ -1,10 +1,19 @@
 #include "stdafx.h"
 #include "xrmu_model.h"
 
-poolSS<xrMU_Model::_vertex,8*1024>	mu_vertices;
-poolSS<xrMU_Model::_face,8*1024>	mu_faces;
-/*
-// vertex utilities
+#include "serialize.h"
+#include "mu_model_face.h"
+
+xrMU_Model::xrMU_Model(): 
+m_lod_ID(u16(-1)),read_faces(0),read_vertices(0),write_faces(0), write_vertices(0)
+{}
+xrMU_Model::~xrMU_Model()
+{
+	reading_close();
+	writting_close();
+}
+/*											
+// vertex utilities							
 void	xrMU_Model::_vertex::prep_add				(_face* F)
 {
 	for (v_faces_it I=adjacent.begin(); I!=adjacent.end(); I++)
@@ -151,51 +160,116 @@ BOOL			xrMU_Model::data_face::RenderEqualTo	(Face *F)
 	return TRUE;
 }
 */
-Tface<xrMU_Model::data_vertex>::Tface()
-{}
 
-Tvertex<xrMU_Model::data_vertex>::Tvertex()
-{}
 
-xrMU_Model::_vertex*	xrMU_Model::_vertex::CreateCopy_NOADJ(v_vertices& vertises_storage ) const
+/*
+	shared_str				m_name;
+	u16						m_lod_ID;
+	v_vertices				m_vertices;
+	v_faces					m_faces;
+	v_subdivs				m_subdivs;
+
+	xr_vector<base_color>	color;
+*/
+
+
+void xrMU_Model::read( INetReader	&r )
 {
-	//xrMU_Model::_vertex* V	= create_vertex(Fvector().set(0,0,0));
-	xrMU_Model::_vertex*	V		= mu_vertices.create();
-	vertises_storage.push_back( V );
-	V->P.set	( P );
-	V->N.set	( N );
-	V->C		= C;
-	return		V;
+	reading_open();
+	r.r_stringZ( m_name );
+	m_lod_ID = r.r_u16();
+	VERIFY( read_vertices );
+	read_vertices->read( r );
+	VERIFY( read_faces );
+	read_faces->read( r );
+	r_pod_vector( r, m_subdivs );
+}
+void xrMU_Model::write( IWriter	&w ) const 
+{
+	writting_open();
+	w.w_stringZ( m_name );
+	w.w_u16( m_lod_ID );
+	VERIFY( write_vertices );
+	write_vertices->write( w );
+	VERIFY( write_faces );
+	write_faces->write( w );
+	w_pod_vector( w, m_subdivs );
 }
 
-template<>
-Tface<xrMU_Model::data_vertex>::~Tface()
-{}
-template<>
-Tvertex<xrMU_Model::data_vertex>::~Tvertex()
-{}
-
-void xrMU_Model::_face::Failure		()
+u32	xrMU_Model::find( const _vertex *v ) const
 {
-
+ 	v_vertices::const_iterator i = std::find( m_vertices.begin(), m_vertices.end(), v );
+	if( i== m_vertices.end() )
+		return u32(-1);
+	return u32(i - m_vertices.begin());
 }
 
-void xrMU_Model::_face::read( IReader &r )
+u32	xrMU_Model::find( const _face *f ) const
 {
-
+	 v_faces::const_iterator i = std::find( m_faces.begin(), m_faces.end(), f ) ;
+	 if(i== m_faces.end())
+		return u32(-1);
+	 return u32(i - m_faces.begin());
 }
 
-void xrMU_Model::_face::write( IWriter &r ) const
+xrMU_Model * xrMU_Model::read_create()
 {
-
+	return xr_new<xrMU_Model>();
 }
 
-void xrMU_Model::_vertex::read( IReader &r )
+
+
+
+
+
+
+
+void		xrMU_Model::			reading_open		()
 {
+	read_faces		= xr_new<tread_faces>(&m_faces);
+	read_vertices	= xr_new<tread_vertices>(&m_vertices);
+}
+void		xrMU_Model::			reading_close		()
+{
+	xr_delete(read_faces);
+	xr_delete(read_vertices);
 
 }
-
-void xrMU_Model::_vertex::write( IWriter &r ) const
+void		xrMU_Model::			writting_open		()const
 {
+	write_faces			= xr_new<twrite_faces>(&m_faces);
+	write_vertices		= xr_new<twrite_vertices>(&m_vertices);
+}
+void		xrMU_Model::			writting_close		()const
+{
+	xr_delete(write_faces);
+	xr_delete(write_vertices);
+}
 
+
+void		xrMU_Model::read	( INetReader	&r, _vertex* &v )const
+{
+	VERIFY( read_vertices );
+	read_vertices->read( r, v );
+}
+void		xrMU_Model::read	( INetReader	&r, _face*	&v )const
+{
+	VERIFY( read_faces );
+	read_faces->read( r, v );
+}
+
+
+void		xrMU_Model::write	( IWriter	&w, u32 id, const _vertex* v )const
+{
+	VERIFY( v==m_vertices[id] );
+	VERIFY( write_vertices );
+	VERIFY( write_vertices->get_id( v, m_vertices ) == id );
+	write_vertices->write( w, v );
+}
+void		xrMU_Model::write	( IWriter	&w, u32 id, const _face* v )const
+{
+	VERIFY( v==m_faces[id] );
+	VERIFY( write_faces );
+	VERIFY( write_faces->get_id( v, m_faces ) == id );
+	write_faces->write( w, v );
 }

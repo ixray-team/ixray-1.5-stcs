@@ -18,8 +18,9 @@ namespace MonsterSpace {
 	};
 
 	enum EBodyState {
-		eBodyStateCrouch = 0,
+		eBodyStateCrouch = u32(0),
 		eBodyStateStand,
+		eBodyStateDummy = u32(-1)
 	};
 
 	enum EMovementType {

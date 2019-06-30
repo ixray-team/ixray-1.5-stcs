@@ -8,7 +8,8 @@
 #include "stdafx.h"
 #include "edit_actions.h"
 #include "line_edit_control.h"
-
+#include "xr_input.h"
+#include <locale.h>
 
 namespace text_editor
 {
@@ -59,27 +60,65 @@ void callback_base::on_key_press( line_edit_control* const control )
 
 // -------------------------------------------------------------------------------------------------
 
-type_pair::type_pair( char c, char c_shift )
+type_pair::type_pair( u32 dik, char c, char c_shift, bool b_translate )
 {
-	init( c, c_shift );
+	init( dik, c, c_shift, b_translate );
 }
 
 type_pair::~type_pair()
 {
 }
 
-void type_pair::init( char c, char c_shift )
+void type_pair::init( u32 dik, char c, char c_shift, bool b_translate )
 {
+	m_translate	= b_translate;
+	m_dik = dik;
 	m_char = c;
 	m_char_shift = c_shift;
 }
 
+
 void type_pair::on_key_press( line_edit_control* const control )
 {
-	char c = m_char;
-	if ( control->get_key_state( ks_Shift ) )
+	char c = 0;
+	if( m_translate )
 	{
-		c = m_char_shift;
+		c				= m_char;
+		char c_shift	= m_char_shift;
+		string128		buff, code_page;
+		buff[0]			= 0;
+		
+		LPSTR			prev_locale;
+		STRCONCAT		( prev_locale, setlocale( LC_CTYPE, "" ) );
+
+		LPSTR			loc;
+		STRCONCAT		( loc, ".", itoa( GetACP(), code_page, 10 ) );
+		setlocale		( LC_CTYPE, loc );// LC_CTYPE
+
+		if ( pInput->get_dik_name( m_dik, buff, sizeof(buff) ) )
+		{
+			if ( isalpha(buff[0]) || buff[0] == char(-1) ) // "ÿ" = -1
+			{
+				strlwr	(buff);
+				c		= buff[0];
+				strupr	(buff);
+				c_shift	= buff[0];
+			}
+		}
+		setlocale( LC_CTYPE, prev_locale ); // restore
+
+		if ( control->get_key_state( ks_Shift ) )
+		{
+			c = c_shift;
+		}
+	}
+	else
+	{
+		c = m_char;
+		if ( control->get_key_state( ks_Shift ) )
+		{
+			c = m_char_shift;
+		}
 	}
 	control->insert_character( c );
 }

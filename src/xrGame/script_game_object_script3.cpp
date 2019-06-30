@@ -124,7 +124,8 @@ class_<CScriptGameObject> &script_register_game_object2(class_<CScriptGameObject
 
 		.def("give_info_portion",			&CScriptGameObject::GiveInfoPortion)
 		.def("disable_info_portion",		&CScriptGameObject::DisableInfoPortion)
-		.def("give_game_news",				(bool (CScriptGameObject::*)(LPCSTR,LPCSTR,LPCSTR,int,int))(&CScriptGameObject::GiveGameNews))
+		.def("give_game_news",				(void (CScriptGameObject::*)(LPCSTR,LPCSTR,LPCSTR,int,int))(&CScriptGameObject::GiveGameNews))
+		.def("give_game_news",				(void (CScriptGameObject::*)(LPCSTR,LPCSTR,LPCSTR,int,int,int))(&CScriptGameObject::GiveGameNews))
 
 		.def("give_talk_message",			(void (CScriptGameObject::*)(LPCSTR,LPCSTR,LPCSTR))(&CScriptGameObject::AddIconedTalkMessage_old))//old version, must remove!
 		.def("give_talk_message2",			(void (CScriptGameObject::*)(LPCSTR,LPCSTR,LPCSTR,LPCSTR))(&CScriptGameObject::AddIconedTalkMessage))
@@ -303,6 +304,8 @@ class_<CScriptGameObject> &script_register_game_object2(class_<CScriptGameObject
 
 		.def("actor_look_at_point",			&CScriptGameObject::ActorLookAtPoint)
 		.def("enable_level_changer",		&CScriptGameObject::enable_level_changer)
+		.def("is_level_changer_enabled",	&CScriptGameObject::is_level_changer_enabled)
+
 		.def("set_level_changer_invitation",&CScriptGameObject::set_level_changer_invitation)
 		.def("start_particles",				&CScriptGameObject::start_particles)
 		.def("stop_particles",				&CScriptGameObject::stop_particles)

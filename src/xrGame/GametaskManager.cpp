@@ -11,6 +11,7 @@
 #include "UIGameSP.h"
 #include "ui/UIPDAWnd.h"
 #include "encyclopedia_article.h"
+#include "ui/UIMapWnd.h"
 
 #pragma warning(push)
 #pragma warning(disable:4995)
@@ -89,7 +90,7 @@ CGameTask* CGameTaskManager::HasGameTask(const shared_str& id, bool only_inproce
 	return 0;
 }
 
-CGameTask*	CGameTaskManager::GiveGameTaskToActor(CGameTask* t, u32 timeToComplete, bool bCheckExisting, u32 t_timer)
+CGameTask*	CGameTaskManager::GiveGameTaskToActor(CGameTask* t, u32 timeToComplete, bool bCheckExisting, u32 timer_ttl)
 {
 	t->CommitScriptHelperContents	();
 	if(/* bCheckExisting &&*/ HasGameTask(t->m_ID, true) ) 
@@ -104,13 +105,12 @@ CGameTask*	CGameTaskManager::GiveGameTaskToActor(CGameTask* t, u32 timeToComplet
 	GetGameTasks().push_back		(SGameTaskKey(t->m_ID) );
 	GetGameTasks().back().game_task	= t;
 	t->m_ReceiveTime				= Level().GetGameTime();
-	t->m_TimeToComplete				= t->m_ReceiveTime + timeToComplete * 1000;
+	t->m_TimeToComplete				= t->m_ReceiveTime + timeToComplete * 1000; //ms
+	t->m_timer_finish				= t->m_ReceiveTime + timer_ttl      * 1000; //ms
 
-	
 	std::stable_sort				(GetGameTasks().begin(), GetGameTasks().end(), task_prio_pred);
 
-	ALife::_TIME_ID ttl_timer		= t_timer * 1000; //ms
-	t->OnArrived					(ttl_timer);
+	t->OnArrived					();
 
 	ETaskType const	task_type		= t->GetTaskType();
 	CGameTask* _at					= ActiveTask(t->GetTaskType());
@@ -251,8 +251,14 @@ void CGameTaskManager::SetActiveTask(CGameTask* task)
 	}
 }
 
+CUIMapWnd* GetMapWnd();
+
 void CGameTaskManager::MapLocationRelcase(CMapLocation* ml)
 {
+	CUIMapWnd* mwnd = GetMapWnd();
+	if(mwnd)
+		mwnd->MapLocationRelcase(ml);
+
 	CGameTask* gt = HasGameTask(ml, false);
 	if(gt)
 		gt->RemoveMapLocations(true);

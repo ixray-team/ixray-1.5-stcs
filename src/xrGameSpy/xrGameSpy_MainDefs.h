@@ -12,13 +12,13 @@
 	#define	GAMESPY_GAMENAME				"stalkercsd"
 	#define GAMESPY_GAMEID					2264
 	#define GAMESPY_PRODUCTID				11528
-	#define GAME_VERSION					"1.5.00"
+	#define GAME_VERSION					"1.5.03"
 	#define REGISTRY_PATH					"Software\\GSC Game World\\STALKER-STCS_DBG\\"
 #else
 	#define	GAMESPY_GAMENAME				"stalkercs"
 	#define GAMESPY_GAMEID					2264
 	#define GAMESPY_PRODUCTID				11528
-	#define GAME_VERSION					"1.5.00"
+	#define GAME_VERSION					"1.5.03"
 	#define REGISTRY_PATH					"Software\\GSC Game World\\STALKER-STCS\\"
 #endif
 
@@ -36,6 +36,7 @@
 #define REGISTRY_VALUE_USERNAME				"InstallUserName"
 #define REGISTRY_VALUE_SKU					"InstallSource"
 #define REGISTRY_VALUE_INSTALL_PATCH_ID		"InstallPatchID"
+#define REGISTRY_VALUE_LANGUAGE				"InstallLang"
 
 #define GAMESPY_PATCHING_VERSIONUNIQUE_ID	"test_version_1"
 #define GAMESPY_PATCHING_DISTRIBUTION_ID	0

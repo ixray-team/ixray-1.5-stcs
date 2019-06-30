@@ -84,7 +84,23 @@ BOOL R_constant_table::parseConstants(ID3D10ShaderReflectionConstantBuffer* pTab
 			r_type = RC_1x1;
 			break;
 		case D3D10_SVC_VECTOR:
-			r_type = RC_1x4;
+			{
+				switch(TypeDesc.Columns)
+				{
+				case 4:
+					r_type = RC_1x4;
+					break;
+				case 3:
+					r_type = RC_1x3;
+				    break;
+				case 2:
+					r_type = RC_1x2;
+					break;
+				default:
+					fatal("Vector: 1 components is scalar - there is special case for this!!!!!");
+				    break;
+				}
+			}
 			break;
 		case D3D10_SVC_MATRIX_ROWS:
 			{

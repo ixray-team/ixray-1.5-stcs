@@ -149,6 +149,8 @@ public:
 	void						SetTargetMap			(const shared_str& name, const Fvector2& pos, bool bZoomIn = false);
 	void						SetTargetMap			(const shared_str& name, bool bZoomIn = false);
 
+	void						MapLocationRelcase				(CMapLocation* ml);
+
 	Frect						ActiveMapRect			()		{Frect r; m_UILevelFrame->GetAbsoluteRect(r); return r;};
 	void						AddMapToRender			(CUICustomMap*);
 	void						RemoveMapToRender		(CUICustomMap*);

@@ -157,11 +157,11 @@ void CUIHudStatesWnd::Load_section()
 //	m_actor_radia_factor = pSettings->r_float( "radiation_zone_detector", "actor_radia_factor" );
 	Level().hud_zones_list->load( "all_zone_detector", "zone" );
 
-	Load_section_type( ALife::infl_rad,  "radiation_zone_detector" );
-	Load_section_type( ALife::infl_fire, "fire_zone_detector" );
-	Load_section_type( ALife::infl_acid, "acid_zone_detector" );
-	Load_section_type( ALife::infl_psi,  "psi_zone_detector" );
-	//no !!= electra__zone_detector
+	Load_section_type( ALife::infl_rad,     "radiation_zone_detector" );
+	Load_section_type( ALife::infl_fire,    "fire_zone_detector" );
+	Load_section_type( ALife::infl_acid,    "acid_zone_detector" );
+	Load_section_type( ALife::infl_psi,     "psi_zone_detector" );
+	Load_section_type( ALife::infl_electra, "electra_zone_detector" );	//no uistatic
 }
 
 void CUIHudStatesWnd::Load_section_type( ALife::EInfluenceType type, LPCSTR section )
@@ -263,7 +263,7 @@ void CUIHudStatesWnd::UpdateActiveItemInfo( CActor* actor )
 		}
 		else
 		{
-			if ( str_count.size() > 6 )
+			if ( str_count.size() > 5 )
 			{
 				pFont = pFont22;
 			}

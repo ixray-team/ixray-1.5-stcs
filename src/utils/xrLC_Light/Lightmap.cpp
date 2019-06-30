@@ -5,12 +5,12 @@
 #include "stdafx.h"
 //#include "build.h"
 #include "Lightmap.h"
-#include "../xrlc_light/xrDeflector.h"
+#include "xrDeflector.h"
 #include "xrDXTC.h"
 #include "xrImage_Filter.h"
-#include "../xrlc_light/xrface.h"
+#include "xrface.h"
 #include "serialize.h"
-
+#include "ETextureParams.h"
 #pragma comment(lib,"dxt.lib")
 extern "C" bool __declspec(dllimport) __stdcall DXTCompress(LPCSTR out_name, u8* raw_data, u8* normal_map, u32 w, u32 h, u32 pitch, STextureParams* fmt, u32 depth);
 
@@ -191,7 +191,7 @@ void CLightmap::Save( LPCSTR path )
 	lm_layer					lm;
 	b_texture					lm_texture;
 */
-void	CLightmap::read				( IReader	&r )
+void	CLightmap::read				( INetReader	&r )
 {
 	lm.read( r );
 	::read(r, lm_texture);

@@ -135,7 +135,7 @@ IC	void CStalkerAnimationManager::play_global_impl			(const MotionID &animation,
 		animation_movement_controller,
 		true,
 		false,
-		animation_movement_controller ? CStalkerAnimationPair::all_bone_parts : m_script_bone_part_mask,
+		m_script_bone_part_mask,
 		true
 	);
 

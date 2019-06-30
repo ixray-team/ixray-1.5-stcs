@@ -157,7 +157,9 @@
       x:\intermediate_ed\ecore\ETextureParams.obj 
       x:\intermediate_ed\ecore\Blender_Recorder_R2.obj 
       x:\intermediate_ed\ecore\NVMeshMender.obj 
-      x:\intermediate_ed\ecore\ExportObjectOGFCalculateTB.obj"/>
+      x:\intermediate_ed\ecore\ExportObjectOGFCalculateTB.obj 
+      x:\intermediate_ed\ecore\R_Backend_hemi.obj 
+      x:\intermediate_ed\ecore\R_Backend_tree.obj"/>
     <RESFILES value="resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -168,20 +170,20 @@
     <LIBRARIES value="editorB.lib elpackB6.lib editor.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib bcbsmp.lib vclx.lib editor.lib elpackB6.lib editorB.lib"/>
     <PACKAGES value="rtl.bpi vcl.bpi vclx.bpi bcbsmp.bpi"/>
-    <PATHCPP value=".;Engine;..\..\xrEngine;Engine;..\..\xrEngine;..\..\xrEngine;..\..\xrEngine;..\..\xrEngine;..\..\xrEngine;..\..\xrEngine;..\..\xrEngine;..\..\xrEngine;..\..\xrEngine;..\..\xrEngine;..\..\xrEngine;..\..\xrEngine;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;Engine;Engine;..\..\xrEngine;..\..\xrEngine;..\..\xrCDB;..\..\xrEngine;..\..\xrEngine;..\..\xrEngine;..\..\xrEngine;..\..\xrEngine;..\..\Layers\xrRenderPC_R1;..\..\Layers\xrRenderPC_R1;..\..\Layers\xrRenderPC_R1;..\..\Layers\xrRenderPC_R1;..\..\Layers\xrRenderPC_R1;..\..\Layers\xrRender;..\..\Layers\xrRender;Engine\blenders;Engine\blenders;..\..\Layers\xrRender;..\..\Layers\xrRenderPC_R1;..\..\Layers\xrRender;..\..\Layers\xrRenderPC_R1;..\..\Layers\xrRender;..\..\Layers\xrRenderPC_R1;..\..\Layers\xrRenderPC_R1;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;Engine;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;WildMagic;WildMagic;WildMagic;WildMagic;WildMagic;WildMagic;WildMagic;WildMagic;WildMagic;WildMagic;WildMagic;WildMagic;WildMagic;WildMagic;Engine;Editor;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\xrCPU_Pipe;..\..\xrCPU_Pipe;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRenderDX9;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender\blenders;..\..\Layers\xrRender\blenders;..\..\Layers\xrRender\blenders;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\common\NvMender2003;Editor"/>
+    <PATHCPP value=".;Engine;..\..\xrEngine;Engine;..\..\xrEngine;..\..\xrEngine;..\..\xrEngine;..\..\xrEngine;..\..\xrEngine;..\..\xrEngine;..\..\xrEngine;..\..\xrEngine;..\..\xrEngine;..\..\xrEngine;..\..\xrEngine;..\..\xrEngine;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;Engine;Engine;..\..\xrEngine;..\..\xrEngine;..\..\xrCDB;..\..\xrEngine;..\..\xrEngine;..\..\xrEngine;..\..\xrEngine;..\..\xrEngine;..\..\Layers\xrRenderPC_R1;..\..\Layers\xrRenderPC_R1;..\..\Layers\xrRenderPC_R1;..\..\Layers\xrRenderPC_R1;..\..\Layers\xrRenderPC_R1;..\..\Layers\xrRender;..\..\Layers\xrRender;Engine\blenders;Engine\blenders;..\..\Layers\xrRender;..\..\Layers\xrRenderPC_R1;..\..\Layers\xrRender;..\..\Layers\xrRenderPC_R1;..\..\Layers\xrRender;..\..\Layers\xrRenderPC_R1;..\..\Layers\xrRenderPC_R1;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;Engine;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Editor;WildMagic;WildMagic;WildMagic;WildMagic;WildMagic;WildMagic;WildMagic;WildMagic;WildMagic;WildMagic;WildMagic;WildMagic;WildMagic;WildMagic;Engine;Editor;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\xrCPU_Pipe;..\..\xrCPU_Pipe;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRenderDX9;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender\blenders;..\..\Layers\xrRender\blenders;..\..\Layers\xrRender\blenders;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\common\NvMender2003;Editor;..\..\Layers\xrRender;..\..\Layers\xrRender"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
     <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="ilink32"/>
-    <USERDEFINES value="_EDITOR;_ECOREB;_DEBUG;XRCDB_EXPORTS"/>
+    <USERDEFINES value="_EDITOR;_ECOREB;XRCDB_EXPORTS"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="xrECoreB.bpf"/>
     <INCLUDEPATH value="&quot;D:\Program Files\Borland\CBuilder6\Projects&quot;;..\..\common\NvMender2003;..\..;..\..\Layers\xrRenderDX9;..\..\Layers\xrRender\blenders;&quot;E:\Program Files\Borland\CBuilder6\Projects&quot;;..\..\Layers\xrRender;..\..\Layers\xrRenderPC_R1;..\..\xrEngine\xrRender_R1;..\..\xrEngine\xrCPU_Pipe;..\..\xrEngine\xrRender;..\..\xrRender_R1;..\..\xrEngine\blenders;..\..\xrCDB;..\..\xrCPU_Pipe;Engine\Blenders;..\..\xrRender;..\..\xrEngine;$(DXSDK_DIR)\Include;WildMagic;Editor;Engine;$(BCB)\include;$(BCB)\include\vcl;$(COMPONENTS)\AlexMX;$(COMPONENTS)\ElPack\Code\Source;$(BCB)\Include\Mfc;$(CORE_DIR);..\xrEProps;$(XIPH_DIR);$(MAGIC_SW_DIR);$(SDK_DIR)\include\freeimage;$(ETOOLS_DIR)"/>
     <LIBPATH value="..\..\common\NvMender2003;..\..;..\..\Layers\xrRenderDX9;..\..\Layers\xrRender\blenders;&quot;E:\Program Files\Borland\CBuilder6\Projects&quot;;..\..\Layers\xrRender;..\..\Layers\xrRenderPC_R1;..\..\xrRender_R1;..\..\xrCPU_Pipe;..\..\xrRender;WildMagic;Editor;Engine\blenders;..\..\xrEngine\xrRender_R1;..\..\xrEngine\blenders;..\..\xrCDB;..\..\xrEngine\xrCPU_Pipe;..\..\xrEngine\xrRender;..\..\xrEngine;Engine;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;$(COMPONENTS)\AlexMX;$(COMPONENTS)\ElPack\Code;$(BCB)\Lib\Psdk;x:\stalker_addon\libraries"/>
     <WARNINGS value="-w8092 -w8090 -w8089 -w8087 -wprc -wucp -wstv -wstu -wsig -wpin -w-par 
-      -wnod -wnak -wdef -wcln -wbbf -wasm -wamp -wamb"/>
+      -wnod -wnak -w-8027 -w-8026 -wdef -wcln -wbbf -wasm -wamp -wamb"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
@@ -197,15 +199,14 @@
       -I$(COMPONENTS)\AlexMX -I$(COMPONENTS)\ElPack\Code\Source 
       -I$(BCB)\Include\Mfc -I$(CORE_DIR) -I..\xrEProps -I$(XIPH_DIR) 
       -I$(MAGIC_SW_DIR) -I$(SDK_DIR)\include\freeimage -I$(ETOOLS_DIR) 
-      -src_suffix cpp -D_EDITOR -D_ECOREB -D_DEBUG -DXRCDB_EXPORTS -boa"/>
+      -src_suffix cpp -D_EDITOR -D_ECOREB -DXRCDB_EXPORTS -boa"/>
     <CFLAG1 value="-WD -Od -H=x:\intermediate_ed\ecore\pch.csm -Hc -Q -Vms -Vx -Ve -xf -xp 
-      -VF -ff -X- -r- -ps -a4 -6 -b- -k -y -v -vi- -tWD -tWM -c"/>
-    <PFLAGS value="-N2x:\intermediate_ed\ecore -N0x:\intermediate_ed\ecore -$Y+ -$W -$O- -$A8 
-      -v -JPHNE -M"/>
+      -VF -ff -X- -ps -a4 -6 -b- -k- -vi -tWD -tWM -c"/>
+    <PFLAGS value="-N2x:\intermediate_ed\ecore -N0x:\intermediate_ed\ecore -$Y- -$L- -$D- 
+      -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
-    <AFLAGS value="/mu /w2 /zi"/>
-    <LFLAGS value="-lX:\stalker_addon\libraries -Ix:\intermediate_ed\ecore -D&quot;&quot; -aa -Tpd -x 
-      -Gi -v"/>
+    <AFLAGS value="/mu /w2 /zn"/>
+    <LFLAGS value="-lX:\stalker_addon\libraries -Ix:\intermediate_ed\ecore -D&quot;&quot; -aa -Tpd -x -Gi"/>
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
@@ -400,6 +401,8 @@
       <FILE FILENAME="..\..\common\NvMender2003\NVMeshMender.h" FORMNAME="" UNITNAME="NVMeshMender.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="..\..\common\NvMender2003\convert.h" FORMNAME="" UNITNAME="convert.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ExportObjectOGFCalculateTB.cpp" FORMNAME="" UNITNAME="ExportObjectOGFCalculateTB" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="..\..\Layers\xrRender\R_Backend_hemi.cpp" FORMNAME="" UNITNAME="R_Backend_hemi" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="..\..\Layers\xrRender\R_Backend_tree.cpp" FORMNAME="" UNITNAME="R_Backend_tree" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -472,9 +475,10 @@ Count=1
 Item0=$(BCB)\source\vcl
 
 [HistoryLists\hlConditionals]
-Count=2
-Item0=_EDITOR;_ECOREB;_DEBUG;XRCDB_EXPORTS
-Item1=_EDITOR;_ECOREB;_DEBUG
+Count=3
+Item0=_EDITOR;_ECOREB;XRCDB_EXPORTS
+Item1=_EDITOR;_ECOREB;_DEBUG;XRCDB_EXPORTS
+Item2=_EDITOR;_ECOREB;_DEBUG
 
 [HistoryLists\hlIntOutputDir]
 Count=4
@@ -502,7 +506,7 @@ RunParams=-wf x:\stalker_addon\resources
 Launcher=
 UseLauncher=0
 DebugCWD=
-HostApplication=x:\binaries\LevelEditor.exe
+HostApplication=x:\stalker_addon\binaries\LevelEditor.exe
 RemoteHost=
 RemotePath=
 RemoteLauncher=

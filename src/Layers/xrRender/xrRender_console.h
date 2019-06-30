@@ -65,6 +65,7 @@ extern ECORE_API	float		ps_r2_tf_Mipbias;
 
 // R2-specific
 extern ECORE_API Flags32		ps_r2_ls_flags;				// r2-only
+extern ECORE_API Flags32		ps_r2_ls_flags_ext;
 extern ECORE_API float			ps_r2_df_parallax_h;		// r2-only
 extern ECORE_API float			ps_r2_df_parallax_range;	// r2-only
 extern ECORE_API float			ps_r2_gmaterial;			// r2-only
@@ -104,7 +105,9 @@ extern ECORE_API float			ps_r2_sun_lumscale_hemi;	// 1.0f
 extern ECORE_API float			ps_r2_sun_lumscale_amb;		// 1.0f
 extern ECORE_API float			ps_r2_zfill;				// .1f
 
-extern ECORE_API float			ps_r2_dhemi_scale;			// 1.5f
+extern ECORE_API float			ps_r2_dhemi_sky_scale;		// 1.5f
+extern ECORE_API float			ps_r2_dhemi_light_scale;	// 1.f
+extern ECORE_API float			ps_r2_dhemi_light_flow;		// .1f
 extern ECORE_API int			ps_r2_dhemi_count;			// 5
 extern ECORE_API float			ps_r2_slight_fade;			// 1.f
 extern ECORE_API int			ps_r2_wait_sleep;
@@ -156,6 +159,16 @@ enum
 
 	R3FLAG_DYN_WET_SURF			= (1<<26),
 	R3FLAG_VOLUMETRIC_SMOKE		= (1<<27),
+
+	R3FLAG_MSAA					= (1<<28),
+	R3FLAG_MSAA_OPT				= (1<<29),
+	R3FLAG_GBUFFER_OPT			= (1<<30),
+	R3FLAG_MSAA_ALPHATEST		= (1<<31),
+};
+
+enum
+{
+	R2FLAGEXT_SSAO_BLUR = (1<<0)
 };
 
 extern void						xrRender_initconsole	();

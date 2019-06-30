@@ -35,27 +35,28 @@
     <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="ilink32"/>
-    <USERDEFINES value="_EDITOR;_SHADER_EDITOR;_DEBUG"/>
+    <USERDEFINES value="_EDITOR;_SHADER_EDITOR"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="ShaderEditor.cpp"/>
     <INCLUDEPATH value="$(DXSDK_DIR)\Include;$(COMPONENTS)\alexmx;$(BCB)\include;$(BCB)\include\vcl;$(COMPONENTS)\ElPack\Code;$(COMPONENTS)\ElPack\Code\Source;$(CORE_DIR);../../xrEngine;../../xrRender;$(EAX_DIR)"/>
     <LIBPATH value="$(BCB)\Projects;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;$(COMPONENTS)\alexmx;$(COMPONENTS)\ElPack\Code;$(COMPONENTS)\ElPack\Code\Source;X:\stalker_addon\libraries"/>
     <WARNINGS value="-w8092 -w8090 -w8089 -w8087 -wprc -wucp -wstv -wstu -wsig -wpin -w-par 
-      -wnod -wnak -wdef -wcln -wbbf -wasm -wamp -wamb"/>
+      -wnod -wnak -w-8027 -w-8026 -wdef -wcln -wbbf -wasm -wamp -wamb"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-src_suffix cpp -D_EDITOR -D_SHADER_EDITOR -D_DEBUG -I$(DXSDK_DIR)\Include 
-      -I$(COMPONENTS)\alexmx -I$(BCB)\include -I$(BCB)\include\vcl 
-      -I$(COMPONENTS)\ElPack\Code -I$(COMPONENTS)\ElPack\Code\Source 
-      -I$(CORE_DIR) -I../../xrEngine -I../../xrRender -I$(EAX_DIR) -no_tie -boa"/>
+    <IDLCFLAGS value="-I$(DXSDK_DIR)\Include -I$(COMPONENTS)\alexmx -I$(BCB)\include 
+      -I$(BCB)\include\vcl -I$(COMPONENTS)\ElPack\Code 
+      -I$(COMPONENTS)\ElPack\Code\Source -I$(CORE_DIR) -I../../xrEngine 
+      -I../../xrRender -I$(EAX_DIR) -src_suffix cpp -D_EDITOR -D_SHADER_EDITOR 
+      -no_tie -boa"/>
     <CFLAG1 value="-Od -H=x:\intermediate_ed\se\pch.csm -Hc -Q -Vms -Vx -Ve -xf -xp -VF -ff 
-      -X- -r- -ps -a4 -6 -b- -k -y -v -vi- -He -c -tW -tWM"/>
-    <PFLAGS value="-N2x:\intermediate_ed\se -N0x:\intermediate_ed\se -$Y+ -$W -$R -$Q -$O- 
+      -X- -ps -a4 -6 -b- -k- -vi -He -c -tW -tWM"/>
+    <PFLAGS value="-N2x:\intermediate_ed\se -N0x:\intermediate_ed\se -$Y- -$R -$Q -$L- -$D- 
       -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
-    <AFLAGS value="/mx /w2 /zi"/>
-    <LFLAGS value="-lX:\stalker_addon\libraries -Ix:\intermediate_ed\se -D&quot;&quot; -aa -Tpe -GD -x -v"/>
+    <AFLAGS value="/mx /w2 /zn"/>
+    <LFLAGS value="-lX:\stalker_addon\libraries -Ix:\intermediate_ed\se -D&quot;&quot; -aa -Tpe -GD -x"/>
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
@@ -97,7 +98,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=2
-Build=119
+Build=120
 Debug=1
 PreRelease=0
 Special=0
@@ -109,7 +110,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=
 FileDescription=
-FileVersion=1.0.2.119
+FileVersion=1.0.2.120
 InternalName=
 LegalCopyright=
 LegalTrademarks=
@@ -162,8 +163,8 @@ Item2=c:\rad\borland\cbuilder5\source\vcl;P:\Editor\QHull\
 
 [HistoryLists\hlConditionals]
 Count=12
-Item0=_EDITOR;_SHADER_EDITOR;_DEBUG
-Item1=_EDITOR;_SHADER_EDITOR
+Item0=_EDITOR;_SHADER_EDITOR
+Item1=_EDITOR;_SHADER_EDITOR;_DEBUG
 Item2=_EDITORS;_SHADER_EDITOR;_DEBUG
 Item3=_EDITOR_FAMILY;_SHADER_EDITOR;_DEBUG
 Item4=_SHADER_EDITOR;_DEBUG

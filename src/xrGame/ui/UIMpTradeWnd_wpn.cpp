@@ -165,6 +165,9 @@ void CUIMpTradeWnd::OnBtnRifleGLClicked(CUIWindow* w, void* d)
 		if(!b_res_addon)
 			DestroyItem				(addon_item);
 	}
+
+	DeleteHelperItems				(m_list[e_rifle_ammo]);
+	UpdateCorrespondingItemsForList (m_list[e_rifle]);
 }
 
 void CUIMpTradeWnd::OnBtnRifleAmmo2Clicked(CUIWindow* w, void* d)
@@ -243,6 +246,26 @@ void CUIMpTradeWnd::SellItemAddons(SBuyItemInfo* sell_itm, item_addon_type addon
 		u32 _item_cost					= m_item_mngr->GetItemCost(detached_addon->m_name_sect, GetRank() );
 		SetMoneyAmount					(GetMoneyAmount() + _item_cost);
 		DestroyItem						(detached_addon);
+
+		if ( addon_type == at_glauncher )
+		{
+			CWeaponMagazinedWGrenade* wpn2 = smart_cast<CWeaponMagazinedWGrenade*>(item_);
+			VERIFY(wpn2);
+
+			for ( u32 ammo_idx							=	0;
+					  ammo_idx							<	wpn2->m_ammoTypes2.size();
+					++ammo_idx )
+			{
+				const shared_str&	ammo_name			=	wpn2->m_ammoTypes2[ammo_idx];
+				SBuyItemInfo*		ammo				=	NULL;
+
+				while ( (ammo = FindItem(ammo_name, SBuyItemInfo::e_bought)) != NULL )
+				{
+					SBuyItemInfo*   tempo				=	NULL;
+					TryToSellItem(ammo, true, tempo);
+				}
+			}
+		}
 	}
 }
 

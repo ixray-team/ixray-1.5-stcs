@@ -38,27 +38,27 @@
     <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="ilink32"/>
-    <USERDEFINES value="_EDITOR;XR_EPROPS_EXPORTS;_DEBUG"/>
+    <USERDEFINES value="_EDITOR;XR_EPROPS_EXPORTS"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="xrEPropsB.bpf"/>
     <INCLUDEPATH value="&quot;E:\Program Files\Borland\CBuilder6\Projects&quot;;$(BCB)\include;$(BCB)\include\vcl;$(BCB)\Include\Mfc;$(CORE_DIR);$(COMPONENTS)\alexmx;$(COMPONENTS)\elpack\code\source"/>
     <LIBPATH value="&quot;E:\Program Files\Borland\CBuilder6\Projects&quot;;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;$(BCB)\Lib\Psdk;x:\stalker_addon\libraries;$(COMPONENTS)\alexmx;X:\stalker_addon\sources\sdk\components\ElPack\Code"/>
-    <WARNINGS value="-w-par"/>
+    <WARNINGS value="-w-par -w-8027 -w-8026"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
     <IDLCFLAGS value="-I&quot;E:\Program Files\Borland\CBuilder6\Projects&quot; -I$(BCB)\include 
       -I$(BCB)\include\vcl -I$(BCB)\Include\Mfc -I$(CORE_DIR) 
       -I$(COMPONENTS)\alexmx -I$(COMPONENTS)\elpack\code\source -src_suffix cpp 
-      -D_EDITOR -DXR_EPROPS_EXPORTS -D_DEBUG -boa"/>
+      -D_EDITOR -DXR_EPROPS_EXPORTS -boa"/>
     <CFLAG1 value="-WD -Od -H=x:\intermediate_ed\eprops\pch.csm -Hc -Q -Vms -Vx -Ve -xf -xp 
-      -VF -ff -X- -r- -ps -a4 -6 -b- -k -y -v -vi- -tWD -tWM -c"/>
-    <PFLAGS value="-N2x:\intermediate_ed\eprops -N0x:\intermediate_ed\eprops -$Y+ -$W -$O- 
+      -VF -ff -X- -ps -a4 -6 -b- -k- -vi -tWD -tWM -c"/>
+    <PFLAGS value="-N2x:\intermediate_ed\eprops -N0x:\intermediate_ed\eprops -$Y- -$L- -$D- 
       -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
-    <AFLAGS value="/mu /w2 /zi"/>
+    <AFLAGS value="/mu /w2 /zn"/>
     <LFLAGS value="-lx:\stalker_addon\libraries -Ix:\intermediate_ed\eprops -D&quot;&quot; -aa -Tpd -x 
-      -Gi -v"/>
+      -Gi"/>
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
@@ -155,8 +155,8 @@ Item0=$(BCB)\source\vcl
 
 [HistoryLists\hlConditionals]
 Count=5
-Item0=_EDITOR;XR_EPROPS_EXPORTS;_DEBUG
-Item1=_EDITOR;XR_EPROPS_EXPORTS
+Item0=_EDITOR;XR_EPROPS_EXPORTS
+Item1=_EDITOR;XR_EPROPS_EXPORTS;_DEBUG
 Item2=_EDITOR;_XR_EPROPSB;_DEBUG
 Item3=_EDITOR;_EPROPSB;_DEBUG
 Item4=_DEBUG

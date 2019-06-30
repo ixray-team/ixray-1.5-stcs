@@ -52,7 +52,7 @@ CTexture::~CTexture()
 	DEV->_DeleteTexture	(this);
 }
 
-void					CTexture::surface_set	(ID3DBaseTexture* surf)
+void					CTexture::surface_set	(ID3DBaseTexture* surf )
 {
 	if (surf)			surf->AddRef		();
 	_RELEASE			(pSurface);
@@ -66,7 +66,7 @@ void					CTexture::surface_set	(ID3DBaseTexture* surf)
 
 		D3D10_RESOURCE_DIMENSION	type;
 		pSurface->GetType(&type);
-		if (D3D10_RESOURCE_DIMENSION_TEXTURE2D == type)
+		if (D3D10_RESOURCE_DIMENSION_TEXTURE2D == type )
 		{
 			D3D10_SHADER_RESOURCE_VIEW_DESC	ViewDesc;
 
@@ -78,9 +78,18 @@ void					CTexture::surface_set	(ID3DBaseTexture* surf)
 			}
 			else
 			{
-				ViewDesc.ViewDimension = D3D10_SRV_DIMENSION_TEXTURE2D;
-				ViewDesc.Texture2D.MostDetailedMip = 0;
-				ViewDesc.Texture2D.MipLevels = desc.MipLevels;
+            if(desc.SampleDesc.Count <= 1 )
+            {
+			      ViewDesc.ViewDimension = D3D10_SRV_DIMENSION_TEXTURE2D;
+				   ViewDesc.Texture2D.MostDetailedMip = 0;
+   			   ViewDesc.Texture2D.MipLevels = desc.MipLevels;
+            }
+            else
+            {
+			      ViewDesc.ViewDimension = D3D10_SRV_DIMENSION_TEXTURE2DMS;
+               ViewDesc.Texture2D.MostDetailedMip = 0;
+   			   ViewDesc.Texture2D.MipLevels = desc.MipLevels;
+            }
 			}			
 
 			ViewDesc.Format = DXGI_FORMAT_UNKNOWN;
@@ -95,7 +104,12 @@ void					CTexture::surface_set	(ID3DBaseTexture* surf)
 				break;
 			}
 
-			CHK_DX(HW.pDevice->CreateShaderResourceView(pSurface, &ViewDesc, &m_pSRView));
+         // this would be supported by DX10.1 but is not needed for stalker
+        // if( ViewDesc.Format != DXGI_FORMAT_R24_UNORM_X8_TYPELESS )
+				if( (desc.SampleDesc.Count <= 1) || (ViewDesc.Format != DXGI_FORMAT_R24_UNORM_X8_TYPELESS) )         
+					CHK_DX(HW.pDevice->CreateShaderResourceView(pSurface, &ViewDesc, &m_pSRView));
+        else
+           m_pSRView = 0;
 		}
 		else
 			CHK_DX(HW.pDevice->CreateShaderResourceView(pSurface, NULL, &m_pSRView));
@@ -213,7 +227,13 @@ void CTexture::Apply(u32 dwStage)
 	if (flags.bLoadedAsStaging)
 		ProcessStaging();
 
-	VERIFY( !((!pSurface)^(!m_pSRView)) );	//	Both present or both missing
+   //if( !RImplementation.o.dx10_msaa )
+   //   VERIFY( !((!pSurface)^(!m_pSRView)) );	//	Both present or both missing
+   //else
+   //{
+	//if( ((!pSurface)^(!m_pSRView)) )
+   //   return;
+   //}
 
 	if (dwStage<rstVertex)	//	Pixel shader stage resources
 	{

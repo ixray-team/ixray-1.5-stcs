@@ -1,8 +1,9 @@
 #pragma once
 
+#include "net_stream.h"
 
 template<typename T>
-void r_pod_vector( IReader	&r, xr_vector<T> & v )
+void r_pod_vector( INetReader	&r, xr_vector<T> & v )
 {
 	u32 cnt	= r.r_u32();
 	v.resize(cnt);
@@ -18,7 +19,7 @@ void w_pod_vector( IWriter	&w, const xr_vector<T> & v )
 }
 
 template <typename T>
-void r_pod( IReader	&r, T& v  )
+void r_pod( INetReader	&r, T& v  )
 {
 	r.r(&v, sizeof( T ) );
 }
@@ -30,7 +31,7 @@ void w_pod( IWriter	&w, const T& v  )
 }
 
 template<typename T>
-void r_vector( IReader	&r, xr_vector<T> & v )
+void r_vector( INetReader	&r, xr_vector<T> & v )
 {
 	u32 cnt	= r.r_u32();
 	v.resize(cnt);
@@ -52,7 +53,7 @@ void w_vector( IWriter	&w, const xr_vector<T> & v )
 
 
 template< typename T, const int dim >
-void r_vector( IReader	&r, svector< T, dim > & v )
+void r_vector( INetReader	&r, svector< T, dim > & v )
 {
 	u32 cnt	= r.r_u32();
 	v.resize(cnt);
@@ -77,7 +78,7 @@ static void w_sphere( IWriter	&w, const Fsphere &v )
 {
 	w.w(&v,sizeof(Fsphere));
 }
-static void r_sphere(IReader &r, Fsphere &v )
+static void r_sphere(INetReader &r, Fsphere &v )
 {
 	r.r( &v,sizeof(Fsphere) );
 }
@@ -129,17 +130,17 @@ private:
 	friend class t_serialize;
 	xr_vector<T*>& vec;		
 		
-	void read(IReader &r) 
+	void read(INetReader &r) 
 	{
 		vec.resize(r.r_u32());
-		xr_vector<T*>::iterator i = vec.begin(), e =  vec.end();
-		for( ;i!= e; ++i )
+		//xr_vector<T*>::iterator i = vec.begin(), e =  vec.end();
+		for( u32 i= 0 ;i < vec.size(); ++i )
 		{
-			(*i) = T::read_create();
-			(*i)->read(r);
+			vec[i] = T::read_create();
+			vec[i] ->read(r);
 		}
 	}
-	void	read	( IReader &r, T* &f ) const
+	void	read	( INetReader &r, T* &f ) const
 	{
 		VERIFY( !f );
 		u32 id = r.r_u32();
@@ -149,7 +150,7 @@ private:
 	}
 	t_read(xr_vector<T*>	&_vec): vec( _vec )
 	{
-		_vec.clear();	
+		//_vec.clear();	
 	}
 
 };
@@ -180,7 +181,7 @@ static	u32		get_id			(  const type* f, const xr_vector<type*>& vec )
 		VERIFY( F != vec.end() );
 		return u32( F - vec.begin() );
 	}
-	void read(IReader &r)
+	void read(INetReader &r)
 	{
 		serialize.read( r );
 	}
@@ -188,7 +189,7 @@ static	u32		get_id			(  const type* f, const xr_vector<type*>& vec )
 	{
 		serialize.write( w );
 	}
-	void read( IReader &r, type* &f ) const
+	void read( INetReader &r, type* &f ) const
 	{
 		serialize.read( r, f );
 	}
@@ -199,7 +200,7 @@ static	u32		get_id			(  const type* f, const xr_vector<type*>& vec )
 };
 
 void write(IWriter	&w, const b_texture &b);
-void read(IReader &r, b_texture &b);
+void read(INetReader &r, b_texture &b);
 
 
 

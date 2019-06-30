@@ -192,7 +192,11 @@ void					CRender::create					()
 
 	// nvstencil on NV40 and up
 	o.nvstencil			= FALSE;
-	if ((HW.Caps.id_vendor==0x10DE)&&(HW.Caps.id_device>=0x40))	o.nvstencil = TRUE;
+	if ((HW.Caps.id_vendor==0x10DE)&&(HW.Caps.id_device>=0x40))	
+	{
+		//o.nvstencil = HW.support	((D3DFORMAT)MAKEFOURCC('R','A','W','Z'), D3DRTYPE_SURFACE, 0);
+		o.nvstencil = TRUE;
+	}
 	if (strstr(Core.Params,"-nonvs"))		o.nvstencil	= FALSE;
 
 	// nv-dbt
@@ -228,6 +232,8 @@ void					CRender::create					()
 	o.distortion		= o.distortion_enabled;
 	o.disasm			= (strstr(Core.Params,"-disasm"))?		TRUE	:FALSE	;
 	o.forceskinw		= (strstr(Core.Params,"-skinw"))?		TRUE	:FALSE	;
+	
+	o.ssao_blur_on		= ps_r2_ls_flags_ext.test(R2FLAGEXT_SSAO_BLUR) && ps_r_ssao != 0;
 
 	// constants
 	dxRenderDeviceRender::Instance().Resources->RegisterConstantSetup	("parallax",	&binder_parallax);
@@ -651,6 +657,13 @@ HRESULT	CRender::shader_compile			(
 	}
 	if (4==m_skinning)		{
 		defines[def_it].Name		=	"SKIN_4";
+		defines[def_it].Definition	=	"1";
+		def_it						++;
+	}
+	
+	if (o.ssao_blur_on)
+	{
+		defines[def_it].Name		=	"USE_SSAO_BLUR";
 		defines[def_it].Definition	=	"1";
 		def_it						++;
 	}

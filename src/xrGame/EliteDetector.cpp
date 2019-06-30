@@ -7,7 +7,9 @@
 #include "ui/UIStatic.h"
 
 CEliteDetector::CEliteDetector()
-{}
+{
+	m_artefacts.m_af_rank = 3;
+}
 
 CEliteDetector::~CEliteDetector()
 {}
@@ -43,7 +45,7 @@ void CEliteDetector::UpdateAf()
 
 		ui().RegisterAf			(pAf->Position());
 
-		if(pAf->GetAfRank()<=3 && pAf->CanBeInvisible())
+		if(pAf->CanBeInvisible())
 		{
 			float d = detector_pos.distance_to(pAf->Position());
 			if(d<m_fAfVisRadius)

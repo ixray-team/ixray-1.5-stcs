@@ -223,9 +223,9 @@ public:																																				//
 	virtual void						cv2bone_Xfrom					(const Fquaternion& q,const Fvector& pos, Fmatrix& xform);						//
 	virtual void						InterpolateGlobalTransform		(Fmatrix* m);																	//called UpdateCL vis influent
 	virtual void						InterpolateGlobalPosition		(Fvector* v);																	//aux
-	virtual void						GetGlobalTransformDynamic		(Fmatrix* m);																	//aux
+	virtual void						GetGlobalTransformDynamic		(Fmatrix* m) const ;																	//aux
 IC			void						InverceLocalForm				(Fmatrix&)	;
-IC			void						MulB43InverceLocalForm			(Fmatrix&)	;
+IC			void						MulB43InverceLocalForm			(Fmatrix&) const;
 
 ////////////////////////////////////////////////////Structure/////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

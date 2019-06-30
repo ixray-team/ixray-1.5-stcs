@@ -171,7 +171,8 @@
 #include <map>
 
 #ifndef _EDITOR
-	#include <hash_map>
+#	include <hash_map>
+#	include <hash_set>
 #endif
 
 #include <string>

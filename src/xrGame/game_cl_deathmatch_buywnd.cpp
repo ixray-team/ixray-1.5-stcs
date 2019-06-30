@@ -5,10 +5,12 @@
 #include "inventory.h"
 #include "xrServer_Objects_ALife_Items.h"
 #include "weapon.h"
+#include "WeaponMagazinedWGrenade.h"
 #include "WeaponKnife.h"
 #include "xr_level_controller.h"
 #include "eatable_item_object.h"
 #include "Missile.h"
+#include "ui/UIMpTradeWnd.h"
 
 static	u16 SlotsToCheck [] = {
 //		APPARATUS_SLOT	,		// 4
@@ -144,6 +146,16 @@ void game_cl_Deathmatch::SetBuyMenuItems		(PRESET_ITEMS* pItems, BOOL OnlyPreset
 	CActor* pCurActor = smart_cast<CActor*> (Level().Objects.net_Find	(P->GameID));
 	if (pCurActor)
 	{
+		//defusing all weapons
+		u32 max_addammo_count = pCurActor->inventory().m_all.size();
+		aditional_ammo_t add_ammo(
+			_alloca(
+				sizeof(aditional_ammo_t::value_type) * (max_addammo_count * 2)
+			),
+			(max_addammo_count * 2)
+		);
+		TryToDefuseAllWeapons(add_ammo);
+
 		//проверяем слоты
 		TISlotArr::const_iterator	ISlot = pCurActor->inventory().m_slots.begin();
 		TISlotArr::const_iterator	ESlot = pCurActor->inventory().m_slots.end();
@@ -217,6 +229,15 @@ void game_cl_Deathmatch::SetBuyMenuItems		(PRESET_ITEMS* pItems, BOOL OnlyPreset
 				pCurBuyMenu->ItemToRuck(pItem->object().cNameSect(), Addons);
 			}
 		};
+
+		std::for_each(add_ammo.begin(), add_ammo.end(),
+			std::bind1st(
+				std::mem_fun<void, game_cl_Deathmatch, aditional_ammo_t::value_type const &>(
+					&game_cl_Deathmatch::AdditionalAmmoInserter
+				), 
+				this
+			)
+		);
 	}
 	else
 	{
@@ -462,4 +483,164 @@ void				game_cl_Deathmatch::OnMoneyChanged				()
 		pCurBuyMenu->SetMoneyAmount(local_player->money_for_round);
 		pCurBuyMenu->CheckBuyAvailabilityInSlots();
 	}
+}
+
+void game_cl_Deathmatch::TryToDefuseAllWeapons	(aditional_ammo_t & dest_ammo)
+{
+	game_PlayerState* ps = Game().local_player;
+	VERIFY2(ps, "local player not initialized");
+	CActor* actor = smart_cast<CActor*> (Level().Objects.net_Find(ps->GameID));
+	R_ASSERT2(actor || ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD),
+		make_string("bad actor: not found in game (GameID = %d)", ps->GameID).c_str());
+
+	TIItemContainer const & all_items = actor->inventory().m_all;  
+
+	for (TIItemContainer::const_iterator i = all_items.begin(),
+		ie = all_items.end(); i != ie; ++i)
+	{
+		CWeapon* tmp_weapon = smart_cast<CWeapon*>(*i);
+		if (tmp_weapon)
+			TryToDefuseWeapon(tmp_weapon, all_items, dest_ammo);
+	}
+}
+
+struct AmmoSearcherPredicate
+{
+	u16			additional_ammo_count;
+	shared_str	ammo_section;
+
+	AmmoSearcherPredicate(u16 ammo_elapsed, shared_str const & ammo_sect) :
+		additional_ammo_count(ammo_elapsed),
+		ammo_section(ammo_sect)
+	{
+	}
+
+	bool operator()(PIItem const & item)
+	{
+		CWeaponAmmo* temp_ammo = smart_cast<CWeaponAmmo*>(item);
+		if (!temp_ammo)
+			return false;
+		
+		if (temp_ammo->m_boxCurr >= temp_ammo->m_boxSize)
+			return false;
+		
+		if (temp_ammo->cNameSect() != ammo_section)
+			return false;
+
+		if ((temp_ammo->m_boxCurr + additional_ammo_count) < temp_ammo->m_boxSize)
+			return false;
+		
+		return true;
+	}
+
+};
+
+
+void game_cl_Deathmatch::TryToDefuseGrenadeLauncher(CWeaponMagazinedWGrenade const * weapon, TIItemContainer const & all_items, aditional_ammo_t & dest_ammo)
+{
+	if (!weapon)
+		return;
+
+	if (weapon->m_ammoTypes2.size() <= weapon->m_ammoType2)
+		return;
+
+	shared_str ammo_section = weapon->m_ammoTypes2[weapon->m_ammoType2];
+
+	VERIFY2(ammo_section.size(), make_string(
+		"grenade ammo type of [%s] hasn't section name", weapon->cNameSect().c_str()).c_str());
+	if (!ammo_section.size())
+		return;
+
+	VERIFY(pSettings->line_exist(ammo_section.c_str(), "box_size"));
+
+	u16 ammo_box_size	= pSettings->r_u16(ammo_section.c_str(), "box_size");
+	u16 ammo_elapsed	= static_cast<u16>(weapon->iAmmoElapsed2);
+	R_ASSERT2(ammo_elapsed <= 1, make_string(
+		"weapon [%s] can't have more than one grenade in grenade launcher",
+		weapon->cNameSect().c_str()).c_str());
+
+
+	while (ammo_elapsed >= ammo_box_size)
+	{
+		dest_ammo.push_back(ammo_section);
+		ammo_elapsed = ammo_elapsed - ammo_box_size;
+	}
+	if (!ammo_elapsed)
+		return;
+
+	AmmoSearcherPredicate ammo_completitor(ammo_elapsed, ammo_section);
+
+	TIItemContainer::const_iterator temp_iter = std::find_if(
+		all_items.begin(), all_items.end(), ammo_completitor);
+
+	if (temp_iter == all_items.end())
+		return;
+
+	CWeaponAmmo* temp_ammo = smart_cast<CWeaponAmmo*>(*temp_iter);
+	R_ASSERT2(temp_ammo, "failed to create ammo after defusing weapon");
+	temp_ammo->m_boxCurr = temp_ammo->m_boxSize;
+}
+
+void game_cl_Deathmatch::TryToDefuseWeapon(CWeapon const * weapon, TIItemContainer const & all_items, aditional_ammo_t & dest_ammo)
+{
+	if (!weapon)
+		return;
+
+	if (weapon->IsGrenadeLauncherAttached())
+		TryToDefuseGrenadeLauncher(smart_cast<CWeaponMagazinedWGrenade const *>(weapon), all_items, dest_ammo);
+	
+	if (weapon->m_ammoTypes.size() <= weapon->m_ammoType)
+		return;
+
+	shared_str ammo_section = weapon->m_ammoTypes[weapon->m_ammoType];
+
+	VERIFY2(ammo_section.size(), make_string(
+		"ammo type of [%s] hasn't section name", weapon->cName().c_str()).c_str());
+	if (!ammo_section.size())
+		return;
+
+	VERIFY(pSettings->line_exist(ammo_section.c_str(), "box_size"));
+
+	u16 ammo_box_size	= pSettings->r_u16(ammo_section.c_str(), "box_size");
+	u16 ammo_elapsed	= static_cast<u16>(weapon->GetAmmoElapsed());
+
+	while (ammo_elapsed >= ammo_box_size)
+	{
+		dest_ammo.push_back(ammo_section);
+		ammo_elapsed = ammo_elapsed - ammo_box_size;
+	}
+	if (!ammo_elapsed)
+		return;
+
+	AmmoSearcherPredicate ammo_completitor(ammo_elapsed, ammo_section);
+
+	TIItemContainer::const_iterator temp_iter = std::find_if(
+		all_items.begin(), all_items.end(), ammo_completitor);
+
+	if (temp_iter == all_items.end())
+		return;
+
+	CWeaponAmmo* temp_ammo = smart_cast<CWeaponAmmo*>(*temp_iter);
+	R_ASSERT2(temp_ammo, "failed to create ammo after defusing weapon");
+	temp_ammo->m_boxCurr = temp_ammo->m_boxSize;
+}
+
+void game_cl_Deathmatch::AdditionalAmmoInserter	(aditional_ammo_t::value_type const & sect_name)
+{
+	VERIFY(pCurBuyMenu);
+	
+	if (!pSettings->line_exist(GetBaseCostSect(), sect_name.c_str()))
+		return;
+	
+	pCurBuyMenu->ItemToSlot(sect_name.c_str(), 0);
+}
+
+
+bool game_cl_Deathmatch::LocalPlayerCanBuyItem(shared_str const & name_sect)
+{
+	if (name_sect == "mp_wpn_knife")
+		return true;
+	CUIMpTradeWnd* buy_menu = smart_cast<CUIMpTradeWnd*>(pCurBuyMenu);
+	R_ASSERT(buy_menu);
+	return buy_menu->HasItemInGroup(name_sect);
 }

@@ -74,8 +74,18 @@ protected:
 	virtual		void				SetSkin					(CSE_Abstract* E, u16 Team, u16 ID);
 				bool				GetPosAngleFromActor	(ClientID id, Fvector& Pos, Fvector &Angle);				
 				void				AllowDeadBodyRemove		(ClientID id, u16 GameID);
-				void				SpawnWeapon4Actor		(u16 actorId,  LPCSTR N, u8 Addons );
-				void				SpawnWeaponForActor		(u16 actorId,  LPCSTR N, bool isScope, bool isGrenadeLauncher, bool isSilencer);
+				void				SpawnWeapon4Actor		(u16 actorId,  LPCSTR N, u8 Addons, game_PlayerState::PLAYER_ITEMS_LIST & playerItems);
+	virtual		bool				CanChargeFreeAmmo		(char const * ammo_section) { return false; };
+				//void				SpawnWeaponForActor		(u16 actorId,  LPCSTR N, bool isScope, bool isGrenadeLauncher, bool isSilencer);
+				
+// spawning weapons 	
+	typedef		std::pair<shared_str, u16> ammo_diff_t;
+	virtual		void				SetAmmoForWeapon		(CSE_ALifeItemWeapon* weapon, u8 Addons, game_PlayerState::PLAYER_ITEMS_LIST & playerItems, ammo_diff_t & ammo_diff);
+				void				ChargeAmmo				(CSE_ALifeItemWeapon* weapon, LPCSTR ammo_string, game_PlayerState::PLAYER_ITEMS_LIST & playerItems, ammo_diff_t & ammo_diff);
+				void				ChargeGrenades			(CSE_ALifeItemWeapon* weapon, LPCSTR grenades_string, game_PlayerState::PLAYER_ITEMS_LIST & playerItems);
+				void				SpawnAmmoDifference		(u16 actorId, ammo_diff_t const & ammo_diff);
+// ----------------
+
 //	virtual		bool				GetTeamItem_ByID		(WeaponDataStruct** pRes, TEAM_WPN_LIST* pWpnList, u16 ItemID);
 //	virtual		bool				GetTeamItem_ByName		(WeaponDataStruct** pRes,TEAM_WPN_LIST* pWpnList, LPCSTR ItemName);
 

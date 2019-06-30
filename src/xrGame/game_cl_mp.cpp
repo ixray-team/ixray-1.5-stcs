@@ -63,6 +63,7 @@ game_cl_mp::game_cl_mp()
 	m_bSpectator_LookAt		= true;
 	m_bSpectator_FreeLook	= true;
 	m_bSpectator_TeamCamera	= true;
+	m_cur_MenuID			= u32(-1);
 	//-------------------------------------
 	LoadBonuses();
 	//-------------------------------------	
@@ -289,12 +290,21 @@ bool game_cl_mp::OnKeyboardPress(int key)
 				if (MenuID >= m_aMessageMenus.size()) break;
 				cl_MessageMenu* pCurMenu = &(m_aMessageMenus[MenuID]);
 				HideMessageMenus();
-				StartStopMenu(pCurMenu->m_pSpeechMenu, FALSE);
+				if ( m_cur_MenuID != MenuID )
+				{
+					StartStopMenu(pCurMenu->m_pSpeechMenu, FALSE);
+					m_cur_MenuID = MenuID;
+				}
+				else
+				{
+					m_cur_MenuID = u32(-1);
+				}
 				return true;
 			}break;
 		}		
 	}
 
+	m_cur_MenuID = u32(-1);
 	return inherited::OnKeyboardPress(key);
 }
 

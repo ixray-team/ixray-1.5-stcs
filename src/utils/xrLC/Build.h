@@ -14,7 +14,7 @@
 #include "../shader_xrlc.h"
 //#include "xrMU_Model.h"
 
-
+struct		 STextureParams;
 #pragma comment(lib,"dxt.lib")
 extern "C" bool __declspec(dllimport) __stdcall DXTCompress(LPCSTR out_name, u8* raw_data, u8* normal_map, u32 w, u32 h, u32 pitch, STextureParams* fmt, u32 depth);
 
@@ -62,8 +62,8 @@ public:
 	base_lighting					&L_static();
 	xr_vector<b_light_dynamic>		L_dynamic;
 	
-	xr_vector<xrMU_Model*>			mu_models;
-	xr_vector<xrMU_Reference*>		mu_refs;
+	xr_vector<xrMU_Model*>			&mu_models();
+	xr_vector<xrMU_Reference*>		&mu_refs();
 
 	Shader_xrLC_LIB					&shaders();
 	string_path						path;

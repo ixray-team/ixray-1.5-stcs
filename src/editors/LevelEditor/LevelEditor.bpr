@@ -140,31 +140,30 @@
     <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="ilink32"/>
-    <USERDEFINES value="_EDITOR;_LEVEL_EDITOR;_DEBUG"/>
+    <USERDEFINES value="_EDITOR;_LEVEL_EDITOR"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="LevelEditor.cpp"/>
     <INCLUDEPATH value="..\..\xrServerEntities;..\..\Layers\xrRender;..\..\xrEngine\xrRender;$(DXSDK_DIR)\Include;Edit;Engine;$(BCB)\Projects;$(BCB)\include\vcl;$(BCB)\include;$(COMPONENTS)\alexmx;$(COMPONENTS)\ElPack\Code;$(COMPONENTS)\ElPack\Code\Source;$(CORE_DIR);../../xrEngine;../../xrRender;$(MAGIC_SW_DIR);$(ETOOLS_DIR)"/>
     <LIBPATH value="..\..\xrServerEntities;..\..\Layers\xrRender;..\..\..\SDK\components\ElPack\Code;..\..\xrEngine\xrRender;..\..\xrRender;..\..\xrEngine;Edit;Engine;$(BCB)\Projects;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;$(COMPONENTS)\alexmx;$(COMPONENTS)\ElPack\Code\Source;X:\stalker_addon\libraries"/>
     <WARNINGS value="-w8092 -w8090 -w8089 -w8087 -wprc -wucp -wstv -wstu -wsig -wpin -w-par 
-      -wnod -wnak -wdef -wcln -wbbf -wasm -wamp -wamb"/>
+      -wnod -wnak -w-8027 -w-8026 -wdef -wcln -wbbf -wasm -wamp -wamb"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-src_suffix cpp -D_EDITOR -D_LEVEL_EDITOR -D_DEBUG 
-      -I..\..\xrServerEntities -I..\..\Layers\xrRender -I..\..\xrEngine\xrRender 
+    <IDLCFLAGS value="-I..\..\xrServerEntities -I..\..\Layers\xrRender -I..\..\xrEngine\xrRender 
       -I$(DXSDK_DIR)\Include -IEdit -IEngine -I$(BCB)\Projects 
       -I$(BCB)\include\vcl -I$(BCB)\include -I$(COMPONENTS)\alexmx 
       -I$(COMPONENTS)\ElPack\Code -I$(COMPONENTS)\ElPack\Code\Source 
       -I$(CORE_DIR) -I../../xrEngine -I../../xrRender -I$(MAGIC_SW_DIR) 
-      -I$(ETOOLS_DIR)"/>
+      -I$(ETOOLS_DIR) -src_suffix cpp -D_EDITOR -D_LEVEL_EDITOR"/>
     <CFLAG1 value="-Od -H=x:\intermediate_ed\le\pch.csm -Hc -Q -Vms -Vx -Ve -xf -xp -VF -ff 
-      -X- -r- -ps -a4 -6 -b- -k -y -v -vi- -He -c -tW -tWM"/>
-    <PFLAGS value="-N2x:\intermediate_ed\le -N0x:\intermediate_ed\le -$Y+ -$W -$R -$Q -$A8 -v 
-      -JPHNE -M"/>
+      -X- -ps -a4 -6 -b- -k- -vi -He -c -tW -tWM"/>
+    <PFLAGS value="-N2x:\intermediate_ed\le -N0x:\intermediate_ed\le -$Y- -$R -$Q -$L- -$D- 
+      -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
-    <AFLAGS value="/mx /w2 /zi"/>
+    <AFLAGS value="/mx /w2 /zn"/>
     <LFLAGS value="-lX:\stalker_addon\libraries -Ix:\intermediate_ed\le -D&quot;&quot; -aa -Tpe -GD -x 
-      -Gn -v"/>
+      -Gn"/>
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
@@ -335,7 +334,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=2
-Build=144
+Build=145
 Debug=1
 PreRelease=0
 Special=0
@@ -347,7 +346,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=
 FileDescription=
-FileVersion=1.0.2.144
+FileVersion=1.0.2.145
 InternalName=
 LegalCopyright=
 LegalTrademarks=
@@ -388,8 +387,9 @@ Item0=X:\stalker_addon\sources\engine\editors\ECore\Editor\
 Item1=c:\rad\borland\cbuilder5\source\vcl;R:\Borland\Components6\AlexMX\
 
 [HistoryLists\hlConditionals]
-Count=1
-Item0=_EDITOR;_LEVEL_EDITOR;_DEBUG
+Count=2
+Item0=_EDITOR;_LEVEL_EDITOR
+Item1=_EDITOR;_LEVEL_EDITOR;_DEBUG
 
 [HistoryLists\hlIntOutputDir]
 Count=2

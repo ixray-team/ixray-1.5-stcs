@@ -19606,6 +19606,14 @@
 								RelativePath="ActorVehicle.cpp"
 								>
 							</File>
+							<File
+								RelativePath=".\fire_disp_controller.cpp"
+								>
+							</File>
+							<File
+								RelativePath=".\fire_disp_controller.h"
+								>
+							</File>
 							<Filter
 								Name="memory"
 								>
@@ -21754,6 +21762,14 @@
 									>
 									<File
 										RelativePath=".\CameraRecoil.h"
+										>
+									</File>
+									<File
+										RelativePath=".\first_bullet_controller.cpp"
+										>
+									</File>
+									<File
+										RelativePath=".\first_bullet_controller.h"
 										>
 									</File>
 									<File

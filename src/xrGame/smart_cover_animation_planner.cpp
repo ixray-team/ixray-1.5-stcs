@@ -95,6 +95,9 @@ void animation_planner::initialize		()
 	m_storage.set_property	(eWorldPropertyReadyToFire,			false);
 	m_storage.set_property	(eWorldPropertyReadyToFireNoLookout,false);
 
+	if (!target_state().conditions().empty())
+		return;
+
 	target					(eWorldPropertyLookedOut);
 }
 

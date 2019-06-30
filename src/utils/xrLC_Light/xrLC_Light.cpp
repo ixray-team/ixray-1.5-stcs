@@ -48,8 +48,8 @@ void Progress	( const float F )
 
 b_params	&g_params()
 {
-	VERIFY(lc_global_data());
-	return lc_global_data()->g_params();
+	VERIFY(inlc_global_data());
+	return inlc_global_data()->g_params();
 }
 
 BOOL APIENTRY DllMain( HMODULE hModule,
@@ -57,7 +57,24 @@ BOOL APIENTRY DllMain( HMODULE hModule,
                        LPVOID lpReserved
 					 )
 {
-    return TRUE;
+    
+		switch(ul_reason_for_call) {
+		case DLL_PROCESS_ATTACH:
+			Debug._initialize	(false);
+			Core._initialize	("xrLC_Light",0,FALSE);
+			//FPU::m64r	();
+			break;
+		case DLL_THREAD_ATTACH:
+			break;
+		case DLL_THREAD_DETACH:
+			break;
+		case DLL_PROCESS_DETACH:
+			Core._destroy();
+			break;
+	}
+	return TRUE;
+	
+
 }
 
 #ifdef _MANAGED

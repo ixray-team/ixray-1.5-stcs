@@ -167,8 +167,9 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="../../../sdk/include/stlport;../../../sdk/include/;..\xrQSlim\src;"
-				PreprocessorDefinitions="_USE_MATH_DEFINES,WIN32,DEBUG,_WINDOWS;_SECURE_SCL=0"
+				PreprocessorDefinitions="FORCE_NO_EXCEPTIONS,_USE_MATH_DEFINES,WIN32,DEBUG,_WINDOWS;_SECURE_SCL=0"
 				StringPooling="true"
+				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="2"
 				FloatingPointModel="2"
@@ -892,10 +893,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\calculate_normals.h"
-				>
-			</File>
-			<File
 				RelativePath=".\cform_build.h"
 				>
 			</File>
@@ -909,10 +906,6 @@
 			</File>
 			<File
 				RelativePath="..\..\common\itterate_adjacents.h"
-				>
-			</File>
-			<File
-				RelativePath=".\itterate_adjacents_static.h"
 				>
 			</File>
 			<File
@@ -945,10 +938,6 @@
 			</File>
 			<File
 				RelativePath=".\xrLight.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\xrLight_Implicit.cpp"
 				>
 			</File>
 			<File
@@ -1166,6 +1155,10 @@
 					RelativePath=".\OGF_RemoveIsolatedVerts.cpp"
 					>
 				</File>
+				<File
+					RelativePath=".\PropSlimTools.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="Internal"
@@ -1174,21 +1167,9 @@
 					RelativePath=".\vbm.h"
 					>
 				</File>
-				<File
-					RelativePath=".\xrFaceInline.h"
-					>
-				</File>
 				<Filter
 					Name="Targa"
 					>
-					<File
-						RelativePath=".\tga.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\tga.h"
-						>
-					</File>
 					<Filter
 						Name="ILoader"
 						>
@@ -1231,48 +1212,36 @@
 				Name="Model"
 				>
 				<File
-					RelativePath="fitter.cpp"
-					>
-				</File>
-				<File
-					RelativePath="fitter.h"
-					>
-				</File>
-				<File
-					RelativePath=".\PropSlimTools.h"
-					>
-				</File>
-				<File
-					RelativePath="xrMU_Model.cpp"
-					>
-				</File>
-				<File
-					RelativePath="xrMU_Model.h"
-					>
-				</File>
-				<File
-					RelativePath="xrMU_Model_Calc_faceopacity.cpp"
-					>
-				</File>
-				<File
-					RelativePath="xrMU_Model_Calc_lighting.cpp"
-					>
-				</File>
-				<File
-					RelativePath="xrMU_Model_Calc_materials.cpp"
-					>
-				</File>
-				<File
-					RelativePath="xrMU_Model_Calc_normals.cpp"
-					>
-				</File>
-				<File
 					RelativePath="xrMU_Model_Calc_ogf.cpp"
 					>
 				</File>
 				<File
 					RelativePath="xrMU_Model_export_cform_game.cpp"
 					>
+					<FileConfiguration
+						Name="Release|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Mixed|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath=".\xrMU_Model_export_cform_game_s.cpp"
@@ -1303,10 +1272,6 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="xrMU_Model_export_cform_rcast.cpp"
-					>
-				</File>
-				<File
 					RelativePath="xrMU_Model_export_geometry.cpp"
 					>
 				</File>
@@ -1314,8 +1279,46 @@
 					RelativePath="xrMU_Model_export_OGF.cpp"
 					>
 				</File>
+			</Filter>
+			<Filter
+				Name="net"
+				>
 				<File
-					RelativePath="xrMU_Model_Load.cpp"
+					RelativePath="..\..\..\sdk\include\hxgrid\Interface\hxGridInterface.cpp"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+							PrecompiledHeaderThrough=""
+							PrecompiledHeaderFile=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+							PrecompiledHeaderThrough=""
+							PrecompiledHeaderFile=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Mixed|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+							PrecompiledHeaderThrough=""
+							PrecompiledHeaderFile=""
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\net.cpp"
 					>
 				</File>
 			</Filter>

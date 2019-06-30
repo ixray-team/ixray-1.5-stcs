@@ -697,9 +697,14 @@ void CPhysicObject::PH_A_CrPr		()
 		VERIFY(Visual());
 		IKinematics *K = Visual()->dcast_PKinematics();
 		VERIFY( K );
+		if(!PPhysicsShell()->isFullActive())
+		{
+			K->CalculateBones_Invalidate();
+			K->CalculateBones(TRUE);
+		}
+		PPhysicsShell()->GetGlobalTransformDynamic(&XFORM());
 		K->CalculateBones_Invalidate();
 		K->CalculateBones(TRUE);
-		PPhysicsShell()->GetGlobalTransformDynamic(&XFORM());
 #if	0
 		Fbox bb= BoundingBox	();
 		DBG_OpenCashedDraw		();

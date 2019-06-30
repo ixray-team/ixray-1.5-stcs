@@ -6,6 +6,7 @@
 #include "../Include/xrRender/KinematicsAnimated.h"
 #include "actor_flags.h"
 #include "actor_defs.h"
+#include "fire_disp_controller.h"
 #include "entity_alive.h"
 #include "PHMovementControl.h"
 #include "PhysicsShell.h"
@@ -323,7 +324,8 @@ public:
 protected:
 	void					cam_Set					(EActorCameras style);
 	void					cam_Update				(float dt, float fFOV);
-	void					camUpdateLadder		(float dt);
+	void					cam_Lookout				( const Fmatrix &xform, float camera_height );
+	void					camUpdateLadder			(float dt);
 	void					cam_SetLadder			();
 	void					cam_UnsetLadder			();
 	float					currentFOV				();
@@ -445,9 +447,11 @@ public:
 
 	virtual BOOL						g_State				(SEntityState& state) const;
 	virtual	float						GetWeaponAccuracy	() const;
+			float						GetFireDispertion	() const {return m_fdisp_controller.GetCurrentDispertion();}
 			bool						IsZoomAimingMode	() const {return m_bZoomAimingMode;}
 
 protected:
+	CFireDispertionController			m_fdisp_controller;
 	//если актер целится в прицел
 	void								SetZoomAimingMode	(bool val)	{m_bZoomAimingMode = val;}
 	bool								m_bZoomAimingMode;
@@ -677,6 +681,8 @@ public:
 	virtual	bool				InventoryAllowSprint			();
 	virtual void				OnNextWeaponSlot				();
 	virtual void				OnPrevWeaponSlot				();
+			void				SwitchNightVision				();
+			void				SwitchTorch						();
 
 public:
 	

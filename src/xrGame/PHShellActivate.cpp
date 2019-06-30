@@ -53,7 +53,11 @@ void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disa
 	}	
 	
 	Fmatrix m;
-	GetGlobalTransformDynamic	(&m);
+	{
+		Fmatrix old_m = mXFORM;//+GetGlobalTransformDynamic update mXFORM;
+		GetGlobalTransformDynamic	(&m);
+		mXFORM = old_m;
+	}
 	m.invert();m.mulA_43		(mXFORM);
 	TransformPosition(m);
 	if(PKinematics())

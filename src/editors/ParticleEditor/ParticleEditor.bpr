@@ -34,13 +34,13 @@
     <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="ilink32"/>
-    <USERDEFINES value="_EDITOR;_PARTICLE_EDITOR;_DEBUG"/>
+    <USERDEFINES value="_EDITOR;_PARTICLE_EDITOR"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="ParticleEditor.cpp"/>
     <INCLUDEPATH value="&quot;E:\Program Files\Borland\CBuilder6\Projects&quot;;..\ECore\Editor;$(DXSDK_DIR)\Include;$(COMPONENTS)\alexmx;$(BCB)\include\vcl;$(BCB)\include;$(COMPONENTS)\ElPack\Code;$(COMPONENTS)\ElPack\Code\Source;..\..\xrEngine;$(CORE_DIR);..\..\xrRender"/>
     <LIBPATH value="..\ECore\Editor;..\..\xrEngine;$(BCB)\Projects;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;$(COMPONENTS)\alexmx;$(COMPONENTS)\ElPack\Code;$(COMPONENTS)\ElPack\Code\Source;X:\stalker_addon\libraries"/>
     <WARNINGS value="-w8092 -w8091 -w8090 -w8089 -w8087 -wprc -wuse -wucp -wstv -wstu -wsig 
-      -wpin -w-par -wnod -wnak -wdef -wcln -wbbf -wasm -wamp -wamb"/>
+      -wpin -w-par -wnod -wnak -w-8027 -w-8026 -wdef -wcln -wbbf -wasm -wamp -wamb"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
@@ -48,15 +48,14 @@
       -I$(DXSDK_DIR)\Include -I$(COMPONENTS)\alexmx -I$(BCB)\include\vcl 
       -I$(BCB)\include -I$(COMPONENTS)\ElPack\Code 
       -I$(COMPONENTS)\ElPack\Code\Source -I..\..\xrEngine -I$(CORE_DIR) 
-      -I..\..\xrRender -src_suffix cpp -D_EDITOR -D_PARTICLE_EDITOR -D_DEBUG 
-      -no_tie -boa"/>
+      -I..\..\xrRender -src_suffix cpp -D_EDITOR -D_PARTICLE_EDITOR -no_tie -boa"/>
     <CFLAG1 value="-Od -H=x:\intermediate_ed\pe\pch.csm -Hc -Q -Vms -Vx -Ve -xf -xp -VF -ff 
-      -X- -r- -ps -a4 -6 -b- -k -y -v -vi- -He -c -tW -tWM"/>
-    <PFLAGS value="-N2x:\intermediate_ed\pe -N0x:\intermediate_ed\pe -$Y+ -$W -$Q -$O- -$A8 
+      -X- -ps -a4 -6 -b- -k- -vi -He -c -tW -tWM"/>
+    <PFLAGS value="-N2x:\intermediate_ed\pe -N0x:\intermediate_ed\pe -$Y- -$Q -$L- -$D- -$A8 
       -v -JPHNE -M"/>
     <RFLAGS value=""/>
-    <AFLAGS value="/mx /w2 /zi"/>
-    <LFLAGS value="-lX:\stalker_addon\libraries -Ix:\intermediate_ed\pe -D&quot;&quot; -aa -Tpe -GD -x -v"/>
+    <AFLAGS value="/mx /w2 /zn"/>
+    <LFLAGS value="-lX:\stalker_addon\libraries -Ix:\intermediate_ed\pe -D&quot;&quot; -aa -Tpe -GD -x"/>
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
@@ -99,7 +98,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=2
-Build=126
+Build=127
 Debug=1
 PreRelease=0
 Special=0
@@ -111,7 +110,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=GSC Game World
 FileDescription=
-FileVersion=1.0.2.126
+FileVersion=1.0.2.127
 InternalName=
 LegalCopyright=
 LegalTrademarks=
@@ -160,21 +159,22 @@ Item1=c:\rad\borland\cbuilder5\source\vcl
 Item2=c:\rad\borland\cbuilder5\source\vcl;P:\Editor\QHull\
 
 [HistoryLists\hlConditionals]
-Count=14
-Item0=_EDITOR;_PARTICLE_EDITOR;_DEBUG
-Item1=_EDITOR;_PARTICLE_EDITOR;DEBUG;_DEBUG
-Item2=_EDITOR;_PARTICLE_EDITOR;DEBUG
-Item3=_EDITOR;_PARTICLE_EDITOR;_DEBUG;DEBUG
-Item4=_EDITORS;_PARTICLE_EDITOR;_DEBUG
-Item5=_EDITOR_FAMILY;_PARTICLE_EDITOR;_DEBUG
-Item6=_PARTICLE_EDITOR;_DEBUG
-Item7=_EDITOR;_DEBUG
-Item8=_EDITOR
-Item9=_EDITOR;_DEBUG;_STLP_USE_OWN_NAMESPACE
-Item10=_EDITOR;_DEBUG;_BORLAND
-Item11=_DEBUG;_EDITOR
-Item12=_DEBUG;_ED
-Item13=_DEBUG
+Count=15
+Item0=_EDITOR;_PARTICLE_EDITOR
+Item1=_EDITOR;_PARTICLE_EDITOR;_DEBUG
+Item2=_EDITOR;_PARTICLE_EDITOR;DEBUG;_DEBUG
+Item3=_EDITOR;_PARTICLE_EDITOR;DEBUG
+Item4=_EDITOR;_PARTICLE_EDITOR;_DEBUG;DEBUG
+Item5=_EDITORS;_PARTICLE_EDITOR;_DEBUG
+Item6=_EDITOR_FAMILY;_PARTICLE_EDITOR;_DEBUG
+Item7=_PARTICLE_EDITOR;_DEBUG
+Item8=_EDITOR;_DEBUG
+Item9=_EDITOR
+Item10=_EDITOR;_DEBUG;_STLP_USE_OWN_NAMESPACE
+Item11=_EDITOR;_DEBUG;_BORLAND
+Item12=_DEBUG;_EDITOR
+Item13=_DEBUG;_ED
+Item14=_DEBUG
 
 [HistoryLists\hlIntOutputDir]
 Count=3

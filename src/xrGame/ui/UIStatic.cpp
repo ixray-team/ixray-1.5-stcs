@@ -44,6 +44,7 @@ CUIStatic:: CUIStatic()
 
 	m_bCursorOverWindow		= false;
 	m_bHeading				= false;
+	m_bConstHeading			= false;
 	m_fHeading				= 0.0f;
 	m_lanim_clr.set_defaults	();
 	m_lanim_xform.set_defaults	();

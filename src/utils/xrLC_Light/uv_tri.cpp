@@ -5,10 +5,11 @@
 
 
 
-void UVtri ::read( IReader	&r )
+void UVtri ::read( INetReader	&r )
 {
 	_TCF::read( r );
 	VERIFY( read_faces );
+	owner = 0;
 	read_faces->read( r, owner );
 }
 void UVtri ::write( IWriter	&w ) const

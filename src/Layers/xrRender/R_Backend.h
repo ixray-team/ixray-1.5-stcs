@@ -13,6 +13,8 @@
 #include "r_DStreams.h"
 #include "r_constants_cache.h"
 #include "r_backend_xform.h"
+#include "r_backend_hemi.h"
+#include "r_backend_tree.h"
 #include "fvf.h"
 
 const	u32		CULL_CCW			= D3DCULL_CCW;
@@ -73,6 +75,8 @@ public:
 	ID3DIndexBuffer*				QuadIB;
 	ID3DIndexBuffer*				old_QuadIB;
 	R_xforms						xforms;
+	R_hemi							hemi;
+	R_tree							tree;
 
 #ifdef	USE_DX10
 	ref_cbuffer						m_aVertexConstants[MaxCBuffers];

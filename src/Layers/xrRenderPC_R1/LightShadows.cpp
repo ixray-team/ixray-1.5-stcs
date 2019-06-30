@@ -262,6 +262,8 @@ void CLightShadows::calculate	()
 			float		p_far	=	_min(Lrange,_max(p_dist+S_fade,p_dist+p_R));	
 			if (p_near<eps)			continue;
 			if (p_far<(p_near+eps))	continue;
+			//	Igor: make check here instead of assertion in buil_projection_hat
+			if (!(_abs(p_far-p_near) > eps)) continue;
 			if (p_hat>0.9f)			continue;
 			if (p_hat<0.01f)		continue;
 

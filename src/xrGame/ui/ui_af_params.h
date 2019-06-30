@@ -38,5 +38,6 @@ private:
 	CUIStatic*	m_caption;
 	CUIStatic*	m_value;
 	float		m_magnitude;
+	bool		m_sign_inverse;
 
 }; // class UIArtefactParamItem

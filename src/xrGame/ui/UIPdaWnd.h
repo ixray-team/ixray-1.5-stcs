@@ -13,12 +13,7 @@ class CUIXml;
 class CUIFrameWindow;
 class UIHint;
 
-//.class CUIMapWnd;
-//.class CUIEncyclopediaWnd;
-//.class CUIDiaryWnd;
 class CUIActorInfoWnd;
-//.class CUIStalkersRankingWnd;
-//.class CUIEventsWnd;
 class CUIPdaContactsWnd;
 class CUITaskWnd;
 class CUIFactionWarWnd;
@@ -45,7 +40,6 @@ protected:
 	// Текущий активный диалог
 	CUIWindow*				m_pActiveDialog;
 	shared_str				m_sActiveSection;
-//	xr_vector<Fvector2>		m_sign_places_main;
 
 	UIHint*					m_hint_wnd;
 
@@ -55,22 +49,6 @@ public:
 	CUIRankingWnd*			pUIRankingWnd;
 	CUILogsWnd*				pUILogsWnd;
 
-//.	CUIFrameLineWnd*		UIMainButtonsBackground;
-//.	CUIFrameLineWnd*		UITimerBackground;
-//.	CUIStatic*				m_updatedSectionImage;
-//.	CUIStatic*				m_oldSectionImage;
-
-//.	CUIMapWnd*				UIMapWnd;
-//.	CUIPdaContactsWnd*		UIPdaContactsWnd;
-//.	CUIEncyclopediaWnd*		UIEncyclopediaWnd;
-//.	CUIDiaryWnd*			UIDiaryWnd;
-//.	CUIActorInfoWnd*		UIActorInfo;
-//.	CUIStalkersRankingWnd*	UIStalkersRanking;
-//.	CUIEventsWnd*			UIEventsWnd;
-
-//.	void					UpdateDateTime					();
-//.	void					DrawUpdatedSections				();
-	
 	virtual void			Reset				();
 
 public:
@@ -99,5 +77,5 @@ public:
 	virtual bool			StopAnyMove			(){return false;}
 
 			void			UpdatePda			();
-//.			void			PdaContentsChanged	(pda_section::part type);
+
 };

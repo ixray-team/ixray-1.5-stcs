@@ -172,7 +172,7 @@ CPHSimpleCharacter::CPHSimpleCharacter():	m_last_environment_update ( Fvector().
 	b_death_pos=false;
 	jump_up_velocity=6.f;
 	m_air_control_factor=0;
-	m_capture_joint=NULL;
+	//m_capture_joint=NULL;
 	m_cap=NULL;
 	m_cap_transform=NULL;
 	dVectorSetZero(m_safe_velocity);
@@ -1195,7 +1195,7 @@ void CPHSimpleCharacter::SetPhysicsRefObject					(CPhysicsShellHolder* ref_objec
 }
 
 
-
+/*
 void CPHSimpleCharacter::CaptureObject(dBodyID body,const dReal* anchor)
 {
 	m_capture_joint=dJointCreateBall(0,0);
@@ -1204,11 +1204,12 @@ void CPHSimpleCharacter::CaptureObject(dBodyID body,const dReal* anchor)
 	dJointSetBallAnchor(m_capture_joint,anchor[0],anchor[1],anchor[2]);
 	dJointSetFeedback(m_capture_joint,&m_capture_joint_feedback);
 }
-
+*/
+/*
 void CPHSimpleCharacter::CapturedSetPosition(const dReal* position)
 {
-	if(!m_capture_joint) return;
-	dJointSetBallAnchor(m_capture_joint,position[0],position[1],position[2]);
+	//if(!m_capture_joint) return;
+	//dJointSetBallAnchor(m_capture_joint,position[0],position[1],position[2]);
 }
 
 void CPHSimpleCharacter::CheckCaptureJoint()
@@ -1220,7 +1221,7 @@ void CPHSimpleCharacter::doCaptureExist(bool& do_exist)
 {
 	do_exist=!!m_capture_joint;
 }
-
+*/
 void CPHSimpleCharacter::SafeAndLimitVelocity()
 {
 

@@ -424,6 +424,8 @@ IC void CBackend::set_Constants			(R_constant_table* C)
 	if (ctable==C)	return;
 	ctable			= C;
 	xforms.unmap	();
+	hemi.unmap		();
+	tree.unmap		();
 	StateManager.UnmapConstants();
 	if (0==C)		return;
 

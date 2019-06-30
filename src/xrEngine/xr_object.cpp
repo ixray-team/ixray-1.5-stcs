@@ -200,7 +200,7 @@ BOOL CObject::net_Spawn			(CSE_Abstract* data)
 	VERIFY						(_valid(renderable.xform));
 
 	if (0==Visual() && pSettings->line_exist( cNameSect(), "visual" ) )
-		cNameVisual_set	(pSettings->r_string( cNameSect(), "visual" ) );
+		cNameVisual_set			(pSettings->r_string( cNameSect(), "visual" ) );
 
 	if (0==collidable.model) 	{
 		if (pSettings->line_exist(cNameSect(),"cform")) {
@@ -208,7 +208,9 @@ BOOL CObject::net_Spawn			(CSE_Abstract* data)
 			collidable.model	= xr_new<CCF_Skeleton>	(this);
 		}
 	}
-	R_ASSERT(spatial.space);	spatial_register();
+
+	R_ASSERT					(spatial.space);
+	spatial_register			();
 
 	if (register_schedule())
 		shedule_register		();

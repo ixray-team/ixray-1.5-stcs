@@ -7,6 +7,7 @@
 #include "../ECore/Editor/ui_main.h"
 #include "sector.h"
 #include "portalutils.h"
+#include "EScenePortalTools.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "mxPlacemnt"
@@ -58,6 +59,12 @@ void __fastcall TfraPortal::ebInvertOrientClick(TObject *Sender)
 		    _O->InvertOrientation(true);
         }
     }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraPortal::ExtBtn1Click(TObject *Sender)
+{
+	tool->RemoveSimilar();
 }
 //---------------------------------------------------------------------------
 

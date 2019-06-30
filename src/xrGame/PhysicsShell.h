@@ -53,7 +53,7 @@ public:
 	virtual	const	Fmatrix		&XFORM									()const																													{ return mXFORM; }
 	virtual		void			get_xform								( Fmatrix& form ) const	{ form.set( XFORM() ); }
 	virtual		void			InterpolateGlobalTransform				(Fmatrix* m)																											= 0;
-	virtual		void			GetGlobalTransformDynamic				(Fmatrix* m)																											= 0;
+//	virtual		void			GetGlobalTransformDynamic				(Fmatrix* m) const																										= 0;
 	virtual		void			InterpolateGlobalPosition				(Fvector* v)																											= 0;
 	virtual		void			net_Import								(NET_Packet& P)																											= 0;
 	virtual		void			net_Export								(NET_Packet& P)																											= 0;
@@ -157,6 +157,7 @@ public:
 	virtual		const	Fvector					&mass_Center							()const																												= 0;
 	virtual		const	Fvector					&local_mass_Center						()																													= 0;
 	virtual		float							getRadius								()																													= 0;
+	virtual		void							GetGlobalTransformDynamic				(Fmatrix* m) const																									= 0;
 	virtual		dMass							*getMassTensor							()																													= 0;
 	virtual		void							get_MaxAreaDir							(Fvector& dir)																										= 0;
 	virtual		ObjectContactCallbackFun		*get_ObjectContactCallback				()																													= 0;
@@ -270,6 +271,7 @@ IC					IKinematics					*PKinematics								()																{return m_pKinemati
 ////////////////////////////////////////////////////IPhysicsShell///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 virtual	const		Fmatrix						&XFORM										()const															{ return CPhysicsBase::XFORM(); }
 virtual	const		IPhysicsElement				&Element									( u16 index ) const												{ return *get_ElementByStoreOrder( index );	};
+virtual				void						GetGlobalTransformDynamic					(Fmatrix* m) 																				= 0;
 //virtual			u16							get_ElementsNumber							( )																const	= 0;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

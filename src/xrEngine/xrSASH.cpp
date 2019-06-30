@@ -4,7 +4,7 @@
 #include "xr_ioconsole.h"
 #include "xr_ioc_cmd.h"
 
-xrSASH	g_SASH;
+xrSASH	ENGINE_API g_SASH;
 
 xrSASH::xrSASH() : m_bInited(false), 
 	m_bOpenAutomate(false), m_bBenchmarkRunning(false),
@@ -38,7 +38,7 @@ bool xrSASH::Init(const char* pszParam)
 		m_bInited = true;
 		strcpy_s( m_strBenchCfgName, pszParam);
 		Msg("oa:: Failed to init.");
-		Msg("oa:: Running standalone.");
+		Msg("oa:: Running native path.");
 		return false;
 	}
 }
@@ -117,24 +117,35 @@ void xrSASH::LoopNative()
 	FS.update_path(in_file,"$app_data_root$", m_strBenchCfgName);
 
 	CInifile ini(in_file);
-	int test_count = ini.line_count("benchmark");
-	LPCSTR test_name,t;
-	shared_str test_command;
 
-	for(int i=0;i<test_count;++i)
+	IReader* R 	= FS.r_open(in_file);
+	if (R)
 	{
-		ini.r_line( "benchmark", i, &test_name, &t);
-		//strcpy_s(g_sBenchmarkName, test_name);
+		FS.r_close(R);
 
-		test_command = ini.r_string_wb("benchmark",test_name);
-		strcpy_s( Core.Params, *test_command );
-		_strlwr_s( Core.Params );
+		int test_count = ini.line_count("benchmark");
+		LPCSTR test_name,t;
+		shared_str test_command;
 
-		RunBenchmark(test_name);
+		for(int i=0;i<test_count;++i)
+		{
+			ini.r_line( "benchmark", i, &test_name, &t);
+			//strcpy_s(g_sBenchmarkName, test_name);
 
-		//	Output results
-		ReportNative(test_name);
+			test_command = ini.r_string_wb("benchmark",test_name);
+			strcpy_s( Core.Params, *test_command );
+			_strlwr_s( Core.Params );
+
+			RunBenchmark(test_name);
+
+			//	Output results
+			ReportNative(test_name);
+		}
 	}
+	else
+		Msg("oa:: Native path can't find \"%s\" config file.", in_file);
+
+	FlushLog();
 }
 
 void xrSASH::ReportNative( LPCSTR pszTestName )

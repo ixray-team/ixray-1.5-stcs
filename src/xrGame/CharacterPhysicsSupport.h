@@ -150,6 +150,8 @@ IC		physics_shell_animated			*animation_collision			( ){ return m_physics_shell_
 IC		const physics_shell_animated	*animation_collision			( )const{ return m_physics_shell_animated; }
 		void							create_animation_collision		( );
 		void							destroy_animation_collision		( );
+		u16								PHGetSyncItemsNumber			( );
+		CPHSynchronize*					PHGetSyncItem					(u16 item);
 private:
 		void							update_animation_collision		( );
 public:

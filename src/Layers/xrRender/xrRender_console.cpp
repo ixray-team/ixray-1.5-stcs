@@ -15,27 +15,27 @@ xr_token							qpreset_token							[ ]={
 
 u32			ps_r_sun_shafts				=	0;
 xr_token							qsun_shafts_token							[ ]={
-	{ "Off",						0												},
-	{ "Low",						1												},
-	{ "Medium",						2												},
-	{ "High",						3												},
+	{ "st_opt_off",					0												},
+	{ "st_opt_low",					1												},
+	{ "st_opt_medium",				2												},
+	{ "st_opt_high",				3												},
 	{ 0,							0												}
 };
 
 u32			ps_r_ssao				=	0;
 xr_token							qssao_token									[ ]={
-	{ "Off",						0												},
-	{ "Low",						1												},
-	{ "Medium",						2												},
-	{ "High",						3												},
+	{ "st_opt_off",					0												},
+	{ "st_opt_low",					1												},
+	{ "st_opt_medium",				2												},
+	{ "st_opt_high",				3												},
 	{ 0,							0												}
 };
 
 u32			ps_r_sun_quality		=	0;			//	=	0;
 xr_token							qsun_quality_token							[ ]={
-	{ "Low",						0												},
-	{ "Medium",						1												},
-	{ "High",						2												},
+	{ "st_opt_low",					0												},
+	{ "st_opt_medium",				1												},
+	{ "st_opt_high",				2												},
 	{ 0,							0												}
 };
 
@@ -95,9 +95,13 @@ Flags32		ps_r2_ls_flags				= { R2FLAG_SUN
 	//| R2FLAG_SUN_IGNORE_PORTALS
 	| R2FLAG_EXP_DONT_TEST_UNSHADOWED 
 	| R2FLAG_USE_NVSTENCIL | R2FLAG_EXP_SPLIT_SCENE 
-	| R2FLAG_EXP_MT_CALC | R3FLAG_DYN_WET_SURF |
-	R3FLAG_VOLUMETRIC_SMOKE
+	| R2FLAG_EXP_MT_CALC | R3FLAG_DYN_WET_SURF
+	| R3FLAG_VOLUMETRIC_SMOKE
+	| R3FLAG_MSAA //| R3FLAG_MSAA_OPT
 	};	// r2-only
+
+Flags32		ps_r2_ls_flags_ext			= {0};
+
 float		ps_r2_df_parallax_h			= 0.02f;
 float		ps_r2_df_parallax_range		= 75.f;
 float		ps_r2_tonemap_middlegray	= 0.25f;			// r2-only
@@ -140,7 +144,9 @@ float		ps_r2_sun_lumscale_amb		= 1.0f;
 float		ps_r2_gmaterial				= 0.f;				// 
 float		ps_r2_zfill					= 0.1f;				// .1f
 
-float		ps_r2_dhemi_scale			= 1.f;				// 1.5f
+float		ps_r2_dhemi_sky_scale		= 0.08f;				// 1.5f
+float		ps_r2_dhemi_light_scale     = 0.2f	;
+float		ps_r2_dhemi_light_flow      = 0.1f	;
 int			ps_r2_dhemi_count			= 5;				// 5
 int			ps_r2_wait_sleep			= 0;
 
@@ -503,7 +509,7 @@ void		xrRender_initconsole	()
 #endif // DEBUG
 	CMD4(CCC_Float,		"r__wallmark_ttl",		&ps_r__WallmarkTTL,			1.0f,	5.f*60.f);
 
-//	CMD4(CCC_Integer,	"r__supersample",		&ps_r__Supersample,			1,		4		);
+	CMD4(CCC_Integer,	"r__supersample",		&ps_r__Supersample,			1,		8		);
 
 	Fvector	tw_min,tw_max;
 	
@@ -617,9 +623,11 @@ void		xrRender_initconsole	()
 
 	CMD4(CCC_Integer,	"r2_wait_sleep",		&ps_r2_wait_sleep,			0,		1		);
 
-#ifdef DEBUG
+#ifndef MASTER_GOLD
 	CMD4(CCC_Integer,	"r2_dhemi_count",		&ps_r2_dhemi_count,			4,		25		);
-	CMD4(CCC_Float,		"r2_dhemi_scale",		&ps_r2_dhemi_scale,			.5f,	3.f		);
+	CMD4(CCC_Float,		"r2_dhemi_sky_scale",	&ps_r2_dhemi_sky_scale,		0.0f,	100.f	);
+	CMD4(CCC_Float,		"r2_dhemi_light_scale",	&ps_r2_dhemi_light_scale,	0,		100.f	);
+	CMD4(CCC_Float,		"r2_dhemi_light_flow",	&ps_r2_dhemi_light_flow,	0,		1.f	);
 	CMD4(CCC_Float,		"r2_dhemi_smooth",		&ps_r2_lt_smooth,			0.f,	10.f	);
 #endif // DEBUG
 
@@ -655,6 +663,7 @@ void		xrRender_initconsole	()
 //	CMD3(CCC_Mask,		"r2_sun_shafts",				&ps_r2_ls_flags,			R2FLAG_SUN_SHAFTS);
 	CMD3(CCC_Token,		"r2_sun_shafts",				&ps_r_sun_shafts,			qsun_shafts_token);
 	CMD3(CCC_Token,		"r2_ssao",						&ps_r_ssao,					qssao_token);
+	CMD3(CCC_Mask,		"r2_ssao_blur",                 &ps_r2_ls_flags_ext,		R2FLAGEXT_SSAO_BLUR);//Need restart
 	CMD3(CCC_Mask,		"r2_steep_parallax",			&ps_r2_ls_flags,			R2FLAG_STEEP_PARALLAX);
 	CMD3(CCC_Mask,		"r2_detail_bump",				&ps_r2_ls_flags,			R2FLAG_DETAIL_BUMP);
 
@@ -663,6 +672,13 @@ void		xrRender_initconsole	()
 	//	Igor: need restart
 	CMD3(CCC_Mask,		"r2_soft_water",				&ps_r2_ls_flags,			R2FLAG_SOFT_WATER);
 	CMD3(CCC_Mask,		"r2_soft_particles",			&ps_r2_ls_flags,			R2FLAG_SOFT_PARTICLES);
+
+   CMD3(CCC_Mask,		"r3_msaa",                 &ps_r2_ls_flags,			R3FLAG_MSAA);
+   //CMD3(CCC_Mask,		"r3_msaa_opt",             &ps_r2_ls_flags,		   R3FLAG_MSAA_OPT);
+   CMD3(CCC_Mask,		"r3_gbuffer_opt",          &ps_r2_ls_flags,		   R3FLAG_GBUFFER_OPT);
+   //CMD3(CCC_Mask,		"r3_msaa_alphatest",       &ps_r2_ls_flags,		   (u32)R3FLAG_MSAA_ALPHATEST);
+
+
 
 	//	Allow real-time fog config reload
 #if	RENDER == R_R3
@@ -677,6 +693,8 @@ void		xrRender_initconsole	()
 	CMD4(CCC_Integer,	"r3_dynamic_wet_surfaces_sm_res",&ps_r3_dyn_wet_surf_sm_res,64,	2048	);
 
 	CMD3(CCC_Mask,		"r3_volumetric_smoke",			&ps_r2_ls_flags,			R3FLAG_VOLUMETRIC_SMOKE);
+
+//	CMD3(CCC_Mask,		"r2_sun_ignore_portals",		&ps_r2_ls_flags,			R2FLAG_SUN_IGNORE_PORTALS);
 }
 
 void	xrRender_apply_tf		()

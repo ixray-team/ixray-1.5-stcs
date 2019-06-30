@@ -9,6 +9,8 @@
 #include "blender_combine.h"
 #include "blender_bloom_build.h"
 #include "blender_luminance.h"
+#include "blender_ssao.h"
+#include "../xrRenderDX10/msaa/dx10MSAABlender.h"
 
 #include "../xrRenderDX10/DX10 Rain/dx10RainBlender.h"
 
@@ -29,7 +31,9 @@ void	CRenderTarget::u_setrt			(const ref_rt& _1, const ref_rt& _2, const ref_rt&
 	{
 		D3D10_DEPTH_STENCIL_VIEW_DESC	desc;
 		zb->GetDesc(&desc);
-		VERIFY(desc.ViewDimension==D3D10_DSV_DIMENSION_TEXTURE2D);
+
+      if( !RImplementation.o.dx10_msaa )
+         VERIFY(desc.ViewDimension==D3D10_DSV_DIMENSION_TEXTURE2D);
 
 		ID3D10Resource *pRes;
 
@@ -52,12 +56,47 @@ void	CRenderTarget::u_setrt			(const ref_rt& _1, const ref_rt& _2, const ref_rt&
 //	RImplementation.rmNormal				();
 }
 
+void	CRenderTarget::u_setrt			(const ref_rt& _1, const ref_rt& _2, ID3DDepthStencilView* zb)
+{
+	VERIFY									(_1||zb);
+	if (_1)
+	{
+		dwWidth									= _1->dwWidth;
+		dwHeight								= _1->dwHeight;
+	}
+	else
+	{
+		D3D10_DEPTH_STENCIL_VIEW_DESC	desc;
+		zb->GetDesc(&desc);
+      if( ! RImplementation.o.dx10_msaa )
+		   VERIFY(desc.ViewDimension==D3D10_DSV_DIMENSION_TEXTURE2D);
+
+		ID3D10Resource *pRes;
+
+		zb->GetResource( &pRes);
+
+		ID3D10Texture2D *pTex = (ID3D10Texture2D *)pRes;
+
+		D3D10_TEXTURE2D_DESC	TexDesc;
+
+		pTex->GetDesc(&TexDesc);
+
+		dwWidth = TexDesc.Width;
+		dwHeight = TexDesc.Height;
+	}
+
+	if (_1) RCache.set_RT(_1->pRT,	0); else RCache.set_RT(NULL,0);
+	if (_2) RCache.set_RT(_2->pRT,	1); else RCache.set_RT(NULL,1);
+	RCache.set_ZB							(zb);
+//	RImplementation.rmNormal				();
+}
+
 void	CRenderTarget::u_setrt			(u32 W, u32 H, ID3DRenderTargetView* _1, ID3DRenderTargetView* _2, ID3DRenderTargetView* _3, ID3DDepthStencilView* zb)
 {
-	VERIFY									(_1);
+	//VERIFY									(_1);
 	dwWidth									= W;
 	dwHeight								= H;
-	VERIFY									(_1);
+	//VERIFY									(_1);
 	RCache.set_RT							(_1,	0);
 	RCache.set_RT							(_2,	1);
 	RCache.set_RT							(_3,	2);
@@ -222,6 +261,18 @@ void	generate_jitter	(DWORD*	dest, u32 elem_count)
 
 CRenderTarget::CRenderTarget		()
 {
+   u32 SampleCount = 1;
+
+   if( RImplementation.o.dx10_msaa )
+      SampleCount    = RImplementation.o.dx10_msaa_samples;
+
+#ifdef DEBUG
+	Msg			("MSAA samples = %d", SampleCount );
+   if( RImplementation.o.dx10_msaa_opt )
+	   Msg		("dx10_MSAA_opt = on" );
+   if( RImplementation.o.dx10_gbuffer_opt )
+	   Msg		("dx10_gbuffer_opt = on" );
+#endif // DEBUG
 	param_blur			= 0.f;
 	param_gray			= 0.f;
 	param_noise			= 0.f;
@@ -243,53 +294,110 @@ CRenderTarget::CRenderTarget		()
 	dxRenderDeviceRender::Instance().Resources->Evict			();
 
 	// Blenders
-	b_occq							= xr_new<CBlender_light_occq>			();
-	b_accum_mask					= xr_new<CBlender_accum_direct_mask>	();
-	b_accum_direct					= xr_new<CBlender_accum_direct>			();
-	b_accum_point					= xr_new<CBlender_accum_point>			();
-	b_accum_spot					= xr_new<CBlender_accum_spot>			();
-	b_accum_reflected				= xr_new<CBlender_accum_reflected>		();
-	b_bloom							= xr_new<CBlender_bloom_build>			();
-	b_luminance						= xr_new<CBlender_luminance>			();
-	b_combine						= xr_new<CBlender_combine>				();
+	b_occq					= xr_new<CBlender_light_occq>			();
+	b_accum_mask			= xr_new<CBlender_accum_direct_mask>	();
+	b_accum_direct			= xr_new<CBlender_accum_direct>			();
+	b_accum_point			= xr_new<CBlender_accum_point>			();
+	b_accum_spot			= xr_new<CBlender_accum_spot>			();
+	b_accum_reflected		= xr_new<CBlender_accum_reflected>		();
+	b_bloom					= xr_new<CBlender_bloom_build>			();
+	if( RImplementation.o.dx10_msaa )
+	{
+		b_bloom_msaa			= xr_new<CBlender_bloom_build_msaa>		();
+		b_postprocess_msaa	= xr_new<CBlender_postprocess_msaa>	();
+	}
+	b_luminance				= xr_new<CBlender_luminance>			();
+	b_combine				= xr_new<CBlender_combine>				();
+	b_ssao					= xr_new<CBlender_SSAO_noMSAA>			();
 
+	if( RImplementation.o.dx10_msaa )
+	{
+		int bound = RImplementation.o.dx10_msaa_samples;
+
+		if( RImplementation.o.dx10_msaa_opt )
+			bound = 1;
+
+		for( int i = 0; i < bound; ++i )
+		{
+			static LPCSTR SampleDefs[] = { "0","1","2","3","4","5","6","7" };
+			b_combine_msaa[i]							= xr_new<CBlender_combine_msaa>					();
+			b_accum_mask_msaa[i]						= xr_new<CBlender_accum_direct_mask_msaa>		();
+			b_accum_direct_msaa[i]					= xr_new<CBlender_accum_direct_msaa>			();
+			b_accum_direct_volumetric_msaa[i]			= xr_new<CBlender_accum_direct_volumetric_msaa>	();
+			//b_accum_direct_volumetric_sun_msaa[i]	= xr_new<CBlender_accum_direct_volumetric_sun_msaa>			();
+			b_accum_spot_msaa[i]		 				= xr_new<CBlender_accum_spot_msaa>			();
+			b_accum_volumetric_msaa[i]				= xr_new<CBlender_accum_volumetric_msaa>	();
+			b_accum_point_msaa[i]						= xr_new<CBlender_accum_point_msaa>			();
+			b_accum_reflected_msaa[i]					= xr_new<CBlender_accum_reflected_msaa>		();
+			b_ssao_msaa[i]							= xr_new<CBlender_SSAO_MSAA>				();
+			static_cast<CBlender_accum_direct_mask_msaa*>( b_accum_mask_msaa[i] )->SetDefine( "ISAMPLE", SampleDefs[i]);
+			static_cast<CBlender_accum_direct_volumetric_msaa*>(b_accum_direct_volumetric_msaa[i])->SetDefine( "ISAMPLE", SampleDefs[i]);
+			//static_cast<CBlender_accum_direct_volumetric_sun_msaa*>(b_accum_direct_volumetric_sun_msaa[i])->SetDefine( "ISAMPLE", SampleDefs[i]);
+			static_cast<CBlender_accum_direct_msaa*>(b_accum_direct_msaa[i])->SetDefine( "ISAMPLE", SampleDefs[i]);
+			static_cast<CBlender_accum_volumetric_msaa*>(b_accum_volumetric_msaa[i])->SetDefine( "ISAMPLE", SampleDefs[i]);
+			static_cast<CBlender_accum_spot_msaa*>(b_accum_spot_msaa[i])->SetDefine( "ISAMPLE", SampleDefs[i]);
+			static_cast<CBlender_accum_point_msaa*>(b_accum_point_msaa[i])->SetDefine( "ISAMPLE", SampleDefs[i]);
+			static_cast<CBlender_accum_reflected_msaa*>(b_accum_reflected_msaa[i])->SetDefine( "ISAMPLE", SampleDefs[i]);
+			static_cast<CBlender_combine_msaa*>(b_combine_msaa[i])->SetDefine( "ISAMPLE", SampleDefs[i]);
+			static_cast<CBlender_SSAO_MSAA*>(b_ssao_msaa[i])->SetDefine("ISAMPLE", SampleDefs[i]);
+		}
+	}
 	//	NORMAL
 	{
 		u32		w=Device.dwWidth, h=Device.dwHeight;
-		rt_Position.create			(r2_RT_P,		w,h,D3DFMT_A16B16G16R16F);
-		rt_Normal.create			(r2_RT_N,		w,h,D3DFMT_A16B16G16R16F);
+		rt_Position.create			(r2_RT_P,		w,h,D3DFMT_A16B16G16R16F, SampleCount );
+
+      if( RImplementation.o.dx10_msaa )
+         rt_MSAADepth.create( r2_RT_MSAAdepth, w, h, D3DFMT_D24S8, SampleCount );
+
+      if( !RImplementation.o.dx10_gbuffer_opt )
+         rt_Normal.create			(r2_RT_N,		w,h,D3DFMT_A16B16G16R16F, SampleCount );
 
 		// select albedo & accum
 		if (RImplementation.o.mrtmixdepth)	
 		{
 			// NV50
-			rt_Color.create			(r2_RT_albedo,	w,h,D3DFMT_A8R8G8B8		);
-			rt_Accumulator.create	(r2_RT_accum,	w,h,D3DFMT_A16B16G16R16F);
+			rt_Color.create			(r2_RT_albedo,	w,h,D3DFMT_A8R8G8B8		, SampleCount );
+			rt_Accumulator.create	(r2_RT_accum,	w,h,D3DFMT_A16B16G16R16F, SampleCount );
 		}
 		else		
 		{
 			// can't - mix-depth
 			if (RImplementation.o.fp16_blend) {
 				// NV40
-				rt_Color.create				(r2_RT_albedo,		w,h,D3DFMT_A16B16G16R16F);	// expand to full
-				rt_Accumulator.create		(r2_RT_accum,		w,h,D3DFMT_A16B16G16R16F);
+            if( !RImplementation.o.dx10_gbuffer_opt )
+            {
+				   rt_Color.create				(r2_RT_albedo,		w,h,D3DFMT_A16B16G16R16F, SampleCount );	// expand to full
+				   rt_Accumulator.create		(r2_RT_accum,		w,h,D3DFMT_A16B16G16R16F, SampleCount );
+            }
+            else
+            {
+   				rt_Color.create				(r2_RT_albedo,		w,h,D3DFMT_A8R8G8B8,       SampleCount );	// expand to full
+	   			rt_Accumulator.create		(r2_RT_accum,		w,h,D3DFMT_A16B16G16R16F,  SampleCount );
+            }
 			} else {
 				// R4xx, no-fp-blend,-> albedo_wo
 				VERIFY						(RImplementation.o.albedo_wo);
-				rt_Color.create				(r2_RT_albedo,		w,h,D3DFMT_A8R8G8B8		);	// normal
-				rt_Accumulator.create		(r2_RT_accum,		w,h,D3DFMT_A16B16G16R16F);
-				rt_Accumulator_temp.create	(r2_RT_accum_temp,	w,h,D3DFMT_A16B16G16R16F);
+				rt_Color.create				(r2_RT_albedo,		   w,h,D3DFMT_A8R8G8B8		, SampleCount );	// normal
+				rt_Accumulator.create		(r2_RT_accum,		   w,h,D3DFMT_A16B16G16R16F, SampleCount );
+				rt_Accumulator_temp.create	(r2_RT_accum_temp,	w,h,D3DFMT_A16B16G16R16F, SampleCount );
 			}
 		}
 
 		// generic(LDR) RTs
-		rt_Generic_0.create			(r2_RT_generic0,w,h,D3DFMT_A8R8G8B8		);
-		rt_Generic_1.create			(r2_RT_generic1,w,h,D3DFMT_A8R8G8B8		);
+		rt_Generic_0.create			(r2_RT_generic0,w,h,D3DFMT_A8R8G8B8, SampleCount	);
+		rt_Generic_1.create			(r2_RT_generic1,w,h,D3DFMT_A8R8G8B8, SampleCount		);
+      if( RImplementation.o.dx10_msaa )
+      {
+         rt_Generic_0_r.create		(r2_RT_generic0_r,w,h,D3DFMT_A8R8G8B8, 1		);
+         rt_Generic_1_r.create		(r2_RT_generic1_r,w,h,D3DFMT_A8R8G8B8, 1		);
+         rt_Generic.create		      (r2_RT_generic,w,h,   D3DFMT_A8R8G8B8, 1		);
+      }
 		//	Igor: for volumetric lights
 		//rt_Generic_2.create			(r2_RT_generic2,w,h,D3DFMT_A8R8G8B8		);
 		//	temp: for higher quality blends
 		if (RImplementation.o.advancedpp)
-			rt_Generic_2.create			(r2_RT_generic2,w,h,D3DFMT_A16B16G16R16F);
+			rt_Generic_2.create			(r2_RT_generic2,w,h,D3DFMT_A16B16G16R16F, SampleCount );
 	}
 
 	// OCCLUSION
@@ -307,10 +415,47 @@ CRenderTarget::CRenderTarget		()
 		rt_smap_depth.create		(r2_RT_smap_depth,			size,size,depth_format	);
 		//rt_smap_surf.create			(r2_RT_smap_surf,			size,size,nullrt		);
 		//rt_smap_ZB					= NULL;
-		s_accum_mask.create			(b_accum_mask,				"r2\\accum_mask");
-		s_accum_direct.create		(b_accum_direct,			"r2\\accum_direct");
+		s_accum_mask.create			(b_accum_mask,				"r3\\accum_mask");
+		s_accum_direct.create		(b_accum_direct,			"r3\\accum_direct");
+
+		if( RImplementation.o.dx10_msaa )
+		{
+			int bound = RImplementation.o.dx10_msaa_samples;
+
+			if( RImplementation.o.dx10_msaa_opt )
+				bound = 1;
+
+			for( int i = 0; i < bound; ++i )
+			{
+				s_accum_direct_msaa[i].create		(b_accum_direct_msaa[i],			"r3\\accum_direct");
+				s_accum_mask_msaa[i].create		(b_accum_mask_msaa[i],			"r3\\accum_direct");
+			}
+		}
 		if (RImplementation.o.advancedpp)
-			s_accum_direct_volumetric.create("accum_volumetric_sun");
+		{
+			s_accum_direct_volumetric.create("accum_volumetric_sun_nomsaa");
+			if( RImplementation.o.dx10_msaa )
+			{
+				static LPCSTR snames[] = { "accum_volumetric_sun_msaa0",
+					"accum_volumetric_sun_msaa1",
+					"accum_volumetric_sun_msaa2",
+					"accum_volumetric_sun_msaa3",
+					"accum_volumetric_sun_msaa4",
+					"accum_volumetric_sun_msaa5",
+					"accum_volumetric_sun_msaa6",
+					"accum_volumetric_sun_msaa7" };
+				int bound = RImplementation.o.dx10_msaa_samples;
+
+				if( RImplementation.o.dx10_msaa_opt )
+					bound = 1;
+
+				for( int i = 0; i < bound; ++i )
+				{
+					//s_accum_direct_volumetric_msaa[i].create		(b_accum_direct_volumetric_sun_msaa[i],			"r3\\accum_direct");
+					s_accum_direct_volumetric_msaa[i].create		(snames[i]);
+				}
+			}
+		}
 	}
 	else
 	{
@@ -332,7 +477,36 @@ CRenderTarget::CRenderTarget		()
 	{
 		CBlender_rain	TempBlender;
 		s_rain.create( &TempBlender, "null");
+
+      if( RImplementation.o.dx10_msaa )
+      {
+         static LPCSTR SampleDefs[] = { "0","1","2","3","4","5","6","7" };
+	      CBlender_rain_msaa	TempBlender[8];
+
+         int bound = RImplementation.o.dx10_msaa_samples;
+
+         if( RImplementation.o.dx10_msaa_opt )
+            bound = 1;
+
+	      for( int i = 0; i < bound; ++i )
+         {
+				TempBlender[i].SetDefine( "ISAMPLE", SampleDefs[i] );
+				s_rain_msaa[i].create( &TempBlender[i], "null");
+				s_accum_spot_msaa[i].create			(b_accum_spot_msaa[i],				"r2\\accum_spot_s",	"lights\\lights_spot01");
+				s_accum_point_msaa[i].create		(b_accum_point_msaa[i],			"r2\\accum_point_s");
+				//s_accum_volume_msaa[i].create(b_accum_direct_volumetric_msaa[i], "lights\\lights_spot01");
+				s_accum_volume_msaa[i].create(b_accum_volumetric_msaa[i], "lights\\lights_spot01");
+            s_combine_msaa[i].create					(b_combine_msaa[i],					"r2\\combine");
+         }
+      }
 	}
+
+   if( RImplementation.o.dx10_msaa )
+   {
+      CBlender_msaa TempBlender;
+
+      s_mark_msaa_edges.create( &TempBlender, "null" );
+   }
 
 	// POINT
 	{
@@ -360,7 +534,19 @@ CRenderTarget::CRenderTarget		()
 	// REFLECTED
 	{
 		s_accum_reflected.create	(b_accum_reflected,			"r2\\accum_refl");
-	}
+      if( RImplementation.o.dx10_msaa )
+      {
+         int bound = RImplementation.o.dx10_msaa_samples;
+
+         if( RImplementation.o.dx10_msaa_opt )
+            bound = 1;
+
+	      for( int i = 0; i < bound; ++i )
+			{
+			   s_accum_reflected_msaa[i].create( b_accum_reflected_msaa[i], "null");
+			}
+      }
+	}	
 
 	// BLOOM
 	{
@@ -375,6 +561,11 @@ CRenderTarget::CRenderTarget		()
 		s_bloom_dbg_1.create		("effects\\screen_set",		r2_RT_bloom1);
 		s_bloom_dbg_2.create		("effects\\screen_set",		r2_RT_bloom2);
 		s_bloom.create				(b_bloom,					"r2\\bloom");
+      if( RImplementation.o.dx10_msaa )
+      {
+         s_bloom_msaa.create		 (b_bloom_msaa,					"r2\\bloom");
+         s_postprocess_msaa.create(b_postprocess_msaa,			"r2\\post");
+      }
 		f_bloom_factor				= 0.5f;
 	}
 
@@ -399,6 +590,23 @@ CRenderTarget::CRenderTarget		()
 			HW.pDevice->ClearRenderTargetView(rt_LUM_pool[it]->pRT, ColorRGBA);
 		}
 		u_setrt						( Device.dwWidth,Device.dwHeight,HW.pBaseRT,NULL,NULL,HW.pBaseZB);
+	}
+
+	if (RImplementation.o.ssao_blur_on)
+	{
+		u32		w = Device.dwWidth, h = Device.dwHeight;
+		rt_ssao_temp.create			(r2_RT_ssao_temp, w, h, D3DFMT_G16R16F, SampleCount);
+		s_ssao.create				(b_ssao, "r2\\ssao");
+
+		if( RImplementation.o.dx10_msaa )
+		{
+			int bound = RImplementation.o.dx10_msaa_opt ? 1 : RImplementation.o.dx10_msaa_samples;
+
+			for( int i = 0; i < bound; ++i )
+			{
+				s_ssao_msaa[i].create( b_ssao_msaa[i], "null");
+			}
+		}
 	}
 
 	// COMBINE
@@ -691,6 +899,29 @@ CRenderTarget::~CRenderTarget	()
 	xr_delete					(b_accum_spot			);
 	xr_delete					(b_accum_point			);
 	xr_delete					(b_accum_direct			);
+	xr_delete					(b_ssao					);
+
+   if( RImplementation.o.dx10_msaa )
+   {
+      int bound = RImplementation.o.dx10_msaa_samples;
+
+      if( RImplementation.o.dx10_msaa_opt )
+         bound = 1;
+
+	  for( int i = 0; i < bound; ++i )
+	  {
+		  xr_delete					(b_combine_msaa[i]);
+		  xr_delete					(b_accum_direct_msaa[i]);
+		  xr_delete					(b_accum_mask_msaa[i]);
+		  xr_delete					(b_accum_direct_volumetric_msaa[i]);
+		  //xr_delete					(b_accum_direct_volumetric_sun_msaa[i]);
+		  xr_delete					(b_accum_spot_msaa[i]);
+		  xr_delete					(b_accum_volumetric_msaa[i]);
+		  xr_delete					(b_accum_point_msaa[i]);
+		  xr_delete					(b_accum_reflected_msaa[i]);
+		  xr_delete					(b_ssao_msaa[i]);
+	  }
+   }
 	xr_delete					(b_accum_mask			);
 	xr_delete					(b_occq					);
 }
@@ -724,6 +955,8 @@ void CRenderTarget::increment_light_marker()
 	dwLightMarkerID += 2;
 
 	//if (dwLightMarkerID>10)
-	if (dwLightMarkerID>255)
+	const u32 iMaxMarkerValue = RImplementation.o.dx10_msaa ? 127 : 255;
+	
+	if ( dwLightMarkerID > iMaxMarkerValue )
 		reset_light_marker(true);
 }

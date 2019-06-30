@@ -438,6 +438,14 @@ bool CActorCondition::IsCantWalkWeight()
 		if(outfit)
 			max_w += outfit->m_additional_weight;
 
+		const xr_vector<const CArtefact*>& afs = m_object->ArtefactsOnBelt();
+		if(!afs.empty())
+		{
+			xr_vector<const CArtefact*>::const_iterator it		= afs.begin();
+			xr_vector<const CArtefact*>::const_iterator it_e	= afs.end();
+			for(;it!=it_e;++it)
+				max_w += (*it)->AdditionalInventoryWeight();
+		}
 		if( object().inventory().TotalWeight() > max_w )
 		{
 			m_condition_flags.set			(eCantWalkWeight, TRUE);

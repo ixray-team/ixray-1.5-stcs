@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="8,00"
 	Name="xrRender_R2"
 	ProjectGUID="{963BA4E5-499A-454D-B002-1D5ECE0527A6}"
+	RootNamespace="xrRender_R2"
 	Keyword="Win32Proj"
 	>
 	<Platforms>
@@ -1130,6 +1131,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\blender_ssao.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\blender_ssao.h"
+				>
+			</File>
+			<File
 				RelativePath="..\xrRender\uber_deffer.cpp"
 				>
 			</File>
@@ -1406,6 +1415,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\r2_rendertarget_phase_ssao.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\r2_rendertarget_wallmarks.h"
 				>
 			</File>
@@ -1457,11 +1470,27 @@
 					>
 				</File>
 				<File
+					RelativePath="..\xrRender\R_Backend_hemi.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\xrRender\R_Backend_hemi.h"
+					>
+				</File>
+				<File
 					RelativePath="..\xrRender\R_Backend_Runtime.cpp"
 					>
 				</File>
 				<File
 					RelativePath="..\xrRender\R_Backend_Runtime.h"
+					>
+				</File>
+				<File
+					RelativePath="..\xrRender\R_Backend_tree.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\xrRender\R_Backend_tree.h"
 					>
 				</File>
 				<File

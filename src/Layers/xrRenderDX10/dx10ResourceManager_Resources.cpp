@@ -272,8 +272,18 @@ void	CResourceManager::_DeleteVS			(const SVS* vs)
 }
 
 //--------------------------------------------------------------------------------------------------------------
-SPS*	CResourceManager::_CreatePS			(LPCSTR name)
+SPS*	CResourceManager::_CreatePS			(LPCSTR _name)
 {
+	string_path			name;
+	strcpy_s				(name,_name);
+	if (0 == ::Render->m_MSAASample)	strcat(name,"_0");
+	if (1 == ::Render->m_MSAASample)	strcat(name,"_1");
+	if (2 == ::Render->m_MSAASample)	strcat(name,"_2");
+	if (3 == ::Render->m_MSAASample)	strcat(name,"_3");
+	if (4 == ::Render->m_MSAASample)	strcat(name,"_4");
+	if (5 == ::Render->m_MSAASample)	strcat(name,"_5");
+	if (6 == ::Render->m_MSAASample)	strcat(name,"_6");
+	if (7 == ::Render->m_MSAASample)	strcat(name,"_7");
 	LPSTR N				= LPSTR(name);
 	map_PS::iterator I	= m_ps.find	(N);
 	if (I!=m_ps.end())	return		I->second;
@@ -282,7 +292,7 @@ SPS*	CResourceManager::_CreatePS			(LPCSTR name)
 		SPS*	_ps					=	xr_new<SPS>	();
 		_ps->dwFlags				|=	xr_resource_flagged::RF_REGISTERED;
 		m_ps.insert					(mk_pair(_ps->set_name(name),_ps));
-		if (0==stricmp(name,"null"))	{
+		if (0==stricmp(_name,"null"))	{
 			_ps->ps				= NULL;
 			return _ps;
 		}
@@ -290,7 +300,7 @@ SPS*	CResourceManager::_CreatePS			(LPCSTR name)
 		// Open file
 		includer					Includer;
 		string_path					cname;
-		strconcat					(sizeof(cname), cname,::Render->getShaderPath(),name,".ps");
+		strconcat					(sizeof(cname), cname,::Render->getShaderPath(),_name,".ps");
 		FS.update_path				(cname,	"$game_shaders$", cname);
 
 		// duplicate and zero-terminate
@@ -370,13 +380,15 @@ SPS*	CResourceManager::_CreatePS			(LPCSTR name)
 			else	_hr = E_FAIL;
 		}else
 		{
+			VERIFY	(pErrorBuf);
+			Log		("! PS: ", _name);
 			Msg("error is %s", (LPCSTR)pErrorBuf->GetBufferPointer());
 		}
 		_RELEASE		(pShaderBuf);
 		_RELEASE		(pErrorBuf);
 
 		if (FAILED(_hr))
-			Msg			("Can't compile shader %s",name);
+			Msg			("Can't compile shader %s",_name);
 
 		CHECK_OR_EXIT		(
 			!FAILED(_hr),
@@ -561,7 +573,7 @@ void				CResourceManager::_DeleteConstantTable	(const R_constant_table* C)
 }
 
 //--------------------------------------------------------------------------------------------------------------
-CRT*	CResourceManager::_CreateRT		(LPCSTR Name, u32 w, u32 h,	D3DFORMAT f)
+CRT*	CResourceManager::_CreateRT		(LPCSTR Name, u32 w, u32 h,	D3DFORMAT f, u32 SampleCount )
 {
 	R_ASSERT(Name && Name[0] && w && h);
 
@@ -574,7 +586,7 @@ CRT*	CResourceManager::_CreateRT		(LPCSTR Name, u32 w, u32 h,	D3DFORMAT f)
 		CRT *RT					=	xr_new<CRT>();
 		RT->dwFlags				|=	xr_resource_flagged::RF_REGISTERED;
 		m_rtargets.insert		(mk_pair(RT->set_name(Name),RT));
-		if (Device.b_is_Ready)	RT->create	(Name,w,h,f);
+		if (Device.b_is_Ready)	RT->create	(Name,w,h,f, SampleCount );
 		return					RT;
 	}
 }

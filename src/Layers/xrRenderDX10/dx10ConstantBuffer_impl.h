@@ -57,10 +57,30 @@ IC void dx10ConstantBuffer::set(R_constant* C, R_constant_load& L, const Fmatrix
 IC void dx10ConstantBuffer::set(R_constant* C, R_constant_load& L, const Fvector4& A)
 {
 	VERIFY		(RC_float	== C->type);
-	VERIFY		(RC_1x4		== L.cls);
-	Fvector4*	it	= Access(L.index);
+	VERIFY		(RC_1x4		== L.cls || RC_1x3 == L.cls || RC_1x2 == L.cls);
+	//Fvector4*	it	= Access(L.index);
+	//it->set	(A);
+
 	VERIFY( u32((u32)L.index+lineSize) <= m_uiBufferSize );
-	it->set	(A);
+	float*		it		= (float*)Access(L.index);
+
+	size_t		count	= 4;
+	switch(L.cls)
+	{
+		case RC_1x2:
+			count = 2;
+			break;
+		case RC_1x3:
+			count = 3;
+			break;
+		case RC_1x4:
+			count = 4;
+			break;
+		default:
+			break;
+	}
+
+	CopyMemory(it, &A[0], count*sizeof(float));
 
 	//c_f.access	(L.index)->set	(A);
 	//c_f.dirty	(L.index,L.index+1);
@@ -146,7 +166,7 @@ IC void dx10ConstantBuffer::seta(R_constant* C, R_constant_load& L, u32 e, const
 	//	TEST
 	//return;
 	VERIFY		(RC_float	== C->type);
-	VERIFY		(RC_1x4		== L.cls);
+	VERIFY		(RC_1x4		== L.cls || RC_1x3 == L.cls || RC_1x2 == L.cls);
 
 	static const u16 lineSize	= 4*sizeof(float);
 	u32			base			= (u32)L.index + lineSize*e;

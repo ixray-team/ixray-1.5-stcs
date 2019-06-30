@@ -1,16 +1,16 @@
 #include "stdafx.h"
 
-#include "xrMU_Model.h"
+#include "../xrLC_Light/xrMU_Model.h"
 #include "OGF_Face.h"
 #include "build.h"
 
 #define	TRY(a) try { a; } catch (...) { clMsg("* E: %s", #a); }
 
-void MModel_face2OGF_Vertices( const xrMU_Model::_face &FF, OGF_Vertex	V[3], const xrMU_Model &model )
+void MModel_face2OGF_Vertices( const _face &FF, OGF_Vertex	V[3], const xrMU_Model &model )
 {
 	for (u32 k=0; k<3; k++)
 	{
-		xrMU_Model::_vertex*	_V		= FF.v[k];	
+		_vertex*	_V		= FF.v[k];	
 		u32 id			= (u32)(std::find(model.m_vertices.begin(),model.m_vertices.end(),_V)-model.m_vertices.begin());
 		V[k].P			= _V->P;
 		V[k].N			= _V->N; 
@@ -21,7 +21,7 @@ void MModel_face2OGF_Vertices( const xrMU_Model::_face &FF, OGF_Vertex	V[3], con
 	}
 }
 
-void OGF_AddFace( OGF &ogf, const xrMU_Model::_face &FF, const xrMU_Model& model )
+void OGF_AddFace( OGF &ogf, const _face &FF, const xrMU_Model& model )
 {
 	OGF_Vertex		V[3];
 
@@ -31,10 +31,10 @@ void OGF_AddFace( OGF &ogf, const xrMU_Model::_face &FF, const xrMU_Model& model
 	V[0].UV.clear();	V[1].UV.clear();	V[2].UV.clear();
 }
 
-void xrMU_Model::calc_ogf()
+void calc_ogf( xrMU_Model &	mu_model )
 {
 	// Build OGFs
-	for (xrMU_Model::v_subdivs_it it=m_subdivs.begin(); it!=m_subdivs.end(); it++)
+	for (xrMU_Model::v_subdivs_it it=mu_model.m_subdivs.begin(); it!=mu_model.m_subdivs.end(); it++)
 	{
 		OGF*		pOGF	= xr_new<OGF> ();
 		b_material*	M		= &(pBuild->materials()[it->material]);	// and it's material
@@ -53,35 +53,35 @@ void xrMU_Model::calc_ogf()
 
 			// Collect faces & vertices
 			try {
-				xrMU_Model::v_faces_it	_beg	= m_faces.begin() + it->start;
+				xrMU_Model::v_faces_it	_beg	= mu_model.m_faces.begin() + it->start;
 				xrMU_Model::v_faces_it	_end	= _beg + it->count;
 				for (xrMU_Model::v_faces_it Fit =_beg; Fit!=_end; Fit++)
 				{
-					xrMU_Model::_face*	FF		= *Fit;
+					_face*	FF		= *Fit;
 					R_ASSERT			(FF);
-					OGF_AddFace( *pOGF, *FF, *this ); 
+					OGF_AddFace( *pOGF, *FF, mu_model ); 
 				}
-			} catch (...) {  clMsg("* ERROR: MU2OGF, model %s, *faces*",*m_name); }
+			} catch (...) {  clMsg("* ERROR: MU2OGF, model %s, *faces*",*(mu_model.m_name)); }
 		} catch (...)
 		{
-			clMsg("* ERROR: MU2OGF, 1st part, model %s",*m_name);
+			clMsg("* ERROR: MU2OGF, 1st part, model %s",*(mu_model.m_name));
 		}
 
 		try {
 			pOGF->Optimize			();
-		} catch (...)	{ clMsg	("* ERROR: MU2OGF, [optimize], model %s",*m_name); }
+		} catch (...)	{ clMsg	("* ERROR: MU2OGF, [optimize], model %s",*(mu_model.m_name)); }
 		try {
 			pOGF->CalcBounds		();
-		} catch (...)	{ clMsg	("* ERROR: MU2OGF, [bounds], model %s",*m_name); }
+		} catch (...)	{ clMsg	("* ERROR: MU2OGF, [bounds], model %s",*(mu_model.m_name)); }
 		try {
 			pOGF->CalculateTB		();
-		} catch (...)	{ clMsg	("* ERROR: MU2OGF, [calc_tb], model %s",*m_name); }
+		} catch (...)	{ clMsg	("* ERROR: MU2OGF, [calc_tb], model %s",*(mu_model.m_name)); }
 		try {
 			pOGF->MakeProgressive	(c_PM_MetricLimit_mu);
-		} catch (...)	{ clMsg	("* ERROR: MU2OGF, [progressive], model %s",*m_name); }
+		} catch (...)	{ clMsg	("* ERROR: MU2OGF, [progressive], model %s",*(mu_model.m_name)); }
 		try {
 			pOGF->Stripify			();
-		} catch (...)	{ clMsg	("* ERROR: MU2OGF, [stripify], model %s",*m_name); }
+		} catch (...)	{ clMsg	("* ERROR: MU2OGF, [stripify], model %s",*(mu_model.m_name)); }
 
 		it->ogf		=	pOGF;
 	}

@@ -7,6 +7,7 @@
 
 CSimpleDetector::CSimpleDetector(void)
 {
+	m_artefacts.m_af_rank = 1;
 }
 
 CSimpleDetector::~CSimpleDetector(void)
@@ -47,7 +48,7 @@ void CSimpleDetector::UpdateAf()
 			min_dist	= d;
 			it			= it_b;
 		}
-		if(pAf->GetAfRank()==1 && pAf->CanBeInvisible())
+		if(pAf->CanBeInvisible())
 		{
 			if(d<m_fAfVisRadius)
 				pAf->SwitchVisibility(true);

@@ -4,13 +4,12 @@
 #include "UIBuyWndBase.h"
 #include "UIWndCallback.h"
 #include "restrictions.h"
-
+#include "UIMpItemsStoreWnd.h"
 
 class CUIDragDropListEx;
 class CUI3tButtonEx;
 class CUIStatic;
 class CUIMpItemsStoreWnd;
-class CStoreHierarchy;
 class CUITabControl;
 class CUICellItem;
 class CInventoryItem;
@@ -86,6 +85,7 @@ public:
 	//
 	virtual void				Update						();				
 	virtual bool 				OnKeyboard					(int dik, EUIMessages keyboard_action);
+	virtual bool 				OnMouse						(float x, float y, EUIMessages mouse_action);
 
 public:
 	virtual void 				Init						(const shared_str& sectionName, const shared_str& sectionPrice);
@@ -127,7 +127,8 @@ public:
 	virtual void 	Show						();
 	virtual void 	Hide						();
 	virtual bool	IsIgnoreMoneyAndRank		();
-
+			
+			bool				HasItemInGroup				(shared_str const & section_name);
 
 private:
 	//data
@@ -175,6 +176,15 @@ private:
 
 	CUITabControl*		m_root_tab_control;
 	CUIDragDropListEx*	m_list[e_total_lists];
+
+	void				UpdateHelperItems			();
+	void				CreateHelperItems			(CUIDragDropListEx* list);
+	void				CreateHelperItems			(xr_vector<shared_str>& ammo_types);
+	void				CreateHelperItems			(CUIDragDropListEx* list, const CStoreHierarchy::item* shop_level);
+	void				DeleteHelperItems			(CUIDragDropListEx* list);
+	void				DeleteHelperItems			();
+	bool				CanBuyOrSellInList			(CUIDragDropListEx* list);
+
 	void				UpdateMoneyIndicator		();
 	void				UpdateShop					();
 
@@ -210,10 +220,10 @@ private:
 	bool	xr_stdcall	OnItemDbClick				(CUICellItem* itm);
 	bool	xr_stdcall	OnItemSelected				(CUICellItem* itm);
 	bool	xr_stdcall	OnItemRButtonClick			(CUICellItem* itm);
+	bool	xr_stdcall	OnItemLButtonClick			(CUICellItem* itm);
 
 	void				FillUpSubLevelButtons		();
 	void				FillUpSubLevelItems			();
-
 
 	bool				TryToBuyItem				(SBuyItemInfo* itm, u32 buy_flags, SBuyItemInfo* itm_parent);
 	bool				TryToSellItem				(SBuyItemInfo* itm, bool do_destroy, SBuyItemInfo*& itm_res);
@@ -263,7 +273,10 @@ private:
 	void				CleanUserItems				();
 
 	void				ApplyPreset					(ETradePreset idx);
-	void				StorePreset					(ETradePreset idx, bool bSilent, bool check_allowed_items);
+	void				StorePreset					(ETradePreset idx, 
+													 bool		  bSilent, 
+													 bool		  check_allowed_items, 
+													 bool		  flush_helpers);
 };
 
 u8		GetItemAddonsState_ext		(SBuyItemInfo* item);

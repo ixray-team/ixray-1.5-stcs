@@ -42,11 +42,12 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="../../../sdk/include/stlport;../../../sdk/include/;..\xrQSlim\src;"
-				PreprocessorDefinitions="_USE_MATH_DEFINES;WIN32;_DEBUG;_WINDOWS;_USRDLL;XRLC_LIGHT_EXPORTS;_SECURE_SCL=0"
+				PreprocessorDefinitions="FORCE_NO_EXCEPTIONS,_USE_MATH_DEFINES;WIN32;_DEBUG;_WINDOWS;_USRDLL;XRLC_LIGHT_EXPORTS;_SECURE_SCL=0"
 				StringPooling="true"
 				MinimalRebuild="true"
+				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
+				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
@@ -101,7 +102,7 @@
 			OutputDirectory="..\..\..\..\binaries"
 			IntermediateDirectory="..\..\..\..\intermediate\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="2"
-			CharacterSet="1"
+			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
 			<Tool
@@ -202,11 +203,11 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="../../../sdk/include/stlport;../../../sdk/include/;..\xrQSlim\src;"
-				PreprocessorDefinitions="_USE_MATH_DEFINES;WIN32;_DEBUG;_WINDOWS;_USRDLL;XRLC_LIGHT_EXPORTS;_SECURE_SCL=0"
+				PreprocessorDefinitions="_USE_MATH_DEFINES;WIN32;DEBUG;_WINDOWS;_USRDLL;XRLC_LIGHT_EXPORTS;_SECURE_SCL=0"
 				StringPooling="true"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
+				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
@@ -358,6 +359,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\calculate_normals.h"
+				>
+			</File>
+			<File
 				RelativePath=".\ETextureParams.cpp"
 				>
 			</File>
@@ -367,6 +372,10 @@
 			</File>
 			<File
 				RelativePath=".\hash2D.h"
+				>
+			</File>
+			<File
+				RelativePath=".\itterate_adjacents_static.h"
 				>
 			</File>
 			<File
@@ -411,6 +420,14 @@
 			</File>
 			<File
 				RelativePath=".\tcf.h"
+				>
+			</File>
+			<File
+				RelativePath=".\tga.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\tga.h"
 				>
 			</File>
 			<File
@@ -473,6 +490,14 @@
 				RelativePath=".\xrIsect.h"
 				>
 			</File>
+			<File
+				RelativePath=".\xrLight_Implicit.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\xrMU_Model_Calc_normals.cpp"
+				>
+			</File>
 			<Filter
 				Name="xrLC_GlobalData"
 				>
@@ -489,6 +514,156 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="Net"
+				>
+				<File
+					RelativePath="..\..\..\sdk\include\hxgrid\Interface\hxGridInterface.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+							PrecompiledHeaderThrough=""
+							PrecompiledHeaderFile=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+							PrecompiledHeaderThrough=""
+							PrecompiledHeaderFile=""
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Mixed|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+							PrecompiledHeaderThrough=""
+							PrecompiledHeaderFile=""
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\light_execute.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\light_execute.h"
+					>
+				</File>
+				<File
+					RelativePath=".\net_light.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\net_light.h"
+					>
+				</File>
+				<File
+					RelativePath=".\net_light_task.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\net_light_task.h"
+					>
+				</File>
+				<File
+					RelativePath=".\net_stream.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\net_stream.h"
+					>
+				</File>
+				<File
+					RelativePath=".\net_task.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\net_task.h"
+					>
+				</File>
+				<File
+					RelativePath=".\net_task_menager.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\net_task_menager.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="models"
+				>
+				<File
+					RelativePath=".\fitter.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\fitter.h"
+					>
+				</File>
+				<File
+					RelativePath=".\mu_model_face.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\mu_model_face.h"
+					>
+				</File>
+				<File
+					RelativePath=".\mu_model_face_defs.h"
+					>
+				</File>
+				<File
+					RelativePath=".\xrMU_Model.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\xrMU_Model.h"
+					>
+				</File>
+				<File
+					RelativePath=".\xrMU_Model_Calc_faceopacity.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\xrMU_Model_Calc_lighting.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\xrMU_Model_Calc_materials.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\xrMU_Model_export_cform_rcast.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\xrMU_Model_Load.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\xrMU_Model_Reference.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\xrMU_Model_Reference.h"
+					>
+				</File>
+				<File
+					RelativePath=".\xrMU_Model_Reference_Calc_Lighting.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Resource Files"
@@ -498,6 +673,10 @@
 		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"
+			>
+		</File>
+		<File
+			RelativePath="..\Shader_xrLC.h"
 			>
 		</File>
 	</Files>

@@ -11,6 +11,7 @@ class CUIGameDM;
 class CUIPdaWnd;
 class CUIInventoryWnd;
 class CUIMapDesc;
+class CWeaponMagazinedWGrenade;
 
 class game_cl_Deathmatch :public game_cl_mp
 {
@@ -154,6 +155,14 @@ public:
 	virtual		void				OnGameRoundStarted				();
 	virtual		void				UpdateMapLocations		();
 	virtual		bool				IsPlayerInTeam			(game_PlayerState* ps, ETeam team);
+	virtual		bool				LocalPlayerCanBuyItem	(shared_str const & name_sect);
+private:
+	//next methods for alife players in buy menu (artefacthunt)
+	typedef buffer_vector<shared_str> aditional_ammo_t;
+			void		TryToDefuseAllWeapons		(aditional_ammo_t & dest_ammo);
+			void		TryToDefuseWeapon			(CWeapon const * weapon, TIItemContainer const & all_items, aditional_ammo_t & dest_ammo);
+			void		TryToDefuseGrenadeLauncher	(CWeaponMagazinedWGrenade const * weapon, TIItemContainer const & all_items, aditional_ammo_t & dest_ammo);
+			void		AdditionalAmmoInserter		(aditional_ammo_t::value_type const & sect_name);
 };
 
 IC bool	DM_Compare_Players		(game_PlayerState* p1, game_PlayerState* p2);

@@ -8,6 +8,7 @@
 
 class	CPhysicShellHolder;
 class	CPHCharacter;
+class	CPhysicsElement;
 struct	CPHCaptureBoneCallback;
 class CPHCapture : public CPHUpdateObject
 {
@@ -19,7 +20,7 @@ virtual				~CPHCapture	();
 bool				Failed		(){return e_state == cstFree;}
 
 void				Release		();
-void				net_Relcase	(CObject* O);
+void				OnNetDestroyObject	(CObject* O);
 
 protected:
 CPHCharacter		*m_character;
@@ -62,12 +63,7 @@ private:
 
 			void Deactivate();
 			void CreateBody();
-			bool Invalid(){return 
-							!m_taget_object->PPhysicsShell()||
-							!m_taget_object->PPhysicsShell()->isActive()||
-							!m_character->b_exist;
-							};
-
+			bool Invalid();
 static void object_contactCallbackFun(bool& do_colide,bool bo1,dContact& c,SGameMtl* /*material_1*/,SGameMtl* /*material_2*/);
 
 ///////////CPHObject/////////////////////////////

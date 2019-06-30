@@ -41,6 +41,7 @@ public:
 
 	virtual bool		IsVisibleForZones() { return false;}
 	void				EnableLevelChanger	(bool b)				{m_b_enabled=b;}
+	bool				IsLevelChangerEnabled() const				{return m_b_enabled;}
 	void				SetLEvelChangerInvitationStr(LPCSTR str)	{m_invite_str = str;}
 	//serialization
 	virtual BOOL	net_SaveRelevant		();

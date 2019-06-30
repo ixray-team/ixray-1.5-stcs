@@ -1,5 +1,5 @@
 #pragma once
-
+#include "Etextureparams.h"
 struct  b_BuildTexture : public b_texture
 {
 	STextureParams	THM;
@@ -22,7 +22,7 @@ struct  b_BuildTexture : public b_texture
 			}
 		}
 	}
-	void		read	(IReader	&r );
+	void		read	(INetReader	&r );
 	void		write	(IWriter	&w )const;
 
 };

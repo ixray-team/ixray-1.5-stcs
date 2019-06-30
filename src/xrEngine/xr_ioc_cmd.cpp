@@ -570,6 +570,28 @@ public:
 	}
 };
 
+class ENGINE_API CCC_HideConsole : public IConsole_Command
+{
+public		:
+	CCC_HideConsole(LPCSTR N) : IConsole_Command(N)
+	{
+		bEmptyArgsHandled	= true;
+	}
+
+	virtual void	Execute	(LPCSTR args)
+	{
+		Console->Hide	();
+	}
+	virtual void	Status	(TStatus& S)
+	{
+		S[0]			= 0;
+	}
+	virtual void	Info	(TInfo& I)
+	{	
+		sprintf_s		(I,sizeof(I),"hide console");
+	}
+};
+
 
 ENGINE_API float	psHUD_FOV=0.45f;
 
@@ -586,7 +608,6 @@ extern Flags32		psEnvFlags;
 //extern float		r__dtex_range;
 
 extern int			g_ErrorLineCount;
-
 
 ENGINE_API int			ps_r__Supersample			= 1;
 void CCC_Register()
@@ -720,11 +741,15 @@ void CCC_Register()
 
 	CMD1(CCC_ExclusiveMode,		"input_exclusive_mode");
 
+	CMD1(CCC_ExclusiveMode,		"input_exclusive_mode");
+
 	extern int g_svTextConsoleUpdateRate;
 	CMD4(CCC_Integer, "sv_console_update_rate", &g_svTextConsoleUpdateRate, 1, 100);
 
 	extern int g_svDedicateServerUpdateReate;
 	CMD4(CCC_Integer, "sv_dedicated_server_update_rate", &g_svDedicateServerUpdateReate, 1, 1000);
+
+	CMD1(CCC_HideConsole,		"hide");
 
 #ifdef	DEBUG
 	extern BOOL debug_destroy;

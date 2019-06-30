@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="8,00"
 	Name="xrRender_R3"
 	ProjectGUID="{3F383D3C-FCD8-4170-990B-EB4833F09248}"
 	RootNamespace="xrRender_R3"
@@ -43,7 +43,7 @@
 				Optimization="0"
 				EnableFiberSafeOptimizations="true"
 				AdditionalIncludeDirectories="../../../sdk/include/stlport;../../../sdk/include/"
-				PreprocessorDefinitions="USE_DX10;WIN32;DEBUG;_WINDOWS;_USRDLL;XRRENDER_R3_EXPORTS;_SECURE_SCL=0"
+				PreprocessorDefinitions="MSAA_DX10_1;MSAA_SAMPLES=4;USE_MSAA;GBUFFER_OPTIMIZATION;USE_DX10;WIN32;DEBUG;_WINDOWS;_USRDLL;XRRENDER_R3_EXPORTS;_SECURE_SCL=0"
 				MinimalRebuild="true"
 				ExceptionHandling="1"
 				BasicRuntimeChecks="3"
@@ -247,7 +247,7 @@
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="false"
 				EnableFiberSafeOptimizations="true"
-				AdditionalIncludeDirectories="../../../sdk/include/stlport;../../../sdk/include/"
+				AdditionalIncludeDirectories="../../../sdk/include/stlport;../../../sdk/include/;."
 				PreprocessorDefinitions="USE_DX10;MIXED;WIN32;DEBUG;_WINDOWS;_USRDLL;XRRENDER_R3_EXPORTS;_SECURE_SCL=0"
 				StringPooling="true"
 				RuntimeLibrary="2"
@@ -844,6 +844,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\blender_ssao.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\blender_ssao.h"
+				>
+			</File>
+			<File
 				RelativePath="..\xrRender\uber_deffer.cpp"
 				>
 			</File>
@@ -1104,6 +1112,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\r3_rendertarget_mark_msaa_edges.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\r3_rendertarget_phase_accumulator.cpp"
 				>
 			</File>
@@ -1141,6 +1153,10 @@
 			</File>
 			<File
 				RelativePath=".\r3_rendertarget_phase_smap_S.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\r3_rendertarget_phase_ssao.cpp"
 				>
 			</File>
 			<File
@@ -1195,11 +1211,27 @@
 					>
 				</File>
 				<File
+					RelativePath="..\xrRender\R_Backend_hemi.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\xrRender\R_Backend_hemi.h"
+					>
+				</File>
+				<File
 					RelativePath="..\xrRender\R_Backend_Runtime.cpp"
 					>
 				</File>
 				<File
 					RelativePath="..\xrRender\R_Backend_Runtime.h"
+					>
+				</File>
+				<File
+					RelativePath="..\xrRender\R_Backend_tree.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\xrRender\R_Backend_tree.h"
 					>
 				</File>
 				<File
@@ -1925,6 +1957,18 @@
 						>
 					</File>
 				</Filter>
+			</Filter>
+			<Filter
+				Name="MSAARender"
+				>
+				<File
+					RelativePath="..\xrRenderDX10\MSAA\dx10MSAABlender.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\xrRenderDX10\MSAA\dx10MSAABlender.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter

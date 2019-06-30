@@ -94,6 +94,8 @@ CKinematics::CKinematics()
 #ifdef DEBUG
 	dbg_single_use_marker		= FALSE;
 #endif
+
+	m_is_original_lod = false;
 }
 
 CKinematics::~CKinematics	()
@@ -104,9 +106,15 @@ CKinematics::~CKinematics	()
 
 	if(m_lod)
 	{
-		IRenderVisual *pVisual = smart_cast<IRenderVisual*>(m_lod);
-		::Render->model_Delete(pVisual);
-		m_lod = 0;                    
+		if ( CKinematics* lod_kinematics = dynamic_cast<CKinematics*>(m_lod) )
+		{
+			if ( lod_kinematics->m_is_original_lod )
+			{
+				lod_kinematics->Release();
+			}
+		}
+
+		xr_delete(m_lod);
 	}
 }
 
@@ -163,6 +171,12 @@ void	CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 			LD->r_string	(lod_name, sizeof(lod_name));
 //.         strconcat		(sizeof(name_load),name_load, short_name, ":lod:", lod_name.c_str());
             m_lod 			= (dxRender_Visual*) ::Render->model_CreateChild(lod_name, NULL);
+
+			if ( CKinematics* lod_kinematics = dynamic_cast<CKinematics*>(m_lod) )
+			{
+				lod_kinematics->m_is_original_lod = true;
+			}
+
             VERIFY3(m_lod,"Cant create LOD model for", N);
 //.			VERIFY2			(m_lod->Type==MT_HIERRARHY || m_lod->Type==MT_PROGRESSIVE || m_lod->Type==MT_NORMAL,lod_name.c_str());
 /*
@@ -367,7 +381,7 @@ void CKinematics::Copy(dxRender_Visual *P)
 
 	CalculateBones_Invalidate	();
 
-    m_lod 			= (pFrom->m_lod)?(dxRender_Visual*)::Render->model_Duplicate	(pFrom->m_lod):0;
+    m_lod 	   = (pFrom->m_lod)?(dxRender_Visual*)::Render->model_Duplicate	(pFrom->m_lod):0;
 }
 
 void CKinematics::CalculateBones_Invalidate	()
@@ -426,16 +440,6 @@ void CKinematics::Release		()
 	xr_delete(bones		);
 	xr_delete(bone_map_N);
 	xr_delete(bone_map_P);
-
-	if (m_lod) {
-// Dima to Igor, Lain
-// this is memory leak, fix this later
-//
-//.??	m_lod->Release();
-//.??	IRenderVisual *pVisual = m_lod;
-//.??	::Render->model_Delete(pVisual);
-		m_lod = 0;                    
-	}
 
 	inherited::Release();
 }

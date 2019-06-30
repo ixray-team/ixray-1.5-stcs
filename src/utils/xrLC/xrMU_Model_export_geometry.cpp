@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "xrMU_Model.h"
+#include "../xrLC_Light/xrMU_Model.h"
 #include "OGF_Face.h"
 
 const u32	max_tile	= 16;
@@ -21,7 +21,7 @@ D3DVERTEXELEMENT9	decl[] = // 12+4+4+4+8=32
 	D3DDECL_END()
 };
 
-void	xrMU_Model::export_geometry		()
+void	export_geometry		( xrMU_Model &	mu_model )
 {
 	// Declarator
 	VDeclarator			D;
@@ -30,7 +30,7 @@ void	xrMU_Model::export_geometry		()
 	// RT-check, BOX, low-point, frac-size
 	Fbox			BB; 
 	BB.invalidate	();
-	for (v_vertices_it vit=m_vertices.begin(); vit!=m_vertices.end(); vit++)
+	for (xrMU_Model::v_vertices_it vit=mu_model.m_vertices.begin(); vit!=mu_model.m_vertices.end(); vit++)
 		BB.modify	((*vit)->P);
 
 	Fvector			frac_low;
@@ -39,7 +39,7 @@ void	xrMU_Model::export_geometry		()
 	frac_Ysize		= BB.max.y - BB.min.y;
 
 	// Begin building
-	for (v_subdivs_it it=m_subdivs.begin(); it!=m_subdivs.end(); it++)
+	for (xrMU_Model::v_subdivs_it it=mu_model.m_subdivs.begin(); it!=mu_model.m_subdivs.end(); it++)
 	{
 		// Vertices
 		{

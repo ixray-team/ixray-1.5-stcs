@@ -1,6 +1,7 @@
 #pragma once
 
 #include "UIWindow.h"
+#include "xrUIXmlParser.h"
 class CUIStatic;
 struct GAME_NEWS_DATA;
 
@@ -16,6 +17,7 @@ class CUINewsItemWnd :public CUIWindow
 public:
 					CUINewsItemWnd		();
 	virtual			~CUINewsItemWnd		();
-			void	Init				(LPCSTR xml_name, LPCSTR start_from);
+			void	Init				(CUIXml& uiXml, LPCSTR start_from);
 			void	Setup				(GAME_NEWS_DATA& news_data);
+	virtual	void	Update				(){};
 };

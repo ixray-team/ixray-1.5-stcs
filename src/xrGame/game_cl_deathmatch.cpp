@@ -283,6 +283,10 @@ BOOL game_cl_Deathmatch::CanCallInventoryMenu			()
 	{
 		return FALSE;
 	};
+	if (local_player->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD))
+	{
+		return FALSE;
+	}
 	return TRUE;
 };
 

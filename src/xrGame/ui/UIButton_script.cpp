@@ -50,5 +50,7 @@ void CUIButton::script_register(lua_State *L)
 		.def(							constructor<>())
 		.def("GetCheck",				&CUITrackBar::GetCheck)
 		.def("SetCheck",				&CUITrackBar::SetCheck)
+		.def("GetIValue",				&CUITrackBar::GetIValue)
+		.def("GetFValue",				&CUITrackBar::GetFValue)
 	];
 }

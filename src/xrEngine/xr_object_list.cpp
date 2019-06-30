@@ -448,6 +448,8 @@ void		CObjectList::Destroy			( CObject*	O		)
 	net_Unregister							(O);
 
 	VERIFY						( m_crows[1].empty() );
+	m_crows[1].clear_not_free	();
+
 	Objects& crows				= m_crows[0];
 	Objects::iterator _i0		= std::find(crows.begin(),crows.end(),O);
 	if	(_i0!=crows.end()) {

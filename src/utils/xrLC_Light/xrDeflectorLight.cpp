@@ -8,7 +8,7 @@
 #include "xrImage_Resampler.h"
 #include "light_point.h"
 #include "xrface.h"
-
+#include "net_task.h"
 //const	u32	rms_discard			= 8;
 //extern	BOOL		gl_linear	;
 
@@ -133,8 +133,8 @@ float getLastRP_Scale(CDB::COLLIDER* DB, CDB::MODEL* MDL, R_Light& L, Face* skip
 				return 0;
 			}
 
-			b_material& M	= lc_global_data()->materials()			[F->dwMaterial];
-			b_texture&	T	= lc_global_data()->textures()			[M.surfidx];
+			b_material& M	= inlc_global_data()->materials()			[F->dwMaterial];
+			b_texture&	T	= inlc_global_data()->textures()			[M.surfidx];
 
 			if (0==T.pSurface)	{
 				F->flags.bOpaque	= true;
@@ -239,7 +239,7 @@ void LightPoint(CDB::COLLIDER* DB, CDB::MODEL* MDL, base_color_c &C, Fvector &P,
 					float R		= _sqrt(sqD);
 					float scale = D*L->energy*rayTrace(DB,MDL, *L,Pnew,Ldir,R,skip,bUseFaceDisable);
 					float A		;
-					if ( lc_global_data()->gl_linear() )
+					if ( inlc_global_data()->gl_linear() )
 						A	= 1-R/L->range;
 					else
 					{
@@ -554,10 +554,12 @@ void CDeflector::Light(CDB::COLLIDER* DB, base_lighting* LightsSelected, HASH& H
 	}
 
 	// Convert lights to local form
-	LightsSelected->select(lc_global_data()->L_static(),Sphere.P,Sphere.R);
+	LightsSelected->select(inlc_global_data()->L_static(),Sphere.P,Sphere.R);
 
 	// Calculate and fill borders
 	L_Calculate			(DB,LightsSelected,H);
+	if(_net_session && !_net_session->test_connection())
+			 return;
 	for (u32 ref=254; ref>0; ref--) if (!ApplyBorders(layer,ref)) break;
 
 	// Compression
@@ -569,6 +571,8 @@ void CDeflector::Light(CDB::COLLIDER* DB, base_lighting* LightsSelected, HASH& H
 			// Reacalculate lightmap at lower resolution
 			layer.create	(w,h);
 			L_Calculate		(DB,LightsSelected,H);
+			if(_net_session && !_net_session->test_connection())
+			 return;
 		}
 	} catch (...)
 	{

@@ -18,6 +18,8 @@
 #include "ActorEffector.h"
 #include "actor.h"
 
+#include "../xrEngine/xrSASH.h"
+
 #ifndef MASTER_GOLD
 #	include "custommonster.h"
 #endif // MASTER_GOLD
@@ -425,14 +427,17 @@ void CGamePersistent::WeathersUpdate()
 
 void CGamePersistent::start_logo_intro		()
 {
-#ifndef MASTER_GOLD
-	if (0!=strstr(Core.Params,"-nointro")){
+#ifdef MASTER_GOLD
+	if (g_SASH.IsRunning())
+#else	// #ifdef MASTER_GOLD
+	if ((0!=strstr(Core.Params,"-nointro")) || g_SASH.IsRunning())
+#endif	// #ifdef MASTER_GOLD
+	{
 		m_intro_event			= 0;
 		Console->Show			();
 		Console->Execute		("main_menu on");
 		return;
 	}
-#endif // #ifndef MASTER_GOLD
 	if (Device.dwPrecacheFrame==0)
 	{
 		m_intro_event.bind		(this,&CGamePersistent::update_logo_intro);
@@ -456,12 +461,16 @@ void CGamePersistent::update_logo_intro			()
 
 void CGamePersistent::start_game_intro		()
 {
-#ifndef MASTER_GOLD
-	if (0!=strstr(Core.Params,"-nointro")){
+#ifdef MASTER_GOLD
+	if (g_SASH.IsRunning())
+#else	// #ifdef MASTER_GOLD
+	if ((0!=strstr(Core.Params,"-nointro")) || g_SASH.IsRunning())
+#endif	// #ifdef MASTER_GOLD
+	{
 		m_intro_event			= 0;
 		return;
 	}
-#endif // #ifndef MASTER_GOLD
+
 	if (g_pGameLevel && g_pGameLevel->bReady && Device.dwPrecacheFrame<=2){
 		m_intro_event.bind		(this,&CGamePersistent::update_game_intro);
 		if (0==stricmp(m_game_params.m_new_or_load,"new")){
@@ -583,6 +592,8 @@ void CGamePersistent::OnFrame	()
 
 #include "game_sv_single.h"
 #include "xrServer.h"
+#include "hudmanager.h"
+#include "UIGameCustom.h"
 
 void CGamePersistent::OnEvent(EVENT E, u64 P1, u64 P2)
 {
@@ -591,6 +602,9 @@ void CGamePersistent::OnEvent(EVENT E, u64 P1, u64 P2)
 		if (Device.Paused())
 			Device.Pause		(FALSE, TRUE, TRUE, "eQuickLoad");
 		
+		if(HUD().GetUI())
+			HUD().GetUI()->UIGame()->HideShownDialogs();
+
 		LPSTR		saved_name	= (LPSTR)(P1);
 
 		Level().remove_objects	();

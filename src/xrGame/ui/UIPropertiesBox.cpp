@@ -127,10 +127,14 @@ bool CUIPropertiesBox::OnMouse(float x, float y, EUIMessages mouse_action)
 		cursor_on_box = false;
 
 
-	if(mouse_action == WINDOW_LBUTTON_DOWN && !cursor_on_box)
+	if ( mouse_action == WINDOW_LBUTTON_DOWN && !cursor_on_box )
 	{
 		Hide();
 		return true;
+	}
+	if ( mouse_action == WINDOW_RBUTTON_DOWN && !cursor_on_box )
+	{
+		Hide();
 	}
 
 	return inherited::OnMouse(x, y, mouse_action);

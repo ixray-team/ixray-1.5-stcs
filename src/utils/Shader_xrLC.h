@@ -97,11 +97,11 @@ public:
 			if (0==stricmp(name,it->Name)) return &(*it);
 		return NULL;
 	}
-	Shader_xrLC*			Get		(int id)
+ IC	Shader_xrLC*			Get		(int id)
 	{
 		return &library[id];
 	}
-const	Shader_xrLC*		Get		(int id)const
+ IC const	Shader_xrLC*		Get		(int id)const
 	{
 		return &library[id];
 	}

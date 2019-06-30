@@ -72,7 +72,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="Server\$(ConfigurationName)\lw_server.lib"
+				OutputFile="..\..\..\..\libraries\$(ProjectName).lib"
 				SuppressStartupBanner="true"
 				IgnoreAllDefaultLibraries="false"
 			/>

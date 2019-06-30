@@ -72,6 +72,9 @@ public:
 
 	//устанвка внешнего вида прицела в зависимости от текущей дисперсии
 	void					SetCrosshairDisp	(float dispf, float disps = 0.f);
+#ifdef DEBUG
+	void					SetFirstBulletCrosshairDisp(float fbdispf);
+#endif
 	void					ShowCrosshair		(bool show);
 
 	void					SetHitmarkType		( LPCSTR tex_name );

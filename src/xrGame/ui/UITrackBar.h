@@ -31,6 +31,8 @@ public:
 			void	SetType					(bool b_float){m_b_is_float=b_float;};
 			bool	GetCheck				();
 			void	SetCheck				(bool b);
+			int		GetIValue				(){return m_i_val;}
+			float		GetFValue				(){return m_f_val;}
 protected:
 			void 	UpdatePos				();
 			void 	UpdatePosRelativeToMouse();

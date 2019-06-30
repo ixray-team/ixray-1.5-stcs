@@ -193,7 +193,8 @@ Fvector3		wform	(Fmatrix& m, Fvector3& v)
 	r.z			= v.x*m._13 + v.y*m._23 + v.z*m._33 + m._43;
 	r.w			= v.x*m._14 + v.y*m._24 + v.z*m._34 + m._44;
 	// VERIFY		(r.w>0.f);
-	Fvector3	r3 = { r.x/r.w, r.y/r.w, r.z/r.w };
+	float invW = 1.0f/r.w;
+	Fvector3	r3 = { r.x*invW, r.y*invW, r.z*invW };
 	return		r3;
 }
 
@@ -667,7 +668,8 @@ void CRender::render_sun				()
 		b_receivers		= view_clipper.clipped_AABB	(s_receivers,xform);
 		Fmatrix	x_project, x_full, x_full_inverse;
 		{
-			x_project.build_projection	(deg2rad(Device.fFOV/* *Device.fASPECT*/),Device.fASPECT,ps_r2_sun_near,ps_r2_sun_near+tweak_guaranteed_range);
+			//x_project.build_projection	(deg2rad(Device.fFOV/* *Device.fASPECT*/),Device.fASPECT,ps_r2_sun_near,ps_r2_sun_near+tweak_guaranteed_range);
+			x_project.build_projection	(deg2rad(Device.fFOV/* *Device.fASPECT*/),Device.fASPECT,VIEWPORT_NEAR,ps_r2_sun_near+tweak_guaranteed_range);
 			x_full.mul					(x_project,Device.mView);
 			D3DXMatrixInverse			((D3DXMATRIX*)&x_full_inverse,0,(D3DXMATRIX*)&x_full);
 		}
@@ -747,6 +749,7 @@ void CRender::render_sun				()
 
 	// Accumulate
 	Target->phase_accumulator	();
+	PIX_EVENT(SE_SUN_FAR);
 	Target->accum_direct		(SE_SUN_FAR);
 
 	// Restore XForms
@@ -969,6 +972,7 @@ void CRender::render_sun_near	()
 
 	// Accumulate
 	Target->phase_accumulator	();
+	PIX_EVENT(SE_SUN_NEAR);
 	Target->accum_direct		(SE_SUN_NEAR);
 
 	// Restore XForms
@@ -981,5 +985,6 @@ void CRender::render_sun_filtered	()
 {
 	if (!RImplementation.o.sunfilter)	return;
 	Target->phase_accumulator			();
+	PIX_EVENT(SE_SUN_LUMINANCE);
 	Target->accum_direct				(SE_SUN_LUMINANCE);
 }

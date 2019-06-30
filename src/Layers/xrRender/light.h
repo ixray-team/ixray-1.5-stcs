@@ -36,6 +36,11 @@ public:
 	float			m_volumetric_distance;
 
 #if (RENDER==R_R2) || (RENDER==R_R3)
+	float			falloff;			// precalc to make light equal to zero at light range
+	float	        attenuation0;		// Constant attenuation		
+	float	        attenuation1;		// Linear attenuation		
+	float	        attenuation2;		// Quadratic attenuation	
+
 	light*						omnipart	[6]	;
 	xr_vector<light_indirect>	indirect		;
 	u32							indirect_photons;
@@ -45,6 +50,12 @@ public:
 	ref_shader		s_spot;
 	ref_shader		s_point;
 	ref_shader		s_volumetric;
+
+#if RENDER==R_R3
+	ref_shader		s_spot_msaa[8];
+	ref_shader		s_point_msaa[8];
+	ref_shader		s_volumetric_msaa[8];
+#endif	//	RENDER==R_R3
 
 	u32				m_xform_frame;
 	Fmatrix			m_xform;
@@ -123,6 +134,7 @@ public:
 	void			vis_prepare				();
 	void			vis_update				();
 	void			export 					(light_Package& dest);
+	void			set_attenuation_params	(float a0, float a1, float a2, float fo);
 #endif
 
 	float			get_LOD					();

@@ -397,7 +397,7 @@ please Submit Bug or save report and email it manually (button More...).\
 //		MiniDumpWithCodeSegs |
 		0
 	);
-	BT_SetSupportEMail		("crash-report@stalker-game.com");
+	BT_SetSupportEMail		("cs-crash-report@stalker-game.com");
 //	BT_SetSupportServer		("localhost", 9999);
 //	BT_SetSupportURL		("www.gsc-game.com");
 }

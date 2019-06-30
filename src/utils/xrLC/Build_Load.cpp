@@ -1,14 +1,19 @@
 #include "stdafx.h"
 #include "elight_def.h"
 
-#include "xrMU_Model.h"
+
+
 #include "build.h"
 
 #include "../xrLC_Light/xrLC_GlobalData.h"
 #include "../xrLC_Light/xrface.h"
 
-extern bool g_using_smooth_groups;
 
+#include "../xrLC_Light/xrMU_Model.h"
+#include "../xrLC_Light/xrMU_Model_Reference.h"
+
+
+extern u32	version;
 template <class T>
 void transfer(const char *name, xr_vector<T> &dest, IReader& F, u32 chunk)
 {
@@ -153,8 +158,8 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 	{
 		while (!F->eof())
 		{
-			mu_models.push_back				(xr_new<xrMU_Model>());
-			mu_models.back()->Load			(*F);
+			mu_models().push_back				(xr_new<xrMU_Model>());
+			mu_models().back()->Load			(*F, version );
 		}
 		F->close				();
 	}
@@ -163,8 +168,8 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 	{
 		while (!F->eof())
 		{
-			mu_refs.push_back				(xr_new<xrMU_Reference>());
-			mu_refs.back()->Load			(*F);
+			mu_refs().push_back				(xr_new<xrMU_Reference>());
+			mu_refs().back()->Load			( *F, mu_models() );
 		}		
 		F->close				();
 	}

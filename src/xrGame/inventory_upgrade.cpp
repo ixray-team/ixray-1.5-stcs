@@ -58,7 +58,7 @@ void Upgrade::construct( const shared_str& upgrade_id, Group& parental_group, Ma
 		make_string( "Failed to get precondition functor in section[%s], functor[%s]",
 		id_str(), precondition_functor_str
 		)
-	);
+	);		
 	m_preconditions();
 
 	// effect_functor

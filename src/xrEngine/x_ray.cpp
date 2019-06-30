@@ -20,6 +20,7 @@
 #include "CopyProtection.h"
 #include "Text_Console.h"
 #include <process.h>
+#include <locale.h>
 
 #include "xrSash.h"
 
@@ -36,7 +37,10 @@ XRCORE_API	LPCSTR	build_date;
 XRCORE_API	u32		build_id;
 
 //#define NO_SINGLE
-//#define NO_MULTI_INSTANCES
+
+#ifdef MASTER_GOLD
+#	define NO_MULTI_INSTANCES
+#endif // #ifdef MASTER_GOLD
 
 static LPSTR month_id[12] = {
 	"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"
@@ -570,6 +574,12 @@ int APIENTRY WinMain_impl(HINSTANCE hInstance,
                      char *    lpCmdLine,
                      int       nCmdShow)
 {
+#ifdef DEDICATED_SERVER
+	Debug._initialize			(true);
+#else // DEDICATED_SERVER
+	Debug._initialize			(false);
+#endif // DEDICATED_SERVER
+
 	if (!IsDebuggerPresent()) {
 		ULONG		HeapFragValue = 2;
 #ifdef DEBUG
@@ -583,6 +593,8 @@ int APIENTRY WinMain_impl(HINSTANCE hInstance,
 			);
 		VERIFY2		(result, "can't set process heap low fragmentation");
 	}
+
+	setlocale( LC_CTYPE, "" );
 
 //	foo();
 #ifndef DEDICATED_SERVER
@@ -773,12 +785,6 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 {
 	__try 
 	{
-#ifdef DEDICATED_SERVER
-		Debug._initialize	(true);
-#else // DEDICATED_SERVER
-		Debug._initialize	(false);
-#endif // DEDICATED_SERVER
-
 		WinMain_impl		(hInstance,hPrevInstance,lpCmdLine,nCmdShow);
 	}
 	__except(stack_overflow_exception_filter(GetExceptionCode()))
@@ -850,6 +856,7 @@ CApplication::CApplication()
 	eStart						= Engine.Event.Handler_Attach("KERNEL:start",this);
 	eStartLoad					= Engine.Event.Handler_Attach("KERNEL:load",this);
 	eDisconnect					= Engine.Event.Handler_Attach("KERNEL:disconnect",this);
+	eConsole					= Engine.Event.Handler_Attach("KERNEL:console",this);
 
 	// levels
 	Level_Current				= 0;
@@ -884,6 +891,7 @@ CApplication::~CApplication()
 
 
 	// events
+	Engine.Event.Handler_Detach	(eConsole,this);
 	Engine.Event.Handler_Detach	(eDisconnect,this);
 	Engine.Event.Handler_Detach	(eStartLoad,this);
 	Engine.Event.Handler_Detach	(eStart,this);
@@ -958,6 +966,12 @@ void CApplication::OnEvent(EVENT E, u64 P1, u64 P2)
 		}
 		R_ASSERT			(0!=g_pGamePersistent);
 		g_pGamePersistent->Disconnect();
+	}
+	else if (E == eConsole)
+	{
+		LPSTR command				= (LPSTR)P1;
+		Console->ExecuteCommand		( command, false );
+		xr_free						(command);
 	}
 }
 

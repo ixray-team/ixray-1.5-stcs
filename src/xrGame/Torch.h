@@ -55,6 +55,8 @@ public:
 			void	SwitchNightVision		  (bool light_on);
 			void	UpdateSwitchNightVision   ();
 			float	NightVisionBattery		  ();
+
+			bool	GetNightVisionStatus	() { return m_bNightVisionOn; }
 protected:
 	bool					m_bNightVisionEnabled;
 	bool					m_bNightVisionOn;

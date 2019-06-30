@@ -65,7 +65,7 @@ private:
 	void					CallAllFuncs	(const task_state_functors& v);
 	bool					CheckFunctions	(const task_state_functors& v) const;
 
-	void					CreateMapLocation(ALife::_TIME_ID ttl_timer, bool on_load);
+	void					CreateMapLocation(bool on_load);
 
 
 							CGameTask		(const CGameTask&);
@@ -82,10 +82,11 @@ public:
 	ALife::_TIME_ID			m_ReceiveTime;
 	ALife::_TIME_ID			m_FinishTime;
 	ALife::_TIME_ID			m_TimeToComplete;
+	ALife::_TIME_ID			m_timer_finish;
 	u32						m_priority;
 	bool					m_read;
 
-	void					OnArrived				(ALife::_TIME_ID ttl_timer);
+	void					OnArrived				();
 	void					RemoveMapLocations		(bool notify);
 	void					ChangeMapLocation		(LPCSTR new_map_location, u16 new_map_object_id);
 

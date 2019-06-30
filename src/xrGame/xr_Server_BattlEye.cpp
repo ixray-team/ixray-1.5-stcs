@@ -10,6 +10,7 @@
 #include "../xrGameSpy/xrGameSpy_MainDefs.h"
 #include "xrGameSpyServer.h"
 #include "gamespy/GameSpy_Full.h"
+#include "string_table.h"
 
 #ifdef BATTLEYE
 
@@ -158,29 +159,37 @@ void  BattlEyeServer::KickPlayer( int player, char* reason )
 		xrClientData *l_pC = (xrClientData*)Level().Server->client_Get(it);
 		if ( l_pC->ID.value()==(u32)player )
 		{
-			if ( Level().Server->GetServerClient() != l_pC )
+			LPCSTR reason2;
+			STRCONCAT( reason2, "@", l_pC->ps->getName(), " ", CStringTable().translate("ui_st_kicked_by_battleye").c_str(), " ", reason );
+			Msg( reason2 );
+			if( g_be_message_out )// self
 			{
-				Msg( "- Disconnecting : %s ! Kicked by BattlEye Server. Reason: %s", l_pC->ps->getName(), reason );
-				string512 reason2;
-				strcpy_s( reason2, reason );
+				if ( Level().game )
+				{
+					Level().game->CommonMessageOut( reason2 + 1 );
+				}
+			}
 
+			
+			if ( Level().Server->GetServerClient() != l_pC ) // other kick
+			{
 				Level().Server->DisconnectClient( l_pC, reason2 );
+
+				NET_Packet		P;
+				P.w_begin		( M_GAMEMESSAGE ); 
+				P.w_u32			( GAME_EVENT_SERVER_STRING_MESSAGE );
+				P.w_stringZ		( reason2 + 2 );
+				Level().Server->SendBroadcast( l_pC->ID, P ); // to all, except self
+
 				break;
 			}
-			else
+			else // self kick
 			{
-//				Msg("BattlEye Server disconnect server's client");
-				//*CStringTable().translate( ui_st_kicked_by_battleye ); //reason translate?
-				string512 reason2;
-				sprintf_s( reason2, sizeof(reason2),
-					"  Disconnecting : %s !  Server's Client kicked by BattlEye Server.  Reason: %s",
-					l_pC->ps->getName(), reason );
-				Msg( reason2 );
-
+//				"  Disconnecting : %s !  Server's Client kicked by BattlEye Server.  Reason: %s",
 				NET_Packet	P;
-				P.w_begin( M_GAMEMESSAGE ); 
-				P.w_u32( GAME_EVENT_SERVER_DIALOG_MESSAGE );
-				P.w_stringZ( reason2 );
+				P.w_begin	( M_GAMEMESSAGE ); 
+				P.w_u32		( GAME_EVENT_SERVER_DIALOG_MESSAGE );
+				P.w_stringZ	( reason2 );
 				Level().Server->SendBroadcast( l_pC->ID, P ); // to all, except self
 
 				Level().OnSessionTerminate( reason2 ); //to self

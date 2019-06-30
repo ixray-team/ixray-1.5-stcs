@@ -7,7 +7,7 @@ IC void CPHElement::InverceLocalForm(Fmatrix& m)
 	m.invert();
 }
 
-IC void CPHElement::MulB43InverceLocalForm(Fmatrix& m)
+IC void CPHElement::MulB43InverceLocalForm(Fmatrix& m) const
 {
 	Fvector ic;ic.set(m_mass_center);
 	ic.invert();

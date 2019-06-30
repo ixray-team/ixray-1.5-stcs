@@ -1260,7 +1260,7 @@ bool CWeaponMagazined::install_upgrade_impl( LPCSTR section, bool test )
 
 	if( IsScopeAttached() )
 	{
-		if ( m_eScopeStatus == ALife::eAddonAttachable )
+		//if ( m_eScopeStatus == ALife::eAddonAttachable )
 		{
 			result |= process_if_exists( section, "scope_zoom_factor", &CInifile::r_float, m_zoom_params.m_fScopeZoomFactor, test );
 		}

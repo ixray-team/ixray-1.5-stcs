@@ -35,8 +35,6 @@ public:
 	enum			{ CONSOLE_BUF_SIZE = 1024 };
 
 protected:
-	int				cmd_delta;
-	int				old_cmd_delta;
 	int				scroll_delta;
 
 	CGameFont*		pFont;
@@ -44,7 +42,12 @@ protected:
 	IConsoleRender*	m_pRender;
 
 	POINT			m_mouse_pos;
-	shared_str		m_last_cmd;
+
+private:
+	xr_vector<shared_str>	m_cmd_history;
+	u32						m_cmd_history_max;
+	int						m_cmd_history_idx;
+	shared_str				m_last_cmd;
 
 public:
 					CConsole			();
@@ -68,7 +71,7 @@ public:
 //	void			Save				();
 	void			Execute				( LPCSTR cmd );
 	void			ExecuteScript		( LPCSTR str );
-	void			ExecuteCommand		( bool record_cmd = true );
+	void			ExecuteCommand		( LPCSTR cmd, bool record_cmd = true );
 	void			SelectCommand		();
 
 	bool			GetBool				( LPCSTR cmd );
@@ -106,9 +109,9 @@ protected:
 	u32		get_mark_color		( Console_mark type );
 
 	void	OutFont				( LPCSTR text, float& pos_y );
-
 	void	Register_callbacks	();
 	
+protected:
 	void xr_stdcall Prev_log	();
 	void xr_stdcall Next_log	();
 	void xr_stdcall Begin_log	();
@@ -123,6 +126,12 @@ protected:
 	void xr_stdcall Show_cmd	();
 	void xr_stdcall Hide_cmd	();
 	void xr_stdcall GamePause	();
+
+protected:
+	void	add_cmd_history		( shared_str const& str );
+	void	next_cmd_history_idx();
+	void	prev_cmd_history_idx();
+	void	reset_cmd_history_idx();
 
 }; // class CConsole
 

@@ -189,13 +189,13 @@ void	CBlender_Tree::Compile	(CBlender_Compile& C)
 	{
 	case SE_R2_NORMAL_HQ:	// deffer
 		uber_deffer			(C,true,tvs,"base",oBlend.value,0,true);
-		C.r_Stencil		( TRUE,D3DCMP_ALWAYS,0xff,0xff,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE,D3DSTENCILOP_KEEP);
+		C.r_Stencil		( TRUE,D3DCMP_ALWAYS,0xff,0x7f,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE,D3DSTENCILOP_KEEP);
 		C.r_StencilRef	(0x01);
 		C.r_End			();
 		break;
 	case SE_R2_NORMAL_LQ:	// deffer
 		uber_deffer			(C,false,tvs,"base",oBlend.value,0,true);
-		C.r_Stencil		( TRUE,D3DCMP_ALWAYS,0xff,0xff,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE,D3DSTENCILOP_KEEP);
+		C.r_Stencil		( TRUE,D3DCMP_ALWAYS,0xff,0x7f,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE,D3DSTENCILOP_KEEP);
 		C.r_StencilRef	(0x01);
 		C.r_End			();
 		break;

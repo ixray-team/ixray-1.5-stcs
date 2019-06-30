@@ -179,6 +179,8 @@ void CPHCapture::Release()
 {
 	if( e_state==cstReleased || e_state== cstFree ) 
 		return;
+	VERIFY( m_island.DActiveIsland() == &m_island );
+
 	if( m_joint ) 
 	{
 		m_island.RemoveJoint(m_joint);
@@ -214,12 +216,16 @@ void CPHCapture::Release()
 
 	e_state=cstReleased;
 }
-
+#include "phelement.h"
 void CPHCapture::Deactivate()
 {
 	Release();
-	//if(m_taget_element)
-	//	m_taget_element->Enable();
+	if(m_taget_element)
+	{
+		VERIFY(dynamic_cast<CPHElement*>(m_taget_element));
+		
+		m_taget_element->Enable();
+	}
 	//if(m_taget_object&&m_taget_element&&!m_taget_object->getDestroy()&&m_taget_object->m_pPhysicsShell&&m_taget_object->m_pPhysicsShell->isActive())
 	//{
 	//	m_taget_element->set_ObjectContactCallback(0);

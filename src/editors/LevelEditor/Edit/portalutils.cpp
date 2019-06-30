@@ -175,7 +175,7 @@ bool CPortalUtils::Validate(bool bMsg)
         	if (bMsg){ 
             	ELog.DlgMsg(mtError,"*ERROR: Scene has '%d' non associated face!",f_cnt);
                 for (SItemIt it=sector_def->sector_items.begin();it!=sector_def->sector_items.end();it++)
-                	Msg		("! - scene object: '%s' [O:'%s', M:'%s']",it->object->Name, it->object->RefName(), it->mesh->Name());
+                	Msg		("! - scene object: '%s' [O:'%s', M:'%s']",it->object->Name, it->object->RefName(), it->mesh->Name().c_str());
             }
             bResult = false;
         }
@@ -235,19 +235,12 @@ class sCollector
         static int __cdecl compare( const void *arg1, const void *arg2 )
 		{
         	return memcmp(arg1,arg2,2*2*4);
-            /*
-	        sEdge& E1=*((sEdge*)arg1);
-	        sEdge& E2=*((sEdge*)arg2);
-            if (c_less(E1,E2)) 	return -1;
-            if (c_equal(E1,E2)) return 0;
-            return 1;
-            */
 		}
     };
    	struct sPortal
     {
-        xr_deque<int> e;
-        CSector* s[2];
+        xr_deque<int> 	e;
+        CSector* 		s[2];
     };
 
     DEFINE_VECTOR(sVert, sVertVec, sVertIt);
@@ -264,53 +257,77 @@ public:
     U32Vec			VM[clpMX+1][clpMY+1][clpMZ+1];
     Fvector			VMeps;
 
-    u32				VPack(Fvector& V){
+    u32				VPack(Fvector& V)
+    {
         u32 P = 0xffffffff;
 
         u32 ix,iy,iz;
-        ix = floorf(float(V.x-VMmin.x)/VMscale.x*clpMX);
-        iy = floorf(float(V.y-VMmin.y)/VMscale.y*clpMY);
-        iz = floorf(float(V.z-VMmin.z)/VMscale.z*clpMZ);
-        R_ASSERT(ix<=clpMX && iy<=clpMY && iz<=clpMZ);
+        ix         = floorf(float(V.x-VMmin.x)/VMscale.x*clpMX);
+        iy         = floorf(float(V.y-VMmin.y)/VMscale.y*clpMY);
+        iz         = floorf(float(V.z-VMmin.z)/VMscale.z*clpMZ);
+        R_ASSERT	(ix<=clpMX && iy<=clpMY && iz<=clpMZ);
 
         {
             U32Vec* vl;
-            vl = &(VM[ix][iy][iz]);
-            for(U32It it=vl->begin();it!=vl->end(); it++)
-                if( verts[*it].similar(V) )	{
+            vl 			= &(VM[ix][iy][iz]);
+            U32It it	= vl->begin();
+            U32It it_e	= vl->end();
+            xr_vector<sCollector::sVert>::iterator verts_begin = verts.begin();
+            for(;it!=it_e; ++it)
+            {
+//              if(verts[*it].similar(V) )	
+                if( (*(verts_begin+*it)).similar(V) )	
+                {
                     P = *it;
                     break;
                 }
+            }
         }
-        if (0xffffffff==P){
-            P = verts.size();
-            sVert sV; sV.set(V);
-            verts.push_back	(sV);
+        if (0xffffffff==P)
+        {
+            P 					= verts.size();
+            sVert 				sV; 
+            sV.set				(V);
+            verts.push_back		(sV);
 
             VM[ix][iy][iz].push_back(P);
 
             u32 ixE,iyE,izE;
-            ixE = floorf(float(V.x+VMeps.x-VMmin.x)/VMscale.x*clpMX);
-            iyE = floorf(float(V.y+VMeps.y-VMmin.y)/VMscale.y*clpMY);
-            izE = floorf(float(V.z+VMeps.z-VMmin.z)/VMscale.z*clpMZ);
+            ixE                 = floorf(float(V.x+VMeps.x-VMmin.x)/VMscale.x*clpMX);
+            iyE                 = floorf(float(V.y+VMeps.y-VMmin.y)/VMscale.y*clpMY);
+            izE                 = floorf(float(V.z+VMeps.z-VMmin.z)/VMscale.z*clpMZ);
 
             R_ASSERT(ixE<=clpMX && iyE<=clpMY && izE<=clpMZ);
 
-            if (ixE!=ix)							VM[ixE][iy][iz].push_back	(P);
-            if (iyE!=iy)							VM[ix][iyE][iz].push_back	(P);
-            if (izE!=iz)							VM[ix][iy][izE].push_back	(P);
-            if ((ixE!=ix)&&(iyE!=iy))				VM[ixE][iyE][iz].push_back	(P);
-            if ((ixE!=ix)&&(izE!=iz))				VM[ixE][iy][izE].push_back	(P);
-            if ((iyE!=iy)&&(izE!=iz))				VM[ix][iyE][izE].push_back	(P);
-            if ((ixE!=ix)&&(iyE!=iy)&&(izE!=iz))	VM[ixE][iyE][izE].push_back	(P);
+            if (ixE!=ix)							
+            	VM[ixE][iy][iz].push_back	(P);
+
+            if (iyE!=iy)							
+            	VM[ix][iyE][iz].push_back	(P);
+
+            if (izE!=iz)							
+            	VM[ix][iy][izE].push_back	(P);
+
+            if ((ixE!=ix)&&(iyE!=iy))				
+            	VM[ixE][iyE][iz].push_back	(P);
+
+            if ((ixE!=ix)&&(izE!=iz))				
+            	VM[ixE][iy][izE].push_back	(P);
+
+            if ((iyE!=iy)&&(izE!=iz))				
+            	VM[ix][iyE][izE].push_back	(P);
+                
+            if ((ixE!=ix)&&(iyE!=iy)&&(izE!=iz))	
+            	VM[ixE][iyE][izE].push_back	(P);
         }
         return P;
     }
 
-    sCollector(const Fbox &bb){
+    sCollector(const Fbox &bb)
+    {
         VMscale.set	(bb.max.x-bb.min.x, bb.max.y-bb.min.y, bb.max.z-bb.min.z);
         VMmin.set	(bb.min);
-        VMeps.set	(VMscale.x/clpMX/2,VMscale.y/clpMY/2,VMscale.z/clpMZ/2);
+        VMeps.set	(VMscale.x/clpMX/2, VMscale.y/clpMY/2, VMscale.z/clpMZ/2);
         VMeps.x		= (VMeps.x<EPS_L)?VMeps.x:EPS_L;
         VMeps.y		= (VMeps.y<EPS_L)?VMeps.y:EPS_L;
         VMeps.z		= (VMeps.z<EPS_L)?VMeps.z:EPS_L;
@@ -417,10 +434,10 @@ public:
         edges.erase(NewEnd,edges.end());
 		//dump_edges();
     }
+            
     void make_portals() {
         for(u32 e_it=0; e_it<edges.size(); e_it++)
         {
-//        	ELog.Msg(mtInformation,"%d: %d,%d",e_it,edges[e_it].v[0],edges[e_it].v[1]);
         	if (edges[e_it].used) continue;
 
             sPortal current;
@@ -449,7 +466,7 @@ public:
                 }
                 if (!bFound) break;
             }
-            portals.push_back(current);
+            portals.push_back	(current);
         }
     }
     void export_portals()
@@ -516,11 +533,11 @@ int CPortalUtils::CalculateSelectedPortals(ObjectList& sectors){
             Fvector* m_verts=s_it->mesh->m_Vertices;
             for (u32 f_id=0; f_id<s_it->mesh->GetFCount(); f_id++){
                 Fvector v0, v1, v2;
-                st_Face& P=s_it->mesh->GetFaces()[f_id];
-                T.transform_tiny(v0,m_verts[P.pv[0].pindex]);
-                T.transform_tiny(v1,m_verts[P.pv[1].pindex]);
-                T.transform_tiny(v2,m_verts[P.pv[2].pindex]);
-                CL->add_face(v0,v1,v2,S);
+                st_Face& P			= s_it->mesh->GetFaces()[f_id];
+                T.transform_tiny	(v0,m_verts[P.pv[0].pindex]);
+                T.transform_tiny	(v1,m_verts[P.pv[1].pindex]);
+                T.transform_tiny	(v2,m_verts[P.pv[2].pindex]);
+                CL->add_face		(v0,v1,v2,S);
             }
         }
     }

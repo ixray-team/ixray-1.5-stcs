@@ -137,7 +137,7 @@ void UIHintWindow::update_hint_text()
 	
 	if ( !m_hint_wnd )
 	{
-		Msg( "! class <UIHintWindow> has not <hint_wnd>!" );
+		Msg( "! class <UIHintWindow> has not <hint_wnd> (%s)!", m_hint_text.c_str() );
 		return;
 	}		
 

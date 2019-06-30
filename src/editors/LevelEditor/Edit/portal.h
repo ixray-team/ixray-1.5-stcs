@@ -11,6 +11,7 @@ class CPortal: public CCustomObject {
     friend class TfraPortal;
     friend class SceneBuilder;
     friend class CPortalUtils;
+    friend struct co_plane_pred;
 	typedef CCustomObject inherited ;
 
 	FvectorVec		m_Vertices;

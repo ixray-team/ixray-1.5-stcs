@@ -28,25 +28,25 @@
     <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="ilink32"/>
-    <USERDEFINES value="_EDITOR;XR_PARTICLES_EXPORTS;_DEBUG"/>
+    <USERDEFINES value="_EDITOR;XR_PARTICLES_EXPORTS"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="xrParticlesB.bpf"/>
     <INCLUDEPATH value="$(BCB)\include;$(BCB)\include\vcl;$(CORE_DIR)"/>
     <LIBPATH value="$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;$(BCB)\Lib\Psdk;x:\stalker_addon\libraries;X:\stalker_addon\sources\sdk\components\ElPack\Code"/>
-    <WARNINGS value="-w-par -w-8027"/>
+    <WARNINGS value="-w-par -w-8027 -w-8026"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
     <IDLCFLAGS value="-I$(BCB)\include -I$(BCB)\include\vcl -I$(CORE_DIR) -src_suffix cpp 
-      -D_EDITOR -DXR_PARTICLES_EXPORTS -D_DEBUG -boa"/>
+      -D_EDITOR -DXR_PARTICLES_EXPORTS -boa"/>
     <CFLAG1 value="-WD -Od -H=x:\intermediate_ed\particles\pch.csm -Hc -Q -Vx -Ve -xf -xp -VF 
-      -ff -X- -r- -ps -a4 -6 -b- -k -y -v -vi- -tWD -tWM -c"/>
-    <PFLAGS value="-N2x:\intermediate_ed\particles -N0x:\intermediate_ed\particles -$Y+ -$W 
-      -$O- -$A8 -v -JPHNE -M"/>
+      -ff -X- -ps -a4 -6 -b- -k- -vi -tWD -tWM -c"/>
+    <PFLAGS value="-N2x:\intermediate_ed\particles -N0x:\intermediate_ed\particles -$Y- -$L- 
+      -$D- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
-    <AFLAGS value="/mu /w2 /zi"/>
+    <AFLAGS value="/mu /w2 /zn"/>
     <LFLAGS value="-lx:\stalker_addon\libraries -Ix:\intermediate_ed\particles -D&quot;&quot; -aa -Tpd 
-      -x -Gi -v"/>
+      -x -Gi"/>
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
@@ -158,8 +158,8 @@ Item0=$(BCB)\source\vcl
 
 [HistoryLists\hlConditionals]
 Count=4
-Item0=_EDITOR;XR_PARTICLES_EXPORTS;_DEBUG
-Item1=_EDITOR;XR_PARTICLES_EXPORTS
+Item0=_EDITOR;XR_PARTICLES_EXPORTS
+Item1=_EDITOR;XR_PARTICLES_EXPORTS;_DEBUG
 Item2=_EDITOR;PARTICLEDLL_EXPORTS;_DEBUG
 Item3=_EDITOR;_PARTICLEDLLB;PARTICLEDLL_EXPORTS;_DEBUG
 

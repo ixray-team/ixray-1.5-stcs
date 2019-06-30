@@ -28,7 +28,7 @@ void	base_lighting::select	(base_lighting& from, Fvector& P, float R)
 	xr_vector<R_Light>		hemi;		// P,N	
 	xr_vector<R_Light>		sun;		// P	
 */
-void		base_lighting::read( IReader	&r )
+void		base_lighting::read( INetReader	&r )
 {
 	r_pod_vector( r, rgb ) ;
 	r_pod_vector( r, hemi );

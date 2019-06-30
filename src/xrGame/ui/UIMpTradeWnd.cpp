@@ -13,8 +13,9 @@
 
 void CUIMpTradeWnd::OnBtnOkClicked(CUIWindow* w, void* d)
 {
+	DeleteHelperItems();
 	CheckDragItemToDestroy				();
-	StorePreset							(_preset_idx_last, true, false);
+	StorePreset							(_preset_idx_last, true, false, false);
 	GetHolder()->StartStopMenu			(this,true);
 	game_cl_mp* clgame					= smart_cast<game_cl_mp*>(&(Game()));
 	VERIFY(clgame);
@@ -112,19 +113,19 @@ void	xr_stdcall	CUIMpTradeWnd::OnBtnPresetDefaultClicked	(CUIWindow* w, void* d)
 void CUIMpTradeWnd::OnBtnSave1PresetClicked(CUIWindow* w, void* d)
 {
 	CheckDragItemToDestroy				();
-	StorePreset					(_preset_idx_1, false, true);
+	StorePreset					(_preset_idx_1, false, true, true);
 }
 
 void CUIMpTradeWnd::OnBtnSave2PresetClicked(CUIWindow* w, void* d)
 {
 	CheckDragItemToDestroy				();
-	StorePreset					(_preset_idx_2, false, true);
+	StorePreset					(_preset_idx_2, false, true, true);
 }
 
 void CUIMpTradeWnd::OnBtnSave3PresetClicked(CUIWindow* w, void* d)
 {
 	CheckDragItemToDestroy				();
-	StorePreset					(_preset_idx_3, false, true);
+	StorePreset					(_preset_idx_3, false, true, true);
 }
 
 void CUIMpTradeWnd::OnBtnResetClicked(CUIWindow* w, void* d)

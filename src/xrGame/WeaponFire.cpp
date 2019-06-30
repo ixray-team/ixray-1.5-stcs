@@ -69,7 +69,34 @@ void CWeapon::FireTrace		(const Fvector& P, const Fvector& D)
 	ChangeCondition(-GetWeaponDeterioration()*l_cartridge.param_s.impair);
 
 	
-	float fire_disp				= GetFireDispersion(true);
+	float fire_disp = 0.f;
+	CActor* tmp_actor = NULL;
+	if (!IsGameTypeSingle())
+	{
+		tmp_actor = smart_cast<CActor*>(Level().CurrentControlEntity());
+		if (tmp_actor)
+		{
+			CEntity::SEntityState state;
+			tmp_actor->g_State(state);
+			if (m_first_bullet_controller.is_bullet_first(state.fVelocity))
+			{
+				fire_disp = m_first_bullet_controller.get_fire_dispertion();
+				m_first_bullet_controller.make_shot();
+			}
+		}
+	}
+	if (fsimilar(fire_disp, 0.f))
+	{
+		//CActor* tmp_actor = smart_cast<CActor*>(Level().CurrentControlEntity());
+		if (H_Parent() && (H_Parent() == tmp_actor))
+		{
+			fire_disp = tmp_actor->GetFireDispertion();
+		} else
+		{
+			fire_disp = GetFireDispersion(true);
+		}
+	}
+	
 
 	bool SendHit = SendHitAllowed(H_Parent());
 	//выстерлить пулю (с учетом возможной стрельбы дробью)

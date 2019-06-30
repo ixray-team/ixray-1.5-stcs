@@ -49,7 +49,8 @@ public:
 #ifdef	USE_DX10
 public:
 	IDXGIAdapter*			m_pAdapter;	//	pD3D equivalent
-	ID3D10Device*           pDevice;	//	combine with DX9 pDevice via typedef
+   ID3D10Device1*       pDevice1;	//	combine with DX9 pDevice via typedef
+   ID3D10Device*        pDevice;	//	combine with DX9 pDevice via typedef
 	IDXGISwapChain*         m_pSwapChain;
 	ID3D10RenderTargetView*	pBaseRT;	//	combine with DX9 pBaseRT via typedef
 	ID3D10DepthStencilView*	pBaseZB;

@@ -193,6 +193,7 @@ UIArtefactParamItem::UIArtefactParamItem()
 	m_caption   = NULL;
 	m_value     = NULL;
 	m_magnitude = 1.0f;
+	m_sign_inverse = false;
 }
 
 UIArtefactParamItem::~UIArtefactParamItem()
@@ -207,6 +208,7 @@ void UIArtefactParamItem::Init( CUIXml& xml, LPCSTR section )
 	m_caption   = UIHelper::CreateStatic( xml, "caption", this );
 	m_value     = UIHelper::CreateStatic( xml, "value",   this );
 	m_magnitude = xml.ReadAttribFlt( "value", 0, "magnitude", 1.0f );
+	m_sign_inverse = (xml.ReadAttribInt( "value", 0, "sign_inverse", 0 ) == 1);
 }
 
 void UIArtefactParamItem::SetCaption( LPCSTR name )
@@ -221,6 +223,8 @@ void UIArtefactParamItem::SetValue( float value )
 	sprintf_s( buf, "%+.0f", value );
 	m_value->SetText( buf );
 
-	u32 color = (value > 0)? green_clr : red_clr;
+	bool positive = (value >= 0.0f);
+	positive      = (m_sign_inverse)? !positive : positive;
+	u32 color     = (positive      )? green_clr : red_clr;
 	m_value->SetTextColor( color );
 }

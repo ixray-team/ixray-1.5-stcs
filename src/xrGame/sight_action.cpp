@@ -337,11 +337,13 @@ void CSightAction::execute_fire_object			()
 			m_state_fire_switch_time	= Device.dwTimeGlobal;
 			m_object_start_position		= m_object_to_look->Position();
 			m_holder_start_position		= m_object->Position();
+			m_vector3d					= m_object->sight().object_position();
 			break;
 		}
 		case 1 : {
 			if (m_object_to_look->Position().distance_to_sqr(m_object->Position()) > _sqr(5.f)) {
 				if (!m_holder_start_position.similar(m_object->Position(),.05f)) {
+					m_vector3d			= m_object->sight().object_position();
 					m_already_switched	= false;
 //					Msg					("%6d switch to mode 0 (reson: holder position changed)", Device.dwTimeGlobal);
 					m_state_fire_object	= 0;
@@ -349,6 +351,7 @@ void CSightAction::execute_fire_object			()
 				}
 
 				if (!m_object_start_position.similar(m_object_to_look->Position(),.05f)) {
+					m_vector3d			= m_object->sight().object_position();
 //					Msg					("%6d switch to mode 0 (reson: object position changed)", Device.dwTimeGlobal);
 					m_already_switched	= false;
 					m_state_fire_object	= 0;
@@ -357,6 +360,7 @@ void CSightAction::execute_fire_object			()
 			}
 
 			if ( Device.dwTimeGlobal >= m_state_fire_switch_time + 1500 && !m_already_switched) {
+				m_vector3d				= m_object->sight().object_position();
 //				Msg						("%6d switch to mode 0 (reson: time interval)", Device.dwTimeGlobal);
 				m_already_switched		= true;
 				m_state_fire_object		= 0;
@@ -365,11 +369,13 @@ void CSightAction::execute_fire_object			()
 
 			m_object->feel_vision_get	(objects);
 			if (std::find(objects.begin(),objects.end(),m_object_to_look) != objects.end()) {
-				m_vector3d			= m_object->feel_vision_get_vispoint(const_cast<CGameObject*>(m_object_to_look));
-				R_ASSERT			( _valid(m_vector3d) );
-				execute_position	(m_object->eye_matrix.c);
+				m_vector3d				= m_object->feel_vision_get_vispoint(const_cast<CGameObject*>(m_object_to_look));
+				VERIFY				( _valid(m_vector3d) );
+				execute_position		(m_object->eye_matrix.c);
 				break;
 			}
+			else
+				m_vector3d				= m_object->sight().object_position();
 			break;
 		}
 		default : NODEFAULT;

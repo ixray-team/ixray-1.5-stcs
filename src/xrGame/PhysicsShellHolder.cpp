@@ -84,6 +84,7 @@ BOOL CPhysicsShellHolder::net_Spawn				(CSE_Abstract*	DC)
 	if(PPhysicsShell()&&PPhysicsShell()->isFullActive())
 	{
 		PPhysicsShell()->GetGlobalTransformDynamic(&XFORM());
+		PPhysicsShell()->mXFORM = XFORM();
 		switch (EEnableState(st_enable_state))
 		{
 		case stEnable		:	PPhysicsShell()->Enable()	;break;
@@ -223,6 +224,12 @@ void CPhysicsShellHolder::activate_physic_shell()
 
 	m_pPhysicsShell->set_LinearVel(l_fw);
 	m_pPhysicsShell->GetGlobalTransformDynamic(&XFORM());
+
+	if(H_Parent()&&H_Parent()->Visual())
+	{
+		smart_cast<IKinematics*>(H_Parent()->Visual())->CalculateBones_Invalidate	();
+		smart_cast<IKinematics*>(H_Parent()->Visual())->CalculateBones	();
+	}
 	CPhysicsShellHolder* P = smart_cast<CPhysicsShellHolder*>( H_Parent() );
 	if( P )
 		P->on_child_shell_activate( this );

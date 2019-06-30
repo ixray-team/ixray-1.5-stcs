@@ -10,6 +10,7 @@
 #include "game_cl_base.h"
 #include "ai_space.h"
 #include "../xrEngine/IGame_Persistent.h"
+#include "string_table.h"
 
 #include "../xrEngine/XR_IOConsole.h"
 //#include "script_engine.h"
@@ -985,8 +986,11 @@ void xrServer::PerformCheckClientsForMaxPing()
 
 			if(Client->m_ping_warn.m_maxPingWarnings >= g_sv_maxPingWarningsCount)
 			{  //kick
-				Level().Server->DisconnectClient		(Client);
-			}else
+				LPSTR	reason;
+				STRCONCAT( reason, CStringTable().translate("st_kicked_by_server").c_str() );
+				Level().Server->DisconnectClient( Client, reason );
+			}
+			else
 			{ //send warning
 				NET_Packet		P;	
 				P.w_begin		(M_CLIENT_WARN);

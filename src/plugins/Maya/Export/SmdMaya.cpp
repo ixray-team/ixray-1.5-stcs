@@ -614,7 +614,7 @@ MStatus CXRaySkinExport::parsePolySet(MItMeshPolygon &meshPoly, MObjectArray& rg
 
 	MStatus status;
 	int cTri;
-	u32 i;
+//	u32 i;
 
 	PtLookupMap ptMap;
 
@@ -631,7 +631,7 @@ MStatus CXRaySkinExport::parsePolySet(MItMeshPolygon &meshPoly, MObjectArray& rg
 		// between object-relative vertex indices and face-relative
 		// vertex indices
 		ptMap.clear();
-		for (i=0; i<meshPoly.polygonVertexCount(); i++) {
+		for (int i=0; i<(int)meshPoly.polygonVertexCount(); i++) {
 			ptMap.insert (PtLookupMap::value_type(meshPoly.vertexIndex(i), i) );
 		}
   		
@@ -663,7 +663,7 @@ MStatus CXRaySkinExport::parsePolySet(MItMeshPolygon &meshPoly, MObjectArray& rg
 			return status;
 		}
 		
-		for (i=0; i < u32(cTri); ++i) 
+		for (u32 i=0; i < u32(cTri); ++i) 
 		{
 			// for each triangle, first get the triangle data
 			rgpt.clear();

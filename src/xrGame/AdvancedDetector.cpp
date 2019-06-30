@@ -6,7 +6,9 @@
 #include "game_object_space.h"
 
 CAdvancedDetector::CAdvancedDetector()
-{}
+{
+	m_artefacts.m_af_rank = 2;
+}
 
 CAdvancedDetector::~CAdvancedDetector()
 {}
@@ -47,7 +49,7 @@ void CAdvancedDetector::UpdateAf()
 			it			= it_b;
 		}
 		
-		if(pAf->GetAfRank()<=2 && pAf->CanBeInvisible())
+		if(pAf->CanBeInvisible())
 		{
 			if(d<m_fAfVisRadius)
 				pAf->SwitchVisibility(true);

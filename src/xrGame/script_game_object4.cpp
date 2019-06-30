@@ -240,6 +240,13 @@ void CScriptGameObject::enable_level_changer(bool b)
 	if(lch)
 		lch->EnableLevelChanger(b);
 }
+bool CScriptGameObject::is_level_changer_enabled()
+{
+	CLevelChanger* lch = smart_cast<CLevelChanger*>(&object());
+	if(lch)
+		return lch->IsLevelChangerEnabled();
+	return false;
+}
 
 void CScriptGameObject::set_level_changer_invitation(LPCSTR str)
 {

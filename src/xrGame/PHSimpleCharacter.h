@@ -68,8 +68,8 @@ protected:
 	dReal m_radius;
 	dReal m_cyl_hight;
 	///////////////////////////////////
-	dJointID m_capture_joint;
-	dJointFeedback m_capture_joint_feedback;
+	//dJointID m_capture_joint;
+	//dJointFeedback m_capture_joint_feedback;
 	////////////////////////// movement
 	dVector3 m_control_force;
 	Fvector	 m_acceleration;	
@@ -219,9 +219,9 @@ public:
 	virtual		void		SetPhysicsRefObject					(CPhysicsShellHolder* ref_object);
 	virtual		void		SetNonInteractive					(bool v);	
 
-	virtual		void		CaptureObject						(dBodyID body,const dReal* anchor);
-	virtual		void		CapturedSetPosition					(const dReal* position);
-	virtual		void		doCaptureExist						(bool&	do_exist);
+	//virtual		void		CaptureObject						(dBodyID body,const dReal* anchor);
+	//virtual		void		CapturedSetPosition					(const dReal* position);
+	//virtual		void		doCaptureExist						(bool&	do_exist);
 
 	virtual		void		get_State							(		SPHNetState&	state)								;
 	virtual		void		set_State							(const	SPHNetState&	state)								;

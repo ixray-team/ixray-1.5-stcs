@@ -2,7 +2,7 @@
 #include "xrMU_Model.h"
 #include "../shader_xrlc.h"
 
-bool	cmp_face_material		(xrMU_Model::_face* f1, xrMU_Model::_face* f2)
+bool	cmp_face_material		(_face* f1, _face* f2)
 {
 	return f1->dwMaterial < f2->dwMaterial;
 }

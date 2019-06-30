@@ -100,6 +100,8 @@ void	game_sv_Deathmatch::Create					(shared_str& options)
 	R_ASSERT2(rpoints[0].size(), "rpoints for players not found");
 	
 	LoadTeams();
+	m_not_free_ammo_str		= READ_IF_EXISTS(pSettings, r_string, "deathmatch_gamedata", "not_free_ammo", "");
+	
 	switch_Phase(GAME_PHASE_PENDING);
 
 	::Random.seed(GetTickCount());
@@ -990,15 +992,18 @@ void	game_sv_Deathmatch::SpawnWeaponsForActor(CSE_Abstract* pE, game_PlayerState
 
 	if (!(ps->team < s16(TeamList.size()))) return;
 
-	for (u32 i = 0; i<ps->pItemList.size(); i++)
+	while (ps->pItemList.size())
 	{
-		u16 ItemID			= ps->pItemList[i];
+		u16 ItemID			= ps->pItemList.front();
 #ifdef DEBUG
 		Msg("--- Server: spawning item [%d] for actor [%s]", ItemID, ps->name);
 #endif // #ifdef DEBUG
-		SpawnWeapon4Actor	(pA->ID, *m_strWeaponsData->GetItemName(ItemID& 0x00FF), u8((ItemID & 0xFF00)>>0x08));
+		SpawnWeapon4Actor	(pA->ID, *m_strWeaponsData->GetItemName(ItemID& 0x00FF), u8((ItemID & 0xFF00)>>0x08), ps->pItemList);
 		Game().m_WeaponUsageStatistic->OnWeaponBought(ps, *m_strWeaponsData->GetItemName(ItemID& 0x00FF));
-	};
+		R_ASSERT(ps->pItemList.size());
+		ps->pItemList.erase(ps->pItemList.begin());
+	}
+
 #ifndef	NDEBUG
 	if (!g_sv_dm_bDMIgnore_Money_OnBuy)
 #endif
@@ -1158,7 +1163,6 @@ void	game_sv_Deathmatch::LoadTeams			()
 	
 	m_strWeaponsData->Load(m_sBaseWeaponCostSection);
 	
-
 	LoadTeamData("deathmatch_team0");
 };
 
@@ -1656,58 +1660,14 @@ void game_sv_Deathmatch::OnDetach(u16 eid_who, u16 eid_what)
 			if (std::find(to_reject.begin(), to_reject.end(), e_item) != to_reject.end())
 				continue;
 
-			switch (e_item->m_tClassID)
+			if (e_item->m_tClassID == CLSID_OBJECT_W_KNIFE)
 			{
-			case CLSID_OBJECT_AMMO			:
-				//---------------------------------------
-			case CLSID_OBJECT_A_VOG25		:
-			case CLSID_OBJECT_A_OG7B		:
-			case CLSID_OBJECT_A_M209		:
-				//---------------------------------------
-				// Weapons Add-ons
-			case CLSID_OBJECT_W_SCOPE		:
-			case CLSID_OBJECT_W_SILENCER	:
-			case CLSID_OBJECT_W_GLAUNCHER	:
-				// Detectors
-			case CLSID_DETECTOR_SIMPLE		:
-				// PDA
-			case CLSID_DEVICE_PDA			:
-
-			case CLSID_DEVICE_TORCH			:
-			case CLSID_IITEM_MEDKIT			:
-			case CLSID_IITEM_ANTIRAD		:
-				// Grenades
-			case CLSID_GRENADE_F1			:
-			case CLSID_OBJECT_G_RPG7		:
-			case CLSID_GRENADE_RGD5			:
-				// Weapons
-			case CLSID_OBJECT_W_M134		:
-			case CLSID_OBJECT_W_FN2000		:
-			case CLSID_OBJECT_W_AK74		:
-			case CLSID_OBJECT_W_LR300		:
-			case CLSID_OBJECT_W_HPSA		:
-			case CLSID_OBJECT_W_PM			:
-			case CLSID_OBJECT_W_FORT		:
-			case CLSID_OBJECT_W_BINOCULAR	:
-			case CLSID_OBJECT_W_SHOTGUN		:
-			case CLSID_OBJECT_W_SVD			:
-			case CLSID_OBJECT_W_SVU			:
-			case CLSID_OBJECT_W_RPG7		:
-			case CLSID_OBJECT_W_VAL			:
-			case CLSID_OBJECT_W_VINTOREZ	:
-			case CLSID_OBJECT_W_WALTHER		:
-			case CLSID_OBJECT_W_USP45		:
-			case CLSID_OBJECT_W_GROZA		:
-			case CLSID_OBJECT_W_BM16		:
-			case CLSID_OBJECT_W_RG6			:
-				{
-					to_transfer.push_back	(e_item);
-				}break;
-			case CLSID_OBJECT_W_KNIFE		:
-				{
-					to_destroy.push_back	(e_item);
-				}break;
-			};//case
+				to_destroy.push_back	(e_item);
+			} else if (m_strWeaponsData->GetItemIdx(e_item->s_name) != u32(-1))
+			{
+				if (!smart_cast<CSE_ALifeItemCustomOutfit*>(e_item))
+					to_transfer.push_back(e_item);
+			}
 		}
 
 		xr_vector<CSE_Abstract*>::const_iterator tr_it		= to_transfer.begin();
@@ -1829,7 +1789,7 @@ void	game_sv_Deathmatch::RespawnPlayer			(ClientID id_who, bool NoSpectator)
 	if (GetDMBLimit()*1000 > 0)
 		ps->setFlag(GAME_PLAYER_FLAG_INVINCIBLE);
 
-	SpawnWeapon4Actor(pA->ID, "mp_players_rukzak", 0);
+	SpawnWeapon4Actor(pA->ID, "mp_players_rukzak", 0, ps->pItemList);
 }
 
 INT		G_DELAYED_ROUND_TIME	= 7;
@@ -2221,4 +2181,22 @@ void game_sv_Deathmatch::FillDeathActorRejectItems(CSE_ActorMP *actor, xr_vector
 
 		to_reject.push_back(server_item);
 	}
+}
+
+bool game_sv_Deathmatch::CanChargeFreeAmmo(char const * ammo_section)
+{
+	VERIFY2(m_not_free_ammo_str.size(), "'not_free_ammo' not initialized");
+	if (!m_not_free_ammo_str.size())
+		return true;
+	
+	if (!ammo_section)
+		return true;
+	
+	if (!xr_strlen(ammo_section))
+		return true;
+
+	if (strstr(m_not_free_ammo_str.c_str(), ammo_section))
+		return false;
+
+	return true;
 }

@@ -63,7 +63,7 @@ void Startup(LPSTR     lpCmdLine)
 	if (strstr(cmd,"-o"))								bModifyOptions	= TRUE;
 	if (strstr(cmd,"-gi"))								b_radiosity		= TRUE;
 	if (strstr(cmd,"-noise"))							b_noise			= TRUE;
-
+	if (strstr(cmd,"-net"))								b_net_light		= TRUE;
 	VERIFY( lc_global_data() );
 	lc_global_data()->b_nosun_set						( !!strstr(cmd,"-nosun") );
 	//if (strstr(cmd,"-nosun"))							b_nosun			= TRUE;
@@ -163,7 +163,7 @@ void Startup(LPSTR     lpCmdLine)
 //XRCORE_API DUMMY_STUFF	*g_temporary_stuff;
 //XRCORE_API DUMMY_STUFF	*g_dummy_stuff;
 
-extern bool g_using_smooth_groups;
+
 
 int APIENTRY WinMain(HINSTANCE hInst,
                      HINSTANCE hPrevInstance,

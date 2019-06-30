@@ -24,7 +24,7 @@ public:
 	vGameTasks&				GetGameTasks					();
 	CGameTask*				HasGameTask						(const CMapLocation* ml, bool only_inprocess);
 	CGameTask*				HasGameTask						(const shared_str& id, bool only_inprocess);
-	CGameTask*				GiveGameTaskToActor				(CGameTask* t, u32 timeToComplete, bool bCheckExisting, u32 t_timer);
+	CGameTask*				GiveGameTaskToActor				(CGameTask* t, u32 timeToComplete, bool bCheckExisting, u32 timer_ttl);
 	void					SetTaskState					(const shared_str& id, ETaskState state);
 	void					SetTaskState					(CGameTask* t, ETaskState state);
 

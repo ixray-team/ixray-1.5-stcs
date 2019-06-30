@@ -101,29 +101,14 @@ void CActor::IR_OnKeyboardPress(int cmd)
 	case kCAM_3:	cam_Set			(eacFreeLook);				break;
 	case kNIGHT_VISION:
 		{
-			const xr_vector<CAttachableItem*>& all = CAttachmentOwner::attached_objects();
-			xr_vector<CAttachableItem*>::const_iterator it = all.begin();
-			xr_vector<CAttachableItem*>::const_iterator it_e = all.end();
-			for(;it!=it_e;++it){
-				CTorch* torch = smart_cast<CTorch*>(*it);
-				if (torch){		
-					torch->SwitchNightVision();
-					break;
-				}
-			}
-		}break;
-	case kTORCH:{ 
-		const xr_vector<CAttachableItem*>& all = CAttachmentOwner::attached_objects();
-		xr_vector<CAttachableItem*>::const_iterator it = all.begin();
-		xr_vector<CAttachableItem*>::const_iterator it_e = all.end();
-		for(;it!=it_e;++it){
-				CTorch* torch = smart_cast<CTorch*>(*it);
-				if (torch){		
-					torch->Switch();
-					break;
-				}
+			SwitchNightVision();
+			break;
 		}
-		}break;
+	case kTORCH:
+		{
+			SwitchTorch();
+			break;
+		}
 
 	case kDETECTOR:
 		{
@@ -557,5 +542,34 @@ void CActor::set_input_external_handler(CActorInputHandler *handler)
 	m_input_external_handler	= handler;
 }
 
+void CActor::SwitchNightVision()
+{
+	xr_vector<CAttachableItem*> const& all = CAttachmentOwner::attached_objects();
+	xr_vector<CAttachableItem*>::const_iterator it = all.begin();
+	xr_vector<CAttachableItem*>::const_iterator it_e = all.end();
+	for ( ; it != it_e; ++it )
+	{
+		CTorch* torch = smart_cast<CTorch*>(*it);
+		if ( torch )
+		{		
+			torch->SwitchNightVision();
+			return;
+		}
+	}
+}
 
-
+void CActor::SwitchTorch()
+{ 
+	xr_vector<CAttachableItem*> const& all = CAttachmentOwner::attached_objects();
+	xr_vector<CAttachableItem*>::const_iterator it = all.begin();
+	xr_vector<CAttachableItem*>::const_iterator it_e = all.end();
+	for ( ; it != it_e; ++it )
+	{
+		CTorch* torch = smart_cast<CTorch*>(*it);
+		if ( torch )
+		{		
+			torch->Switch();
+			return;
+		}
+	}
+}

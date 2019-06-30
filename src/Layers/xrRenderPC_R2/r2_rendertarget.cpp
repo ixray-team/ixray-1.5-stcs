@@ -9,6 +9,7 @@
 #include "blender_combine.h"
 #include "blender_bloom_build.h"
 #include "blender_luminance.h"
+#include "blender_ssao.h"
 
 #include "../xrRender/dxRenderDeviceRender.h"
 
@@ -204,6 +205,7 @@ CRenderTarget::CRenderTarget		()
 	b_accum_spot					= xr_new<CBlender_accum_spot>			();
 	b_accum_reflected				= xr_new<CBlender_accum_reflected>		();
 	b_bloom							= xr_new<CBlender_bloom_build>			();
+	b_ssao							= xr_new<CBlender_SSAO>					();
 	b_luminance						= xr_new<CBlender_luminance>			();
 	b_combine						= xr_new<CBlender_combine>				();
 
@@ -320,6 +322,14 @@ CRenderTarget::CRenderTarget		()
 		s_bloom_dbg_2.create		("effects\\screen_set",		r2_RT_bloom2);
 		s_bloom.create				(b_bloom,					"r2\\bloom");
 		f_bloom_factor				= 0.5f;
+	}
+
+	//SSAO
+	if (RImplementation.o.ssao_blur_on)
+	{
+		u32		w = Device.dwWidth, h = Device.dwHeight;
+		rt_ssao_temp.create			(r2_RT_ssao_temp, w, h, D3DFMT_G16R16F);
+		s_ssao.create				(b_ssao, "r2\\ssao");
 	}
 
 	// TONEMAP
@@ -533,6 +543,7 @@ CRenderTarget::~CRenderTarget	()
 	xr_delete					(b_combine				);
 	xr_delete					(b_luminance			);
 	xr_delete					(b_bloom				);
+	xr_delete					(b_ssao					);
 	xr_delete					(b_accum_reflected		);
 	xr_delete					(b_accum_spot			);
 	xr_delete					(b_accum_point			);

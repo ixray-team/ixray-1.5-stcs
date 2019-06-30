@@ -62,7 +62,11 @@ void CBlender_Compile::r_dx10Texture(LPCSTR ResourceName,	LPCSTR texture)
 
 void CBlender_Compile::i_dx10Address(u32 s, u32 address)
 {
-	VERIFY(s!=u32(-1));
+	//VERIFY(s!=u32(-1));
+   if( s == u32(-1) )
+   {
+      Msg( "s != u32(-1)" );
+   }
 	RS.SetSAMP			(s,D3DSAMP_ADDRESSU,	address);
 	RS.SetSAMP			(s,D3DSAMP_ADDRESSV,	address);
 	RS.SetSAMP			(s,D3DSAMP_ADDRESSW,	address);

@@ -101,6 +101,10 @@ extern bool g_block_pause;
 extern float g_separate_factor;
 extern float g_separate_radius;
 
+#include <luabind/functor.hpp>
+#include "script_engine.h"
+#include "ai_space.h"
+
 void CLevel::IR_OnKeyboardPress	(int key)
 {
 	if(Device.dwPrecacheFrame)
@@ -152,7 +156,9 @@ void CLevel::IR_OnKeyboardPress	(int key)
 		return;
 		}break;
 	case kALIFE_CMD: {
-			Console->Execute("run_string sim_combat.start_attack()");
+			luabind::functor<void>	functor;
+			R_ASSERT2				(ai().script_engine().functor("sim_combat.start_attack",functor),"failed to get sim_combat.start_attack functor");
+			functor					();
 		}break;
 	};
 

@@ -61,6 +61,23 @@ static class cl_parallax		: public R_constant_setup		{	virtual void setup	(R_con
 	RCache.set_c	(C,h,-h/2.f,1.f/r_dtex_range,1.f/r_dtex_range);
 }}	binder_parallax;
 
+static class cl_pos_decompress_params		: public R_constant_setup		{	virtual void setup	(R_constant* C)
+{
+	//float VertTan =  -1.0f * tanf( deg2rad(67.5f/2.0f ) );
+	float VertTan =  -1.0f * tanf( deg2rad(Device.fFOV/2.0f ) );
+	float HorzTan =  - VertTan / Device.fASPECT;
+
+	RCache.set_c	( C, HorzTan, VertTan, ( 2.0f * HorzTan )/(float)Device.dwWidth, ( 2.0f * VertTan ) /(float)Device.dwHeight );
+	//RCache.set_c	( C, HorzTan, VertTan, ( 2.0f * HorzTan )/(float)1024, ( 2.0f * VertTan )/(float)768 );
+
+}}	binder_pos_decompress_params;
+
+static class cl_pos_decompress_params2		: public R_constant_setup		{	virtual void setup	(R_constant* C)
+{
+	RCache.set_c	(C,(float)Device.dwWidth, (float)Device.dwHeight, 1.0f/(float)Device.dwWidth, 1.0f/(float)Device.dwHeight );
+
+}}	binder_pos_decompress_params2;
+
 static class cl_water_intensity : public R_constant_setup		
 {	
 	virtual void setup	(R_constant* C)
@@ -98,6 +115,7 @@ void					CRender::create					()
 	Device.seqFrame.Add	(this,REG_PRIORITY_HIGH+0x12345678);
 
 	m_skinning			= -1;
+	m_MSAASample		= -1;
 
 	// hardware
 	o.smapsize			= 2048;
@@ -255,11 +273,38 @@ void					CRender::create					()
 	o.disasm			= (strstr(Core.Params,"-disasm"))?		TRUE	:FALSE	;
 	o.forceskinw		= (strstr(Core.Params,"-skinw"))?		TRUE	:FALSE	;
 
+	o.ssao_blur_on		= ps_r2_ls_flags_ext.test(R2FLAGEXT_SSAO_BLUR) && (ps_r_ssao != 0);
+
+	//	MSAA option dependencies
+	o.dx10_msaa_samples	= 0x0F & u32(ps_r__Supersample);
+	VERIFY(o.dx10_msaa_samples == u32(ps_r__Supersample));
+	if (o.dx10_msaa_samples<2)
+		o.dx10_msaa_samples = 1;
+	else if (o.dx10_msaa_samples<4)
+		o.dx10_msaa_samples = 2;
+	else if (o.dx10_msaa_samples<8)
+		o.dx10_msaa_samples = 4;
+	//else o.dx10_msaa_samples = 8;
+	else o.dx10_msaa_samples = 4;
+
+	o.dx10_msaa			= ps_r2_ls_flags.test(R3FLAG_MSAA);
+	o.dx10_msaa			= o.dx10_msaa && (o.dx10_msaa_samples > 1);
+
+	o.dx10_msaa_opt		= ps_r2_ls_flags.test(R3FLAG_MSAA_OPT);
+	o.dx10_msaa_opt		= o.dx10_msaa_opt && o.dx10_msaa && ( HW.pDevice1 != 0 );
+
+	o.dx10_msaa_alphatest= ps_r2_ls_flags.test((u32)R3FLAG_MSAA_ALPHATEST);
+	o.dx10_msaa_alphatest= o.dx10_msaa_alphatest && o.dx10_msaa_opt;
+
+	o.dx10_gbuffer_opt	= ps_r2_ls_flags.test(R3FLAG_GBUFFER_OPT);
+
 	// constants
 	dxRenderDeviceRender::Instance().Resources->RegisterConstantSetup	("parallax",	&binder_parallax);
 	dxRenderDeviceRender::Instance().Resources->RegisterConstantSetup	("water_intensity",	&binder_water_intensity);
 	dxRenderDeviceRender::Instance().Resources->RegisterConstantSetup	("sun_shafts_intensity",	&binder_sun_shafts_intensity);
 	dxRenderDeviceRender::Instance().Resources->RegisterConstantSetup	("m_AlphaRef",	&binder_alpha_ref);
+	dxRenderDeviceRender::Instance().Resources->RegisterConstantSetup	("pos_decompression_params",	&binder_pos_decompress_params);
+	dxRenderDeviceRender::Instance().Resources->RegisterConstantSetup	("pos_decompression_params2",	&binder_pos_decompress_params2);
 
 	c_lmaterial					= "L_material";
 	c_sbase						= "s_base";
@@ -679,6 +724,26 @@ HRESULT	CRender::shader_compile			(
 		def_it						++;
 	}
 
+	if (o.ssao_blur_on)
+	{
+		defines[def_it].Name		=	"USE_SSAO_BLUR";
+		defines[def_it].Definition	=	"1";
+		def_it						++;
+	}
+
+	if( o.dx10_msaa )
+	{
+		static char def[ 256 ];
+      if( m_MSAASample < 0 )
+         def[0]= '0';
+      else
+		   def[0]= '0' + char(m_MSAASample);
+      def[1] = 0;
+		defines[def_it].Name		=	"ISAMPLE";
+		defines[def_it].Definition	=	def;
+		def_it						++	;
+	}
+
 	// skinning
 	if (m_skinning<0)		{
 		defines[def_it].Name		=	"SKIN_NONE";
@@ -764,6 +829,43 @@ HRESULT	CRender::shader_compile			(
 		def_it						++;
 	}
 
+   if( o.dx10_gbuffer_opt )
+	{
+		defines[def_it].Name		=	"GBUFFER_OPTIMIZATION";
+		defines[def_it].Definition	=	"1";
+		def_it						++;
+	}
+
+	// add a #define for DX10_1 MSAA support
+   if( o.dx10_msaa )
+   {
+	   static char samples[2];
+
+	   defines[def_it].Name		=	"USE_MSAA";
+	   defines[def_it].Definition	=	"1";
+	   def_it						++;
+
+	   defines[def_it].Name		=	"MSAA_SAMPLES";
+	   samples[0] = char(o.dx10_msaa_samples) + '0';
+	   samples[1] = 0;
+	   defines[def_it].Definition	= samples;	
+	   def_it						++;
+
+	   if( o.dx10_msaa_opt )
+	   {
+		   defines[def_it].Name		=	"MSAA_OPTIMIZATION";
+		   defines[def_it].Definition	=	"1";
+		   def_it						++;
+
+		   if( o.dx10_msaa_alphatest )
+		   {
+			   defines[def_it].Name		=	"MSAA_ALPHATEST";
+			   defines[def_it].Definition	=	"1";
+			   def_it						++;
+		   }
+	   }
+   }
+
 	// finish
 	defines[def_it].Name			=	0;
 	defines[def_it].Definition		=	0;
@@ -772,9 +874,27 @@ HRESULT	CRender::shader_compile			(
 	// 
 	if (0==xr_strcmp(pFunctionName,"main"))	
 	{
-		if ('v'==pTarget[0])			pTarget = D3D10GetVertexShaderProfile(HW.pDevice);	// vertex	"vs_4_0"; //
-		else if ('p'==pTarget[0])		pTarget = D3D10GetPixelShaderProfile(HW.pDevice);	// pixel	"ps_4_0"; //
-		else if ('g'==pTarget[0])		pTarget = D3D10GetGeometryShaderProfile(HW.pDevice);	// geometry	"gs_4_0"; //
+		if ('v'==pTarget[0])
+      {
+         if( HW.pDevice1 == 0 )
+            pTarget = D3D10GetVertexShaderProfile(HW.pDevice);	// vertex	"vs_4_0"; //
+         else
+            pTarget = "vs_4_1";	// pixel	"ps_4_0"; //
+      }
+		else if ('p'==pTarget[0])
+      {
+         if( HW.pDevice1 == 0 )
+            pTarget = D3D10GetPixelShaderProfile(HW.pDevice);	// pixel	"ps_4_0"; //
+         else
+            pTarget = "ps_4_1";	// pixel	"ps_4_0"; //
+      }
+		else if ('g'==pTarget[0])		
+      {
+         if( HW.pDevice1 == 0 )
+            pTarget = D3D10GetGeometryShaderProfile(HW.pDevice);	// geometry	"gs_4_0"; //
+         else
+            pTarget = "gs_4_1";	// pixel	"ps_4_0"; //
+      }
 	}
 
 	ID3DInclude*					pInclude		= (ID3DInclude*)		_pInclude;
@@ -784,17 +904,16 @@ HRESULT	CRender::shader_compile			(
 	
 	//HRESULT		_result	= D3D10CompileShader(pSrcData,SrcDataLen,NULL, defines,pInclude,pFunctionName,pTarget,Flags,ppShader,ppErrorMsgs,ppConstantTable);
 
-	HRESULT		_result	= D3D10CompileShader( 
+	HRESULT		_result	= D3DX10CompileFromMemory( 
 		pSrcData, 
 		SrcDataLen,
 		"",//NULL, //LPCSTR pFileName,	//	NVPerfHUD bug workaround.
 		defines, pInclude, pFunctionName,
 		pTarget,
-		Flags,
+      Flags, 0, NULL, 
 		ppShader,
-		ppErrorMsgs
+		ppErrorMsgs,NULL
 		);
-
 
 	if (SUCCEEDED(_result) && o.disasm)
 	{

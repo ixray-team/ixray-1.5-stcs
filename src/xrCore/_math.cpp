@@ -212,6 +212,8 @@ namespace CPU
 	}
 };
 
+bool g_initialize_cpu_called = false;
+
 //------------------------------------------------------------------------------------
 void _initialize_cpu	(void) 
 {
@@ -242,6 +244,8 @@ void _initialize_cpu	(void)
 	pvInitializeStatics		();	// Lookup table for compressed normals
 	FPU::initialize			();
 	_initialize_cpu_thread	();
+
+	g_initialize_cpu_called = true;
 }
 
 #ifdef M_BORLAND

@@ -258,6 +258,10 @@ bool CMainMenu::IsActive()
 	return !!m_Flags.test(flActive);
 }
 
+bool CMainMenu::CanSkipSceneRendering()
+{
+	return IsActive() && !m_Flags.test(flGameSaveScreenshot);
+}
 
 //IInputReceiver
 static int mouse_button_2_key []	=	{MOUSE_1,MOUSE_2,MOUSE_3};
@@ -593,11 +597,19 @@ void	CMainMenu::OnSessionTerminate				(LPCSTR reason)
 		return;
 
 	m_start_time = Device.dwTimeGlobal;
-	LPCSTR str=CStringTable().translate("ui_st_kicked_by_server").c_str();
-	string1024 Text;
-	strconcat(sizeof(Text),Text,str," ");
-	strcat_s(Text,sizeof(Text),reason);
-	m_pMB_ErrDlgs[SessionTerminate]->SetText(Text);
+	LPCSTR str = CStringTable().translate("ui_st_kicked_by_server").c_str();
+	LPSTR		text;
+
+	if ( reason && xr_strlen(reason) && reason[0] == '@' )
+	{
+		STRCONCAT( text, reason + 1 );
+	}
+	else
+	{
+		STRCONCAT( text, str, " ", reason );
+	}
+	
+	m_pMB_ErrDlgs[SessionTerminate]->SetText( text );
 	SetErrorDialog(CMainMenu::SessionTerminate);
 }
 

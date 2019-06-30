@@ -147,7 +147,8 @@ private:
 									shared_str const &loophole_id1,
 									Fvector const& position,
 									Fvector& result_position,
-									u32& result_vertex_id
+									u32& result_vertex_id,
+									EBodyState* target_body_state
 								) const;
 			bool				fill_enemy_position		(Fvector &position) const;
 			bool				update_script_cover		();
@@ -175,6 +176,7 @@ private:
 			MotionID xr_stdcall	select_animation		(bool& animation_movement_controller);
 			void xr_stdcall		on_animation_end		();
 			void xr_stdcall		modify_animation		(CBlend* blend);
+			bool				test_pick				(Fvector source, Fvector destination) const;
 
 private:
 	LoopholePath				m_path;
@@ -188,6 +190,7 @@ private:
 	MotionID					m_enter_animation;
 	shared_str					m_enter_cover_id;
 	shared_str					m_enter_loophole_id;
+	mutable collide::rq_results	m_ray_query_storage;
 	bool						m_entering_smart_cover_with_animation;
 	bool						m_non_animated_loophole_change;
 	bool						m_default_behaviour;

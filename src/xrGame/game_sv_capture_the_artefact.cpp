@@ -21,6 +21,7 @@
 #include "clsid_game.h"
 #include "ui\UIBuyWndShared.h"
 #include "UIGameCTA.h"
+#include "string_table.h"
 #include "../xrEngine/xr_ioconsole.h"
 
 //-------------------------------------------------------------
@@ -519,9 +520,10 @@ void game_sv_CaptureTheArtefact::Create(shared_str &options)
 		return;
 	};
 	m_strWeaponsData->Load(m_sBaseWeaponCostSection);
-
+	
 	LoadTeamData(etGreenTeam, "capturetheartefact_team1");
 	LoadTeamData(etBlueTeam, "capturetheartefact_team2");
+	
 	LoadArtefactRPoints();
 	switch_Phase(GAME_PHASE_PENDING);
 	VERIFY(teams.size() >= 2);
@@ -531,7 +533,8 @@ void game_sv_CaptureTheArtefact::Create(shared_str &options)
 	Msg("---Starting new round, scores: [ %d : %d ]",
 		teams[etGreenTeam].score, teams[etBlueTeam].score);
 #endif // #ifndef MASTER_GOLD
-	m_iMoney_for_BuySpawn = READ_IF_EXISTS(pSettings, r_s32, "capturetheartefact_gamedata", "spawn_cost", -10000);
+	m_iMoney_for_BuySpawn	= READ_IF_EXISTS(pSettings, r_s32, "capturetheartefact_gamedata", "spawn_cost", -10000);
+	m_not_free_ammo_str		= READ_IF_EXISTS(pSettings, r_string, "capturetheartefact_gamedata", "not_free_ammo", "");
 }
 
 void game_sv_CaptureTheArtefact::OnRoundStart()
@@ -1193,13 +1196,16 @@ void game_sv_CaptureTheArtefact::SpawnWeaponsForActor(CSE_Abstract* pE, game_Pla
 	if (!pA) return;
 
 	if (!(ps->team < s16(TeamList.size()))) return;
-
-	for (u32 i = 0; i<ps->pItemList.size(); i++)
+	
+	while (ps->pItemList.size())
 	{
-		u16 ItemID			= ps->pItemList[i];
-		SpawnWeapon4Actor	(pA->ID, *m_strWeaponsData->GetItemName(ItemID& 0x00FF), u8((ItemID & 0xFF00)>>0x08));
+		u16 ItemID = ps->pItemList.front();
+		SpawnWeapon4Actor	(pA->ID, *m_strWeaponsData->GetItemName(ItemID& 0x00FF), u8((ItemID & 0xFF00)>>0x08), ps->pItemList);
 		Game().m_WeaponUsageStatistic->OnWeaponBought(ps, *m_strWeaponsData->GetItemName(ItemID& 0x00FF));
-	};
+		R_ASSERT(ps->pItemList.size());
+		ps->pItemList.erase(ps->pItemList.begin());
+	}
+	
 	Player_AddMoney(ps, ps->LastBuyAcount);
 };
 
@@ -1237,7 +1243,8 @@ bool game_sv_CaptureTheArtefact::OnKillResult(KILL_RES KillResult, game_PlayerSt
 		}break;
 	case KR_SELF:
 		{
-			pKiller->m_iRivalKills		-= 1;
+			//pKiller->m_iRivalKills		-= 1;
+			pKiller->m_iSelfKills++;
 			pKiller->m_iKillsInRowMax	= 0;
 			if (pTeam) Player_AddMoney(pKiller, pTeam->m_iM_KillSelf);
 			res = false;
@@ -1282,7 +1289,10 @@ bool game_sv_CaptureTheArtefact::OnKillResult(KILL_RES KillResult, game_PlayerSt
 						if (!pCL->ps || pCL->ps != pKiller)
 							continue;
 
-						m_server->DisconnectClient(pCL);
+						LPSTR	reason;
+						STRCONCAT( reason, CStringTable().translate("st_kicked_by_server").c_str() );
+						m_server->DisconnectClient( pCL, reason );
+
 						break;
 					}					
 					m_server->clients_Unlock();
@@ -1811,58 +1821,14 @@ void game_sv_CaptureTheArtefact::OnDetachItem(CSE_ActorMP *actor, CSE_Abstract *
 			if (std::find(to_reject.begin(), to_reject.end(), e_item) != to_reject.end())
 				continue;
 
-			switch (e_item->m_tClassID)
+			if (e_item->m_tClassID == CLSID_OBJECT_W_KNIFE)
 			{
-			case CLSID_OBJECT_AMMO			:
-				//---------------------------------------
-			case CLSID_OBJECT_A_VOG25		:
-			case CLSID_OBJECT_A_OG7B		:
-			case CLSID_OBJECT_A_M209		:
-				//---------------------------------------
-				// Weapons Add-ons
-			case CLSID_OBJECT_W_SCOPE		:
-			case CLSID_OBJECT_W_SILENCER	:
-			case CLSID_OBJECT_W_GLAUNCHER	:
-				// Detectors
-			case CLSID_DETECTOR_SIMPLE		:
-				// PDA
-			case CLSID_DEVICE_PDA			:
-
-			case CLSID_DEVICE_TORCH			:
-			case CLSID_IITEM_MEDKIT			:
-			case CLSID_IITEM_ANTIRAD		:
-				// Grenades
-			case CLSID_GRENADE_F1			:
-			case CLSID_OBJECT_G_RPG7		:
-			case CLSID_GRENADE_RGD5			:
-				// Weapons
-			case CLSID_OBJECT_W_M134		:
-			case CLSID_OBJECT_W_FN2000		:
-			case CLSID_OBJECT_W_AK74		:
-			case CLSID_OBJECT_W_LR300		:
-			case CLSID_OBJECT_W_HPSA		:
-			case CLSID_OBJECT_W_PM			:
-			case CLSID_OBJECT_W_FORT		:
-			case CLSID_OBJECT_W_BINOCULAR	:
-			case CLSID_OBJECT_W_SHOTGUN		:
-			case CLSID_OBJECT_W_SVD			:
-			case CLSID_OBJECT_W_SVU			:
-			case CLSID_OBJECT_W_RPG7		:
-			case CLSID_OBJECT_W_VAL			:
-			case CLSID_OBJECT_W_VINTOREZ	:
-			case CLSID_OBJECT_W_WALTHER		:
-			case CLSID_OBJECT_W_USP45		:
-			case CLSID_OBJECT_W_GROZA		:
-			case CLSID_OBJECT_W_BM16		:
-			case CLSID_OBJECT_W_RG6			:
-				{
-					to_transfer.push_back	(e_item);
-				}break;
-			case CLSID_OBJECT_W_KNIFE		:
-				{
-					to_destroy.push_back	(e_item);
-				}break;
-			};//case
+				to_destroy.push_back	(e_item);
+			} else if (m_strWeaponsData->GetItemIdx(e_item->s_name) != u32(-1))
+			{
+				if (!smart_cast<CSE_ALifeItemCustomOutfit*>(e_item))
+					to_transfer.push_back(e_item);
+			}
 		}
 
 		xr_vector<CSE_Abstract*>::const_iterator tr_it_e	= to_transfer.end();
@@ -2326,7 +2292,7 @@ void game_sv_CaptureTheArtefact::RespawnPlayer(ClientID id_who, bool NoSpectator
 		{
 			ti->second = invLostTime;
 		}
-		SpawnWeapon4Actor(pA->ID, "mp_players_rukzak", 0);
+		SpawnWeapon4Actor(pA->ID, "mp_players_rukzak", 0, ps->pItemList);
 	}
 }
 

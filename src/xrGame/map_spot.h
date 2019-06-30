@@ -95,7 +95,7 @@ class CComplexMapSpot : public CMapSpot
 
 	bool					m_infinity_time;
 	int						m_last_delay;
-	ALife::_TIME_ID			m_time_end;
+	ALife::_TIME_ID			m_timer_finish;
 
 //	Fvector2				m_pin_point;
 
@@ -109,8 +109,8 @@ public:
 				void		SetLeftTexture(  LPCSTR texture_name )	{ VERIFY2(m_left_icon, texture_name);	m_left_icon->InitTexture(  texture_name ); }
 				void		SetRightTexture( LPCSTR texture_name )	{ VERIFY2(m_right_icon, texture_name);	m_right_icon->InitTexture( texture_name ); }
 				void		SetTopTexture(   LPCSTR texture_name )	{ VERIFY2(m_top_icon, texture_name);	m_top_icon->InitTexture(   texture_name ); }
-				void		SetTTL( ALife::_TIME_ID time ); // ms game_time
-	ALife::_TIME_ID			GetTimeEnd() const						{ return m_time_end; }
+				void		SetTimerFinish( ALife::_TIME_ID time ); // ms game_time
+	ALife::_TIME_ID			GetTimerFinish() const					{ return m_timer_finish; }
 
 protected:
 			CUIStaticOrig*	CreateStaticOrig( CUIXml& xml, LPCSTR ui_path );

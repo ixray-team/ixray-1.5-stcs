@@ -1,25 +1,27 @@
 #include "stdafx.h"
-#include "xrMU_Model.h"
+//#include "build.h"
+#include "mu_model_face.h"
 #include "calculate_normals.h"
-#include "build.h"
+#include "xrMU_Model.h"
 
+#include "../../xrcore/xrPool.h"
 
-void destroy_vertex( xrMU_Model::_vertex* &v, bool unregister )
+//#include "build.h"
+
+poolSS<_vertex,8*1024>	&mu_vertices_pool();
+
+void destroy_vertex( _vertex* &v, bool unregister )
 {
-	mu_vertices.destroy(v);
+	mu_vertices_pool().destroy(v);
 	v = NULL;
 }
 
-void xrMU_Model::calc_normals()
+void calc_normals( xrMU_Model &model )
 {
-	calculate_normals<_vertex>::calc_normals( m_vertices, m_faces );
+	calculate_normals<_vertex>::calc_normals( model.m_vertices, model.m_faces );
 }
 
-void CBuild::MU_ModelsCalculateNormals()
-{
-		for		(u32 m=0; m<mu_models.size(); m++)
-		mu_models[m]->calc_normals();
-}
+
 /*
 void xrMU_Model::calc_normals()
 {

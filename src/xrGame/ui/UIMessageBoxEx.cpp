@@ -81,8 +81,7 @@ bool CUIMessageBoxEx::IR_OnKeyboardPress( int dik )
 {
 	if ( dik == DIK_NUMPADENTER || dik == DIK_RETURN || dik == DIK_SPACE)
 	{
-		OnOKClicked( this, 0 );
-		GetHolder()->StartStopMenu(this, true);
+		m_pMessageBox->OnYesOk();
 		return true;
 	}else
 	if ( dik == DIK_ESCAPE)

@@ -10,7 +10,7 @@
 //struct oaNamedOptionStruct;
 //typedef struct oaNamedOptionStruct oaNamedOption;
 
-class xrSASH
+class ENGINE_API xrSASH
 {
 public:
 	xrSASH();
@@ -74,6 +74,6 @@ private:
 	xr_vector<float>	m_aFrimeTimes;
 };
 
-extern xrSASH	g_SASH;
+extern xrSASH ENGINE_API g_SASH;
 
 #endif	//	xrSASH_included

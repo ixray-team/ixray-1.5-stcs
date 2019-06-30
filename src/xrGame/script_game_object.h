@@ -263,7 +263,8 @@ public:
 	//передача порции информации InventoryOwner
 			bool				GiveInfoPortion		(LPCSTR info_id);
 			bool				DisableInfoPortion	(LPCSTR info_id);
-			bool				GiveGameNews		(LPCSTR caption, LPCSTR news, LPCSTR texture_name, int delay, int show_time);
+			void				GiveGameNews		(LPCSTR caption, LPCSTR news, LPCSTR texture_name, int delay, int show_time);
+			void				GiveGameNews		(LPCSTR caption, LPCSTR news, LPCSTR texture_name, int delay, int show_time, int type);
 
 			void				AddIconedTalkMessage_old(LPCSTR text, LPCSTR texture_name, LPCSTR templ_name) {};
 			void				AddIconedTalkMessage(LPCSTR caption, LPCSTR text, LPCSTR texture_name, LPCSTR templ_name);
@@ -573,6 +574,7 @@ public:
 			u32					active_slot							();
 			void				activate_slot						(u32 slot_id);
 			void				enable_level_changer				(bool b);
+			bool				is_level_changer_enabled			();
 			void				set_level_changer_invitation		(LPCSTR str);
 #ifdef DEBUG
 			void				debug_planner						(const script_planner *planner);
@@ -679,7 +681,7 @@ public:
 			void				apply_loophole_direction_distance		(float value);
 
 			bool				movement_target_reached					();
-			bool				suitable_smart_cover					(smart_cover::object* object);
+			bool				suitable_smart_cover					(CScriptGameObject* object);
 
 			void				take_items_enabled						(bool value);
 			bool				take_items_enabled						() const;

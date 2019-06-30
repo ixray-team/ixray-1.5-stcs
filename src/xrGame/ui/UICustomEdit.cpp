@@ -50,7 +50,7 @@ void CUICustomEdit::Register_callbacks()
 
 }
 
-void  CUICustomEdit::Init( u32 max_char_count, bool number_only_mode, bool read_mode )
+void  CUICustomEdit::Init( u32 max_char_count, bool number_only_mode, bool read_mode, bool fn_mode )
 {
 	if ( read_mode )
 	{
@@ -63,6 +63,10 @@ void  CUICustomEdit::Init( u32 max_char_count, bool number_only_mode, bool read_
 		if ( number_only_mode )
 		{
 			m_editor_control->init( max_char_count, text_editor::im_number_only );
+		}
+		else if ( fn_mode )
+		{
+			m_editor_control->init( max_char_count, text_editor::im_file_name_mode );
 		}
 		else
 		{

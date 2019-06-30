@@ -15,11 +15,12 @@ xrCriticalSection	task_CS
 	(MUTEX_PROFILE_ID(task_C_S))
 #endif // PROFILE_CRITICAL_SECTIONS
 ;
+
 xr_vector<int>		task_pool;
 
 class CLMThread		: public CThread
 {
-public:
+private:
 	HASH			H;
 	CDB::COLLIDER	DB;
 	base_lighting	LightsSelected;
@@ -60,6 +61,12 @@ public:
 	}
 };
 
+
+
+
+
+void net_light ();
+
 void CBuild::Light()
 {
 	//****************************************** Implicit
@@ -71,9 +78,13 @@ void CBuild::Light()
 	}
 
 	//****************************************** Lmaps
-	{
+	Phase			("LIGHT: LMaps...");
+	DeflectorsStats ();
+	if(b_net_light)
+		net_light ();
+	else{
 		FPU::m64r		();
-		Phase			("LIGHT: LMaps...");
+		
 		mem_Compact		();
 
 		// Randomize deflectors

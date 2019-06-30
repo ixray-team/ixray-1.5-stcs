@@ -415,7 +415,7 @@ Xpanels callback for LWXP_VIEW panels.  Store a value in our instance
 data.
 ====================================================================== */
 
-int ui_set( XRShader *dat, unsigned long vid, void *value )
+LWXPRefreshCode ui_set( XRShader *dat, unsigned long vid, void *value )
 {
 	switch ( vid ) {
 		case ID_EN:

@@ -31,7 +31,7 @@ base_Vertex::~base_Vertex() {};
 		u16					bLocked				:		1;	// For tesselation
 	}						flags;
 */
-void		base_Face::	read	( IReader	&r )
+void		base_Face::	read	( INetReader	&r )
 {
 	r_pod<base_basis[3]>(r, basis_tangent );
 	r_pod<base_basis[3]>(r, basis_binormal );
@@ -55,7 +55,7 @@ void		base_Face::	write	( IWriter	&w )const
 	int						handle;		// used in mesh-processing/optimization/conversion
 */
 
-void	base_Vertex	::	read	(IReader	&r )
+void	base_Vertex	::	read	(INetReader	&r )
 {
 	r.r_fvector3(P );
 	r.r_fvector3( N );

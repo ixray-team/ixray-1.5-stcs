@@ -6,7 +6,7 @@
 #include "xrlc_globaldata.h"
 #include "light_point.h"
 #include "xrface.h"
-
+#include "net_task.h"
 extern void Jitter_Select	(Fvector2* &Jitter, u32& Jcount);
 
 void CDeflector::L_Direct_Edge (CDB::COLLIDER* DB, base_lighting* LightsSelected, Fvector2& p1, Fvector2& p2, Fvector& v1, Fvector& v2, Fvector& N, float texel_size, Face* skip)
@@ -41,10 +41,10 @@ void CDeflector::L_Direct_Edge (CDB::COLLIDER* DB, base_lighting* LightsSelected
 		// ok - perform lighting
 		base_color_c	C;
 		Fvector			P;	P.mad(v1,vdir,time);
-		VERIFY(lc_global_data());
-		VERIFY(lc_global_data()->RCAST_Model());
+		VERIFY(inlc_global_data());
+		VERIFY(inlc_global_data()->RCAST_Model());
 
-		LightPoint		(DB, lc_global_data()->RCAST_Model(), C, P, N, *LightsSelected, (lc_global_data()->b_nosun()?LP_dont_sun:0)|LP_DEFAULT, skip); //.
+		LightPoint		(DB, inlc_global_data()->RCAST_Model(), C, P, N, *LightsSelected, (inlc_global_data()->b_nosun()?LP_dont_sun:0)|LP_DEFAULT, skip); //.
 		
 		C.mul		(.5f);
 		lm.surface	[_y*lm.width+_x]._set	(C);
@@ -76,10 +76,12 @@ void CDeflector::L_Direct	(CDB::COLLIDER* DB, base_lighting* LightsSelected, HAS
 	DB->ray_options	(0);
 	
 	for (u32 V=0; V<lm.height; V++)	{
+	if(_net_session && !_net_session->test_connection())
+			 return;
 		for (u32 U=0; U<lm.width; U++)	{
+			
 			u32				Fcount	= 0;
 			base_color_c	C;
-			
 			try {
 				for (u32 J=0; J<Jcount; J++) 
 				{
@@ -108,9 +110,9 @@ void CDeflector::L_Direct	(CDB::COLLIDER* DB, base_lighting* LightsSelected, HAS
 								wN.add		(F->N);					exact_normalize	(wN);
 							}
 							try {
-								VERIFY(lc_global_data());
-								VERIFY(lc_global_data()->RCAST_Model());
-								LightPoint	(DB, lc_global_data()->RCAST_Model(), C, wP, wN, *LightsSelected, (lc_global_data()->b_nosun()?LP_dont_sun:0)|LP_UseFaceDisable, F); //.
+								VERIFY(inlc_global_data());
+								VERIFY(inlc_global_data()->RCAST_Model());
+								LightPoint	(DB, inlc_global_data()->RCAST_Model(), C, wP, wN, *LightsSelected, (inlc_global_data()->b_nosun()?LP_dont_sun:0)|LP_UseFaceDisable, F); //.
 								Fcount		+= 1;
 							} catch (...) {
 								clMsg("* ERROR (CDB). Recovered. ");

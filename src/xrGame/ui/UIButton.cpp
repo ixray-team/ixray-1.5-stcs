@@ -76,6 +76,7 @@ bool  CUIButton::OnMouse(float x, float y, EUIMessages mouse_action)
 			{
 				m_eButtonState = BUTTON_PUSHED;
 				GetMessageTarget()->SendMessage(this, BUTTON_DOWN, NULL);
+				return true;
 			}
 		}
 		else if(m_eButtonState == BUTTON_PUSHED)

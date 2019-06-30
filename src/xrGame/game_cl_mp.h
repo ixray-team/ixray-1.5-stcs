@@ -169,6 +169,8 @@ protected:
 	bool		m_bSpectator_FreeLook;
 	bool		m_bSpectator_TeamCamera;
 
+	u32			m_cur_MenuID;
+
 	virtual		void		LoadBonuses				();
 
 public:

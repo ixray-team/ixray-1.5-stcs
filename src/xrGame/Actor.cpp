@@ -26,6 +26,7 @@
 #include "clsid_game.h"
 #include "game_cl_base_weapon_usage_statistic.h"
 #include "Grenade.h"
+#include "Torch.h"
 
 // breakpoints
 #include "../xrEngine/xr_input.h"
@@ -910,10 +911,15 @@ void CActor::UpdateCL	()
 		if(Level().CurrentEntity() && this->ID()==Level().CurrentEntity()->ID() )
 		{
 			float fire_disp_full = pWeapon->GetFireDispersion(true);
+			m_fdisp_controller.SetDispertion(fire_disp_full);
+			
+			fire_disp_full = m_fdisp_controller.GetCurrentDispertion();
 
 			HUD().SetCrosshairDisp(fire_disp_full, 0.02f);
 			HUD().ShowCrosshair(pWeapon->use_crosshair());
-
+#ifdef DEBUG
+			HUD().SetFirstBulletCrosshairDisp(pWeapon->GetFirstBulletDisp());
+#endif
 			
 			BOOL B = ! ((mstate_real & mcLookout) && !IsGameTypeSingle());
 
@@ -1230,7 +1236,7 @@ void CActor::shedule_Update	(u32 DT)
 			}
 			else
 			{
-				if (m_pPersonWeLookingAt && pEntityAlive->g_Alive())
+				if (m_pPersonWeLookingAt && pEntityAlive->g_Alive() && m_pPersonWeLookingAt->IsTalkEnabled())
 					m_sDefaultObjAction = m_sCharacterUseAction;
 
 				else if (pEntityAlive && !pEntityAlive->g_Alive())
@@ -1249,8 +1255,6 @@ void CActor::shedule_Update	(u32 DT)
 							m_pObjectWeLookingAt->cast_inventory_item() && 
 							m_pObjectWeLookingAt->cast_inventory_item()->CanTake() )
 					m_sDefaultObjAction = m_sInventoryItemUseAction;
-//.				else if (m_pInvBoxWeLookingAt)
-//.					m_sDefaultObjAction = m_sInventoryBoxUseAction;
 				else 
 					m_sDefaultObjAction = NULL;
 			}
@@ -1644,6 +1648,14 @@ void CActor::UpdateArtefactsOnBeltAndOutfit()
 		conditions().ChangePower		(outfit->m_fPowerRestoreSpeed     * f_update_time);
 		conditions().ChangeSatiety		(outfit->m_fSatietyRestoreSpeed   * f_update_time);
 		conditions().ChangeRadiation	(outfit->m_fRadiationRestoreSpeed * f_update_time);
+	}
+	else
+	{
+		CTorch* pTorch = smart_cast<CTorch*>( inventory().ItemFromSlot(TORCH_SLOT) );
+		if ( pTorch && pTorch->GetNightVisionStatus() )
+		{
+			pTorch->SwitchNightVision(false);
+		}
 	}
 }
 

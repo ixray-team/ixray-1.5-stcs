@@ -1,26 +1,12 @@
 #include "stdafx.h"
 #include "xrMU_Model.h"
-#include "build.h"
+//#include "build.h"
+#include "../../xrcore/xrPool.h"
+poolSS<_face,8*1024>	&mu_faces_pool();
+poolSS<_vertex,8*1024>	&mu_vertices_pool();
+//extern u32		version;
 
-void xrMU_Reference::Load(IReader& F)
-{
-	b_mu_reference		R;
-	F.r					(&R,sizeof(R));
-	model				= pBuild->mu_models[R.model_index];
-	xform				= R.transform;
-	flags				= R.flags;
-	sector				= R.sector;
-
-	c_scale.rgb.set		(1,1,1);
-	c_scale.hemi		= 1;
-	c_scale.sun			= 1;
-	c_bias.rgb.set		(0,0,0);
-	c_bias.hemi			= 0;
-	c_bias.sun			= 0;
-}
-extern u32		version;
-
-void xrMU_Model::Load	(IReader& F)
+void xrMU_Model::Load	( IReader& F, u32 version )
 {
 	F.r_stringZ			(m_name);
 
@@ -67,9 +53,9 @@ void xrMU_Model::Load	(IReader& F)
 	clMsg	("* Loading model: '%s' - v(%d/%d), f(%d/%d)",*m_name,m_vertices.size(),b_vertices.size(),m_faces.size(),b_faces.size());
 }
 
-xrMU_Model::_face* xrMU_Model::create_face(_vertex* v0, _vertex* v1, _vertex* v2, b_face& B)
+_face* xrMU_Model::create_face(_vertex* v0, _vertex* v1, _vertex* v2, b_face& B)
 {
-	_face*	_F			= mu_faces.create();
+	_face*	_F			= mu_faces_pool().create();
 	_F->dwMaterial		= u16(B.dwMaterial);
 	_F->dwMaterialGame	= B.dwMaterialGame;
 	R_ASSERT			(B.dwMaterialGame<65536);
@@ -90,21 +76,21 @@ xrMU_Model::_face* xrMU_Model::create_face(_vertex* v0, _vertex* v1, _vertex* v2
 	return _F;
 }
 
-xrMU_Model::_face* xrMU_Model::load_create_face(Fvector& P1, Fvector& P2, Fvector& P3, b_face& B)
+_face* xrMU_Model::load_create_face(Fvector& P1, Fvector& P2, Fvector& P3, b_face& B)
 {
 	return				create_face(load_create_vertex(P1),load_create_vertex(P2),load_create_vertex(P3),B);
 }
 
-xrMU_Model::_vertex* xrMU_Model::create_vertex(Fvector& P)
+_vertex* xrMU_Model::create_vertex(Fvector& P)
 {
-	_vertex*	_V		= mu_vertices.create();
+	_vertex*	_V		= mu_vertices_pool().create();
 	_V->P				= P;
 	_V->N.set			(0,0,0);
 	m_vertices.push_back(_V);
 	return				_V;
 }
 
-xrMU_Model::_vertex* xrMU_Model::load_create_vertex(Fvector& P)
+_vertex* xrMU_Model::load_create_vertex(Fvector& P)
 {
 	// find similar
 	for (u32 it=0; it<m_vertices.size(); it++)

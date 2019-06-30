@@ -137,12 +137,13 @@ bool CGrenade::DropGrenade()
 
 void CGrenade::SendHiddenItem						()
 {
-	if (GetState() == eThrow)
+	if (GetState()==eThrow)
 	{
 		Msg("MotionMarks !!![%d][%d]", ID(), Device.dwFrame);
 		Throw				();
 	}
-	if (GetState() == eReady || GetState() == eThrow)
+	CActor* pActor = smart_cast<CActor*>( m_pInventory->GetOwner());
+	if (pActor && (GetState()==eReady || GetState()==eThrow))
 	{
 		return;
 	}

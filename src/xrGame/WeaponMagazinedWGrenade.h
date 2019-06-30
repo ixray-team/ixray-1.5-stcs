@@ -83,6 +83,7 @@ public:
 	bool					m_bGrenadeMode;
 
 	CCartridge				m_DefaultCartridge2;
+	int						iAmmoElapsed2;
 
 	virtual void UpdateGrenadeVisibility(bool visibility);
 };

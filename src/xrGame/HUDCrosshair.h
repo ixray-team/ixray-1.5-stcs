@@ -19,8 +19,9 @@ private:
 	//текущий радиус прицела
 	float			radius;
 	float			target_radius;
-	float			radius_speed_perc; 
-
+#ifdef DEBUG
+	float			fb_radius;
+#endif
 	//ref_geom 		hGeomLine;
 	ui_shader		hShader;
 public:
@@ -31,6 +32,10 @@ public:
 
 			void	OnRender		();
 			void	SetDispersion	(float disp);
+#ifdef DEBUG
+			void	SetFirstBulletDispertion(float fbdisp);
+			void	OnRenderFirstBulletDispertion();
+#endif
 
 			void	Load			();
 };

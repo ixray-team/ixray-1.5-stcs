@@ -112,6 +112,145 @@ float stalker_movement_manager_smart_cover::exit_path_weight				(
 	return						(source_position.distance_to(target_position));
 }
 
+bool stalker_movement_manager_smart_cover::test_pick	(Fvector source, Fvector destination) const
+{
+	source.y					+= 2.f;
+	destination.y				+= 2.f;
+	Fvector direction			= Fvector(destination).sub(source);
+	float const distance		= direction.magnitude();
+	if (distance > EPS_L)
+		direction.normalize		();
+	else
+		return					(true);
+
+	struct parameters {
+		float* m_range;
+		CAI_Stalker* m_object;
+
+		inline parameters		(
+				float& range,
+				CAI_Stalker& object
+			) :
+			m_range	(&range),
+			m_object(&object)
+		{
+		}
+	}; // struct parameters
+
+	struct test_pick {
+		static BOOL callback	(collide::rq_result& result, LPVOID user_data)
+		{
+			parameters* const	param = (parameters*)user_data;
+			if (param->m_object->feel_vision_mtl_transp(result.O,result.element) < 1.f) {
+				*param->m_range	= result.range;
+				return			(FALSE);
+			}
+
+			return				(TRUE);
+		}
+	};
+
+	float range					= distance;
+	parameters					params(range, object());
+	collide::ray_defs	ray_defs(source, direction, distance, CDB::OPT_CULL, collide::rqtStatic);
+	Level().ObjectSpace.RayQuery(m_ray_query_storage, ray_defs, &test_pick::callback, &params, NULL, NULL);
+	return						(range == distance);
+}
+
+stalker_movement_manager_smart_cover::transition_action const &stalker_movement_manager_smart_cover::nearest_action	(
+		smart_cover::cover const &cover,
+		shared_str const &loophole_id0,
+		shared_str const &loophole_id1,
+		Fvector const& position,
+		Fvector& result_position,
+		u32& result_vertex_id,
+		EBodyState* target_body_state
+	) const
+{
+	typedef smart_cover::description::TransitionGraph::CEdge	edge_type;
+	typedef smart_cover::description::ActionsList				ActionsList;
+	typedef smart_cover::transitions::action					action;
+	
+	edge_type const			*edge = cover.description()->transitions().edge(loophole_id0, loophole_id1);
+	VERIFY					(edge);
+	ActionsList const		&actions = edge->data();
+	
+	transition_action const*result = 0;
+	float min_distance_sqr	= flt_max;
+
+	EBodyState				result_body_state = eBodyStateDummy;
+	Fmatrix const&			transform = cover.object().XFORM();
+	ActionsList::const_iterator	i = actions.begin();
+	ActionsList::const_iterator	e = actions.end();
+	for ( ; i != e; ++i) {
+		if (!(*i)->applicable())
+			continue;
+
+		typedef smart_cover::transitions::action::Animations	Animations;
+		Animations::const_iterator	I = (*i)->animations().begin();
+		Animations::const_iterator	E = (*i)->animations().end();
+		for ( ; I != E; ++I) {
+			Fvector						action_position;
+			transform.transform_tiny	( action_position, (*I)->position() );
+			float const distance_sqr	= action_position.distance_to_sqr(position);
+			if ( distance_sqr > min_distance_sqr )
+				continue;
+
+			u32 vertex_id				= u32(-1);
+			if ((*I)->has_animation()) {
+				if (!ai().level_graph().valid_vertex_position(action_position))
+					continue;
+
+				vertex_id				= ai().level_graph().vertex_id(action_position);
+				if (!ai().level_graph().valid_vertex_id(vertex_id))
+					continue;
+
+				float const y			= ai().level_graph().vertex_plane_y( vertex_id, action_position.x, action_position.z );
+				if ( !fsimilar(y, action_position.y,2.f) )
+					continue;
+
+				if (!test_pick(object().Position(), action_position))
+					continue;
+			}
+
+			if (target_body_state && ((*I)->body_state() != *target_body_state) && (result_body_state == *target_body_state))
+				continue;
+
+			result_body_state			= (*I)->body_state();
+			min_distance_sqr			= distance_sqr;
+			result						= *i;
+			result_position				= action_position;
+			result_vertex_id			= vertex_id;
+		}
+		
+	}
+
+	VERIFY					(result);
+	return					(*result);
+}
+
+stalker_movement_manager_smart_cover::transition_action const &stalker_movement_manager_smart_cover::action			(smart_cover::cover const &cover, shared_str const &loophole_id0, shared_str const &loophole_id1) const
+{
+	typedef smart_cover::description::TransitionGraph::CEdge	edge_type;
+	typedef smart_cover::description::ActionsList				ActionsList;
+	typedef smart_cover::transitions::action					action;
+	
+	edge_type const			*edge = cover.description()->transitions().edge(loophole_id0, loophole_id1);
+	VERIFY					(edge);
+	ActionsList const		&actions = edge->data();
+
+	struct applicable {
+		IC	static bool predicate	(action const * const &action)
+		{
+			return			(action->applicable());
+		}
+	};
+
+	ActionsList::const_iterator	i = std::find_if(actions.begin(), actions.end(), &applicable::predicate);
+	VERIFY					(i != actions.end());
+	return					(**i);
+}
+
 void stalker_movement_manager_smart_cover::build_exit_path							()
 {
 	m_path.clear_not_free		();
@@ -139,14 +278,15 @@ void stalker_movement_manager_smart_cover::build_exit_path							()
 		float				new_value = ai().graph_engine().m_string_algorithm->data_storage().get_best().g();
 		float				exit_edge = cur_cover.description()->transitions().edge(exitable_loophole_id, smart_cover::transform_vertex("", false))->weight();
 		new_value			+= exit_edge;
-		
-		Fvector const&		exit_position_local = action(cur_cover, exitable_loophole_id, smart_cover::transform_vertex("", false)).animation(m_target.m_body_state).position();
-		Fvector				exit_position;
-		cur_cover.object().XFORM().transform_tiny(exit_position, exit_position_local);
-		u32					exit_vertex_id = ai().level_graph().vertex_id(exit_position);
 
 		u32					targe_vertex_id = level_dest_vertex_id();
 		Fvector				target_position = m_target.desired_position() ? *m_target.desired_position() : ai().level_graph().vertex_position(targe_vertex_id);
+
+		Fvector				exit_position;
+		u32					exit_vertex_id;
+//		transition_action const&	action = 
+			nearest_action(cur_cover, exitable_loophole_id, smart_cover::transform_vertex("", false), target_position, exit_position, exit_vertex_id, &m_target.m_body_state);
+
 		new_value			+=
 			exit_path_weight(
 				exit_vertex_id,
@@ -216,6 +356,7 @@ void stalker_movement_manager_smart_cover::build_exit_path_to_cover					()
 
 		Fvector					exit_position;
 		u32						exit_vertex_id;
+		EBodyState				exit_body_state = eBodyStateStand;
 		smart_cover::transitions::action const& current_action = 
 			nearest_action(
 				current_cover,
@@ -223,14 +364,9 @@ void stalker_movement_manager_smart_cover::build_exit_path_to_cover					()
 				smart_cover::transform_vertex("", false),
 				target_position,
 				exit_position,
-				exit_vertex_id
+				exit_vertex_id,
+				&exit_body_state
 			);
-
-		if (!ai().level_graph().valid_vertex_position(exit_position))
-			continue;
-
-		if (!ai().level_graph().valid_vertex_id(exit_vertex_id))
-			continue;
 
 		buffer_vector<shared_str>	temp(
 			_alloca(sizeof(u32)*m_temp_loophole_path.size()),

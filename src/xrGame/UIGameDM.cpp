@@ -300,13 +300,24 @@ bool		CUIGameDM::IR_OnKeyboardPress		(int dik)
 	case kBUY:
 	case kSKIN:
 	case kTEAM:
-		case kMAP:
+	case kMAP:
+	
+	case kSPEECH_MENU_0:
+	case kSPEECH_MENU_1:
+	case kSPEECH_MENU_2:
+	case kSPEECH_MENU_3:
+	case kSPEECH_MENU_4:
+	case kSPEECH_MENU_5:
+	case kSPEECH_MENU_6:
+	case kSPEECH_MENU_7:
+	case kSPEECH_MENU_8:
+	case kSPEECH_MENU_9:
 		{
 			return Game().OnKeyboardPress( cmd );
 		}break;
 	}
 	return false;
-};
+}
 
 bool CUIGameDM::IR_OnKeyboardRelease	(int dik)
 {

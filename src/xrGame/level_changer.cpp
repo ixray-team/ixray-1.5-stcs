@@ -164,7 +164,9 @@ bool CLevelChanger::get_reject_pos(Fvector& p, Fvector& r)
 
 BOOL CLevelChanger::feel_touch_contact	(CObject *object)
 {
-	return	(((CCF_Shape*)CFORM())->Contact(object)) && smart_cast<CActor*>(object);
+	BOOL bRes	= (((CCF_Shape*)CFORM())->Contact(object));
+	bRes		= bRes && smart_cast<CActor*>(object) && smart_cast<CActor*>(object)->g_Alive();
+	return		bRes;
 }
 
 void CLevelChanger::update_actor_invitation()
@@ -176,6 +178,9 @@ void CLevelChanger::update_actor_invitation()
 	for(;it!=it_e;++it){
 		CActor*			l_tpActor = smart_cast<CActor*>(*it);
 		VERIFY			(l_tpActor);
+		
+		if(!l_tpActor->g_Alive())
+			continue;
 
 		if(m_entrance_time+5.0f < Device.fTimeGlobal){
 			CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());

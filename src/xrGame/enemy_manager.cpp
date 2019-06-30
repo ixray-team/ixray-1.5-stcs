@@ -348,6 +348,9 @@ bool CEnemyManager::need_update				(const bool &only_wounded) const
 	if (!selected()->g_Alive())
 		return					(true);
 
+	if ( !m_object->is_relation_enemy(selected()) )
+		return					(true);
+
 	if (enable_enemy_change() && !m_object->memory().visual().visible_now(selected()))
 		return					(true);
 

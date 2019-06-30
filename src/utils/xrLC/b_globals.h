@@ -21,15 +21,10 @@ BOOL	exact_normalize					(float*		a);
 
 
 
-static const int	edge2idx3	[3][3]	= { {0,1,2},	{1,2,0},	{2,0,1}	};
-static const int	edge2idx	[3][2]	= { {0,1},		{1,2},		{2,0}	};
-static const int	idx2edge	[3][3]  = {
-	{-1,  0,  2},
-	{ 0, -1,  1},
-	{ 2,  1, -1}
-};
+
 
 
 extern BOOL						b_radiosity;
 extern BOOL						b_noise;
+extern BOOL						b_net_light;
 

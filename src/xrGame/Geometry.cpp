@@ -545,7 +545,7 @@ void	CBoxGeom::set_size(const Fvector&	half_size )
 							m_box.m_halfsize.z*2.f
 						);
 }
-void	CBoxGeom::get_size(Fvector&	half_size )
+void	CBoxGeom::get_size(Fvector&	half_size ) const
 {
 	VERIFY( geom() );
 	dGeomBoxGetLengths(		geom(),

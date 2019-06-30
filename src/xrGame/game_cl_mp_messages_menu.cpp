@@ -114,6 +114,7 @@ void		game_cl_mp::DestroyMessagesMenus	()
 
 void		game_cl_mp::OnMessageSelected		(CUISpeechMenu* pMenu, u8 PhraseID)
 {
+	m_cur_MenuID = u32(-1);
 	if (m_aMessageMenus.empty()) return;
 	MESSAGEMENUS_it it = std::find(m_aMessageMenus.begin(), m_aMessageMenus.end(), pMenu);
 	if (it == m_aMessageMenus.end()) return;

@@ -28,6 +28,8 @@ void CUIGameCustom::script_register(lua_State *L)
 			.def("RemoveCustomMessage",		&CUIGameCustom::RemoveCustomMessage)
 			.def("AddCustomStatic",			&CUIGameCustom::AddCustomStatic)
 			.def("RemoveCustomStatic",		&CUIGameCustom::RemoveCustomStatic)
+			.def("HideActorMenu",			&CUIGameCustom::HideActorMenu)
+			.def("HidePdaMenu",				&CUIGameCustom::HidePdaMenu)
 			.def("GetCustomStatic",			&CUIGameCustom::GetCustomStatic),
 			def("get_hud",					&get_hud)
 		];

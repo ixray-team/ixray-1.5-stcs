@@ -32,7 +32,7 @@ public:
 	void								Unload			(void);
 //	void								Apply			(u32 dwStage);
 
-	void								surface_set		(ID3DBaseTexture* surf);
+	void								surface_set		(ID3DBaseTexture* surf );
 	ID3DBaseTexture*					surface_get 	();
 
 	IC BOOL								isUser			()		{ return flags.bUser;					}

@@ -219,6 +219,8 @@ public:
 		}
 		return sz;
 	}
+private:
+	bool						m_is_original_lod;
 };
 IC CKinematics* PCKinematics		(dxRender_Visual* V)		{ return V?(CKinematics*)V->dcast_PKinematics():0; }
 //---------------------------------------------------------------------------

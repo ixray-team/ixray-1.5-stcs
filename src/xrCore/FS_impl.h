@@ -42,16 +42,24 @@ extern __declspec(dllimport) find_chunk_counter g_find_chunk_counter;
 extern __declspec(dllexport) find_chunk_counter g_find_chunk_counter;
 #endif //INCLUDE_FROM_ENGINE
 
+extern bool g_initialize_cpu_called;
+
 struct find_chunk_auto_timer
 {
 	find_chunk_auto_timer() 
 	{
-		g_find_chunk_counter.timer.Start();
+		if ( g_initialize_cpu_called )
+		{
+			g_find_chunk_counter.timer.Start();
+		}
 	}
 
 	~find_chunk_auto_timer() 
 	{
-		g_find_chunk_counter.ticks += g_find_chunk_counter.timer.GetElapsed_ticks();
+		if ( g_initialize_cpu_called )
+		{
+			g_find_chunk_counter.ticks += g_find_chunk_counter.timer.GetElapsed_ticks();
+		}
 	}
 };
 
@@ -291,7 +299,6 @@ IC	u32 IReaderBase<T>::find_chunk	(u32 ID, BOOL* bCompressed)
 			if (bCompressed) *bCompressed = dwType&CFS_CompressMark;
 
 			m_test->last_pos = impl().tell() + dwSize;
-			g_find_chunk_counter.ticks += g_find_chunk_counter.timer.GetElapsed_ticks();
 			return dwSize;
 		}
 		else

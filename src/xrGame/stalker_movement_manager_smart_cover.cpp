@@ -169,6 +169,8 @@ void stalker_movement_manager_smart_cover::modify_animation				(CBlend* blend)
 	blend->speed						= motion_def->Speed()*g_smart_cover_animation_speed_factor;
 }
 
+bool show_restrictions	(CRestrictedObject *object);
+
 void stalker_movement_manager_smart_cover::reach_enter_location			(u32 const& time_delta)
 {
 	m_current.m_path_type				= MovementManager::ePathTypeLevelPath;
@@ -187,8 +189,33 @@ void stalker_movement_manager_smart_cover::reach_enter_location			(u32 const& ti
 	m_target.cover()->object().XFORM().transform_tiny(position, current_transition().animation().position());
 
 	u32									level_vertex_id	= ai().level_graph().vertex( u32(-1), position);
-	if (!accessible(level_vertex_id) || !accessible(position))
-		set_nearest_accessible_position	(position, level_vertex_id);
+	if (!accessible(level_vertex_id) || !accessible(position)) {
+		if (!ai().level_graph().inside(level_vertex_id,position))
+			position				= ai().level_graph().vertex_position(level_vertex_id);
+		else
+			position.y				= ai().level_graph().vertex_plane_y(level_vertex_id,position.x,position.z);
+
+		if (!restrictions().accessible(position)) {
+			level_vertex_id			= restrictions().accessible_nearest(Fvector().set(position),position);
+			VERIFY					(restrictions().accessible(level_vertex_id));
+			VERIFY					(restrictions().accessible(position));
+		}
+		else {
+			if (!restrictions().accessible(level_vertex_id)) {
+				level_vertex_id		= restrictions().accessible_nearest(ai().level_graph().vertex_position(level_vertex_id),position);
+				VERIFY				(restrictions().accessible(level_vertex_id));
+				VERIFY				(restrictions().accessible(position));
+			}
+		}
+
+		VERIFY						(ai().level_graph().inside(level_vertex_id,position));
+
+		VERIFY2						(restrictions().accessible(level_vertex_id) || show_restrictions(&restrictions()),*object().cName());
+		CMovementManager::set_level_dest_vertex	(level_vertex_id);
+		
+		VERIFY2						(restrictions().accessible(position) || show_restrictions(&restrictions()),*object().cName());
+		m_current.desired_position	(&position);
+	}
 	else {
 		CMovementManager::set_level_dest_vertex	(level_vertex_id);
 		m_current.desired_position				(&position);
@@ -338,84 +365,6 @@ void stalker_movement_manager_smart_cover::loophole_path					(smart_cover::cover
 }
 
 
-stalker_movement_manager_smart_cover::transition_action const &stalker_movement_manager_smart_cover::action			(smart_cover::cover const &cover, shared_str const &loophole_id0, shared_str const &loophole_id1) const
-{
-	typedef smart_cover::description::TransitionGraph::CEdge	edge_type;
-	typedef smart_cover::description::ActionsList				ActionsList;
-	typedef smart_cover::transitions::action					action;
-	
-	edge_type const			*edge = cover.description()->transitions().edge(loophole_id0, loophole_id1);
-	VERIFY					(edge);
-	ActionsList const		&actions = edge->data();
-
-	struct applicable {
-		IC	static bool predicate	(action const * const &action)
-		{
-			return			(action->applicable());
-		}
-	};
-
-	ActionsList::const_iterator	i = std::find_if(actions.begin(), actions.end(), &applicable::predicate);
-	VERIFY					(i != actions.end());
-	return					(**i);
-}
-
-stalker_movement_manager_smart_cover::transition_action const &stalker_movement_manager_smart_cover::nearest_action	(
-		smart_cover::cover const &cover,
-		shared_str const &loophole_id0,
-		shared_str const &loophole_id1,
-		Fvector const& position,
-		Fvector& result_position,
-		u32& result_vertex_id
-	) const
-{
-	typedef smart_cover::description::TransitionGraph::CEdge	edge_type;
-	typedef smart_cover::description::ActionsList				ActionsList;
-	typedef smart_cover::transitions::action					action;
-	
-	edge_type const			*edge = cover.description()->transitions().edge(loophole_id0, loophole_id1);
-	VERIFY					(edge);
-	ActionsList const		&actions = edge->data();
-	
-	transition_action const*result = 0;
-	float min_distance_sqr	= flt_max;
-
-	Fmatrix const&			transform = cover.object().XFORM();
-	ActionsList::const_iterator	i = actions.begin();
-	ActionsList::const_iterator	e = actions.end();
-	for ( ; i != e; ++i) {
-		if (!(*i)->applicable())
-			continue;
-
-		typedef smart_cover::transitions::action::Animations	Animations;
-		Animations::const_iterator	I = (*i)->animations().begin();
-		Animations::const_iterator	E = (*i)->animations().end();
-		for ( ; I != E; ++I) {
-			Fvector						action_position;
-			transform.transform_tiny	( action_position, (*I)->position() );
-			float const distance_sqr	= action_position.distance_to_sqr(position);
-			if ( distance_sqr > min_distance_sqr )
-				continue;
-
-			if (!ai().level_graph().valid_vertex_position(action_position))
-				continue;
-
-			u32 vertex_id				= ai().level_graph().vertex_id(action_position);
-			if (!ai().level_graph().valid_vertex_id(vertex_id))
-				continue;
-
-			min_distance_sqr			= distance_sqr;
-			result						= *i;
-			result_position				= action_position;
-			result_vertex_id			= vertex_id;
-		}
-		
-	}
-
-	VERIFY					(result);
-	return					(*result);
-}
-
 bool stalker_movement_manager_smart_cover::exit_transition				()
 {
 	VERIFY					(m_current.cover());
@@ -509,80 +458,80 @@ void stalker_movement_manager_smart_cover::target_selector					(CScriptCallbackE
 
 void stalker_movement_manager_smart_cover::target_idle						()
 {
-	if (!m_current.cover()) {
-		Msg								("! Cannot set target idle. Bad or absent smart_cover.");
-		return;
-	}
+//	if (!m_current.cover()) {
+//		Msg								("! Cannot set target idle. Bad or absent smart_cover.");
+//		return;
+//	}
 
-	if (!m_current.cover_loophole()->is_action_available("idle")) {
-		Msg								("! Cannot set target idle. Loophole has no such action.");
-		return;
-	}
+//	if (!m_current.cover_loophole()->is_action_available("idle")) {
+//		Msg								("! Cannot set target idle. Loophole has no such action.");
+//		return;
+//	}
 
 	m_target_selector->object().target	(StalkerDecisionSpace::eWorldPropertyLoopholeIdle);
 }
 
 void stalker_movement_manager_smart_cover::target_lookout					()
 {
-	if (!m_current.cover()) {
-		Msg								("! Cannot set target lookout. Bad or absent smart_cover.");
-		return;
-	}
+//	if (!m_current.cover()) {
+//		Msg								("! Cannot set target lookout. Bad or absent smart_cover.");
+//		return;
+//	}
 
-	if (!m_current.cover_loophole()->is_action_available("lookout")) {
-		Msg								("! Cannot set target lookout. Loophole has no such action.");
-		return;
-	}
+//	if (!m_current.cover_loophole()->is_action_available("lookout")) {
+//		Msg								("! Cannot set target lookout. Loophole has no such action.");
+//		return;
+//	}
 
 	m_target_selector->object().target	(StalkerDecisionSpace::eWorldPropertyLookedOut);
 }
 
 void stalker_movement_manager_smart_cover::target_fire						()
 {
-	if (!m_current.cover()) {
-		Msg								("! Cannot set target fire. Bad or absent smart_cover.");
-		return;
-	}
+//	if (!m_current.cover()) {
+//		Msg								("! Cannot set target fire. Bad or absent smart_cover.");
+//		return;
+//	}
 
-	if (!m_current.cover_loophole()->is_action_available("fire")) {
-		Msg								("! Cannot set target fire. Loophole has no such action.");
-		return;
-	}
+//	if (!m_current.cover_loophole()->is_action_available("fire")) {
+//		Msg								("! Cannot set target fire. Loophole has no such action.");
+//		return;
+//	}
 
-	if (!enemy_in_fov()) {
+//	if (!enemy_in_fov()) {
 //		Msg								("! Cannot set target fire. Enemy is not in current loophole's fov.");
-		return;
-	}
+//		return;
+//	}
 
 	m_target_selector->object().target	(StalkerDecisionSpace::eWorldPropertyLoopholeFire);
 }
 
 void stalker_movement_manager_smart_cover::target_fire_no_lookout			()
 {
-	if (!current_params().cover()) {
-		Msg								("! Cannot set target fire_no_lookout. Bad or absent smart_cover.");
-		return;
-	}
+//	if (!current_params().cover()) {
+//		Msg								("! Cannot set target fire_no_lookout. Bad or absent smart_cover.");
+//		return;
+//	}
 
-	if (!current_params().cover_loophole()->is_action_available("fire_no_lookout")) {
-		Msg								("! Cannot set target fire_no_lookout. Loophole has no such action.");
-		return;
-	}
+//	if (!current_params().cover_loophole()->is_action_available("fire_no_lookout")) {
+//		Msg								("! Cannot set target fire_no_lookout. Loophole has no such action.");
+//		return;
+//	}
 
 	m_target_selector->object().target	(StalkerDecisionSpace::eWorldPropertyLoopholeFireNoLookout);
 }
 
 void stalker_movement_manager_smart_cover::target_default					(bool const& value)
 {
-	if (!current_params().cover()) {
-		Msg								("! Cannot set target fire_no_lookout. Bad or absent smart_cover.");
-		return;
-	}
+//	if (!current_params().cover()) {
+//		Msg								("! Cannot set target fire_no_lookout. Bad or absent smart_cover.");
+//		return;
+//	}
 
-	if (!current_params().cover_loophole()->is_action_available("fire_no_lookout")) {
-		Msg								("! Cannot set target fire_no_lookout. Loophole has no such action.");
-		return;
-	}
+//	if (!current_params().cover_loophole()->is_action_available("fire_no_lookout")) {
+//		Msg								("! Cannot set target fire_no_lookout. Loophole has no such action.");
+//		return;
+//	}
 
 	m_default_behaviour					= value;
 }

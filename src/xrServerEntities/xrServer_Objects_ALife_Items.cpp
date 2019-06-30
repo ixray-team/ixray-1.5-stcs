@@ -458,6 +458,7 @@ CSE_ALifeItemWeapon::CSE_ALifeItemWeapon	(LPCSTR caSection) : CSE_ALifeItem(caSe
 {
 	a_current					= 90;
 	a_elapsed					= 0;
+	a_elapsed_grenades			= 0;
 	wpn_flags					= 0;
 	wpn_state					= 0;
 	ammo_type					= 0;
@@ -531,6 +532,9 @@ void CSE_ALifeItemWeapon::STATE_Read(NET_Packet	&tNetPacket, u16 size)
 
 	if (m_wVersion > 46)
 		tNetPacket.r_u8			(ammo_type);
+	
+	if (m_wVersion > 122)
+		tNetPacket.r_u8			(a_elapsed_grenades);
 }
 
 void CSE_ALifeItemWeapon::STATE_Write		(NET_Packet	&tNetPacket)
@@ -541,6 +545,7 @@ void CSE_ALifeItemWeapon::STATE_Write		(NET_Packet	&tNetPacket)
 	tNetPacket.w_u8				(wpn_state);
 	tNetPacket.w_u8				(m_addon_flags.get());
 	tNetPacket.w_u8				(ammo_type);
+	tNetPacket.w_u8				(a_elapsed_grenades);
 }
 
 void CSE_ALifeItemWeapon::OnEvent			(NET_Packet	&tNetPacket, u16 type, u32 time, ClientID sender )

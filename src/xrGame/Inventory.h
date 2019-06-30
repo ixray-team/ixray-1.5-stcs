@@ -62,10 +62,13 @@ public:
 
 	void					Activate			(u32 slot, /*EActivationReason reason=eGeneral, */bool bForce=false);
 	//void					Activate_deffered	(u32 slot, u32 _frame);
+	PIItem					GetNextItemInActiveSlot( bool first_call );
+	bool					ActivateNextItemInActiveSlot();
 	PIItem					ActiveItem			()const					{return m_iActiveSlot==NO_ACTIVE_SLOT ? NULL :m_slots[m_iActiveSlot].m_pIItem;}
 	PIItem					ItemFromSlot		(u32 slot) const;
 
 	bool					Action				(s32 cmd, u32 flags);
+	void					ActiveWeapon		(u32 slot);
 	void					Update				();
 	// Ищет на поясе аналогичный IItem
 	PIItem					Same				(const PIItem pIItem, bool bSearchRuck) const;
@@ -109,6 +112,7 @@ public:
 	void					SetSlotsBlocked		(u16 mask, bool bBlock);
 	TIItemContainer			m_all;
 	TIItemContainer			m_ruck, m_belt;
+	TIItemContainer			m_activ_last_items;
 	TISlotArr				m_slots;
 
 	//возвращает все кроме PDA в слоте и болта

@@ -62,6 +62,9 @@ public:
 				void		Mark					(bool status);
 	CUIStatic&				get_ui_text				() const { return *m_text; }
 
+	virtual		bool		IsHelper				() { return false; }
+	virtual		void		SetIsHelper				(bool is_helper) { ; }
+
 public:
 	static CUICellItem*		m_mouse_selected_item;
 				void*		m_pData;

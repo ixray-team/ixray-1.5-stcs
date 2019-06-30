@@ -107,3 +107,20 @@ void game_sv_CaptureTheArtefact::SetReadyToSpawnPlayer(xrClientData const * pcli
 #endif // #ifdef DEBUG
 	m_buyMenuPlayerStates.insert(std::make_pair(pclient, buyMenuPlayerReadyToSpawn));
 }
+
+bool game_sv_CaptureTheArtefact::CanChargeFreeAmmo(char const * ammo_section)
+{
+	VERIFY2(m_not_free_ammo_str.size(), "'not_free_ammo' not initialized");
+	if (!m_not_free_ammo_str.size())
+		return true;
+	if (!ammo_section)
+		return true;
+	
+	if (!xr_strlen(ammo_section))
+		return true;
+
+	if (strstr(m_not_free_ammo_str.c_str(), ammo_section))
+		return false;
+
+	return true;
+}

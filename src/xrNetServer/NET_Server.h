@@ -220,10 +220,10 @@ public:
 	BOOL					HasBandwidth			(IClient* C);
 
 	IC int					GetPort					()				{ return psNET_Port; };
-			bool			GetClientAddress		(ClientID ID, ip_address& Address, DWORD* pPort = NULL);
-	virtual bool			DisconnectClient		(IClient* C);
-	virtual bool			DisconnectClient		(IClient* C,string512& Reason);
-	virtual bool			DisconnectAddress		(const ip_address& Address);
+			bool			GetClientAddress		(ClientID ID, ip_address& Address, DWORD* pPort = NULL);	
+//			bool			DisconnectClient		(IClient* C);
+	virtual bool			DisconnectClient		(IClient* C, LPCSTR Reason);
+	virtual bool			DisconnectAddress		(const ip_address& Address, LPCSTR reason);
 	virtual void			BanClient				(IClient* C, u32 BanTime);
 	virtual void			BanAddress				(const ip_address& Address, u32 BanTime);
 	virtual void			UnBanAddress			(const ip_address& Address);

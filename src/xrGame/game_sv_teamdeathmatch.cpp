@@ -5,6 +5,7 @@
 #include "xrserver.h"
 #include "Level.h"
 #include "game_cl_base.h"
+#include "string_table.h"
 
 #include "ui\UIBuyWndShared.h"
 
@@ -324,7 +325,11 @@ void game_sv_TeamDeathmatch::OnPlayerKillPlayer(game_PlayerState* ps_killer, gam
 #ifdef DEBUG
 						Msg("--- Kicking player %s", pCL->ps->name);
 #endif // #ifdef DEBUG
-						m_server->DisconnectClient(pCL);
+
+						LPSTR	reason;
+						STRCONCAT( reason, CStringTable().translate("st_kicked_by_server").c_str() );
+						m_server->DisconnectClient( pCL, reason );
+
 						break;
 					}					
 					m_server->clients_Unlock();

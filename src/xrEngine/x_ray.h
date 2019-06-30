@@ -34,6 +34,7 @@ private:
 	EVENT					eStart;
 	EVENT					eStartLoad;
 	EVENT					eDisconnect;
+	EVENT					eConsole;
 
 	void					Level_Append		(LPCSTR lname);
 public:

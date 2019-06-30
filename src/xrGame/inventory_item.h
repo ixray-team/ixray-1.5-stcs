@@ -302,6 +302,11 @@ protected:
 
 	bool								m_just_after_spawn;
 	bool								m_activated;
+
+	bool    m_is_helper;
+public:
+	bool	is_helper_item				()				 { return m_is_helper; }
+	void	set_is_helper				(bool is_helper) { m_is_helper = is_helper; }
 }; // class CInventoryItem
 
 #include "inventory_item_inline.h"

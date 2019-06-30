@@ -67,9 +67,29 @@ void light::set_texture		(LPCSTR name)
 
 #pragma todo				("Only shadowed spot implements projective texture")
 	string256				temp;
-	s_spot.create			(RImplementation.Target->b_accum_spot,strconcat(sizeof(temp),temp,"r2\\accum_spot_",name),name);
-	s_spot.create			(RImplementation.Target->b_accum_spot,strconcat(sizeof(temp),temp,"r2\\accum_spot_",name),name);
+	
+	strconcat(sizeof(temp),temp,"r2\\accum_spot_",name);
+	//strconcat(sizeof(temp),temp,"_nomsaa",name);
+	s_spot.create			(RImplementation.Target->b_accum_spot,temp,name);
+
+#if	RENDER!=R_R3
 	s_volumetric.create		("accum_volumetric", name);
+#else	//	RENDER!=R_R3
+	s_volumetric.create		("accum_volumetric_nomsaa", name);
+	if( RImplementation.o.dx10_msaa )
+	{
+		int bound = 1;
+
+		if( !RImplementation.o.dx10_msaa_opt )
+			bound = RImplementation.o.dx10_msaa_samples;
+
+		for( int i = 0; i < bound; ++i )
+		{
+			s_spot_msaa[i].create				(RImplementation.Target->b_accum_spot_msaa[i],strconcat(sizeof(temp),temp,"r2\\accum_spot_",name),name);
+			s_volumetric_msaa[i].create	(RImplementation.Target->b_accum_volumetric_msaa[i],strconcat(sizeof(temp),temp,"r2\\accum_volumetric_",name),name);
+		}
+	}
+#endif	//	RENDER!=R_R3
 }
 #endif
 
@@ -289,6 +309,24 @@ void	light::export		(light_Package& package)
 						L->spatial.sector	= spatial.sector;	//. dangerous?
 						L->s_spot			= s_spot	;
 						L->s_point			= s_point	;
+						
+						// Holger - do we need to export msaa stuff as well ?
+#if	RENDER==R_R3
+						if( RImplementation.o.dx10_msaa )
+						{
+							int bound = 1;
+
+							if( !RImplementation.o.dx10_msaa_opt )
+								bound = RImplementation.o.dx10_msaa_samples;
+
+							for( int i = 0; i < bound; ++i )
+							{
+								L->s_point_msaa[i] = s_point_msaa[i];
+								L->s_spot_msaa[i] = s_spot_msaa[i];
+								//L->s_volumetric_msaa[i] = s_volumetric_msaa[i];
+							}
+						}
+#endif	//	RENDER!=R_R3
 
 						//	Igor: add volumetric support
 						L->set_volumetric(flags.bVolumetric);
@@ -310,6 +348,14 @@ void	light::export		(light_Package& package)
 			case IRender_Light::SPOT:		package.v_spot.push_back	(this);	break;
 		}
 	}
+}
+
+void	light::set_attenuation_params	(float a0, float a1, float a2, float fo)
+{
+	attenuation0 = a0;
+	attenuation1 = a1;
+	attenuation2 = a2;
+	falloff      = fo;
 }
 
 #endif

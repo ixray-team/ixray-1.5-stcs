@@ -15,6 +15,8 @@
 
 
 #define ENGINE_API				// fake, to enable sharing with engine
+//comment - ne figa oni ne sharyatsya
+
 #define ECORE_API				// fake, to enable sharing with editors
 #define XR_EPROPS_API
 #include "../../xrcore/clsid.h"

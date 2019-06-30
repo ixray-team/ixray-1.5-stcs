@@ -28,6 +28,8 @@
 #include "inventory.h"
 #include "phdynamicdata.h"
 #include "activatingcharcollisiondelay.h"
+#include "ai/stalker/ai_stalker.h"
+#include "stalker_movement_manager_smart_cover.h"
 
 //const float default_hinge_friction = 5.f;//gray_wolf comment
 #ifdef DEBUG
@@ -281,9 +283,8 @@ void CCharacterPhysicsSupport::SpawnInitPhysics( CSE_Abstract* e )
 }
 void		CCharacterPhysicsSupport::					SpawnCharacterCreate			( )
 {
-	if( HACK_TERRIBLE_DONOT_COLLIDE_ON_SPAWN( m_EntityAlife ) 
-	) //||  m_EntityAlife.animation_movement_controlled( )
-	return;
+	if( HACK_TERRIBLE_DONOT_COLLIDE_ON_SPAWN( m_EntityAlife ) ) //||  m_EntityAlife.animation_movement_controlled( )
+		return;
 	CreateCharacterSafe();
 	//if( m_eType != etStalker )
 	//	CreateCharacterSafe();
@@ -419,6 +420,11 @@ void CCharacterPhysicsSupport::KillHit( SHit &H )
 //	if(Type() == etStalker && xr_strcmp(dbg_stalker_death_anim, "none") != 0)
 	float hit_angle = 0;
 	MotionID m = m_death_anims.motion( m_EntityAlife, H, hit_angle );
+
+	CAI_Stalker* const	holder = m_EntityAlife.cast_stalker();
+	if (holder && (holder->wounded() || holder->movement().current_params().cover()) )
+		m		= MotionID();
+
 	if( m.valid( ) )//&& cmp( prev_pose, mXFORM ) 
 	{
 		destroy( m_interactive_motion );
@@ -1071,7 +1077,7 @@ void	CCharacterPhysicsSupport::	CreateShell						( CObject* who, Fvector& dp, Fv
 
 
 	K->CalculateBones_Invalidate();
-	K->CalculateBones	();
+	K->CalculateBones	(TRUE);
 
 
 	if( m_eType != etBitting )
@@ -1238,9 +1244,8 @@ void		 CCharacterPhysicsSupport::in_NetRelcase(CObject* O)
 {
 	CPHCapture* c=m_PhysicMovementControl->PHCapture();
 	if(c)
-	{
-		c->net_Relcase(O);
-	}
+		c->OnNetDestroyObject( O );
+
 	if( m_sv_hit.is_valide() && m_sv_hit.initiator() == O )
 		m_sv_hit = SHit();
 }
@@ -1364,4 +1369,19 @@ void		CCharacterPhysicsSupport::in_Die( )
 		return;
 	}
 	in_Hit( m_sv_hit, true );
+}
+
+u16	CCharacterPhysicsSupport::PHGetSyncItemsNumber( )
+{
+	if(movement()->CharacterExist())
+		return 1;
+	else 
+		return m_EntityAlife.CPhysicsShellHolder::PHGetSyncItemsNumber();
+}
+CPHSynchronize*	CCharacterPhysicsSupport::PHGetSyncItem	(u16 item)
+{
+	if(movement()->CharacterExist()) 
+		return movement()->GetSyncItem();
+	else	
+		return m_EntityAlife.CPhysicsShellHolder::PHGetSyncItem(item);
 }

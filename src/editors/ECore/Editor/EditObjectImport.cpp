@@ -178,7 +178,7 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize)
                                 bResult=false;
                                 break;
                             }
-                            MESH->m_VMaps.push_back(xr_new<st_VMap>(Ivmap->name,vmtUV,Ivmap->perpoly));
+                            MESH->m_VMaps.push_back(xr_new<st_VMap>(Ivmap->name,vmtUV,!!Ivmap->perpoly));
                             st_VMap* Mvmap=MESH->m_VMaps.back();
                             int vcnt=Ivmap->nverts;
                             // VMap
@@ -198,7 +198,7 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize)
                                 bResult=false;
                                 break;
                             }
-                            MESH->m_VMaps.push_back(xr_new<st_VMap>(Ivmap->name,vmtWeight,FALSE));
+                            MESH->m_VMaps.push_back(xr_new<st_VMap>(Ivmap->name,vmtWeight,false));
                             st_VMap* Mvmap=MESH->m_VMaps.back();
                             int vcnt=Ivmap->nverts;
                             // VMap

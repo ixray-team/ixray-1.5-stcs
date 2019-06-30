@@ -106,6 +106,7 @@ public:
 	virtual BOOL CanCallSkinMenu() {return TRUE;};
 	virtual BOOL CanCallTeamSelectMenu();
 	virtual	BOOL CanCallInventoryMenu();
+			bool LocalPlayerCanBuyItem(shared_str const & name_sect);
 	
 			void	Set_ShowPlayerNames			(bool Show) {m_bShowPlayersNames = Show;};
 			bool	Get_ShowPlayerNames			()			{return m_bShowPlayersNames;};

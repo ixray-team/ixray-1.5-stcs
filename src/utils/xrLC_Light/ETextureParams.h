@@ -3,7 +3,7 @@
 //----------------------------------------------------
 #ifndef ETextureParamsH
 #define ETextureParamsH
-
+class INetReader;
 #pragma pack(push,1)
 //struct ECORE_API STextureParams{
 struct		 STextureParams{
@@ -143,7 +143,7 @@ struct		 STextureParams{
 	}
     void Load (IReader& F);
     void Save (IWriter& F);
-	void read ( IReader	&r );
+	void read ( INetReader	&r );
 	void write( IWriter	&w ) const ;
 #ifdef _EDITOR
 	PropValue::TOnChange			OnTypeChangeEvent;

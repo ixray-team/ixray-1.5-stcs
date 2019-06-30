@@ -26,6 +26,12 @@
 
 //const int     SCROLLBARS_SHIFT		= 5;
 
+CUIMapWnd* g_map_wnd = NULL; // quick temporary solution -(
+CUIMapWnd* GetMapWnd()
+{
+	return g_map_wnd;
+}
+
 CUIMapWnd::CUIMapWnd()
 {
 	m_tgtMap				= NULL;
@@ -45,6 +51,7 @@ CUIMapWnd::CUIMapWnd()
 	m_scroll_mode			= false;
 	m_nav_timing			= Device.dwTimeGlobal;
 	hint_wnd				= NULL;
+	g_map_wnd				= this;
 }
 
 CUIMapWnd::~CUIMapWnd()
@@ -57,6 +64,7 @@ CUIMapWnd::~CUIMapWnd()
 	delete_data( m_dbg_text_hint );
 	delete_data( m_dbg_info );
 #endif // DEBUG/**/
+	g_map_wnd				= NULL;
 }
 
 
@@ -352,6 +360,17 @@ void CUIMapWnd::Draw()
 #endif // DEBUG/**/
 
 	m_btn_nav_parent->Draw();
+}
+
+void CUIMapWnd::MapLocationRelcase(CMapLocation* ml)
+{
+	CUIWindow*	owner = m_map_location_hint->GetOwner();
+	if (owner)
+	{
+		CMapSpot* ms = smart_cast<CMapSpot*>(owner);
+		if(ms->MapLocation()==ml)
+			m_map_location_hint->SetOwner(NULL);
+	}
 }
 
 void CUIMapWnd::DrawHint()

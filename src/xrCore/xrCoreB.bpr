@@ -61,27 +61,26 @@
     <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="ilink32"/>
-    <USERDEFINES value="_EDITOR;_XRCOREB;XRCORE_EXPORTS;_DEBUG"/>
+    <USERDEFINES value="_EDITOR;_XRCOREB;XRCORE_EXPORTS"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="xrCoreB.bpf"/>
     <INCLUDEPATH value="blackbox;$(ETOOLS_DIR);$(DXSDK_DIR)\Include;$(BCB)\include;$(BCB)\include\vcl;$(BCB)\Include\Mfc"/>
     <LIBPATH value="blackbox;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;x:\stalker_addon\libraries;$(BCB)\lib\psdk;X:\stalker_addon\sources\sdk\components\ElPack\Code"/>
     <WARNINGS value="-w8092 -w8091 -w8090 -w8089 -w8087 -wprc -wucp -wstv -wstu -wsig -wpin 
-      -w-par -wnod -wnak -wdef -wcln -wbbf -wasm -wamp -wamb"/>
+      -w-par -wnod -wnak -w-8027 -w-8026 -wdef -wcln -wbbf -wasm -wamp -wamb"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
     <IDLCFLAGS value="-Iblackbox -I$(ETOOLS_DIR) -I$(DXSDK_DIR)\Include -I$(BCB)\include 
       -I$(BCB)\include\vcl -I$(BCB)\Include\Mfc -src_suffix cpp -D_EDITOR 
-      -D_XRCOREB -DXRCORE_EXPORTS -D_DEBUG -boa"/>
+      -D_XRCOREB -DXRCORE_EXPORTS -boa"/>
     <CFLAG1 value="-WD -Od -H=x:\intermediate_ed\core\pch.csm -Q -Vx -Ve -xf -xp -VF -ff -X- 
-      -r- -ps -a4 -6 -b- -k -y -v -vi- -tWD -tWM -c"/>
-    <PFLAGS value="-N2x:\intermediate_ed\core -N0x:\intermediate_ed\core -$Y+ -$W -$O- -$A8 
+      -ps -a4 -6 -b- -k- -vi -tWD -tWM -c"/>
+    <PFLAGS value="-N2x:\intermediate_ed\core -N0x:\intermediate_ed\core -$Y- -$L- -$D- -$A8 
       -v -JPHNE -M"/>
     <RFLAGS value=""/>
-    <AFLAGS value="/mu /w2 /zi"/>
-    <LFLAGS value="-lx:\stalker_addon\libraries -Ix:\intermediate_ed\core -D&quot;&quot; -aa -Tpd -x 
-      -Gi -v"/>
+    <AFLAGS value="/mu /w2 /zn"/>
+    <LFLAGS value="-lx:\stalker_addon\libraries -Ix:\intermediate_ed\core -D&quot;&quot; -aa -Tpd -x -Gi"/>
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
@@ -302,8 +301,8 @@ Item0=$(BCB)\source\vcl
 
 [HistoryLists\hlConditionals]
 Count=8
-Item0=_EDITOR;_XRCOREB;XRCORE_EXPORTS;_DEBUG
-Item1=_EDITOR;_XRCOREB;XRCORE_EXPORTS
+Item0=_EDITOR;_XRCOREB;XRCORE_EXPORTS
+Item1=_EDITOR;_XRCOREB;XRCORE_EXPORTS;_DEBUG
 Item2=_XRCOREB;XRCORE_EXPORTS
 Item3=_XRCOREB;XRCORE_EXPORTS;_DEBUG
 Item4=_XRCOREB

@@ -1,7 +1,8 @@
 #include "stdafx.h"
 //#include "cl_collector.h"
 #include "build.h"
-#include "xrMU_Model.h"
+#include "../xrLC_Light/xrMU_Model.h"
+#include "../xrLC_Light/xrMU_Model_Reference.h"
 
 #include "../xrLC_Light/xrLC_GlobalData.h"
 #include "../xrLC_Light/xrface.h"
@@ -23,8 +24,9 @@ int getCFormVID(vecVertex& V,Vertex *F)
 	vecVertexIt it = std::lower_bound(V.begin(),V.end(),F);
 	return int(it-V.begin());
 }
-
 int bCriticalErrCnt = 0;
+/*
+
 int getTriByEdge(Vertex *V1, Vertex *V2, Face* parent, vecFace &ids)
 {
 	Face*	found	= 0;
@@ -54,7 +56,7 @@ int getTriByEdge(Vertex *V1, Vertex *V2, Face* parent, vecFace &ids)
 		return -1;
 	}
 }
-
+*/
 void TestEdge			(Vertex *V1, Vertex *V2, Face* parent)
 {
 	Face*	found	= 0;
@@ -155,8 +157,8 @@ void CBuild::BuildCForm	()
 
 	// Models
 	Status			("Models...");
-	for (u32 ref=0; ref<mu_refs.size(); ref++)
-		mu_refs[ref]->export_cform_game(CL);
+	for (u32 ref=0; ref<mu_refs().size(); ref++)
+		mu_refs()[ref]->export_cform_game(CL);
 
 	// Simplification
 	if (g_params().m_quality!=ebqDraft)

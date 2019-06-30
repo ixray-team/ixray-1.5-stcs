@@ -112,6 +112,7 @@ void register_mp_console_commands();
 		u32		g_dwDebugNodeSource		= 0;
 		u32		g_dwDebugNodeDest		= 0;
 extern	BOOL	g_bDrawBulletHit;
+extern	BOOL	g_bDrawFirstBulletCrosshair;
 
 		float	debug_on_frame_gather_stats_frequency	= 0.f;
 #endif
@@ -412,13 +413,12 @@ public:
 	  }
 };
 
-bool valid_file_name(LPCSTR file_name)
+bool valid_saved_game_name(LPCSTR file_name)
 {
-
 	LPCSTR		I = file_name;
 	LPCSTR		E = file_name + xr_strlen(file_name);
 	for ( ; I != E; ++I) {
-		if (!strchr("/\\:*?\"<>|",*I))
+		if (!strchr("/\\:*?\"<>|^()[]%",*I))
 			continue;
 
 		return	(false);
@@ -468,8 +468,8 @@ public:
 			net_packet.w_u8		(0);
 			Level().Send		(net_packet,net_flags(TRUE));
 		}else{
-			if(!valid_file_name(S)){
-				Msg("invalid file name");
+			if(!valid_saved_game_name(S)){
+				Msg("! Save failed: invalid file name - %s", S);
 				return;
 			}
 
@@ -530,6 +530,13 @@ public:
 			Msg						("! Cannot load saved game %s, version mismatch or saved game is corrupted",saved_game);
 			return;
 		}
+
+		if ( !valid_saved_game_name(saved_game) )
+		{
+			Msg						("! Cannot load saved game %s, invalid file name",saved_game);
+			return;
+		}
+
 /*     moved to level_network_messages.cpp
 		CSavedGameWrapper			wrapper(args);
 		if (wrapper.level_id() == ai().level_graph().level_id()) {
@@ -1717,6 +1724,7 @@ CMD4(CCC_Integer,			"hit_anims_tune",						&tune_hit_anims,		0, 1);
 	CMD3(CCC_Mask,		"dbg_draw_ph_ray_motions"		,&ph_dbg_draw_mask,	phDbgDrawRayMotions);
 	CMD4(CCC_Float,		"dbg_ph_vel_collid_damage_to_display",&dbg_vel_collid_damage_to_display,	0.f, 1000.f);
 	CMD4(CCC_DbgBullets,"dbg_draw_bullet_hit",			&g_bDrawBulletHit,	0, 1)	;
+	CMD4(CCC_Integer,	"dbg_draw_fb_crosshair",		&g_bDrawFirstBulletCrosshair, 0, 1);
 	CMD1(CCC_DbgPhTrackObj,"dbg_track_obj");
 	CMD3(CCC_Mask,		"dbg_ph_actor_restriction"		,&ph_dbg_draw_mask1, ph_m1_DbgActorRestriction);
 	CMD3(CCC_Mask,		"dbg_draw_ph_hit_anims"			,&ph_dbg_draw_mask1, phDbgHitAnims);

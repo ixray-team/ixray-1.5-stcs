@@ -154,12 +154,18 @@ void CRender::render_menu	()
 
 	// Main Render
 	{
-		Target->u_setrt						(Target->rt_Generic_0,0,0,HW.pBaseZB);		// LDR RT
-		g_pGamePersistent->OnRenderPPUI_main()	;	// PP-UI
+      if( !RImplementation.o.dx10_msaa )
+		   Target->u_setrt						(Target->rt_Generic_0,0,0,HW.pBaseZB);		// LDR RT
+      else
+         Target->u_setrt						(Target->rt_Generic_0,0,0,RImplementation.Target->rt_MSAADepth->pZRT);		// LDR RT
+	   g_pGamePersistent->OnRenderPPUI_main()	;	// PP-UI
 	}
 	// Distort
 	{
-		Target->u_setrt						(Target->rt_Generic_1,0,0,HW.pBaseZB);		// Now RT is a distortion mask
+      if( !RImplementation.o.dx10_msaa )
+		   Target->u_setrt						(Target->rt_Generic_1,0,0,HW.pBaseZB);		// Now RT is a distortion mask
+      else
+         Target->u_setrt						(Target->rt_Generic_1,0,0,RImplementation.Target->rt_MSAADepth->pZRT);		// Now RT is a distortion mask
 		//CHK_DX(HW.pDevice->Clear			( 0L, NULL, D3DCLEAR_TARGET, color_rgba(127,127,0,127), 1.0f, 0L));
 		FLOAT ColorRGBA[4] = { 127.0f/255.0f, 127.0f/255.0f, 0.0f, 127.0f/255.0f};
 		HW.pDevice->ClearRenderTargetView(Target->rt_Generic_1->pRT, ColorRGBA);		
@@ -205,7 +211,12 @@ void CRender::Render		()
 		render_menu			()	;
 		return					;
 	};
-	if( !(g_pGameLevel && g_pGameLevel->pHUD) )	
+
+	IMainMenu*	pMainMenu = g_pGamePersistent?g_pGamePersistent->m_pMainMenu:0;
+	bool	bMenu = pMainMenu?pMainMenu->CanSkipSceneRendering():false;
+
+	if( !(g_pGameLevel && g_pGameLevel->pHUD)
+		|| bMenu)	
 	{
 		Target->u_setrt				( Device.dwWidth,Device.dwHeight,HW.pBaseRT,NULL,NULL,HW.pBaseZB);
 		return;
@@ -320,6 +331,8 @@ void CRender::Render		()
 	Target->phase_occq							();
 	LP_normal.clear								();
 	LP_pending.clear							();
+   if( RImplementation.o.dx10_msaa )
+      RCache.set_ZB( RImplementation.Target->rt_MSAADepth->pZRT );
 	{
 		PIX_EVENT(DEFER_TEST_LIGHT_VIS);
 		// perform tests
@@ -359,14 +372,18 @@ void CRender::Render		()
 	LP_normal.sort							();
 	LP_pending.sort							();
 
-	//******* Main render :: PART-1 (second)
+   //******* Main render :: PART-1 (second)
 	if (split_the_scene_to_minimize_wait)	
 	{
 		PIX_EVENT(DEFER_PART1_SPLIT);
 		// skybox can be drawn here
 		if (0)
 		{
-			Target->u_setrt		( Target->rt_Generic_0,	Target->rt_Generic_1,0,HW.pBaseZB );
+
+         if( !RImplementation.o.dx10_msaa )
+			   Target->u_setrt		( Target->rt_Generic_0,	Target->rt_Generic_1,0,HW.pBaseZB );
+         else
+            Target->u_setrt		( Target->rt_Generic_0,	Target->rt_Generic_1,0,RImplementation.Target->rt_MSAADepth->pZRT );
 			RCache.set_CullMode	( CULL_NONE );
 			RCache.set_Stencil	( FALSE		);
 
@@ -418,6 +435,13 @@ void CRender::Render		()
 		Lights_LastFrame.clear	();
 	}
 
+   // full screen pass to mark msaa-edge pixels in highest stencil bit
+   if( RImplementation.o.dx10_msaa )
+   {
+	   PIX_EVENT( MARK_MSAA_EDGES );
+      Target->mark_msaa_edges();
+   }
+
 	//	TODO: DX10: Implement DX10 rain.
 	if (ps_r2_ls_flags.test(R3FLAG_DYN_WET_SURF))
 	{
@@ -443,7 +467,10 @@ void CRender::Render		()
 		RCache.set_xform_project			(Device.mProject); 
 		RCache.set_xform_view				(Device.mView);
 		// Stencil - write 0x1 at pixel pos - 
-		RCache.set_Stencil					( TRUE,D3DCMP_ALWAYS,0x01,0xff,0xff,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE,D3DSTENCILOP_KEEP);
+      if( !RImplementation.o.dx10_msaa )
+		   RCache.set_Stencil					( TRUE,D3DCMP_ALWAYS,0x01,0xff,0xff,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE,D3DSTENCILOP_KEEP);
+      else
+		   RCache.set_Stencil					( TRUE,D3DCMP_ALWAYS,0x01,0xff,0x7f,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE,D3DSTENCILOP_KEEP);
 		//RCache.set_Stencil				(TRUE,D3DCMP_ALWAYS,0x00,0xff,0xff,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE,D3DSTENCILOP_KEEP);
 		RCache.set_CullMode					(CULL_CCW);
 		RCache.set_ColorWriteEnable			();

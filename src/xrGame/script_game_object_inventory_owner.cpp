@@ -79,16 +79,22 @@ void _AddIconedTalkMessage(LPCSTR caption, LPCSTR text, LPCSTR texture_name, LPC
 	}
 }
 
-bool _give_news	(LPCSTR caption, LPCSTR news, LPCSTR texture_name, int delay, int show_time);
+void _give_news	(LPCSTR caption, LPCSTR news, LPCSTR texture_name, int delay, int show_time, int type);
 
-bool  CScriptGameObject::GiveGameNews		(LPCSTR caption, LPCSTR news, LPCSTR texture_name, int delay, int show_time)
+void  CScriptGameObject::GiveGameNews(LPCSTR caption, LPCSTR news, LPCSTR texture_name, int delay, int show_time)
 {
-	return _give_news	(caption, news,	texture_name, delay, show_time);
+	GiveGameNews(caption, news,	texture_name, delay, show_time, 0);
 }
 
-bool _give_news	(LPCSTR caption, LPCSTR text, LPCSTR texture_name, int delay, int show_time)
+void  CScriptGameObject::GiveGameNews(LPCSTR caption, LPCSTR news, LPCSTR texture_name, int delay, int show_time, int type)
+{
+	_give_news(caption, news, texture_name, delay, show_time, type);	
+}
+
+void _give_news	(LPCSTR caption, LPCSTR text, LPCSTR texture_name, int delay, int show_time, int type)
 {
 	GAME_NEWS_DATA				news_data;
+	news_data.m_type			= (GAME_NEWS_DATA::eNewsType)type;
 	news_data.news_caption		= caption;
 	news_data.news_text			= text;
 	if(show_time!=0)
@@ -97,15 +103,11 @@ bool _give_news	(LPCSTR caption, LPCSTR text, LPCSTR texture_name, int delay, in
 	VERIFY(xr_strlen(texture_name)>0);
 
 	news_data.texture_name			= texture_name;
-//	news_data.tex_rect				= tex_rect;
-
 
 	if(delay==0)
 		Actor()->AddGameNews(news_data);
 	else
 		Actor()->AddGameNews_deffered(news_data,delay);
-
-	return true;
 }
 
 bool  CScriptGameObject::HasInfo				(LPCSTR info_id)
@@ -1302,7 +1304,7 @@ CCoverPoint const* CScriptGameObject::find_best_cover			(Fvector position_to_cov
 	return								(stalker->find_best_cover(position_to_cover_from));
 }
 
-bool CScriptGameObject::suitable_smart_cover					(smart_cover::object* object)
+bool CScriptGameObject::suitable_smart_cover					(CScriptGameObject* object)
 {
 	if (!object) {
 		ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError, "CAI_Stalker::suitable_smart_cover null smart cover specified!");
@@ -1315,7 +1317,13 @@ bool CScriptGameObject::suitable_smart_cover					(smart_cover::object* object)
 		return							(false);
 	}
 
-	smart_cover::cover const& cover		= object->cover();
+	smart_cover::object const* const	smart_object = smart_cast<smart_cover::object const*>(&object->object());
+	if (!smart_object) {
+		ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError, "CAI_Stalker : suitable_smart_cover: passed non-smart_cover object!");
+		return							(false);
+	}
+
+	smart_cover::cover const& cover		= smart_object->cover();
 	if (!cover.is_combat_cover())
 		return							(true);
 

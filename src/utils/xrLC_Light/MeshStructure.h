@@ -1,11 +1,11 @@
 #ifndef __MESHSTRUCTURE_H__
 #define __MESHSTRUCTURE_H__
 
-#ifdef MESHSTRUCTURE_EXSPORTS_IMPORTS
+//#ifdef MESHSTRUCTURE_EXSPORTS_IMPORTS
 #	define MESHSTRUCTURE_API XRLC_LIGHT_API
-#else
-#	define MESHSTRUCTURE_API 
-#endif
+//#else
+//#	define MESHSTRUCTURE_API 
+//#endif
 
 	//typedef	xr_vector<_vertex*>		v_vertices;
 	//typedef	v_vertices::iterator	v_vertices_it;
@@ -32,7 +32,7 @@ static	Tface* read_create();
 	void 	Failure		();
 	void	OA_Unwarp	();
 
-virtual	void	read		( IReader	&r );
+virtual	void	read		( INetReader	&r );
 virtual	void	write		( IWriter	&w )const;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -191,8 +191,10 @@ struct MESHSTRUCTURE_API Tvertex: public DataVertexType
 
 	typedef xr_vector<type_face*>			v_faces;
 	typedef typename v_faces::iterator		v_faces_it;
-	
-	typedef xr_vector<type_vertex*>			v_vertices;
+
+	//typedef typename xr_vector<type_vertex>::iterator v_dummy;
+	typedef xr_vector<type_vertex*>			 v_vertices;
+
 	typedef typename v_vertices::iterator	v_vertices_it;
 //////////////////////////////////////////////////////////////
 				Tvertex();
@@ -200,7 +202,7 @@ virtual			~Tvertex();
 Tvertex*		CreateCopy_NOADJ( v_vertices& vertises_storage ) const;
 static	Tvertex* read_create();
 
-virtual	void	read		( IReader	&r );
+virtual	void	read		( INetReader	&r );
 virtual	void	write		( IWriter	&w )const;
 ///////////////////////////////////////////////////////////////
 	v_faces							m_adjacents;
@@ -226,7 +228,7 @@ virtual	void	write		( IWriter	&w )const;
 						m_adjacents.erase(I);
 	}
 
-	void	normalFromAdj()
+	IC void	normalFromAdj()
 	{
 		N.set( 0, 0, 0 );
 		for ( v_faces_it ad = m_adjacents.begin(); ad!=m_adjacents.end(); ++ad )
@@ -246,7 +248,7 @@ IC  void   _destroy_vertex( typeVertex* &v, bool unregister )
 
 
 template<typename typeVertex>
-void isolate_vertices(BOOL bProgress, xr_vector<typeVertex*> &vertices )
+IC void isolate_vertices(BOOL bProgress, xr_vector<typeVertex*> &vertices )
 {
 	if (bProgress)		Status		("Isolating vertices...");
 	//g_bUnregister		= false;

@@ -5,7 +5,7 @@
 
 #include "tcf.h"
 #include "base_face.h"
-#define MESHSTRUCTURE_EXSPORTS_IMPORTS
+
 #include "MeshStructure.h"
 #include "serialize.h"
 
@@ -14,8 +14,8 @@
 struct DataFace;
 class  CLightmap;
 
-struct XRLC_LIGHT_API DataVertex;
-typedef	XRLC_LIGHT_API Tvertex< XRLC_LIGHT_API DataVertex> Vertex;
+struct  DataVertex;
+typedef	Tvertex< DataVertex> Vertex;
 
 typedef std::pair<Vertex*, Vertex *>	PAIR_VV;
 typedef xr_map<Vertex*,Vertex*>			map_v2v;	// vertex to vertex translation
@@ -31,14 +31,14 @@ public:
 
 	IC	BOOL	 similar			( Tvertex<DataVertex> &V, float eps );
 
-virtual	void		read	(IReader	&r );
+virtual	void		read	(INetReader	&r );
 virtual	void		write	(IWriter	&w )const;
 
 	DataVertex				(){};
 	virtual		~DataVertex				(){};
 };
 
-typedef	Tface<DataVertex>	XRLC_LIGHT_API Face;
+typedef	 Tface<DataVertex>  Face;
 
 
 struct XRLC_LIGHT_API DataFace	: public base_Face
@@ -61,7 +61,7 @@ public:
 	void		AddChannel			( Fvector2 &p1, Fvector2 &p2, Fvector2 &p3 ); 
 	BOOL		hasImplicitLighting	();
 
-	virtual	void		read	(IReader	&r );
+	virtual	void		read	(INetReader	&r );
 	virtual	void		write	(IWriter	&w )const;
 
 	DataFace(){};

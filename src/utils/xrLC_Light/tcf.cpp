@@ -1,6 +1,6 @@
 #include	"stdafx.h"
 #include	"tcf.h"
-
+#include	"net_stream.h"
 void	_TCF::barycentric	(Fvector2 &P, float &u, float &v, float &w)
 {
 	Fvector2 	kV02; kV02.sub(uv[0],uv[2]);
@@ -19,7 +19,7 @@ void	_TCF::barycentric	(Fvector2 &P, float &u, float &v, float &w)
 	w			= 1.0f - u - v;
 }
 //	Fvector2			uv	[3];
-void	_TCF::read		( IReader	&r )
+void	_TCF::read		( INetReader	&r )
 {
 	r.r(uv, sizeof(uv) );
 }

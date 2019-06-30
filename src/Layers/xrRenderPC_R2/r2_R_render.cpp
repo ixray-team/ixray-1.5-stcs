@@ -195,7 +195,11 @@ void CRender::Render		()
 		render_menu			()	;
 		return					;
 	};
-	if( !(g_pGameLevel && g_pGameLevel->pHUD) )	return;
+
+	IMainMenu*	pMainMenu = g_pGamePersistent?g_pGamePersistent->m_pMainMenu:0;
+	bool	bMenu = pMainMenu?pMainMenu->CanSkipSceneRendering():false;
+
+	if( !(g_pGameLevel && g_pGameLevel->pHUD) || bMenu)	return;
 //.	VERIFY					(g_pGameLevel && g_pGameLevel->pHUD);
 
 	// Configure

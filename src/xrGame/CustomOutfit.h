@@ -54,6 +54,8 @@ public:
 	float					m_fBleedingRestoreSpeed;
 
 	shared_str				m_NightVisionSect;
+	shared_str				m_BonesProtectionSect;
+
 	virtual u32				ef_equipment_type		() const;
 	virtual	BOOL			BonePassBullet			(int boneID);
 	const shared_str&		GetFullIconName			() const	{ return m_full_icon_name; }
@@ -62,7 +64,9 @@ public:
 	virtual BOOL			net_Spawn				(CSE_Abstract* DC);
 	virtual void			net_Export				(NET_Packet& P);
 	virtual void			net_Import				(NET_Packet& P);
-	void					ApplySkinModel			(CActor* pActor, bool bDress, bool bHUDOnly);
+			void			ApplySkinModel			(CActor* pActor, bool bDress, bool bHUDOnly);
+			void			ReloadBonesProtection	(CActor* pActor);
+
 protected:
 	virtual bool			install_upgrade_impl( LPCSTR section, bool test );
 };

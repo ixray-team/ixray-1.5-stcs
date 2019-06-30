@@ -58,6 +58,7 @@ CInventoryItem::CInventoryItem()
 	m_eItemCurrPlace	= eItemPlaceUndefined;
 	m_Description		= "";
 	m_section_id		= 0;
+	m_is_helper			= false;
 }
 
 CInventoryItem::~CInventoryItem() 
@@ -862,14 +863,20 @@ void CInventoryItem::PH_A_CrPr		()
 		VERIFY(object().Visual());
 		IKinematics *K = object().Visual()->dcast_PKinematics();
 		VERIFY( K );
-		K->CalculateBones_Invalidate();
-		K->CalculateBones(TRUE);
+		if(!object().PPhysicsShell()->isFullActive())
+		{
+			K->CalculateBones_Invalidate();
+			K->CalculateBones(TRUE);
+		}
 		if (!object().PPhysicsShell())
 		{
 			Msg("! ERROR: PhysicsShell is NULL, object [%s][%d]", object().cName().c_str(), object().ID());
 			R_ASSERT2(0, "physical shell is NULL");
 		}
+
 		object().PPhysicsShell()->GetGlobalTransformDynamic(&object().XFORM());
+		K->CalculateBones_Invalidate();
+		K->CalculateBones(TRUE);
 #if	0
 		Fbox bb= BoundingBox	();
 		DBG_OpenCashedDraw		();

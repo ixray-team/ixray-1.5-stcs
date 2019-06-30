@@ -299,8 +299,9 @@ void CUIMapList::InitFromXml(CUIXml& xml_doc, const char* path){
 
 void CUIMapList::UpdateMapList(EGameIDs GameType)
 {
+	typedef buffer_vector<shared_str>	MapList;
+
 	m_pList1->Clear				();
-	m_pList2->Clear				();
 
 	const SGameTypeMaps& M		= gMapListHelper.GetMapListFor(GameType);
 	u32 cnt						= M.m_map_names.size();
@@ -310,7 +311,56 @@ void CUIMapList::UpdateMapList(EGameIDs GameType)
 		itm->SetData			( (void*)(__int64)i );
 		itm->Enable				(true);//m_pExtraContentFilter->IsDataEnabled(M.m_map_names[i].map_name.c_str()));
 	}
+	
+	u32 list_size				= m_pList2->GetSize();
+	if ( list_size == 0 )
+	{
+		m_pList2->Clear			();
+		return;
+	}
+
+	MapList		map_list( _alloca( sizeof(shared_str) * list_size ), list_size );
+
+	for ( u32 i = 0; i < list_size; ++i )
+	{
+		LPCSTR st = m_pList2->GetText( i );
+		map_list.push_back( st );
+	}
+	m_pList2->Clear();
+
+	MapList::const_iterator itb = map_list.begin();
+	MapList::const_iterator ite = map_list.end();
+	for ( ; itb != ite; ++itb )
+	{
+		CUIListBoxItem* itm1 = GetMapItem_fromList1( *itb );
+		if ( itm1 )
+		{
+			CUIListBoxItem* itm2 = m_pList2->AddItem( (*itb).c_str() );
+			itm2->SetData( itm1->GetData() );
+			itm2->Enable( true );
+		}
+	}
 }
+
+CUIListBoxItem* CUIMapList::GetMapItem_fromList1( shared_str const& map_name )
+{
+	shared_str map_name1;
+	for ( u32 i = 0; i < m_pList1->GetSize(); ++i )
+	{
+		map_name1._set( m_pList1->GetText( i ) );
+		if ( map_name1 == map_name )
+		{
+			return smart_cast<CUIListBoxItem*>( m_pList1->GetItem(i) );
+		}
+	}
+	return NULL;
+}
+
+void CUIMapList::ClearList()
+{
+	m_pList1->Clear();
+	m_pList2->Clear();
+}	
 
 void CUIMapList::OnBtnLeftClick(){
 	m_pList2->RemoveWindow(m_pList2->GetSelected());

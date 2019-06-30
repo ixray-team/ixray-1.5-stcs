@@ -7,7 +7,7 @@
 #endif
 
 
-
+class INetReader;
 struct XRLC_LIGHT_API  lm_layer
 {
 	enum LMODE
@@ -40,7 +40,7 @@ struct XRLC_LIGHT_API  lm_layer
 	void					Pixel			(u32 ID, u8& r, u8& g, u8& b, u8& s, u8& h);
 	void					Pack			(xr_vector<u32>& dest);
 	void					Pack_hemi		(xr_vector<u32>& dest);
-	void					read			( IReader	&r );
+	void					read			( INetReader	&r );
 	void					write			( IWriter	&w ) const ;
 
 							lm_layer()				{ width=height=0; }

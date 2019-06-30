@@ -180,8 +180,19 @@ void CUIItemInfo::InitItem(CInventoryItem* pInvItem, CInventoryItem* pCompareIte
 	}
 	if ( UIWeight )
 	{
-		LPCSTR kg_str = CStringTable().translate( "st_kg" ).c_str();
-		sprintf				(str, "%3.2f %s", pInvItem->Weight(), kg_str );
+		LPCSTR  kg_str = CStringTable().translate( "st_kg" ).c_str();
+		float	weight = pInvItem->Weight();
+		
+		if ( !weight )
+		{
+			if ( CWeaponAmmo* ammo = dynamic_cast<CWeaponAmmo*>(pInvItem) )
+			{
+				// its helper item, m_boxCur is zero, so recalculate via CInventoryItem::Weight()
+				weight = pInvItem->CInventoryItem::Weight();
+			}
+		}
+
+		sprintf				(str, "%3.2f %s", weight, kg_str );
 		UIWeight->SetText	(str);
 		
 		pos.x = UIWeight->GetWndPos().x;

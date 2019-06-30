@@ -77,15 +77,17 @@ void CWeaponMagazinedWGrenade::net_Destroy()
 BOOL CWeaponMagazinedWGrenade::net_Spawn(CSE_Abstract* DC) 
 {
 	BOOL l_res = inherited::net_Spawn(DC);
+	CSE_ALifeItemWeapon	*E	=	smart_cast<CSE_ALifeItemWeapon*>(DC);
 	 
 	UpdateGrenadeVisibility(!!iAmmoElapsed);
 	SetPending			(FALSE);
 
 	m_DefaultCartridge2.Load(*m_ammoTypes2[m_ammoType2], u8(m_ammoType2));
+	iAmmoElapsed2 = static_cast<int>(E->a_elapsed_grenades);
 
 	if (!IsGameTypeSingle())
 	{
-		if (!m_bGrenadeMode && IsGrenadeLauncherAttached() && !getRocketCount())
+		if (!m_bGrenadeMode && IsGrenadeLauncherAttached() && !getRocketCount() && iAmmoElapsed2)
 		{
 			m_magazine2.push_back(m_DefaultCartridge2);
 

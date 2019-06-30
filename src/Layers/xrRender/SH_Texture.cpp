@@ -48,7 +48,7 @@ CTexture::~CTexture()
 	DEV->_DeleteTexture	(this);
 }
 
-void					CTexture::surface_set	(ID3DBaseTexture* surf)
+void					CTexture::surface_set	(ID3DBaseTexture* surf )
 {
 	if (surf)			surf->AddRef		();
 	_RELEASE			(pSurface);

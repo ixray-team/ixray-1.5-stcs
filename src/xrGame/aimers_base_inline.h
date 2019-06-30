@@ -36,7 +36,7 @@ inline void aimers::base::fill_bones	(
 			for (u32 j=0; j<blend_count; ++j) {
 				CBlend* const blend		= m_animated.LL_PartBlend(i, j);
 				CBlend* const new_blend	= m_animated.LL_PlayCycle( i, blend->motionID, TRUE, 0, 0, channel_id );
-				R_ASSERT				(new_blend);
+				VERIFY				(new_blend);
 				*new_blend				= *blend;
 				new_blend->channel		= channel_id;
 			}
@@ -57,10 +57,10 @@ inline void aimers::base::fill_bones	(
 			VERIFY						( *i < bone_count1 );
 			m_kinematics.Bone_GetAnimPos( local_bones[*i], bones_ids[*i], channel_mask, false );
 
-			R_ASSERT					( _valid(local_bones[*i]) );
-			R_ASSERT					( _valid(m_start_transform) );
+			VERIFY					( _valid(local_bones[*i]) );
+			VERIFY					( _valid(m_start_transform) );
 			global_bones[*i].mul_43		( m_start_transform, local_bones[*i] );
-			R_ASSERT					( _valid(global_bones[*i]) );
+			VERIFY					( _valid(global_bones[*i]) );
 		}
 	}
 

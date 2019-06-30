@@ -71,14 +71,13 @@ u32 CConsole::get_mark_color( Console_mark type )
 CConsole::CConsole()
 {
 	m_editor = xr_new<text_editor::line_editor>( (u32)CONSOLE_BUF_SIZE );
+	m_cmd_history_max = 64;
 	Register_callbacks();
 }
 
 void CConsole::Initialize()
 {
 	scroll_delta	= 0;
-	cmd_delta		= 0;
-	old_cmd_delta	= 0;
 	bVisible		= false;
 	pFont			= NULL;
 	pFont2			= NULL;
@@ -88,6 +87,10 @@ void CConsole::Initialize()
 	m_mouse_pos.y	= 0;
 	m_last_cmd		= NULL;
 	
+	m_cmd_history.reserve( m_cmd_history_max + 2 );
+	m_cmd_history.clear();
+	reset_cmd_history_idx();
+
 	// Commands
 	extern void CCC_Register();
 	CCC_Register();
@@ -290,19 +293,18 @@ void CConsole::OnRender()
 	pFont2->OnRender();
 }
 
-void CConsole::ExecuteCommand( bool record_cmd )
+void CConsole::ExecuteCommand( LPCSTR cmd_str, bool record_cmd )
 {
-	u32  str_size = xr_strlen( ec().str_edit() );
+	u32  str_size = xr_strlen( cmd_str );
 	PSTR edt   = (PSTR)_alloca( (str_size + 1) * sizeof(char) );
 	PSTR first = (PSTR)_alloca( (str_size + 1) * sizeof(char) );
 	PSTR last  = (PSTR)_alloca( (str_size + 1) * sizeof(char) );
 	
-	strcpy_s( edt, str_size+1, ec().str_edit() );
+	strcpy_s( edt, str_size+1, cmd_str );
 	edt[str_size] = 0;
 
 	scroll_delta	= 0;
-	cmd_delta		= 0;
-	old_cmd_delta	= 0;
+	reset_cmd_history_idx();
 
 	text_editor::remove_spaces( edt );
 	if ( edt[0] == 0 )
@@ -318,6 +320,7 @@ void CConsole::ExecuteCommand( bool record_cmd )
 		if ( m_last_cmd.c_str() == 0 || xr_strcmp( m_last_cmd, edt ) != 0 )
 		{
 			Log( c, edt );
+			add_cmd_history( edt );
 			m_last_cmd = edt;
 		}
 	}
@@ -362,7 +365,11 @@ void CConsole::ExecuteCommand( bool record_cmd )
 		first[CONSOLE_BUF_SIZE-21] = 0;
 		Log( "! Unknown command: ", first );
 	}
-	ec().clear_states();
+
+	if ( record_cmd )
+	{
+		ec().clear_states();
+	}
 }
 
 void CConsole::Show()
@@ -377,13 +384,14 @@ void CConsole::Show()
 
 	ec().clear_states();
 	scroll_delta	= 0;
-	cmd_delta		= 0;
-	old_cmd_delta	= 0;
+	reset_cmd_history_idx();
 
 	m_editor->IR_Capture();
 	Device.seqRender.Add( this, 1 );
 	Device.seqFrame.Add( this );
 }
+
+extern CInput* pInput;
 
 void CConsole::Hide()
 {
@@ -398,7 +406,10 @@ void CConsole::Hide()
 //	if  ( g_pGameLevel || 
 //		( g_pGamePersistent && g_pGamePersistent->m_pMainMenu && g_pGamePersistent->m_pMainMenu->IsActive() ))
 
-	SetCursorPos( m_mouse_pos.x, m_mouse_pos.y );
+	if ( pInput->get_exclusive_mode() )
+	{
+		SetCursorPos( m_mouse_pos.x, m_mouse_pos.y );
+	}
 
 	bVisible = false;
 	Device.seqFrame.Remove( this );
@@ -408,47 +419,19 @@ void CConsole::Hide()
 
 void CConsole::SelectCommand()
 {
-	bool found = false;
-	int p = LogFile->size()-1;
-	int k = 0;
-	for ( ; p >= 0; --p )
+	if ( m_cmd_history.empty() )
 	{
-		LPCSTR ls = ((*LogFile)[p]).c_str();
-		if ( !ls )
-		{
-			continue;
-		}
-		if ( ls[0] == mark2 )
-		{
-			if ( k == cmd_delta )
-			{
-				ec().set_edit( &ls[2] );
-				found = true;
-				break;
-			}
-			--k;
-		}
+		return;
 	}
-
-	if ( !found )
-	{
-		if ( cmd_delta > old_cmd_delta )
-		{
-			ec().set_edit( "" );
-		}
-		cmd_delta = old_cmd_delta;
-	}
-	else
-	{
-		old_cmd_delta = cmd_delta;
-	}
-//	ec().clear_states();
+	VERIFY( 0 <= m_cmd_history_idx && m_cmd_history_idx < (int)m_cmd_history.size() );
+		
+	xr_vector<shared_str>::reverse_iterator	it_rb = m_cmd_history.rbegin() + m_cmd_history_idx;
+	ec().set_edit( (*it_rb).c_str() );
 }
 
 void CConsole::Execute( LPCSTR cmd )
 {
-	ec().set_edit( cmd );
-	ExecuteCommand( false );
+	ExecuteCommand( cmd, false );
 }
 
 void CConsole::ExecuteScript( LPCSTR str )
@@ -458,4 +441,40 @@ void CConsole::ExecuteScript( LPCSTR str )
 	strcpy_s( buf, str_size + 10, "cfg_load " );
 	strcat_s( buf, str_size + 10, str );
 	Execute( buf );
+}
+
+void CConsole::add_cmd_history( shared_str const& str )
+{
+	if ( str.size() == 0 )
+	{
+		return;
+	}
+	m_cmd_history.push_back( str );
+	if ( m_cmd_history.size() > m_cmd_history_max )
+	{
+		m_cmd_history.erase( m_cmd_history.begin() );
+	}
+}
+
+void CConsole::next_cmd_history_idx()
+{
+	--m_cmd_history_idx;
+	if ( m_cmd_history_idx < 0 )
+	{
+		m_cmd_history_idx = 0;
+	}
+}
+
+void CConsole::prev_cmd_history_idx()
+{
+	++m_cmd_history_idx;
+	if ( m_cmd_history_idx >= (int)m_cmd_history.size() )
+	{
+		m_cmd_history_idx = m_cmd_history.size() - 1;
+	}
+}
+
+void CConsole::reset_cmd_history_idx()
+{
+	m_cmd_history_idx = -1;
 }

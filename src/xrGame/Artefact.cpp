@@ -39,6 +39,7 @@ CArtefact::CArtefact()
 	m_pTrailLight				= NULL;
 	m_activationObj				= NULL;
 	m_detectorObj				= NULL;
+	m_additional_weight			= 0.0f;
 }
 
 
@@ -71,8 +72,9 @@ void CArtefact::Load(LPCSTR section)
 	{
 		m_ArtefactHitImmunities.LoadImmunities(pSettings->r_string(section,"hit_absorbation_sect"),pSettings);
 	}
-	m_bCanSpawnZone = !!pSettings->line_exist("artefact_spawn_zones", section);
-	m_af_rank		= pSettings->r_u8(section, "af_rank");
+	m_bCanSpawnZone			= !!pSettings->line_exist("artefact_spawn_zones", section);
+	m_af_rank				= pSettings->r_u8(section, "af_rank");
+	m_additional_weight		= pSettings->r_float(section,"additional_inventory_weight");
 }
 
 BOOL CArtefact::net_Spawn(CSE_Abstract* DC) 
@@ -524,6 +526,19 @@ void SArtefactDetectorsSupport::SetVisible(bool b)
 	m_parent->SwitchAfParticles(b);
 }
 
+void SArtefactDetectorsSupport::Blink()
+{
+	LPCSTR curr				= pSettings->r_string(m_parent->cNameSect().c_str(), "det_show_particles");
+
+	IKinematics* K			= smart_cast<IKinematics*>(m_parent->Visual());
+	R_ASSERT2				(K, m_parent->cNameSect().c_str());
+	LPCSTR bone				= pSettings->r_string(m_parent->cNameSect().c_str(), "particles_bone");
+	u16 bone_id				= K->LL_BoneID(bone);
+	R_ASSERT2				(bone_id!=BI_NONE, bone);
+
+	m_parent->CParticlesPlayer::StartParticles(curr,bone_id,Fvector().set(0,1,0),m_parent->ID(), 1000, true);
+}
+
 void SArtefactDetectorsSupport::UpdateOnFrame()
 {
 	if(m_currPatrolPath && !m_parent->getVisible())
@@ -555,8 +570,16 @@ void SArtefactDetectorsSupport::UpdateOnFrame()
 		}
 	}
 
-	if(m_parent->GetAfRank()!=0 && m_switchVisTime+5000 < Device.dwTimeGlobal)
+	if(m_parent->getVisible() && m_parent->GetAfRank()!=0 && m_switchVisTime+5000 < Device.dwTimeGlobal)
 		SetVisible(false);
+
+	u32 dwDt = 2*3600*1000/10; //2 hour of game time
+	if(!m_parent->getVisible() && m_switchVisTime+dwDt < Device.dwTimeGlobal)
+	{
+		m_switchVisTime		= Device.dwTimeGlobal;
+		if(m_parent->Position().distance_to(Device.vCameraPosition)>40.0f)
+			Blink			();
+	}
 }
 
 void SArtefactDetectorsSupport::FollowByPath(LPCSTR path_name, int start_idx, Fvector force)

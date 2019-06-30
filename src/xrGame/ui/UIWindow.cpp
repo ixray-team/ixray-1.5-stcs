@@ -648,9 +648,13 @@ bool CUIWindow::AlignHintWndPos( Frect const& vis_rect, float border, float dx16
 	rect.add( cursor_pos.x, cursor_pos.y );
 
 	rect.sub( 0.0f, rect.height() - border );
-	if ( !is_in( vis_rect, rect ) ) {	rect.sub( rect.width() - border, 0.0f );	}
-	if ( !is_in( vis_rect, rect ) ) {	rect.add( 0.0f,	rect.height() - border);	}
-	if ( !is_in( vis_rect, rect ) ) {	rect.add( rect.width()- border, cursor_height );	}
+	if ( !is_in( vis_rect, rect ) ) {	rect.sub( rect.width() - border, 0.0f                   );	}
+	if ( !is_in( vis_rect, rect ) ) {	rect.add( 0.0f                 , rect.height() - border );	}
+	if ( !is_in( vis_rect, rect ) ) {	rect.add( rect.width() - border, cursor_height          );	}
+
+	float yn = rect.top - vis_rect.height() + rect.height( ) - border + cursor_height;
+	if ( !is_in( vis_rect, rect ) ) {	rect.sub( 0.0f                 , yn                     );	}
+	if ( !is_in( vis_rect, rect ) ) {	rect.sub( rect.width() - border, 0.0f                   );	}
 
 	SetWndPos( rect.lt );
 	return true;

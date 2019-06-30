@@ -217,7 +217,7 @@ void	CBlender_BmmD::Compile	(CBlender_Compile& C)
 		C.r_dx10Sampler		("smp_base");
 		C.r_dx10Sampler		("smp_linear");
 
-		C.r_Stencil		( TRUE,D3DCMP_ALWAYS,0xff,0xff,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE,D3DSTENCILOP_KEEP);
+		C.r_Stencil		( TRUE,D3DCMP_ALWAYS,0xff,0x7f,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE,D3DSTENCILOP_KEEP);
 		C.r_StencilRef	(0x01);
 
 		C.r_End			();
@@ -231,7 +231,7 @@ void	CBlender_BmmD::Compile	(CBlender_Compile& C)
 		C.r_dx10Sampler		("smp_linear");
 
 
-		C.r_Stencil		( TRUE,D3DCMP_ALWAYS,0xff,0xff,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE,D3DSTENCILOP_KEEP);
+		C.r_Stencil		( TRUE,D3DCMP_ALWAYS,0xff,0x7f,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE,D3DSTENCILOP_KEEP);
 		C.r_StencilRef	(0x01);
 
 		C.r_End			();

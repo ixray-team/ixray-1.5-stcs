@@ -14,6 +14,8 @@
 #include "StateManager\dx10SamplerStateCache.h"
 #include "StateManager\dx10StateCache.h"
 
+#include "d3dx10core.h"
+
 #ifndef _EDITOR
 void	fill_vid_mode_list			(CHW* _hw);
 void	free_vid_mode_list			();
@@ -324,20 +326,22 @@ void CHW::CreateDevice( HWND m_hWnd, bool move_window )
 #ifdef DEBUG
 	//createDeviceFlags |= D3D10_CREATE_DEVICE_DEBUG;
 #endif
+   HRESULT R;
 	// Create the device
 	//	DX10 don't need it?
 	//u32 GPU		= selectGPU();	
-	HRESULT R = 
-		D3D10CreateDeviceAndSwapChain( 
-//		CreateDeviceAndSwapChain(
-			m_pAdapter, //	IDXGIAdapter *pAdapter
-			m_DriverType, 
-			NULL,
-			createDeviceFlags,	//	UINT Flags
-			D3D10_SDK_VERSION, 
-			&sd, 
-			&m_pSwapChain,
-			&pDevice);
+   R =  D3DX10CreateDeviceAndSwapChain(   m_pAdapter,
+                                          m_DriverType,
+                                          NULL,
+                                          createDeviceFlags,
+                                          &sd,
+                                          &m_pSwapChain,
+		                                    &pDevice );
+
+   if(!FAILED(R))
+   {
+      D3DX10GetFeatureLevel1( pDevice, &pDevice1 );
+   }
 
 	/*
 	if (FAILED(R))	{
@@ -416,14 +420,16 @@ void CHW::DestroyDevice()
 //	_RELEASE				(dwDebugSB);
 //#endif
 
-	//_SHOW_REF				("refCount:m_pSwapChain",m_pSwapChain);
-	//	Igor: quick hack.
-	//  Fix later.
-	//	Need to switch swap chain from fullscreen to windowed mode.
-	//_RELEASE				(m_pSwapChain);
+	//	Must switch to windowed mode to release swap chain
+	if (!m_ChainDesc.Windowed) m_pSwapChain->SetFullscreenState( FALSE, NULL);
+	_SHOW_REF				("refCount:m_pSwapChain",m_pSwapChain);
+	_RELEASE				(m_pSwapChain);
 
+
+	_RELEASE				(HW.pDevice1);
 	_SHOW_REF				("DeviceREF:",HW.pDevice);
 	_RELEASE				(HW.pDevice);
+
 
 	DestroyD3D				();
 

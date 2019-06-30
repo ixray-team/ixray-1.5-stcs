@@ -233,8 +233,8 @@ void CHWCaps::Update()
 	raster.bNonPow2				= TRUE;
 	raster.bCubemap				= TRUE;
 	raster.dwMRT_count			= 4;
-	raster.b_MRT_mixdepth		= FALSE;
-	//raster.b_MRT_mixdepth		= TRUE;
+	//raster.b_MRT_mixdepth		= FALSE;
+	raster.b_MRT_mixdepth		= TRUE;
 	raster.dwInstructions		= 256;
 
 	// ***************** Info

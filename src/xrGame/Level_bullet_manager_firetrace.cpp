@@ -210,6 +210,13 @@ void CBulletManager::FireShotmark (SBullet* bullet, const Fvector& vDir, const F
 
 	if( (ps_name && ShowMark) || (bullet->flags.explosive && bStatic) )
 	{
+		if (particle_dir.magnitude() < EPS_L)
+			particle_dir.set	(0.f, 1.f, 0.f);
+
+		VERIFY2					(
+			(particle_dir.x*particle_dir.x+particle_dir.y*particle_dir.y+particle_dir.z*particle_dir.z) > flt_zero,
+			make_string("[%f][%f][%f]", VPUSH(particle_dir))
+		);
 		Fmatrix pos;
 		pos.k.normalize(particle_dir);
 		Fvector::generate_orthonormal_basis(pos.k, pos.j, pos.i);

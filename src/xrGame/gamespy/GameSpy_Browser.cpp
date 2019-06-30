@@ -376,7 +376,7 @@ void	CGameSpy_Browser::ReadServerInfo	(ServerInfo* pServerInfo, void* pServer)
 	pServerInfo->m_aInfos.push_back(GameInfo(*st.translate("mp_si_version"), pServerInfo->m_ServerVersion));
 	
 #ifdef BATTLEYE
-	ADD_BOOL_INFO(pServerInfo, pServer, *st.translate("mp_si_battleye"), G_BATTLEYE_KEY);
+	ADD_BOOL_INFO(pServerInfo, pServer, "BattlEye", G_BATTLEYE_KEY);
 #endif // BATTLEYE
 
 	ADD_INT_INFO_N (pServerInfo, pServer, 1, *st.translate("mp_si_max_ping"), "", G_MAX_PING_KEY);	

@@ -320,40 +320,26 @@ BOOL CGameObject::net_Spawn		(CSE_Abstract*	DC)
 		IReader			ireader = IReader(&*E->client_data.begin(), E->client_data.size());
 		net_Load		(ireader);
 	}
-	else
-	{
+	else {
 //		Msg				("no client data for object [%d][%s], load is skipped",ID(),*cName());
 	}
 
 	// if we have a parent
-	if (0xffff != E->ID_Parent) {
-		
-		if (!Parent) {
-			// // we need this to prevent illegal ref_dec/ref_add
-			// this is obsolete, since ref_dec/ref_add are removed
-			// but I propose do not touch this, or touch and then
-			// test the whole spawn sequence
-			Parent				= this;
-			inherited::net_Spawn(DC);
-			Parent				= 0;
-		}
-		else
-			inherited::net_Spawn(DC);
-	}
-	else {
-		if (ai().get_level_graph()) {
-			CSE_ALifeObject			*l_tpALifeObject = smart_cast<CSE_ALifeObject*>(E);
-			CSE_Temporary			*l_tpTemporary	= smart_cast<CSE_Temporary*>	(E);
+	if ( ai().get_level_graph() ) {
+		if ( E->ID_Parent == 0xffff ) {
+			CSE_ALifeObject* l_tpALifeObject	= smart_cast<CSE_ALifeObject*>(E);
 			if (l_tpALifeObject && ai().level_graph().valid_vertex_id(l_tpALifeObject->m_tNodeID))
-				ai_location().level_vertex	(l_tpALifeObject->m_tNodeID);
-			else
+				ai_location().level_vertex		(l_tpALifeObject->m_tNodeID);
+			else {
+				CSE_Temporary* l_tpTemporary	= smart_cast<CSE_Temporary*>	(E);
 				if (l_tpTemporary && ai().level_graph().valid_vertex_id(l_tpTemporary->m_tNodeID))
 					ai_location().level_vertex	(l_tpTemporary->m_tNodeID);
+			}
 
 			if (l_tpALifeObject && ai().game_graph().valid_vertex_id(l_tpALifeObject->m_tGraphID))
-				ai_location().game_vertex			(l_tpALifeObject->m_tGraphID);
+				ai_location().game_vertex		(l_tpALifeObject->m_tGraphID);
 
-			validate_ai_locations	(false);
+			validate_ai_locations				(false);
 
 			// validating position
 			if	(
@@ -364,11 +350,17 @@ BOOL CGameObject::net_Spawn		(CSE_Abstract*	DC)
 					) &&
 					can_validate_position_on_spawn()
 				)
-				Position().y		= EPS_L + ai().level_graph().vertex_plane_y(*ai_location().level_vertex(),Position().x,Position().z);
-		
+				Position().y					= EPS_L + ai().level_graph().vertex_plane_y(*ai_location().level_vertex(),Position().x,Position().z);
 		}
- 		inherited::net_Spawn	(DC);
+		else {
+			CSE_ALifeObject* const alife_object	= smart_cast<CSE_ALifeObject*>(E);
+			if ( alife_object && ai().level_graph().valid_vertex_id(alife_object->m_tNodeID) ) {
+				ai_location().level_vertex		(alife_object->m_tNodeID);
+				ai_location().game_vertex		(alife_object->m_tGraphID);
+			}
+		}
 	}
+	inherited::net_Spawn		(DC);
 
 	m_bObjectRemoved			= false;
 
@@ -388,7 +380,7 @@ BOOL CGameObject::net_Spawn		(CSE_Abstract*	DC)
 	{
 		Msg("CGameObject::net_Spawn obj %s Before CScriptBinder::net_Spawn %f,%f,%f",PH_DBG_ObjectTrackName(),Position().x,Position().y,Position().z);
 	}
-return ret;
+	return ret;
 #endif
 }
 

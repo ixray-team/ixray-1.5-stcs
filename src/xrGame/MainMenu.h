@@ -106,6 +106,7 @@ public:
 
 	virtual void	Activate						(bool bActive); 
 	virtual	bool	IsActive						(); 
+	virtual	bool	CanSkipSceneRendering			(); 
 
 	virtual void	IR_OnMousePress					(int btn);
 	virtual void	IR_OnMouseRelease				(int btn);

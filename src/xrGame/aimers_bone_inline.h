@@ -40,11 +40,11 @@ void BONE::compute_bones			(u32 const bone_id)
 {
 	compute_bone		( bone_id );
 
-	R_ASSERT			( _valid(m_start_transform) );
-	R_ASSERT			( _valid(m_result[bone_id]) );
-	R_ASSERT			( _valid(Fmatrix(m_start_transform).invert()) );
+	VERIFY			( _valid(m_start_transform) );
+	VERIFY			( _valid(m_result[bone_id]) );
+	VERIFY			( _valid(Fmatrix(m_start_transform).invert()) );
 	m_result[bone_id]	= Fmatrix(m_start_transform).invert().mulB_43(m_result[bone_id]).mulB_43(m_start_transform);
-	R_ASSERT			( _valid(m_result[bone_id]) );
+	VERIFY			( _valid(m_result[bone_id]) );
 
 	if ( (bone_id + 1) == bone_count )
 		return;
@@ -52,11 +52,11 @@ void BONE::compute_bones			(u32 const bone_id)
 	Fmatrix&			bone_matrix = m_result[bone_id];
 	Fvector				angles;
 	bone_matrix.getXYZ	(angles);
-	R_ASSERT			( _valid(angles) );
-	R_ASSERT			( (bone_count - bone_id - 1) > 0 );
+	VERIFY			( _valid(angles) );
+	VERIFY			( (bone_count - bone_id - 1) > 0 );
 	angles.mul			(1.f/float(bone_count - bone_id - 1));
 	bone_matrix.setXYZ	(angles);
-	R_ASSERT			( _valid(bone_matrix) );
+	VERIFY			( _valid(bone_matrix) );
 
 	CBoneInstance&		bone = m_kinematics.LL_GetBoneInstance( m_bones_ids[bone_id] );
 	BoneCallback const&	old_callback = bone.callback();

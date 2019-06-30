@@ -1,16 +1,17 @@
 #include "stdafx.h"
-#include "build.h"
+//#include "build.h"
 #include "tga.h"
 
-#include "../xrLc_light/xrThread.h"
-#include "../xrLc_light/hash2D.h"
-#include "../xrLc_light/lm_layer.h"
-#include "../xrLC_Light/light_point.h"
-#include "../xrLc_light/xrdeflector.h"
-#include "../xrLC_Light/xrLC_GlobalData.h"
-#include "../xrLC_Light/xrface.h"
+#include "xrThread.h"
+#include "hash2D.h"
+#include "lm_layer.h"
+#include "light_point.h"
+#include "xrdeflector.h"
+#include "xrLC_GlobalData.h"
+#include "xrface.h"
 
 #include "../../xrcdb/xrcdb.h"
+extern "C" bool __declspec(dllimport) __stdcall DXTCompress(LPCSTR out_name, u8* raw_data, u8* normal_map, u32 w, u32 h, u32 pitch, STextureParams* fmt, u32 depth);
 
 class ImplicitDeflector
 {
@@ -136,7 +137,7 @@ public:
 								wP.from_bary(V1->P,V2->P,V3->P,B);
 								wN.from_bary(V1->N,V2->N,V3->N,B);
 								wN.normalize();
-								LightPoint	(&DB, lc_global_data()->RCAST_Model(), C, wP, wN, pBuild->L_static(), (lc_global_data()->b_nosun()?LP_dont_sun:0), F);
+								LightPoint	(&DB, inlc_global_data()->RCAST_Model(), C, wP, wN, inlc_global_data()->L_static(), (inlc_global_data()->b_nosun()?LP_dont_sun:0), F);
 								Fcount		++;
 							}
 						}
@@ -163,7 +164,7 @@ public:
 //#pragma optimize( "g", off )
 
 #define	NUM_THREADS	8
-void CBuild::ImplicitLighting()
+void ImplicitLighting()
 {
 	if (g_params().m_quality==ebqDraft) return;
 
@@ -172,16 +173,16 @@ void CBuild::ImplicitLighting()
 	
 	// Sorting
 	Status("Sorting faces...");
-	for (vecFaceIt I=lc_global_data()->g_faces().begin(); I!=lc_global_data()->g_faces().end(); I++)
+	for (vecFaceIt I=inlc_global_data()->g_faces().begin(); I!=inlc_global_data()->g_faces().end(); I++)
 	{
 		Face* F = *I;
 		if (F->pDeflector)				continue;
 		if (!F->hasImplicitLighting())	continue;
 		
-		Progress		(float(I-lc_global_data()->g_faces().begin())/float(lc_global_data()->g_faces().size()));
-		b_material&		M	= materials()		[F->dwMaterial];
+		Progress		(float(I-inlc_global_data()->g_faces().begin())/float(inlc_global_data()->g_faces().size()));
+		b_material&		M	= inlc_global_data()->materials()[F->dwMaterial];
 		u32				Tid = M.surfidx;
-		b_BuildTexture*	T	= &(textures()[Tid]);
+		b_BuildTexture*	T	= &(inlc_global_data()->textures()[Tid]);
 		
 		Implicit_it		it	= calculator.find(Tid);
 		if (it==calculator.end()) 
@@ -251,7 +252,7 @@ void CBuild::ImplicitLighting()
 			R_ASSERT				(name[0] && defl.texture);
 			b_BuildTexture& TEX		=	*defl.texture;
 			strconcat				(sizeof(out_name),out_name,name,"\\",TEX.name,".dds");
-			FS.update_path			(out_name,_game_levels_,out_name);
+			FS.update_path			(out_name,"$game_levels$",out_name);
 			clMsg					("Saving texture '%s'...",out_name);
 			VerifyPath				(out_name);
 			BYTE* raw_data			=	LPBYTE(TEX.pSurface);
@@ -276,7 +277,7 @@ void CBuild::ImplicitLighting()
 			sscanf					(strstr(GetCommandLine(),"-f")+2,"%s",name);
 			b_BuildTexture& TEX		=	*defl.texture;
 			strconcat				(sizeof(out_name),out_name,name,"\\",TEX.name,"_lm.dds");
-			FS.update_path			(out_name,_game_levels_,out_name);
+			FS.update_path			(out_name,"$game_levels$",out_name);
 			clMsg					("Saving texture '%s'...",out_name);
 			VerifyPath				(out_name);
 			BYTE* raw_data			= LPBYTE(&*packed.begin());

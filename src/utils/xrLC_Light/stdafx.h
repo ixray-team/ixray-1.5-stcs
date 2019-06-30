@@ -27,6 +27,8 @@
 // Windows Header Files:
 #include <windows.h>
 */
+#pragma warning (disable:4661)
+
 #include "../../xrCore/xrCore.h"
 #include "xrLC_Light.h"
 void __cdecl	clMsg( const char *format, ...);

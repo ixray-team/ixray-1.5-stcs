@@ -92,3 +92,11 @@ void game_cl_CaptureTheArtefact::OnBuyMenuOpen()
 		u_EventSend(P);
 	}
 }
+
+bool game_cl_CaptureTheArtefact::LocalPlayerCanBuyItem(shared_str const & name_sect)
+{
+	if (name_sect == "mp_wpn_knife")
+		return true;
+	R_ASSERT(m_game_ui);
+	return m_game_ui->CanBuyItem(name_sect);
+}

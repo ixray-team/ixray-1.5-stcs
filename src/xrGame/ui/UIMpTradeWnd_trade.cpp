@@ -6,6 +6,8 @@
 #include "UIDragDropListEx.h"
 #include "UICellCustomItems.h"
 #include <dinput.h>
+#include "game_cl_deathmatch.h"
+#include "game_cl_capture_the_artefact.h"
 
 bool CUIMpTradeWnd::TryToSellItem(SBuyItemInfo* sell_itm, bool do_destroy, SBuyItemInfo*& itm_res)
 {
@@ -14,7 +16,13 @@ bool CUIMpTradeWnd::TryToSellItem(SBuyItemInfo* sell_itm, bool do_destroy, SBuyI
 	SellItemAddons						(sell_itm, at_glauncher);
 
 	u32		_item_cost					= m_item_mngr->GetItemCost(sell_itm->m_name_sect, GetRank() );
-	
+
+	const bool is_helper_item			= sell_itm->m_cell_item->IsHelper();
+	if ( is_helper_item )
+	{
+		_item_cost = 0;
+	}
+
 	SetMoneyAmount						(GetMoneyAmount() + _item_cost);
 
 	CUICellItem* _itm					= NULL;
@@ -30,6 +38,9 @@ bool CUIMpTradeWnd::TryToSellItem(SBuyItemInfo* sell_itm, bool do_destroy, SBuyI
 	u32 cnt_in_shop						= GetItemCount(sell_itm->m_name_sect, SBuyItemInfo::e_shop);
 
 	iinfo->SetState						(SBuyItemInfo::e_sold);
+
+	_itm->SetIsHelper(false);
+
 	if(cnt_in_shop!=0 )
 	{
 		if(do_destroy) 
@@ -92,7 +103,8 @@ bool CUIMpTradeWnd::BuyItemAction(SBuyItemInfo* itm)
 				to_sell->SetState	(SBuyItemInfo::e_undefined);	//hack
 				to_sell->SetState	(_stored_state);				//hack
 			}else
-				DestroyItem			(to_sell);
+				if(to_sell->GetState()==SBuyItemInfo::e_sold || to_sell->GetState()==SBuyItemInfo::e_undefined) //maybe in shop now
+					DestroyItem			(to_sell);
 
 			return					b_res;
 		}
@@ -106,11 +118,29 @@ bool CUIMpTradeWnd::TryToBuyItem(SBuyItemInfo* buy_itm, u32 buy_flags, SBuyItemI
 	SBuyItemInfo* iinfo 			= buy_itm;
 	const shared_str& buy_item_name = iinfo->m_name_sect;
 	
-	bool	b_can_buy		= CheckBuyPossibility(buy_item_name, buy_flags, false);
+	const bool is_helper	= buy_itm->m_cell_item->IsHelper();
+	bool	b_can_buy		= is_helper || CheckBuyPossibility(buy_item_name, buy_flags, false);
 	if(!b_can_buy)
 		return				false;
+	
+	if (GameID() == eGameIDCaptureTheArtefact)
+	{
+		game_cl_CaptureTheArtefact* cta_game = smart_cast<game_cl_CaptureTheArtefact*>(&Game());
+		if (cta_game && !cta_game->LocalPlayerCanBuyItem(buy_item_name))
+			return			false;
+	} else
+	{
+		game_cl_Deathmatch* dm_game = smart_cast<game_cl_Deathmatch*>(&Game());
+		if (dm_game && !dm_game->LocalPlayerCanBuyItem(buy_item_name))
+			return			false;
+	}
 
-	u32 _item_cost				= m_item_mngr->GetItemCost(buy_item_name, GetRank() );
+
+	u32 _item_cost			= m_item_mngr->GetItemCost(buy_item_name, GetRank() );
+	if ( is_helper )
+	{
+		_item_cost = 0;
+	}
 
 	if( (buy_flags&bf_check_money) )
 	{
@@ -149,6 +179,7 @@ bool CUIMpTradeWnd::TryToBuyItem(SBuyItemInfo* buy_itm, u32 buy_flags, SBuyItemI
 		_new_owner->SetItem				(cell_itm);
 		cell_itm->SetCustomDraw			(NULL);
 		cell_itm->SetAccelerator		(0);
+
 		UpdateCorrespondingItemsForList	(_new_owner);
 
 	}else{
@@ -284,4 +315,6 @@ void CUIMpTradeWnd::ItemToSlot(const shared_str& sectionName, u8 addons)
 	SBuyItemInfo* pitem					= CreateItem(sectionName, SBuyItemInfo::e_own, false);
 	SetItemAddonsState_ext				(pitem, addons);
 	pList->SetItem						(pitem->m_cell_item);
+
+	UpdateCorrespondingItemsForList(pList);
 }

@@ -36,6 +36,8 @@ public:
 public:
 	struct		_options	{
 		u32		bug					: 1;
+		
+		u32		ssao_blur_on		: 1;
 
 		u32		smapsize			: 16;
 		u32		depth16				: 1;
@@ -118,6 +120,7 @@ public:
 	shared_str													c_sbase			;
 	shared_str													c_lmaterial		;
 	float														o_hemi			;
+	float														o_hemi_cube[CROS_impl::NUM_FACES]	;
 	float														o_sun			;
 	IDirect3DQuery9*											q_sync_point[CHWCaps::MAX_GPUS];
 	u32															q_sync_count	;
@@ -172,6 +175,7 @@ public:
 		LT.update_smooth			(O)								;
 		o_hemi						= 0.75f*LT.get_hemi			()	;
 		o_sun						= 0.75f*LT.get_sun			()	;
+		CopyMemory(o_hemi_cube, LT.get_hemi_cube(), CROS_impl::NUM_FACES*sizeof(float));
 	}
 	IC void							apply_lmaterial				()
 	{
@@ -185,7 +189,13 @@ public:
 #ifdef	DEBUG
 		if (ps_r2_ls_flags.test(R2FLAG_GLOBALMATERIAL))	mtl=ps_r2_gmaterial;
 #endif
-		RCache.set_c		(c_lmaterial,o_hemi,o_sun,0,(mtl+.5f)/4.f);
+		RCache.hemi.set_material (o_hemi,o_sun,0,(mtl+.5f)/4.f);
+		RCache.hemi.set_pos_faces(o_hemi_cube[CROS_impl::CUBE_FACE_POS_X],
+								  o_hemi_cube[CROS_impl::CUBE_FACE_POS_Y],
+								  o_hemi_cube[CROS_impl::CUBE_FACE_POS_Z]);
+		RCache.hemi.set_neg_faces	(o_hemi_cube[CROS_impl::CUBE_FACE_NEG_X],
+								 o_hemi_cube[CROS_impl::CUBE_FACE_NEG_Y],
+								 o_hemi_cube[CROS_impl::CUBE_FACE_NEG_Z]);
 	}
 
 public:

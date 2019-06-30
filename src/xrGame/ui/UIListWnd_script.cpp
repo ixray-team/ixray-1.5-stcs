@@ -99,6 +99,7 @@ void CUIListWnd::script_register(lua_State *L)
 		.def("StartDedicatedServer",	&CUIMapList::StartDedicatedServer)
 		.def("SetMapPic",				&CUIMapList::SetMapPic)
 		.def("SetMapInfo",				&CUIMapList::SetMapInfo)
+		.def("ClearList",				&CUIMapList::ClearList)
 		.def("IsEmpty",					&CUIMapList::IsEmpty),
 		
 		class_<enum_exporter<EGameIDs> >("GAME_TYPE")

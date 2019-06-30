@@ -156,8 +156,9 @@
 // 120 - CSE_SmartCover					added property	m_enter_min_enemy_distance
 //										added property	m_exit_min_enemy_distance
 // 121 - GameTypeChooser				m_gameType using instead og u8 value;
+// 122 - CSE_ALifeItemWeapon			appended with count of grenades to spawn in grenade launcher (if it attached)
 //------------------------------------------------------------------------------
-#define SPAWN_VERSION	u16(122)
+#define SPAWN_VERSION	u16(123)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_Shape,ISE_Shape,CShapeData)
 public:

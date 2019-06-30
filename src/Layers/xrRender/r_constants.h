@@ -24,6 +24,8 @@ enum
 {
 	RC_1x1		= 0,					// vector1, or scalar
 	RC_1x4,								// vector4
+	RC_1x3,								// vector3
+	RC_1x2,								// vector2
 	RC_2x4,								// 4x2 matrix, transpose
 	RC_3x4,								// 4x3 matrix, transpose
 	RC_4x4,								// 4x4 matrix, transpose

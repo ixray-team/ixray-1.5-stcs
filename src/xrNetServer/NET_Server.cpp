@@ -801,7 +801,7 @@ void	IPureServer::ClearStatistic	()
 	}
 };
 
-bool			IPureServer::DisconnectClient	(IClient* C)
+/*bool			IPureServer::DisconnectClient	(IClient* C)
 {
 	if (!C) return false;
 
@@ -809,18 +809,18 @@ bool			IPureServer::DisconnectClient	(IClient* C)
 	HRESULT res = NET->DestroyClient(C->ID.value(), Reason, xr_strlen(Reason)+1, 0);
 	CHK_DX(res);
 	return true;
-};
+}*/
 
-bool			IPureServer::DisconnectClient	(IClient* C,string512& Reason)
+bool			IPureServer::DisconnectClient	(IClient* C, LPCSTR Reason)
 {
 	if (!C) return false;
 
 	HRESULT res = NET->DestroyClient(C->ID.value(), Reason, xr_strlen(Reason)+1, 0);
 	CHK_DX(res);
 	return true;
-};
+}
 
-bool	IPureServer::DisconnectAddress	(const ip_address& Address)
+bool	IPureServer::DisconnectAddress	(const ip_address& Address, LPCSTR reason)
 {
 	xr_vector<IClient*>		PlayersToDisconnect;
 
@@ -840,10 +840,10 @@ bool	IPureServer::DisconnectAddress	(const ip_address& Address)
 
 	for ( ;it!=it_e; ++it)
 	{
-		DisconnectClient(*it);
-	};
+		DisconnectClient(*it, reason);
+	}
 	return true;
-};
+}
 
 bool IPureServer::GetClientAddress	(IDirectPlay8Address* pClientAddress, ip_address& Address, DWORD* pPort)
 {

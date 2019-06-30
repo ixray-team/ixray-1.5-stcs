@@ -22,6 +22,7 @@ CCustomOutfit::CCustomOutfit()
 
 	m_boneProtection = xr_new<SBoneProtections>();
 	m_artefact_count = 0;
+	m_BonesProtectionSect = NULL;
 }
 
 CCustomOutfit::~CCustomOutfit() 
@@ -101,14 +102,21 @@ void CCustomOutfit::Load(LPCSTR section)
 	m_artefact_count 	= READ_IF_EXISTS( pSettings, r_u32, section, "artefact_count", 0 );
 	clamp( m_artefact_count, (u32)0, (u32)5 );
 
-	CActor* pActor = smart_cast<CActor*> ( Level().CurrentViewEntity() );
-	if ( pActor )
+	if ( pSettings->line_exist( cNameSect(), "bones_koeff_protection") )
 	{
-		if ( pSettings->line_exist( cNameSect(), "bones_koeff_protection") )
-		{
-			m_boneProtection->reload( pSettings->r_string( cNameSect(), "bones_koeff_protection"), smart_cast<IKinematics*>( pActor->Visual() ) );
-		}
+		m_BonesProtectionSect._set( pSettings->r_string( cNameSect(), "bones_koeff_protection" ) );
 	}
+	CActor* pActor = smart_cast<CActor*>( Level().CurrentViewEntity() );
+	ReloadBonesProtection( pActor );
+}
+
+void CCustomOutfit::ReloadBonesProtection( CActor* pActor )
+{
+	if ( !pActor || !pActor->Visual() || m_BonesProtectionSect.size() == 0 )
+	{
+		return;
+	}
+	m_boneProtection->reload( m_BonesProtectionSect, smart_cast<IKinematics*>( pActor->Visual() ) );
 }
 
 void CCustomOutfit::Hit(float hit_power, ALife::EHitType hit_type)
@@ -178,18 +186,16 @@ BOOL	CCustomOutfit::BonePassBullet					(int boneID)
 #include "torch.h"
 void	CCustomOutfit::OnMoveToSlot		()
 {
-	if (m_pInventory)
+	if ( m_pInventory )
 	{
-		CActor* pActor = smart_cast<CActor*> (m_pInventory->GetOwner());
-		if (pActor)
+		CActor* pActor = smart_cast<CActor*>( m_pInventory->GetOwner() );
+		if ( pActor )
 		{
-			if(pSettings->line_exist(cNameSect(),"bones_koeff_protection"))
-				m_boneProtection->reload( pSettings->r_string(cNameSect(),"bones_koeff_protection"), smart_cast<IKinematics*>(pActor->Visual()) );
-
+			ReloadBonesProtection( pActor );
 			ApplySkinModel(pActor, true, false);
 		}
 	}
-};
+}
 
 void CCustomOutfit::ApplySkinModel(CActor* pActor, bool bDress, bool bHUDOnly)
 {
@@ -286,13 +292,11 @@ bool CCustomOutfit::install_upgrade_impl( LPCSTR section, bool test )
 
 	LPCSTR str;
 	bool result2 = process_if_exists_set( section, "bones_koeff_protection", &CInifile::r_string, str, test );
-	if ( result2 && !test && m_pInventory )
+	if ( result2 && !test )
 	{
-		CActor* pActor = smart_cast<CActor*>( m_pInventory->GetOwner() );
-		if ( pActor )
-		{
-			m_boneProtection->reload( str, smart_cast<IKinematics*>( pActor->Visual() ) );
-		}
+		m_BonesProtectionSect._set( str );
+		CActor* pActor = smart_cast<CActor*>( Level().CurrentViewEntity() );
+		ReloadBonesProtection( pActor );
 	}
 	result |= result2;
 	result |= process_if_exists( section, "hit_fraction_actor", &CInifile::r_float, m_boneProtection->m_fHitFracActor, test );

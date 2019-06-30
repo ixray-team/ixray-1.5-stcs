@@ -7,6 +7,21 @@
 #define INV_GRID_WIDTHF			50.0f
 #define INV_GRID_HEIGHTF		50.0f
 
+namespace detail 
+{
+
+struct is_helper_pred
+{
+	bool operator ()(CUICellItem* child)
+	{
+		return child->IsHelper();
+	}
+
+}; // struct is_helper_pred
+
+} //namespace detail 
+
+
 CUIInventoryCellItem::CUIInventoryCellItem(CInventoryItem* itm)
 {
 	m_pData											= (void*)itm;
@@ -47,6 +62,66 @@ bool CUIInventoryCellItem::EqualTo(CUICellItem* itm)
 	return true;
 }
 
+bool CUIInventoryCellItem::IsHelperOrHasHelperChild()
+{
+	return std::count_if(m_childs.begin(), m_childs.end(), detail::is_helper_pred()) > 0 || IsHelper();
+}
+
+CUIDragItem* CUIInventoryCellItem::CreateDragItem()
+{
+	return IsHelperOrHasHelperChild() ? NULL : inherited::CreateDragItem();
+}
+
+bool CUIInventoryCellItem::IsHelper ()
+{
+	return object()->is_helper_item();
+}
+
+void CUIInventoryCellItem::SetIsHelper (bool is_helper)
+{
+	object()->set_is_helper(is_helper);
+}
+
+void CUIInventoryCellItem::Update()
+{
+	inherited::Update	();
+	UpdateItemText();
+
+	u32 color = GetColor();
+	if ( IsHelper() && !ChildsCount() )
+	{
+		color = 0xbbbbbbbb;
+	}
+	else if ( IsHelperOrHasHelperChild() )
+	{
+		color = 0xffffffff;
+	}
+
+	SetColor(color);
+}
+
+void CUIInventoryCellItem::UpdateItemText()
+{
+	const u32	helper_count	=  	(u32)std::count_if(m_childs.begin(), m_childs.end(), detail::is_helper_pred()) 
+									+ IsHelper() ? 1 : 0;
+
+	const u32	count			=	ChildsCount() + 1 - helper_count;
+
+	string32	str;
+
+	if ( count > 1 || helper_count )
+	{
+		sprintf_s						( str, "x%d", count );
+		m_text->SetText					( str );
+		m_text->Show					( true );
+	}
+	else
+	{
+		sprintf_s						( str, "");
+		m_text->SetText					( str );
+		m_text->Show					( false );
+	}
+}
 
 CUIAmmoCellItem::CUIAmmoCellItem(CWeaponAmmo* itm)
 :inherited(itm)
@@ -62,10 +137,28 @@ bool CUIAmmoCellItem::EqualTo(CUICellItem* itm)
 	return					( (object()->cNameSect() == ci->object()->cNameSect()) );
 }
 
-void CUIAmmoCellItem::Update()
+CUIDragItem* CUIAmmoCellItem::CreateDragItem()
 {
-	inherited::Update	();
-	UpdateItemText		();
+	return IsHelper() ? NULL : inherited::CreateDragItem();
+}
+
+u32 CUIAmmoCellItem::CalculateAmmoCount()
+{
+	xr_vector<CUICellItem*>::iterator it   = m_childs.begin();
+	xr_vector<CUICellItem*>::iterator it_e = m_childs.end();
+
+	u32 total	= IsHelper() ? 0 : object()->m_boxCurr;
+	for ( ; it != it_e; ++it )
+	{
+		CUICellItem* child = *it;
+
+		if ( !child->IsHelper() )
+		{
+			total += ((CUIAmmoCellItem*)(*it))->object()->m_boxCurr;
+		}
+	}
+
+	return total;
 }
 
 void CUIAmmoCellItem::UpdateItemText()
@@ -73,15 +166,8 @@ void CUIAmmoCellItem::UpdateItemText()
 	m_text->Show( false );
 	if ( !m_custom_draw )
 	{
-		xr_vector<CUICellItem*>::iterator it   = m_childs.begin();
-		xr_vector<CUICellItem*>::iterator it_e = m_childs.end();
+		const u32 total = CalculateAmmoCount();
 		
-		u16 total	= object()->m_boxCurr;
-		for ( ; it != it_e; ++it )
-		{
-			total	= total + ((CUIAmmoCellItem*)(*it))->object()->m_boxCurr;
-		}
-
 		string32	str;
 		sprintf_s( str, "%d", total );
 		m_text->SetText( str );
@@ -92,7 +178,6 @@ void CUIAmmoCellItem::UpdateItemText()
 		SetText( "" );
 	}
 }
-
 
 CUIWeaponCellItem::CUIWeaponCellItem(CWeapon* itm)
 :inherited(itm)

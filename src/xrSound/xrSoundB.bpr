@@ -45,26 +45,25 @@
     <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="ilink32"/>
-    <USERDEFINES value="_EDITOR;_XRSOUNDB;XRSOUND_EXPORTS;_DEBUG"/>
+    <USERDEFINES value="_EDITOR;_XRSOUNDB;XRSOUND_EXPORTS"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="xrSoundB.bpf"/>
     <INCLUDEPATH value="$(DXSDK_DIR)\Include;$(BCB)\include;$(BCB)\include\vcl;$(CORE_DIR);$(XIPH_DIR);$(ETOOLS_DIR);$(EAX_DIR);$(AL_DIR)"/>
     <LIBPATH value="E:\drive_x\stalker_addon\sources\sdk\components\ElPack\Code;..\..\sdk\components\ElPack\Code;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;$(BCB)\lib\psdk;x:\stalker_addon\libraries"/>
-    <WARNINGS value="-w-par -w-8027"/>
+    <WARNINGS value="-w-par -w-8027 -w-8026"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-src_suffix cpp -D_EDITOR -D_XRSOUNDB -DXRSOUND_EXPORTS -D_DEBUG 
-      -I$(DXSDK_DIR)\Include -I$(BCB)\include -I$(BCB)\include\vcl -I$(CORE_DIR) 
-      -I$(XIPH_DIR) -I$(ETOOLS_DIR) -I$(EAX_DIR) -I$(AL_DIR) -boa"/>
+    <IDLCFLAGS value="-I$(DXSDK_DIR)\Include -I$(BCB)\include -I$(BCB)\include\vcl -I$(CORE_DIR) 
+      -I$(XIPH_DIR) -I$(ETOOLS_DIR) -I$(EAX_DIR) -I$(AL_DIR) -src_suffix cpp 
+      -D_EDITOR -D_XRSOUNDB -DXRSOUND_EXPORTS -boa"/>
     <CFLAG1 value="-WD -Od -H=x:\intermediate_ed\sound\pch.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff 
-      -X- -r- -ps -a4 -6 -b- -k -y -v -vi- -tWD -tWM -c"/>
-    <PFLAGS value="-N2x:\intermediate_ed\sound -N0x:\intermediate_ed\sound -$Y+ -$W -$O- -$A8 
-      -v -JPHNE -M"/>
+      -X- -ps -a4 -6 -b- -k- -vi -tWD -tWM -c"/>
+    <PFLAGS value="-N2x:\intermediate_ed\sound -N0x:\intermediate_ed\sound -$Y- -$L- -$D- 
+      -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
-    <AFLAGS value="/mu /w2 /zi"/>
-    <LFLAGS value="-lx:\stalker_addon\libraries -Ix:\intermediate_ed\sound -D&quot;&quot; -aa -Tpd -x 
-      -Gi -v"/>
+    <AFLAGS value="/mu /w2 /zn"/>
+    <LFLAGS value="-lx:\stalker_addon\libraries -Ix:\intermediate_ed\sound -D&quot;&quot; -aa -Tpd -x -Gi"/>
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
@@ -202,8 +201,8 @@ Item1=$(BCB)\source\vcl;P:\Editors\xrEProps\
 
 [HistoryLists\hlConditionals]
 Count=3
-Item0=_EDITOR;_XRSOUNDB;XRSOUND_EXPORTS;_DEBUG
-Item1=_EDITOR;_XRSOUNDB;XRSOUND_EXPORTS
+Item0=_EDITOR;_XRSOUNDB;XRSOUND_EXPORTS
+Item1=_EDITOR;_XRSOUNDB;XRSOUND_EXPORTS;_DEBUG
 Item2=_XRSOUNDB;XRSOUND_EXPORTS;_DEBUG
 
 [HistoryLists\hlIntOutputDir]

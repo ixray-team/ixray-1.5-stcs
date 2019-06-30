@@ -1,10 +1,12 @@
 #pragma once
 
+
 // r3xx code-path (MRT)
-#define		r2_RT_depth			"$user$depth"			// MRT
-#define		r2_RT_P				"$user$position"		// MRT
-#define		r2_RT_N				"$user$normal"			// MRT
-#define		r2_RT_albedo		"$user$albedo"			// MRT
+#define		r2_RT_depth			"$user$depth"			      // MRT
+#define		r2_RT_MSAAdepth	"$user$msaadepth"	         // MRT
+#define		r2_RT_P				"$user$position"		      // MRT
+#define		r2_RT_N				"$user$normal"			      // MRT
+#define		r2_RT_albedo		"$user$albedo"			      // MRT
 
 // other
 #define		r2_RT_accum			"$user$accum"			// ---	16 bit fp or 16 bit fx
@@ -16,9 +18,14 @@
 #define		r2_T_sky0			"$user$sky0" 
 #define		r2_T_sky1			"$user$sky1" 
 
+#define		r2_RT_ssao_temp		"$user$ssao_temp"		//temporary rt for ssao calculation
+
 #define		r2_RT_generic0		"$user$generic0"		// ---
+#define		r2_RT_generic0_r	"$user$generic0_r"	// ---
 #define		r2_RT_generic1		"$user$generic1"		// ---
+#define		r2_RT_generic1_r	"$user$generic1_r"	// ---
 #define		r2_RT_generic2		"$user$generic2"		// ---	//	Igor: for volumetric lights
+#define		r2_RT_generic		"$user$generic"		// ---
 
 #define		r2_RT_bloom1		"$user$bloom1"			// ---
 #define		r2_RT_bloom2		"$user$bloom2"			// ---

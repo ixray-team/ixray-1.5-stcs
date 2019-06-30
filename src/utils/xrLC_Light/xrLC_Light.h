@@ -19,7 +19,17 @@
 //#include "cl_log.h"
 #include "_d3d_extensions.h"
 #include "../../editors/LevelEditor/Engine/communicate.h"
-#include "Etextureparams.h"
+//#include "Etextureparams.h"
+
+static const int	edge2idx3	[3][3]	= { {0,1,2},	{1,2,0},	{2,0,1}	};
+static const int	edge2idx	[3][2]	= { {0,1},		{1,2},		{2,0}	};
+static const int	idx2edge	[3][3]  = {
+	{-1,  0,  2},
+	{ 0, -1,  1},
+	{ 2,  1, -1}
+};
+extern XRLC_LIGHT_API bool g_using_smooth_groups;
+extern XRLC_LIGHT_API bool g_smooth_groups_by_faces;
 
 extern XRLC_LIGHT_API xr_pure_interface  XRLC_LIGHT_API i_lc_log 
 {
@@ -41,3 +51,4 @@ IC	u8	u8_clr				(float a)	{ s32 _a = iFloor(a*255.f); clamp(_a,0,255); return u8
 #define X_TRY try
 #define X_CATCH catch(...)
 #endif
+

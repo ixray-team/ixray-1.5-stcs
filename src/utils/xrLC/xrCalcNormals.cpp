@@ -1,12 +1,11 @@
 #include "stdafx.h"
 #include "build.h"
 #include "../xrLC_Light/xrface.h"
-#include "calculate_normals.h"
+#include "../xrLC_Light/calculate_normals.h"
 #include "../xrLC_Light/xrLC_GlobalData.h"
 
 
-bool g_using_smooth_groups = true;
-bool g_smooth_groups_by_faces = false;
+
 //void 
 // Performs simple cross-smooth
 

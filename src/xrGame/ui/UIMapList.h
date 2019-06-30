@@ -5,6 +5,7 @@
 #include "..\uiGameCustom.h"
 
 class CUIListBox;
+class CUIListBoxItem;
 class CUIFrameLineWnd;
 class CUIStatic;
 class CUIFrameWindow;
@@ -37,10 +38,12 @@ public:
 	const char*		GetCommandLine(LPCSTR player_name);
 			EGameIDs	GetCurGameType();
 			void	StartDedicatedServer();
+			void	ClearList();
 			bool	IsEmpty();
 			const	SGameTypeMaps::SMapItm&	GetMapNameInt(EGameIDs _type, u32 idx);
 
 private:
+	CUIListBoxItem* GetMapItem_fromList1(shared_str const& map_name);
 			void	UpdateMapList(EGameIDs GameType);						
 			void	SaveRightList();
 

@@ -1,15 +1,18 @@
 #include "stdafx.h"
 
+
+#include "../xrLC_Light/xrMU_Model.h"
+#include "../xrLC_Light/xrMU_Model_Reference.h"
+
 #include "build.h"
-#include "xrMU_Model.h"
 #include "OGF_Face.h"
 
 #define	TRY(a) try { a; } catch (...) { clMsg("* E: %s", #a); }
 
-void xrMU_Reference::export_ogf()
+void export_ogf( xrMU_Reference& mu_reference )
 {
 	xr_vector<u32>		generated_ids;
-
+	xrMU_Model *model = mu_reference.model;
 	// Export nodes
 	{
 		for (xrMU_Model::v_subdivs_it it=model->m_subdivs.begin(); it!=model->m_subdivs.end(); it++)
@@ -19,7 +22,7 @@ void xrMU_Reference::export_ogf()
 			R_ASSERT		(M);
 
 			// Common data
-			pOGF->Sector			= sector;
+			pOGF->Sector			= mu_reference.sector;
 			pOGF->material			= it->material;
 
 			// Collect textures
@@ -34,9 +37,9 @@ void xrMU_Reference::export_ogf()
 			pOGF->vb_start			= it->vb_start;
 			pOGF->ib_id				= it->ib_id;
 			pOGF->ib_start			= it->ib_start;
-			pOGF->xform.set			(xform);
-			pOGF->c_scale			= c_scale;
-			pOGF->c_bias			= c_bias;
+			pOGF->xform.set			(mu_reference.xform);
+			pOGF->c_scale			= mu_reference.c_scale;
+			pOGF->c_bias			= mu_reference.c_bias;
 			pOGF->sw_id				= it->sw_id;
 
 			pOGF->CalcBounds		();
@@ -50,7 +53,7 @@ void xrMU_Reference::export_ogf()
 	{
 		// Create Node and fill it with information
 		b_lod&		LOD		= pBuild->lods	[model->m_lod_ID];
-		OGF_LOD*	pNode	= xr_new<OGF_LOD> (1,sector);
+		OGF_LOD*	pNode	= xr_new<OGF_LOD> (1,mu_reference.sector);
 		pNode->lod_Material	= LOD.dwMaterial;
 		for (int lf=0; lf<8; lf++)
 		{
@@ -58,7 +61,7 @@ void xrMU_Reference::export_ogf()
 			OGF_LOD::_face& D = pNode->lod_faces[lf];
 			for (int lv=0; lv<4; lv++)
 			{
-				xform.transform_tiny(D.v[lv].v,F.v[lv]);
+				mu_reference.xform.transform_tiny(D.v[lv].v,F.v[lv]);
 				D.v[lv].t			= F.t[lv];
 				D.v[lv].c_rgb_hemi	= 0xffffffff;
 				D.v[lv].c_sun		= 0xff;
@@ -89,8 +92,8 @@ void xrMU_Reference::export_ogf()
 				for (u32 v_it=0; v_it<model->m_vertices.size(); v_it++)
 				{
 					// get base
-					Fvector			baseP;	xform.transform_tiny	(baseP,model->m_vertices[v_it]->P);
-					base_color_c	baseC;	color[v_it]._get(baseC);
+					Fvector			baseP;	mu_reference.xform.transform_tiny	(baseP,model->m_vertices[v_it]->P);
+					base_color_c	baseC;	mu_reference.color[v_it]._get(baseC);
 
 					base_color_c	vC;
 					float			oD	= ptPos.distance_to	(baseP);

@@ -140,6 +140,9 @@ public:
 	bool	Heading							()						{return m_bHeading;}
 	void	EnableHeading					(bool b)				{m_bHeading = b;m_lanim_xform.m_lanimFlags.set((1<<4),b);}
 
+	void	SetConstHeading					(bool b)				{m_bConstHeading = b;};
+	bool	GetConstHeading					()						{return m_bConstHeading;}
+
 	// will be need by CUI3tButton
 	// Don't change order!!!!!
 	typedef enum {
@@ -171,6 +174,7 @@ protected:
 	Fvector2		m_TextOffset;
 
 	bool			m_bHeading;
+	bool			m_bConstHeading;
 	float			m_fHeading;
 
 	Fvector2		m_TextureOffset;

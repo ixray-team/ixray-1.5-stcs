@@ -15,7 +15,7 @@ STextureParams	THM;
 
 
 
-void	b_BuildTexture::	read	(IReader	&r )
+void	b_BuildTexture::	read	(INetReader	&r )
 {
 	::read( r, *this );
 	THM.read( r );

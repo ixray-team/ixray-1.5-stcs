@@ -14,16 +14,16 @@ u32		InvalideFaces()
 
 const Shader_xrLC&	base_Face::Shader		()const
 {
-	VERIFY( lc_global_data() );
-	return shader( dwMaterial, lc_global_data()->shaders(), lc_global_data()->materials() );
+	VERIFY( inlc_global_data() );
+	return shader( dwMaterial, inlc_global_data()->shaders(), inlc_global_data()->materials() );
 }
 void			base_Face::CacheOpacity	()
 {
 	flags.bOpaque				= true;
-	VERIFY ( lc_global_data() );
+	VERIFY ( inlc_global_data() );
 
-	b_material& M		= lc_global_data()->materials()		[dwMaterial];
-	b_texture&	T		= lc_global_data()->textures()		[M.surfidx];
+	b_material& M		= inlc_global_data()->materials()		[dwMaterial];
+	b_texture&	T		= inlc_global_data()->textures()		[M.surfidx];
 	if (T.bHasAlpha)	flags.bOpaque = false;
 	else				flags.bOpaque = true;
 	if (!flags.bOpaque && (0==T.pSurface))		{
@@ -34,7 +34,7 @@ void			base_Face::CacheOpacity	()
 
 Face*	Face::read_create( )
 {
-	return lc_global_data()->create_face();
+	return inlc_global_data()->create_face();
 }
 
 
@@ -42,11 +42,11 @@ Face*	Face::read_create( )
 //
 //const int	edge2idx	[3][2]	= { {0,1},		{1,2},		{2,0}	};
 //const int	edge2idx3	[3][3]	= { {0,1,2},	{1,2,0},	{2,0,1}	};
-const int	idx2edge	[3][3]  = {
-	{-1,  0,  2},
-	{ 0, -1,  1},
-	{ 2,  1, -1}
-};
+//const int	idx2edge	[3][3]  = {
+//	{-1,  0,  2},
+//	{ 0, -1,  1},
+//	{ 2,  1, -1}
+//};
 
 
 
@@ -58,7 +58,7 @@ bool			g_bUnregister = true;
 void destroy_vertex( Vertex* &v, bool unregister )
 {
 	g_bUnregister = unregister;
-	lc_global_data()->destroy_vertex( v );
+	inlc_global_data()->destroy_vertex( v );
 	g_bUnregister = true;
 }
 //vecVertex		g_vertices;
@@ -69,7 +69,9 @@ void destroy_vertex( Vertex* &v, bool unregister )
 
 Tvertex<DataVertex>::Tvertex()
 {
-	lc_global_data()->g_vertices().push_back(this);
+	VERIFY( inlc_global_data() );
+	if( !inlc_global_data()->b_r_vertices() )
+		inlc_global_data()->g_vertices().push_back(this);
 	m_adjacents.reserve	(4);
 }
 
@@ -77,16 +79,16 @@ template <>
 Tvertex<DataVertex>::~Tvertex()
 {
 	if (g_bUnregister) {
-		vecVertexIt F = std::find(lc_global_data()->g_vertices().begin(), lc_global_data()->g_vertices().end(), this);
-		if (F!=lc_global_data()->g_vertices().end()) lc_global_data()->g_vertices().erase(F);
+		vecVertexIt F = std::find(inlc_global_data()->g_vertices().begin(), inlc_global_data()->g_vertices().end(), this);
+		if (F!=inlc_global_data()->g_vertices().end()) inlc_global_data()->g_vertices().erase(F);
 		else clMsg("* ERROR: Unregistered VERTEX destroyed");
 	}
 }
 
 Vertex*	Vertex::CreateCopy_NOADJ( vecVertex& vertises_storage ) const
 {
-	VERIFY( &vertises_storage == &lc_global_data()->g_vertices() );
-	Vertex* V	= lc_global_data()->create_vertex();
+	VERIFY( &vertises_storage == &inlc_global_data()->g_vertices() );
+	Vertex* V	= inlc_global_data()->create_vertex();
 	V->P.set	(P);
 	V->N.set	(N);
 	V->C		= C;
@@ -95,7 +97,7 @@ Vertex*	Vertex::CreateCopy_NOADJ( vecVertex& vertises_storage ) const
 
 Vertex*	Vertex::read_create( )
 {
-	return lc_global_data()->create_vertex();
+	return inlc_global_data()->create_vertex();
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -108,7 +110,9 @@ Tface<DataVertex>::Tface()
 {
 	pDeflector				= 0;
 	flags.bSplitted			= false;
-	lc_global_data()->g_faces().push_back		(this);
+	VERIFY( inlc_global_data() );
+	if( !inlc_global_data()->b_r_faces() )
+		inlc_global_data()->g_faces().push_back		(this);
 	sm_group				= u32(-1);
 	lmap_layer				= NULL;
 }
@@ -118,8 +122,8 @@ Tface<DataVertex>::~Tface()
 {
 	if (g_bUnregister) 
 	{
-		vecFaceIt F = std::find(lc_global_data()->g_faces().begin(), lc_global_data()->g_faces().end(), this);
-		if (F!=lc_global_data()->g_faces().end()) lc_global_data()->g_faces().erase(F);
+		vecFaceIt F = std::find(inlc_global_data()->g_faces().begin(), inlc_global_data()->g_faces().end(), this);
+		if (F!=inlc_global_data()->g_faces().end()) inlc_global_data()->g_faces().erase(F);
 		else clMsg("* ERROR: Unregistered FACE destroyed");
 	}
 	// Remove 'this' from adjacency info in vertices
@@ -146,9 +150,9 @@ void Face::	Failure		()
 		VPUSH(v[1]->P),
 		VPUSH(v[2]->P)
 		);
-	lc_global_data()->err_invalid().w_fvector3	(v[0]->P);
-	lc_global_data()->err_invalid().w_fvector3	(v[1]->P);
-	lc_global_data()->err_invalid().w_fvector3	(v[2]->P);
+	inlc_global_data()->err_invalid().w_fvector3	(v[0]->P);
+	inlc_global_data()->err_invalid().w_fvector3	(v[1]->P);
+	inlc_global_data()->err_invalid().w_fvector3	(v[2]->P);
 }
 
 void	Face::Verify		()
@@ -211,9 +215,9 @@ BOOL	DataFace::hasImplicitLighting()
 {
 	if (0==this)								return FALSE;
 	if (!Shader().flags.bRendering)				return FALSE;
-	VERIFY( lc_global_data() );
-	b_material& M		= lc_global_data()->materials()		[dwMaterial];
-	b_BuildTexture&	T	= lc_global_data()->textures()		[M.surfidx];
+	VERIFY( inlc_global_data() );
+	b_material& M		= inlc_global_data()->materials()		[dwMaterial];
+	b_BuildTexture&	T	= inlc_global_data()->textures()		[M.surfidx];
 	return (T.THM.flags.test(STextureParams::flImplicitLighted));
 }
 
@@ -295,7 +299,7 @@ aa2_largest:	// aa2 is largest
 */
 
 
-void	DataFace::	read	(IReader	&r )
+void	DataFace::	read	(INetReader	&r )
 {
 	base_Face::read( r );	
 
@@ -316,7 +320,7 @@ void	DataFace::	write	(IWriter	&w )const
 	write_lightmaps->write( w, lmap_layer );
 	w.w_u32( sm_group );
 }
-void	DataVertex::	read	(IReader	&r )
+void	DataVertex::	read	(INetReader	&r )
 {
 	base_Vertex::read( r );
 
@@ -326,7 +330,7 @@ void	DataVertex::	write	(IWriter	&w )const
 	base_Vertex::write( w );
 }
 
-void	Face::	read	( IReader	&r )
+void	Face::	read	( INetReader	&r )
 {
 	DataFace::read( r );
 	VERIFY( read_vertices );
@@ -344,7 +348,7 @@ void	Face::	write	( IWriter	&w )const
 	write_vertices->write( w, v[2] );
 }
 
-void	Vertex::read		( IReader	&r )
+void	Vertex::read		( INetReader	&r )
 {
 	//	v_faces							m_adjacents; !
 	DataVertex::read( r );

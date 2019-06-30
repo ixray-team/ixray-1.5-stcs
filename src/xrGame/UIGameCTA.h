@@ -3,6 +3,7 @@
 
 #include "UIGameCustom.h"
 #include "game_base.h"
+#include "inventory.h"
 
 
 class UITeamPanels;
@@ -15,6 +16,8 @@ class CUIRankIndicator;
 class UITeamPanels;
 class CUISpawnWnd;
 class IBuyWnd;
+class CWeapon;
+class CWeaponMagazinedWGrenade;
 class CUISkinSelectorWnd;
 class CUIProgressShape;
 class CUIMessageBoxEx;
@@ -83,8 +86,17 @@ private:
 
 	typedef CUIGameCustom inherited;
 
-	
+	typedef buffer_vector<shared_str> aditional_ammo_t;
+			void		TryToDefuseAllWeapons		(aditional_ammo_t & dest_ammo);
+			void		TryToDefuseWeapon			(CWeapon const * weapon, TIItemContainer const & all_items, aditional_ammo_t & dest_ammo);
+			void		TryToDefuseGrenadeLauncher	(CWeaponMagazinedWGrenade const * weapon, TIItemContainer const & all_items, aditional_ammo_t & dest_ammo);
+			void		AdditionalAmmoInserter		(aditional_ammo_t::value_type const & sect_name);
+			
+			
+
+
 			void		BuyMenuItemInserter(PIItem const & item);
+			void		BuyMenuItemInserter(CInventorySlot const & slot);
 			void		SetPlayerItemsToBuyMenu();
 			void		SetPlayerParamsToBuyMenu();
 			void		SetPlayerDefItemsToBuyMenu();
@@ -119,11 +131,13 @@ public:
 			void		ShowMapDesc				();
 
 			void		UpdateBuyMenu			(shared_str const & teamSection, shared_str const & costSection);
+			bool		CanBuyItem				(shared_str const & sect_name);
 			
 			void		ShowBuyMenu				();
 			void		HideBuyMenu				();
 			BuyMenuItemPair	GetBuyMenuItem		(shared_str const & itemSectionName);
 			void		GetPurchaseItems		(BuyMenuItemsCollection & dest, s32 & moneyDif);
+
 			void		ReInitPlayerDefItems	();
 
 			bool		IsBuySpawnShown			();

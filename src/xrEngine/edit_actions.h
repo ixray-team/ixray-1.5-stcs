@@ -52,12 +52,14 @@ protected:
 class type_pair : public base
 {
 public:
-					type_pair		( char c, char c_shift );
+					type_pair		( u32 dik, char c, char c_shift, bool b_translate );
 	virtual			~type_pair		();
-			void	init			( char c, char c_shift );
+			void	init			( u32 dik, char c, char c_shift, bool b_translate );
 	virtual	void	on_key_press	( line_edit_control* const control );
 
 private:
+	u32		m_dik;
+	bool	m_translate;
 	char	m_char;
 	char	m_char_shift;
 

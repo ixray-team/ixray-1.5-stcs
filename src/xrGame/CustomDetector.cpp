@@ -311,6 +311,12 @@ BOOL CAfList::feel_touch_contact	(CObject* O)
 	TypesMapIt it				= m_TypesMap.find(clsid);
 
 	bool res					 = (it!=m_TypesMap.end());
-
+	if(res)
+	{
+		CArtefact*	pAf				= smart_cast<CArtefact*>(O);
+		
+		if(pAf->GetAfRank()>m_af_rank)
+			res = false;
+	}
 	return						res;
 }

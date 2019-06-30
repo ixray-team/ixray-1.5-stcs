@@ -329,6 +329,7 @@ void CCar::RestoreNetState(CSE_PHSkeleton* po)
 			i->second.RestoreNetState(*ii);
 		}
 	}
+/*
 	//as later may kill diable/enable state save it;
 	bool enable = PPhysicsShell()->isEnabled();
 /////////////////////////////////////////////////////////////////////////
@@ -368,6 +369,7 @@ void CCar::RestoreNetState(CSE_PHSkeleton* po)
 	if(enable)PPhysicsShell()->Enable();
 	else PPhysicsShell()->Disable();
 	PPhysicsShell()->GetGlobalTransformDynamic(&XFORM());
+	*/
 }
 void CCar::SetDefaultNetState(CSE_PHSkeleton* po)
 {

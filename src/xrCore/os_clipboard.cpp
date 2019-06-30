@@ -44,9 +44,13 @@ void os_clipboard::paste_from_clipboard	( LPSTR buffer, u32 const& buffer_size )
 	LPCSTR clipdata			= (LPCSTR)GlobalLock( hmem );
 	strncpy					( buffer, clipdata, buffer_size );
 	buffer[buffer_size]		= 0;
-	for ( u32 i = 0; i < strlen( buffer ); ++i ) {
-		if( isprint( buffer[i] ) == 0 || buffer[i] == '\t' || buffer[i] == '\n' )
+	for ( u32 i = 0; i < strlen( buffer ); ++i )
+	{
+		char c = buffer[i];
+		if ( ( (isprint(c) == 0) && (c != char(-1)) ) || c == '\t' || c == '\n' )// "ÿ" = -1
+		{
 			buffer[i]		= ' ';
+		}
 	}
 
 	GlobalUnlock			( hmem );

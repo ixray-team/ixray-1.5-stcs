@@ -37,19 +37,19 @@ weapon::weapon				(
 
 	CBoneData const&		bone_data = m_kinematics.LL_GetData(m_bones_ids[weapon_bone_id0]);
 	m_bones_ids[parent_weapon_bone_id0] = bone_data.GetParentID();
-	R_ASSERT				(m_bones_ids[parent_weapon_bone_id0] != BI_NONE);
+	VERIFY				(m_bones_ids[parent_weapon_bone_id0] != BI_NONE);
 
 	compute_bone			( bone_id0 );
 
 #if 1
 	Fmatrix&				bone_0 = m_result[bone_id0];
-	R_ASSERT				( _valid(bone_0) );
+	VERIFY				( _valid(bone_0) );
 	Fvector					angles;
 	bone_0.getXYZ			(angles);
-	R_ASSERT				( _valid(angles) );
+	VERIFY				( _valid(angles) );
 	angles.mul				(.5f);
 	bone_0.setXYZ			(angles);
-	R_ASSERT				( _valid(bone_0) );
+	VERIFY				( _valid(bone_0) );
 
 	CBoneInstance&			bone = m_kinematics.LL_GetBoneInstance( m_bones_ids[bone_id0] );
 	BoneCallback const&		old_callback = bone.callback();
@@ -107,12 +107,12 @@ void weapon::compute_bone	(u32 const bone_id)
 	Fvector					direction = Fvector( ).set( 0.f, 0.f, 1.f );
 	transform.transform_dir	( direction );
 
-	R_ASSERT				( _valid(m_bones[bone_id]) );
-	R_ASSERT				( _valid(position) );
-	R_ASSERT				( _valid(direction) );
+	VERIFY				( _valid(m_bones[bone_id]) );
+	VERIFY				( _valid(position) );
+	VERIFY				( _valid(direction) );
 	aim_at_position			( m_bones[bone_id].c, position, direction, m_result[bone_id] );
-	R_ASSERT				( _valid(m_result[bone_id]) );
-	R_ASSERT				( _valid(m_start_transform) );
-	R_ASSERT				( _valid(Fmatrix(m_start_transform).invert()) );
+	VERIFY				( _valid(m_result[bone_id]) );
+	VERIFY				( _valid(m_start_transform) );
+	VERIFY				( _valid(Fmatrix(m_start_transform).invert()) );
 	m_result[bone_id]		= Fmatrix(m_start_transform).invert().mulB_43(m_result[bone_id]).mulB_43(m_start_transform);
 }

@@ -6,7 +6,7 @@
 #define AFX_LIGHTMAP_H__889100E6_CF29_47EA_ABFD_41AE28DAC6B1__INCLUDED_
 #pragma once
 
-#include "../xrlc_light/lm_layer.h"
+#include "lm_layer.h"
 #include "serialize.h"
 // refs
 class CDeflector;
@@ -20,7 +20,7 @@ public:
 public:
 	CLightmap					();
 	~CLightmap					();
-	void	read				( IReader	&r );
+	void	read				( INetReader	&r );
 	void	write				( IWriter	&w )const;
 	void	Capture				( CDeflector *D, int b_u, int b_v, int s_u, int s_v, BOOL bRotate );
 	void	Save				( LPCSTR path );
