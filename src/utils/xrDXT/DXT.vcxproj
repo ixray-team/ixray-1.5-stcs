@@ -131,6 +131,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
       <ImportLibrary>..\..\..\..\libraries\$(ProjectName).lib</ImportLibrary>
+      <AdditionalDependencies>msvcprt_vc8.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -180,6 +181,7 @@
       </MapFileName>
       <LargeAddressAware>true</LargeAddressAware>
       <ImportLibrary>..\..\..\..\libraries\$(ProjectName).lib</ImportLibrary>
+      <AdditionalDependencies>msvcprt_vc8.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">
@@ -235,6 +237,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <ImportLibrary>..\..\..\..\libraries\$(ProjectName).lib</ImportLibrary>
+      <AdditionalDependencies>msvcprt_vc8.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -280,12 +283,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="DXT.vcxproj">
-      <Project>{ebf9b543-0830-4866-9b48-dc0740e87e8a}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -20,7 +20,7 @@ class CDUInterface;
 
 #ifndef _EDITOR
     #ifndef XRGAME_EXPORTS
-		#include "../../engine/xrSound/Sound.h"
+		#include "../../xrSound/Sound.h"
     #endif
 #endif
 

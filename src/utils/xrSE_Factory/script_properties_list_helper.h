@@ -10,7 +10,7 @@
 
 #include "../../xrcdb/xrCDB.h"
 #ifndef XRGAME_EXPORTS
-#	include "../../engine/xrSound/Sound.h"
+#	include "../../xrSound/Sound.h"
 #endif
 #include "xrEProps.h"
 #include "script_export_space.h"

@@ -851,12 +851,6 @@
     <None Include="lzo\lzo_mchw.ch" />
     <None Include="lzo\lzo_swd.ch" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="xrCompress.vcxproj">
-      <Project>{ef76867b-6eb8-4dc0-a1d6-e964fad6fc7b}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
