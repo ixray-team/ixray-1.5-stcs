@@ -29,3 +29,8 @@ UpgradeLog*.htm
 
 # Dependencies
 sdk/dxsdk_mar2008/
+
+# C++ Builder backups
+*.~bpr
+*.~h
+*.~cpp
