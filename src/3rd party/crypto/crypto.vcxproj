@@ -257,12 +257,6 @@
     <ClInclude Include="openssl\src\rand_lcl.h" />
     <ClInclude Include="openssl\src\sha_locl.h" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="crypto.vcxproj">
-      <Project>{fa169092-ea3e-40c1-8e5a-a2b575700fe8}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
