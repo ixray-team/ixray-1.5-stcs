@@ -132,7 +132,7 @@
     <LIBRARIES value="editorB.lib editor.lib bcbsmp.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib bcbsmp.lib vclx.lib editor.lib elpackB6.lib elpproB6.lib 
       editorB.lib"/>
-    <PACKAGES value="vcl.bpi rtl.bpi vclx.bpi ElPackB6.bpi elpkdbB6.bpi elpproB6.bpi"/>
+    <PACKAGES value="vcl.bpi rtl.bpi vclx.bpi elpackB6.bpi elpkdbB6.bpi elpproB6.bpi"/>
     <PATHCPP value=".;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;..\..\xrEngine;Edit;Edit;Edit;..\..\xrServerEntities;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;Edit;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;..\..\Layers\xrRender;Edit;..\..\xrServerEntities;Edit;Edit"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
@@ -334,7 +334,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=2
-Build=145
+Build=146
 Debug=1
 PreRelease=0
 Special=0
@@ -346,7 +346,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=
 FileDescription=
-FileVersion=1.0.2.145
+FileVersion=1.0.2.146
 InternalName=
 LegalCopyright=
 LegalTrademarks=
@@ -356,17 +356,18 @@ ProductVersion=1.0.0.0
 Comments=
 
 [HistoryLists\hlIncludePath]
-Count=10
-Item0=..\..\xrServerEntities;..\..\Layers\xrRender;X:\src\Include\xrRender;X:\sdk\dxsdk_mar2008\Include;Edit;Engine;$(BCB)\Projects;$(BCB)\include\vcl;$(BCB)\include;X:\sdk\components\alexmx;X:\sdk\components\ElPack\Code;X:\sdk\components\ElPack\Code\Source;X:\src\xrCore;../../xrEngine;X:\src\Layers\xrRender;X:\sdk\sources\MagicSoftware\Sdk\Include;X:\src\utils\ETools
-Item1=..\..\xrServerEntities;..\..\Layers\xrRender;..\..\xrEngine\xrRender;$(DXSDK_DIR)\Include;Edit;Engine;$(BCB)\Projects;$(BCB)\include\vcl;$(BCB)\include;$(COMPONENTS)\alexmx;$(COMPONENTS)\ElPack\Code;$(COMPONENTS)\ElPack\Code\Source;$(CORE_DIR);../../xrEngine;../../xrRender;$(MAGIC_SW_DIR);$(ETOOLS_DIR)
-Item2=..\..\xrEngine\xrRender;$(DXSDK_DIR)\Include;Edit;Engine;$(BCB)\Projects;$(BCB)\include\vcl;$(BCB)\include;$(COMPONENTS)\alexmx;$(COMPONENTS)\ElPack\Code;$(COMPONENTS)\ElPack\Code\Source;$(CORE_DIR);../../xrEngine;../../xrRender;$(MAGIC_SW_DIR);$(ETOOLS_DIR)
-Item3=..\..\xrEngine\xrRender;$(DXSDK_DIR)\Include;Edit;Engine;$(BCB)\Projects;$(BCB)\include\vcl;$(BCB)\include;$(COMPONENTS)\alexmx;$(COMPONENTS)\ElPack\Code;$(COMPONENTS)\ElPack\Code\Source;$(CORE_DIR);../../xrEngine;../../xrRender;$(MAGIC_SW_DIR)
-Item4=$(DXSDK_DIR)\Include;Edit;Engine;$(BCB)\Projects;$(BCB)\include\vcl;$(BCB)\include;$(COMPONENTS)\alexmx;$(COMPONENTS)\ElPack\Code;$(COMPONENTS)\ElPack\Code\Source;$(CORE_DIR);../../xrEngine;../../xrRender;$(MAGIC_SW_DIR)
-Item5=$(DXSDK_DIR)\Include;Edit;Engine;$(BCB)\Projects;$(BCB)\include\vcl;$(BCB)\include;$(COMPONENTS)\alexmx;$(COMPONENTS)\ElPack\Code;$(COMPONENTS)\ElPack\Code\Source;$(CORE_DIR);../../xrEngine;../../xrEngine/xrRender;$(MAGIC_SW_DIR)
-Item6=$(DXSDK_DIR)\Include;Edit;Engine;$(BCB)\Projects;$(BCB)\include\vcl;$(BCB)\include;$(COMPONENTS)\alexmx;$(COMPONENTS)\ElPack\Code;$(COMPONENTS)\ElPack\Code\Source;$(CORE_DIR);../../xrEngine;../../xrEngine/xrRender
-Item7=Edit;Engine;$(BCB)\Projects;$(BCB)\include\vcl;$(BCB)\include;$(DXSDK_DIR)\Include;$(COMPONENTS)\alexmx;$(COMPONENTS)\ElPack\Code;$(COMPONENTS)\ElPack\Code\Source;$(CORE_DIR);../../xrEngine;../../xrEngine/xrRender
-Item8=Edit;H:\RAD\Borland\CBuilder6\Projects;&quot;R:\SDK\Microsoft DirectX 9.0 SDK (April 2005)\Include&quot;Edit;Engine;r:\borland\components6\alexmx;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;..\ECore;..\ECore\Editor;..\ECore\Engine;..\ECore\Engine\blenders;..\ECore\Engine\visuals;..\xrEProps;P:\xrSound
-Item9=H:\RAD\Borland\CBuilder6\Projects;R:\SDK\Microsoft DirectX 9.0 SDK (April 2005)\Include;Engine\Game;Edit;Engine;r:\borland\components6\alexmx;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;..\ECore;..\ECore\Editor;..\ECore\Engine;..\ECore\Engine\blenders;..\ECore\Engine\visuals;..\xrEProps;P:\xrSound
+Count=11
+Item0=..\..\xrServerEntities;..\..\Layers\xrRender;X:\src\Include\xrRender;X:\sdk\dxsdk_mar2008\Include;Edit;Engine;$(BCB)\Projects;$(BCB)\include\vcl;$(BCB)\include;X:\sdk\components\alexmx;X:\sdk\components\ElPack\Code;X:\sdk\components\ElPack\Code\Source;X:\src\xrCore;../../xrEngine;X:\sdk\sources\MagicSoftware\Sdk\Include;X:\src\utils\ETools
+Item1=..\..\xrServerEntities;..\..\Layers\xrRender;X:\src\Include\xrRender;X:\sdk\dxsdk_mar2008\Include;Edit;Engine;$(BCB)\Projects;$(BCB)\include\vcl;$(BCB)\include;X:\sdk\components\alexmx;X:\sdk\components\ElPack\Code;X:\sdk\components\ElPack\Code\Source;X:\src\xrCore;../../xrEngine;X:\src\Layers\xrRender;X:\sdk\sources\MagicSoftware\Sdk\Include;X:\src\utils\ETools
+Item2=..\..\xrServerEntities;..\..\Layers\xrRender;..\..\xrEngine\xrRender;$(DXSDK_DIR)\Include;Edit;Engine;$(BCB)\Projects;$(BCB)\include\vcl;$(BCB)\include;$(COMPONENTS)\alexmx;$(COMPONENTS)\ElPack\Code;$(COMPONENTS)\ElPack\Code\Source;$(CORE_DIR);../../xrEngine;../../xrRender;$(MAGIC_SW_DIR);$(ETOOLS_DIR)
+Item3=..\..\xrEngine\xrRender;$(DXSDK_DIR)\Include;Edit;Engine;$(BCB)\Projects;$(BCB)\include\vcl;$(BCB)\include;$(COMPONENTS)\alexmx;$(COMPONENTS)\ElPack\Code;$(COMPONENTS)\ElPack\Code\Source;$(CORE_DIR);../../xrEngine;../../xrRender;$(MAGIC_SW_DIR);$(ETOOLS_DIR)
+Item4=..\..\xrEngine\xrRender;$(DXSDK_DIR)\Include;Edit;Engine;$(BCB)\Projects;$(BCB)\include\vcl;$(BCB)\include;$(COMPONENTS)\alexmx;$(COMPONENTS)\ElPack\Code;$(COMPONENTS)\ElPack\Code\Source;$(CORE_DIR);../../xrEngine;../../xrRender;$(MAGIC_SW_DIR)
+Item5=$(DXSDK_DIR)\Include;Edit;Engine;$(BCB)\Projects;$(BCB)\include\vcl;$(BCB)\include;$(COMPONENTS)\alexmx;$(COMPONENTS)\ElPack\Code;$(COMPONENTS)\ElPack\Code\Source;$(CORE_DIR);../../xrEngine;../../xrRender;$(MAGIC_SW_DIR)
+Item6=$(DXSDK_DIR)\Include;Edit;Engine;$(BCB)\Projects;$(BCB)\include\vcl;$(BCB)\include;$(COMPONENTS)\alexmx;$(COMPONENTS)\ElPack\Code;$(COMPONENTS)\ElPack\Code\Source;$(CORE_DIR);../../xrEngine;../../xrEngine/xrRender;$(MAGIC_SW_DIR)
+Item7=$(DXSDK_DIR)\Include;Edit;Engine;$(BCB)\Projects;$(BCB)\include\vcl;$(BCB)\include;$(COMPONENTS)\alexmx;$(COMPONENTS)\ElPack\Code;$(COMPONENTS)\ElPack\Code\Source;$(CORE_DIR);../../xrEngine;../../xrEngine/xrRender
+Item8=Edit;Engine;$(BCB)\Projects;$(BCB)\include\vcl;$(BCB)\include;$(DXSDK_DIR)\Include;$(COMPONENTS)\alexmx;$(COMPONENTS)\ElPack\Code;$(COMPONENTS)\ElPack\Code\Source;$(CORE_DIR);../../xrEngine;../../xrEngine/xrRender
+Item9=Edit;H:\RAD\Borland\CBuilder6\Projects;&quot;R:\SDK\Microsoft DirectX 9.0 SDK (April 2005)\Include&quot;Edit;Engine;r:\borland\components6\alexmx;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;..\ECore;..\ECore\Editor;..\ECore\Engine;..\ECore\Engine\blenders;..\ECore\Engine\visuals;..\xrEProps;P:\xrSound
+Item10=H:\RAD\Borland\CBuilder6\Projects;R:\SDK\Microsoft DirectX 9.0 SDK (April 2005)\Include;Engine\Game;Edit;Engine;r:\borland\components6\alexmx;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;..\ECore;..\ECore\Editor;..\ECore\Engine;..\ECore\Engine\blenders;..\ECore\Engine\visuals;..\xrEProps;P:\xrSound
 
 [HistoryLists\hlLibraryPath]
 Count=9
