@@ -691,7 +691,7 @@ MStatus CXRayMtl::initialize()
 	CHECK_MSTATUS ( nAttr.setWritable(false) );
 	CHECK_MSTATUS( nAttr.setDefault( 1.0f ) );
 
-	aLightBlindData = nAttr.createAddr( "lightBlindData", "lbld",
+	aLightBlindData = nAttr.createPoint( "lightBlindData", "lbld",
 		&status );
 	CHECK_MSTATUS( status );
 	CHECK_MSTATUS ( nAttr.setStorable(false) );
