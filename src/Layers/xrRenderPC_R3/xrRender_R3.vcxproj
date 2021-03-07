@@ -60,16 +60,22 @@
     <IntDir>..\..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
     <IgnoreImportLibrary>true</IgnoreImportLibrary>
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>..\..\..\sdk\dxsdk_mar2009\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\..\..\sdk\dxsdk_mar2009\Lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>..\..\..\..\binaries\</OutDir>
     <IntDir>..\..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>..\..\..\sdk\dxsdk_mar2009\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\..\..\sdk\dxsdk_mar2009\Lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">
     <OutDir>..\..\..\..\binaries\</OutDir>
     <IntDir>..\..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>..\..\..\sdk\dxsdk_mar2009\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\..\..\sdk\dxsdk_mar2009\Lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -93,6 +99,7 @@
       <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4005;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <AdditionalDependencies>d3d10.lib;d3dx10.lib;dxgi.lib;nvapi.lib;atimgpud_mtdll_x86.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -105,6 +112,7 @@
       <LargeAddressAware>true</LargeAddressAware>
       <ImportLibrary>..\..\..\..\libraries\$(ProjectName).lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -135,6 +143,7 @@
       <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4005;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <AdditionalDependencies>d3d10.lib;d3dx10.lib;dxgi.lib;nvapi.lib;atimgpud_mtdll_x86.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -150,6 +159,7 @@
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
       <ImportLibrary>..\..\..\..\libraries\$(ProjectName).lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">
@@ -177,6 +187,7 @@
       <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4005;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <AdditionalDependencies>d3d10.lib;d3dx10.lib;dxgi.lib;nvapi.lib;atimgpud_mtdll_x86.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -188,6 +199,7 @@
       <LargeAddressAware>true</LargeAddressAware>
       <ImportLibrary>..\..\..\..\libraries\$(ProjectName).lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
