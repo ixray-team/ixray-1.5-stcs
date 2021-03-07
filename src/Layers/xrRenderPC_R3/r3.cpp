@@ -13,7 +13,7 @@
 
 #include "..\xrRenderDX10\3DFluid\dx103DFluidManager.h"
 
-#include "D3DX10Core.h"
+#include "D3D10shader.h"
 
 CRender										RImplementation;
 
@@ -1048,7 +1048,7 @@ HRESULT	CRender::shader_compile			(
 	{
 		ID3DBlob*		code	= *ppShader;
 		ID3DBlob*		disasm	= 0;
-		D3DX10DisassembleShader(code->GetBufferPointer(), code->GetBufferSize(), FALSE, 0, &disasm );
+		D3D10DisassembleShader(code->GetBufferPointer(), code->GetBufferSize(), FALSE, 0, &disasm);
 		//D3DXDisassembleShader		(LPDWORD(code->GetBufferPointer()), FALSE, 0, &disasm );
 		string_path			dname;
 		strconcat			(sizeof(dname),dname,"disasm\\",name,('v'==pTarget[0])?".vs":('p'==pTarget[0])?".ps":".gs" );
