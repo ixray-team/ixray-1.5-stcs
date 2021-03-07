@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -13,10 +13,6 @@
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Template|Win32">
-      <Configuration>Template</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A0F7D1FB-59A7-4717-A7E4-96F37E91998E}</ProjectGuid>
@@ -26,15 +22,18 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -54,35 +53,23 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\binaries\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
-    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreImportLibrary>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\binaries\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">..\..\..\binaries\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">false</LinkIncremental>
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Template|Win32'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Template|Win32'" />
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IncludePath);X:\sdk\dxsdk_mar2008\Include</IncludePath>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">X:\sdk\dxsdk_mar2008\Lib\x86;$(LibraryPath)</LibraryPath>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">$(IncludePath);X:\sdk\dxsdk_mar2008\Include</IncludePath>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">X:\sdk\dxsdk_mar2008\Lib\x86;$(LibraryPath)</LibraryPath>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IncludePath);X:\sdk\dxsdk_mar2008\Include</IncludePath>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">X:\sdk\dxsdk_mar2008\Lib\x86;$(LibraryPath)</LibraryPath>
+    <_ProjectFileVersion>12.0.30501.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>..\..\..\binaries\</OutDir>
+    <IntDir>..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
+    <IgnoreImportLibrary>true</IgnoreImportLibrary>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>..\..\..\binaries\</OutDir>
+    <IntDir>..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">
+    <OutDir>..\..\..\binaries\</OutDir>
+    <IntDir>..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -107,8 +94,7 @@
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
-      <BrowseInformation>
-      </BrowseInformation>
+      <BrowseInformation />
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -118,8 +104,7 @@
       <AdditionalLibraryDirectories>..\..\sdk\libraries;..\..\..\libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <GenerateMapFile>false</GenerateMapFile>
-      <MapFileName>
-      </MapFileName>
+      <MapFileName />
       <MapExports>false</MapExports>
       <SubSystem>Windows</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
@@ -139,8 +124,7 @@
       <AdditionalIncludeDirectories>../../sdk/include/stlport;../../sdk/include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;XRCORE_EXPORTS;_SECURE_SCL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
-      <ExceptionHandling>
-      </ExceptionHandling>
+      <ExceptionHandling />
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <FunctionLevelLinking>false</FunctionLevelLinking>
@@ -154,8 +138,7 @@
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
-      <BrowseInformation>
-      </BrowseInformation>
+      <BrowseInformation />
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
@@ -164,8 +147,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)$(ProjectName).pdb</ProgramDatabaseFile>
       <GenerateMapFile>false</GenerateMapFile>
-      <MapFileName>
-      </MapFileName>
+      <MapFileName />
       <SubSystem>NotSet</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
       <OptimizeReferences>true</OptimizeReferences>
@@ -194,13 +176,11 @@
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderOutputFile>$(IntDir)$(ProjectName).pch</PrecompiledHeaderOutputFile>
-      <AssemblerOutput>
-      </AssemblerOutput>
+      <AssemblerOutput />
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
-      <BrowseInformation>
-      </BrowseInformation>
+      <BrowseInformation />
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
@@ -216,64 +196,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="FTimer.cpp" />
-    <ClCompile Include="stdafx.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">Create</PrecompiledHeader>
-      <ShowIncludes Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">false</ShowIncludes>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="xrCore.cpp" />
-    <ClCompile Include="_compressed_normal.cpp" />
-    <ClCompile Include="_math.cpp" />
-    <ClCompile Include="_sphere.cpp" />
-    <ClCompile Include="cpuid.cpp" />
-    <ClCompile Include="_std_extensions.cpp" />
-    <ClCompile Include="clsid.cpp" />
-    <ClCompile Include="string_concatenations.cpp" />
-    <ClCompile Include="xr_trims.cpp" />
-    <ClCompile Include="FileSystem.cpp" />
-    <ClCompile Include="FileSystem_borland.cpp" />
-    <ClCompile Include="FS.cpp" />
-    <ClCompile Include="LocatorAPI.cpp" />
-    <ClCompile Include="LocatorAPI_auth.cpp" />
-    <ClCompile Include="LocatorAPI_defs.cpp" />
-    <ClCompile Include="LocatorAPI_Notifications.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="log.cpp" />
-    <ClCompile Include="NET_utils.cpp" />
-    <ClCompile Include="Xr_ini.cpp" />
-    <ClCompile Include="stream_reader.cpp" />
-    <ClCompile Include="file_stream_reader.cpp" />
-    <ClCompile Include="memory_allocation_stats.cpp" />
-    <ClCompile Include="memory_usage.cpp" />
-    <ClCompile Include="xrMemory.cpp" />
-    <ClCompile Include="xrMemory_align.cpp" />
-    <ClCompile Include="xrMemory_debug.cpp" />
-    <ClCompile Include="xrMemory_POOL.cpp" />
-    <ClCompile Include="xrMemory_pso_Copy.cpp">
-      <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">AssemblyAndSourceCode</AssemblerOutput>
-      <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AssemblyAndSourceCode</AssemblerOutput>
-    </ClCompile>
-    <ClCompile Include="xrMemory_pso_Fill.cpp">
-      <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">AssemblyAndSourceCode</AssemblerOutput>
-      <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AssemblyAndSourceCode</AssemblerOutput>
-    </ClCompile>
-    <ClCompile Include="xrMemory_pso_Fill32.cpp">
-      <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">AssemblyAndSourceCode</AssemblerOutput>
-      <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AssemblyAndSourceCode</AssemblerOutput>
-    </ClCompile>
-    <ClCompile Include="xrMemory_subst_borland.cpp" />
-    <ClCompile Include="xrMemory_subst_msvc.cpp" />
-    <ClCompile Include="xrDebug.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="xrDebugNew.cpp" />
     <ClCompile Include="blackbox\BlackBoxUI.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
@@ -375,12 +297,27 @@
       </PrecompiledHeader>
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">TurnOffAllWarnings</WarningLevel>
     </ClCompile>
+    <ClCompile Include="clsid.cpp" />
+    <ClCompile Include="cpuid.cpp" />
     <ClCompile Include="crc32.cpp" />
-    <ClCompile Include="xr_shared.cpp" />
-    <ClCompile Include="xrsharedmem.cpp" />
-    <ClCompile Include="xrstring.cpp" />
+    <ClCompile Include="FileSystem.cpp" />
+    <ClCompile Include="FileSystem_borland.cpp" />
+    <ClCompile Include="file_stream_reader.cpp" />
+    <ClCompile Include="FS.cpp" />
+    <ClCompile Include="FTimer.cpp" />
+    <ClCompile Include="LocatorAPI.cpp" />
+    <ClCompile Include="LocatorAPI_auth.cpp" />
+    <ClCompile Include="LocatorAPI_defs.cpp" />
+    <ClCompile Include="LocatorAPI_Notifications.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="log.cpp" />
+    <ClCompile Include="LzHuf.cpp" />
+    <ClCompile Include="memory_allocation_stats.cpp" />
     <ClCompile Include="memory_monitor.cpp" />
-    <ClCompile Include="ppmd_compressor.cpp" />
+    <ClCompile Include="memory_usage.cpp" />
     <ClCompile Include="Model.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
@@ -392,24 +329,141 @@
       </PrecompiledHeader>
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">TurnOffAllWarnings</WarningLevel>
     </ClCompile>
+    <ClCompile Include="NET_utils.cpp" />
+    <ClCompile Include="os_clipboard.cpp" />
+    <ClCompile Include="ppmd_compressor.cpp" />
     <ClCompile Include="rt_compressor.cpp" />
     <ClCompile Include="rt_compressor9.cpp" />
-    <ClCompile Include="LzHuf.cpp" />
     <ClCompile Include="rt_lzo1x_1.cpp" />
     <ClCompile Include="rt_lzo1x_9x.cpp" />
     <ClCompile Include="rt_lzo1x_d1.cpp" />
     <ClCompile Include="rt_lzo1x_d2.cpp" />
     <ClCompile Include="rt_lzo1x_d3.cpp" />
     <ClCompile Include="rt_lzo_init.cpp" />
-    <ClCompile Include="os_clipboard.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">Create</PrecompiledHeader>
+      <ShowIncludes Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">false</ShowIncludes>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="stream_reader.cpp" />
+    <ClCompile Include="string_concatenations.cpp" />
+    <ClCompile Include="xrCore.cpp" />
+    <ClCompile Include="xrDebug.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="xrDebugNew.cpp" />
+    <ClCompile Include="xrMemory.cpp" />
+    <ClCompile Include="xrMemory_align.cpp" />
+    <ClCompile Include="xrMemory_debug.cpp" />
+    <ClCompile Include="xrMemory_POOL.cpp" />
+    <ClCompile Include="xrMemory_pso_Copy.cpp">
+      <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">AssemblyAndSourceCode</AssemblerOutput>
+      <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AssemblyAndSourceCode</AssemblerOutput>
+    </ClCompile>
+    <ClCompile Include="xrMemory_pso_Fill.cpp">
+      <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">AssemblyAndSourceCode</AssemblerOutput>
+      <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AssemblyAndSourceCode</AssemblerOutput>
+    </ClCompile>
+    <ClCompile Include="xrMemory_pso_Fill32.cpp">
+      <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">AssemblyAndSourceCode</AssemblerOutput>
+      <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AssemblyAndSourceCode</AssemblerOutput>
+    </ClCompile>
+    <ClCompile Include="xrMemory_subst_borland.cpp" />
+    <ClCompile Include="xrMemory_subst_msvc.cpp" />
+    <ClCompile Include="xrsharedmem.cpp" />
+    <ClCompile Include="xrstring.cpp" />
     <ClCompile Include="xrSyncronize.cpp" />
+    <ClCompile Include="Xr_ini.cpp" />
+    <ClCompile Include="xr_shared.cpp" />
+    <ClCompile Include="xr_trims.cpp" />
+    <ClCompile Include="_compressed_normal.cpp" />
+    <ClCompile Include="_math.cpp" />
+    <ClCompile Include="_sphere.cpp" />
+    <ClCompile Include="_std_extensions.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="blackbox\BugslayerUtil.h" />
+    <ClInclude Include="blackbox\CrashHandler.h" />
+    <ClInclude Include="blackbox\DiagAssert.h" />
+    <ClInclude Include="blackbox\Internal.h" />
+    <ClInclude Include="blackbox\stdafx_.h" />
+    <ClInclude Include="blackbox\SymbolEngine.h" />
+    <ClInclude Include="blackbox\WarningsOff.h" />
+    <ClInclude Include="blackbox\WarningsOn.h" />
+    <ClInclude Include="buffer_vector.h" />
+    <ClInclude Include="buffer_vector_inline.h" />
+    <ClInclude Include="clsid.h" />
+    <ClInclude Include="Coder.hpp" />
+    <ClInclude Include="compression_ppmd_stream.h" />
+    <ClInclude Include="compression_ppmd_stream_inline.h" />
+    <ClInclude Include="cpuid.h" />
+    <ClInclude Include="fastdelegate.h" />
+    <CustomBuild Include="FileSystem.h" />
+    <ClInclude Include="file_stream_reader.h" />
+    <ClInclude Include="FixedMap.h" />
+    <ClInclude Include="FixedSet.h" />
+    <ClInclude Include="FixedVector.h" />
+    <ClInclude Include="FS.h" />
+    <ClInclude Include="FS_impl.h" />
+    <ClInclude Include="FS_internal.h" />
     <ClInclude Include="FTimer.h" />
+    <ClInclude Include="intrusive_ptr.h" />
+    <ClInclude Include="intrusive_ptr_inline.h" />
+    <ClInclude Include="LocatorAPI.h" />
+    <ClInclude Include="LocatorAPI_defs.h" />
+    <CustomBuild Include="LocatorAPI_Notifications.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </CustomBuild>
+    <ClInclude Include="log.h" />
+    <ClInclude Include="lzhuf.h" />
+    <ClInclude Include="memory_monitor.h" />
+    <ClInclude Include="net_utils.h" />
+    <ClInclude Include="os_clipboard.h" />
+    <ClInclude Include="PPMd.h" />
+    <ClInclude Include="PPMdType.h" />
+    <ClInclude Include="ppmd_compressor.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="rt_compressor.h" />
+    <ClInclude Include="rt_config1x.h" />
+    <ClInclude Include="rt_lzo1x.h" />
+    <ClInclude Include="rt_lzoconf.h" />
+    <ClInclude Include="rt_lzodefs.h" />
+    <ClInclude Include="rt_lzo_conf.h" />
+    <ClInclude Include="rt_lzo_config.h" />
+    <ClInclude Include="rt_lzo_dict.h" />
+    <ClInclude Include="rt_lzo_ptr.h" />
+    <ClInclude Include="rt_miniacc.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="stream_reader.h" />
+    <ClInclude Include="stream_reader_inline.h" />
+    <ClInclude Include="string_concatenations.h" />
+    <ClInclude Include="string_concatenations_inline.h" />
+    <ClInclude Include="SubAlloc.hpp" />
+    <ClInclude Include="vector.h" />
     <ClInclude Include="xrCore.h" />
     <ClInclude Include="xrCore_platform.h" />
+    <ClInclude Include="xrDebug.h" />
+    <ClInclude Include="xrDebug_macros.h" />
+    <ClInclude Include="xrMemory.h" />
+    <ClInclude Include="xrMemory_align.h" />
+    <ClInclude Include="xrMEMORY_POOL.h" />
+    <ClInclude Include="xrMemory_pso.h" />
+    <ClInclude Include="xrMemory_pure.h" />
+    <ClInclude Include="xrMemory_subst_borland.h" />
+    <ClInclude Include="xrMemory_subst_msvc.h" />
+    <ClInclude Include="xrPool.h" />
+    <ClInclude Include="xrsharedmem.h" />
+    <ClInclude Include="xrstring.h" />
+    <ClInclude Include="xrSyncronize.h" />
+    <ClInclude Include="xr_ini.h" />
+    <ClInclude Include="xr_resource.h" />
+    <ClInclude Include="xr_shared.h" />
+    <ClInclude Include="xr_trims.h" />
     <ClInclude Include="_bitwise.h" />
     <ClInclude Include="_color.h" />
     <ClInclude Include="_compressed_normal.h" />
@@ -427,88 +481,14 @@
     <ClInclude Include="_random.h" />
     <ClInclude Include="_rect.h" />
     <ClInclude Include="_sphere.h" />
+    <ClInclude Include="_std_extensions.h" />
+    <ClInclude Include="_stl_extensions.h" />
     <ClInclude Include="_types.h" />
+    <ClInclude Include="_type_traits.h" />
     <ClInclude Include="_vector2.h" />
     <ClInclude Include="_vector3d.h" />
     <ClInclude Include="_vector3d_ext.h" />
     <ClInclude Include="_vector4.h" />
-    <ClInclude Include="vector.h" />
-    <ClInclude Include="cpuid.h" />
-    <ClInclude Include="FixedMap.h" />
-    <ClInclude Include="FixedSet.h" />
-    <ClInclude Include="FixedVector.h" />
-    <ClInclude Include="xrPool.h" />
-    <ClInclude Include="_std_extensions.h" />
-    <ClInclude Include="_stl_extensions.h" />
-    <ClInclude Include="_type_traits.h" />
-    <ClInclude Include="clsid.h" />
-    <ClInclude Include="fastdelegate.h" />
-    <ClInclude Include="string_concatenations.h" />
-    <ClInclude Include="string_concatenations_inline.h" />
-    <ClInclude Include="xr_trims.h" />
-    <ClInclude Include="buffer_vector.h" />
-    <ClInclude Include="buffer_vector_inline.h" />
-    <CustomBuildStep Include="FileSystem.h" />
-    <ClInclude Include="FS.h" />
-    <ClInclude Include="FS_impl.h" />
-    <ClInclude Include="FS_internal.h" />
-    <ClInclude Include="LocatorAPI.h" />
-    <ClInclude Include="LocatorAPI_defs.h" />
-    <CustomBuildStep Include="LocatorAPI_Notifications.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </CustomBuildStep>
-    <ClInclude Include="log.h" />
-    <ClInclude Include="net_utils.h" />
-    <ClInclude Include="xr_ini.h" />
-    <ClInclude Include="stream_reader.h" />
-    <ClInclude Include="stream_reader_inline.h" />
-    <ClInclude Include="file_stream_reader.h" />
-    <ClInclude Include="xrMemory.h" />
-    <ClInclude Include="xrMemory_align.h" />
-    <ClInclude Include="xrMEMORY_POOL.h" />
-    <ClInclude Include="xrMemory_pso.h" />
-    <ClInclude Include="xrMemory_pure.h" />
-    <ClInclude Include="xrMemory_subst_borland.h" />
-    <ClInclude Include="xrMemory_subst_msvc.h" />
-    <ClInclude Include="xrDebug.h" />
-    <ClInclude Include="xrDebug_macros.h" />
-    <ClInclude Include="blackbox\BugslayerUtil.h" />
-    <ClInclude Include="blackbox\CrashHandler.h" />
-    <ClInclude Include="blackbox\DiagAssert.h" />
-    <ClInclude Include="blackbox\Internal.h" />
-    <ClInclude Include="blackbox\stdafx_.h" />
-    <ClInclude Include="blackbox\SymbolEngine.h" />
-    <ClInclude Include="blackbox\WarningsOff.h" />
-    <ClInclude Include="blackbox\WarningsOn.h" />
-    <ClInclude Include="xr_resource.h" />
-    <ClInclude Include="xr_shared.h" />
-    <ClInclude Include="xrsharedmem.h" />
-    <ClInclude Include="xrstring.h" />
-    <ClInclude Include="intrusive_ptr.h" />
-    <ClInclude Include="intrusive_ptr_inline.h" />
-    <ClInclude Include="memory_monitor.h" />
-    <ClInclude Include="ppmd_compressor.h" />
-    <ClInclude Include="PPMd.h" />
-    <ClInclude Include="PPMdType.h" />
-    <ClInclude Include="Coder.hpp" />
-    <ClInclude Include="SubAlloc.hpp" />
-    <ClInclude Include="compression_ppmd_stream.h" />
-    <ClInclude Include="compression_ppmd_stream_inline.h" />
-    <ClInclude Include="rt_compressor.h" />
-    <ClInclude Include="lzhuf.h" />
-    <ClInclude Include="rt_config1x.h" />
-    <ClInclude Include="rt_lzo1x.h" />
-    <ClInclude Include="rt_lzo_conf.h" />
-    <ClInclude Include="rt_lzo_config.h" />
-    <ClInclude Include="rt_lzo_dict.h" />
-    <ClInclude Include="rt_lzo_ptr.h" />
-    <ClInclude Include="rt_lzoconf.h" />
-    <ClInclude Include="rt_lzodefs.h" />
-    <ClInclude Include="rt_miniacc.h" />
-    <ClInclude Include="os_clipboard.h" />
-    <ClInclude Include="xrSyncronize.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="xrCore.rc" />

@@ -2,22 +2,22 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Kernel">
-      <UniqueIdentifier>{4c3253e0-5d5c-4429-8f99-b501dc21a652}</UniqueIdentifier>
+      <UniqueIdentifier>{be2caf04-a036-4fbe-a19a-dfb7542e4f93}</UniqueIdentifier>
     </Filter>
     <Filter Include="Shared Files">
-      <UniqueIdentifier>{906a08e6-42f3-454e-acb4-9c57ca946a99}</UniqueIdentifier>
+      <UniqueIdentifier>{ba82f266-c323-438b-89d3-6abda897a7a2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Shared Files\Engine">
-      <UniqueIdentifier>{54b2b03b-4203-4b19-aad7-3fa234f7de4b}</UniqueIdentifier>
+      <UniqueIdentifier>{df66aba0-05c4-42dd-9d21-27dc16e9d8a5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Shared Files\Editor">
-      <UniqueIdentifier>{126a9987-86b3-4629-a1b4-9ae300ba250b}</UniqueIdentifier>
+      <UniqueIdentifier>{d4db6825-8d64-458d-ad27-e8766a122659}</UniqueIdentifier>
     </Filter>
     <Filter Include="Shared Files\Plugins">
-      <UniqueIdentifier>{3cbb95f8-d8c9-4781-afbd-01e80475d019}</UniqueIdentifier>
+      <UniqueIdentifier>{a1187179-5878-4802-bc74-b274c049ed9b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Shader">
-      <UniqueIdentifier>{ee609e58-44c4-4654-8b38-4891fc8ae7d8}</UniqueIdentifier>
+      <UniqueIdentifier>{1dd97318-3dba-4914-81b3-f3dd67a3ca0e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -60,8 +60,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuildStep Include="Material\Stdafx.h">
+    <CustomBuild Include="Material\Stdafx.h">
       <Filter>Kernel</Filter>
-    </CustomBuildStep>
+    </CustomBuild>
   </ItemGroup>
 </Project>

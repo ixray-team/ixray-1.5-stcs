@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -13,10 +13,6 @@
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Template|Win32">
-      <Configuration>Template</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectName>ode</ProjectName>
@@ -26,18 +22,21 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
     <UseOfAtl>Static</UseOfAtl>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>false</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
     <UseOfAtl>false</UseOfAtl>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
     <UseOfAtl>Static</UseOfAtl>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -58,34 +57,28 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\..\..\..\..\binaries\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\..\..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
-    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreImportLibrary>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkIncremental>
-    <PostBuildEventUseInBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PostBuildEventUseInBuild>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\..\..\..\..\binaries\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\..\..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
-    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreImportLibrary>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
-    <PostBuildEventUseInBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</PostBuildEventUseInBuild>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">..\..\..\..\..\..\..\binaries\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">..\..\..\..\..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
-    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">true</IgnoreImportLibrary>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">false</LinkIncremental>
-    <PostBuildEventUseInBuild Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">false</PostBuildEventUseInBuild>
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Template|Win32'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Template|Win32'" />
+    <_ProjectFileVersion>12.0.30501.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>..\..\..\..\..\..\..\binaries\</OutDir>
+    <IntDir>..\..\..\..\..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
+    <IgnoreImportLibrary>true</IgnoreImportLibrary>
+    <LinkIncremental>false</LinkIncremental>
+    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>..\..\..\..\..\..\..\binaries\</OutDir>
+    <IntDir>..\..\..\..\..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
+    <IgnoreImportLibrary>true</IgnoreImportLibrary>
+    <LinkIncremental>false</LinkIncremental>
+    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">
+    <OutDir>..\..\..\..\..\..\..\binaries\</OutDir>
+    <IntDir>..\..\..\..\..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
+    <IgnoreImportLibrary>true</IgnoreImportLibrary>
+    <LinkIncremental>false</LinkIncremental>
+    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Midl>
@@ -95,8 +88,7 @@
       <GenerateStublessProxies>true</GenerateStublessProxies>
       <TypeLibraryName>$(IntDir)default.tlb</TypeLibraryName>
       <HeaderFileName>default.h</HeaderFileName>
-      <DllDataFileName>
-      </DllDataFileName>
+      <DllDataFileName />
       <InterfaceIdentifierFileName>default_i.c</InterfaceIdentifierFileName>
       <ProxyFileName>default_p.c</ProxyFileName>
     </Midl>
@@ -111,8 +103,7 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FloatingPointModel>Fast</FloatingPointModel>
       <ForceConformanceInForLoopScope>false</ForceConformanceInForLoopScope>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader />
       <PrecompiledHeaderOutputFile>$(IntDir)$(ProjectName).pch</PrecompiledHeaderOutputFile>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ObjectFileName>$(IntDir)</ObjectFileName>
@@ -131,8 +122,7 @@
       <ModuleDefinitionFile>../../../config/msvcdefs.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <GenerateMapFile>false</GenerateMapFile>
-      <MapFileName>
-      </MapFileName>
+      <MapFileName />
       <SubSystem>Windows</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
       <ImportLibrary>..\..\..\..\..\..\..\libraries\$(ProjectName).lib</ImportLibrary>
@@ -151,8 +141,7 @@
       <GenerateStublessProxies>true</GenerateStublessProxies>
       <TypeLibraryName>$(IntDir)default.tlb</TypeLibraryName>
       <HeaderFileName>default.h</HeaderFileName>
-      <DllDataFileName>
-      </DllDataFileName>
+      <DllDataFileName />
       <InterfaceIdentifierFileName>default_i.c</InterfaceIdentifierFileName>
       <ProxyFileName>default_p.c</ProxyFileName>
     </Midl>
@@ -167,16 +156,14 @@
       <AdditionalIncludeDirectories>../../../include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_USRDLL;dSINGLE;MSVC;dNODEBUG;_SECURE_SCL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
-      <ExceptionHandling>
-      </ExceptionHandling>
+      <ExceptionHandling />
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <FunctionLevelLinking>false</FunctionLevelLinking>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions</EnableEnhancedInstructionSet>
       <FloatingPointModel>Fast</FloatingPointModel>
       <ForceConformanceInForLoopScope>false</ForceConformanceInForLoopScope>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader />
       <PrecompiledHeaderOutputFile>$(IntDir)$(ProjectName).pch</PrecompiledHeaderOutputFile>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ObjectFileName>$(IntDir)</ObjectFileName>
@@ -195,8 +182,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)$(ProjectName).pdb</ProgramDatabaseFile>
       <GenerateMapFile>false</GenerateMapFile>
-      <MapFileName>
-      </MapFileName>
+      <MapFileName />
       <SubSystem>Windows</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
       <OptimizeReferences>true</OptimizeReferences>
@@ -218,8 +204,7 @@
       <GenerateStublessProxies>true</GenerateStublessProxies>
       <TypeLibraryName>$(IntDir)default.tlb</TypeLibraryName>
       <HeaderFileName>default.h</HeaderFileName>
-      <DllDataFileName>
-      </DllDataFileName>
+      <DllDataFileName />
       <InterfaceIdentifierFileName>default_i.c</InterfaceIdentifierFileName>
       <ProxyFileName>default_p.c</ProxyFileName>
     </Midl>
@@ -238,8 +223,7 @@
       <FunctionLevelLinking>false</FunctionLevelLinking>
       <FloatingPointModel>Fast</FloatingPointModel>
       <ForceConformanceInForLoopScope>false</ForceConformanceInForLoopScope>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader />
       <PrecompiledHeaderOutputFile>$(IntDir)$(ProjectName).pch</PrecompiledHeaderOutputFile>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ObjectFileName>$(IntDir)</ObjectFileName>
@@ -270,29 +254,9 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\ode\src\array.h" />
-    <ClInclude Include="..\..\..\ode\src\Bounder33.h" />
     <ClInclude Include="..\..\..\include\ode\collision.h" />
-    <ClInclude Include="..\..\..\ode\src\collision_kernel.h" />
     <ClInclude Include="..\..\..\include\ode\collision_space.h" />
-    <ClInclude Include="..\..\..\ode\src\collision_space_internal.h" />
-    <ClInclude Include="..\..\..\ode\src\collision_std.h" />
-    <ClInclude Include="..\..\..\ode\src\collision_transform.h" />
     <ClInclude Include="..\..\..\include\ode\collision_trimesh.h" />
-    <ClInclude Include="..\..\..\ode\src\collision_trimesh_internal.h" />
-    <ClInclude Include="..\..\..\ode\src\collision_util.h" />
-    <ClInclude Include="..\..\..\ode\src\geom_internal.h" />
-    <ClInclude Include="..\..\..\ode\src\joint.h" />
-    <ClInclude Include="..\..\..\ode\src\lcp.h" />
-    <ClInclude Include="..\..\..\ode\src\mat.h" />
-    <ClInclude Include="..\..\..\ode\src\objects.h" />
-    <ClInclude Include="..\..\..\ode\src\obstack.h" />
-    <ClInclude Include="..\..\..\include\ode\odecpp_collision.h" />
-    <ClInclude Include="..\..\..\ode\src\quickstep.h" />
-    <ClInclude Include="..\..\..\ode\src\stack.h" />
-    <ClInclude Include="..\..\..\ode\src\step.h" />
-    <ClInclude Include="..\..\..\ode\src\StepJointInternal.h" />
-    <ClInclude Include="..\..\..\ode\src\testing.h" />
     <ClInclude Include="..\..\..\include\ode\common.h" />
     <ClInclude Include="..\..\..\include\ode\compatibility.h" />
     <ClInclude Include="..\..\..\include\ode\config.h" />
@@ -307,13 +271,33 @@
     <ClInclude Include="..\..\..\include\ode\objects.h" />
     <ClInclude Include="..\..\..\include\ode\ode.h" />
     <ClInclude Include="..\..\..\include\ode\odecpp.h" />
+    <ClInclude Include="..\..\..\include\ode\odecpp_collision.h" />
     <ClInclude Include="..\..\..\include\ode\odemath.h" />
     <ClInclude Include="..\..\..\include\ode\rotation.h" />
     <ClInclude Include="..\..\..\include\ode\space.h" />
     <ClInclude Include="..\..\..\include\ode\timer.h" />
-    <ClInclude Include="de_padf_integration.h" />
+    <ClInclude Include="..\..\..\ode\src\array.h" />
+    <ClInclude Include="..\..\..\ode\src\Bounder33.h" />
+    <ClInclude Include="..\..\..\ode\src\collision_kernel.h" />
+    <ClInclude Include="..\..\..\ode\src\collision_space_internal.h" />
+    <ClInclude Include="..\..\..\ode\src\collision_std.h" />
+    <ClInclude Include="..\..\..\ode\src\collision_transform.h" />
+    <ClInclude Include="..\..\..\ode\src\collision_trimesh_internal.h" />
+    <ClInclude Include="..\..\..\ode\src\collision_util.h" />
+    <ClInclude Include="..\..\..\ode\src\geom_internal.h" />
+    <ClInclude Include="..\..\..\ode\src\joint.h" />
+    <ClInclude Include="..\..\..\ode\src\lcp.h" />
     <ClInclude Include="..\..\..\ode\src\Lcp33.h" />
+    <ClInclude Include="..\..\..\ode\src\mat.h" />
+    <ClInclude Include="..\..\..\ode\src\objects.h" />
+    <ClInclude Include="..\..\..\ode\src\obstack.h" />
+    <ClInclude Include="..\..\..\ode\src\quickstep.h" />
+    <ClInclude Include="..\..\..\ode\src\stack.h" />
+    <ClInclude Include="..\..\..\ode\src\step.h" />
+    <ClInclude Include="..\..\..\ode\src\StepJointInternal.h" />
+    <ClInclude Include="..\..\..\ode\src\testing.h" />
     <ClInclude Include="..\..\..\ode\src\util.h" />
+    <ClInclude Include="de_padf_integration.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\ode\src\array.cpp" />
@@ -332,7 +316,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\ode\src\collision_transform.cpp" />
     <ClCompile Include="..\..\..\ode\src\collision_util.cpp" />
-    <ClCompile Include="de_padf_integration.cpp" />
     <ClCompile Include="..\..\..\ode\src\error.cpp" />
     <ClCompile Include="..\..\..\ode\src\export-dif.cpp" />
     <ClCompile Include="..\..\..\ode\src\fastdot.c" />
@@ -357,10 +340,13 @@
     <ClCompile Include="..\..\..\ode\src\testing.cpp" />
     <ClCompile Include="..\..\..\ode\src\timer.cpp" />
     <ClCompile Include="..\..\..\ode\src\util.cpp" />
+    <ClCompile Include="de_padf_integration.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\config\msvcdefs.def" />
-    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

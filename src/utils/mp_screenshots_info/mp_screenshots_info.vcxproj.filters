@@ -2,7 +2,7 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="core">
-      <UniqueIdentifier>{9ca89442-6846-4eb6-9aa9-e41ba102846d}</UniqueIdentifier>
+      <UniqueIdentifier>{d0e28a42-c6fe-4fc4-b7dd-f94a223340ab}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -25,7 +25,7 @@
     <ClInclude Include="xr_dsa_verifyer.h" />
   </ItemGroup>
   <ItemGroup>
-    <CustomBuildStep Include="screenshots_writer.h" />
-    <CustomBuildStep Include="xr_dsa_signer.h" />
+    <CustomBuild Include="screenshots_writer.h" />
+    <CustomBuild Include="xr_dsa_signer.h" />
   </ItemGroup>
 </Project>

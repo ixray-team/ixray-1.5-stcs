@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -22,15 +22,18 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -49,27 +52,21 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\..\binaries\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\..\binaries\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">..\..\..\..\binaries\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">..\..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IncludePath);X:\sdk\dxsdk_mar2008\Include</IncludePath>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">$(IncludePath);X:\sdk\dxsdk_mar2008\Include</IncludePath>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IncludePath);X:\sdk\dxsdk_mar2008\Include</IncludePath>
+    <_ProjectFileVersion>12.0.30501.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>..\..\..\..\binaries\</OutDir>
+    <IntDir>..\..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>..\..\..\..\binaries\</OutDir>
+    <IntDir>..\..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">
+    <OutDir>..\..\..\..\binaries\</OutDir>
+    <IntDir>..\..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -78,8 +75,7 @@
       <PreprocessorDefinitions>FORCE_NO_EXCEPTIONS;_USE_MATH_DEFINES;WIN32;_DEBUG;_WINDOWS;_USRDLL;XRLC_LIGHT_EXPORTS;_SECURE_SCL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <MinimalRebuild>true</MinimalRebuild>
-      <ExceptionHandling>
-      </ExceptionHandling>
+      <ExceptionHandling />
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FloatingPointModel>Fast</FloatingPointModel>
@@ -100,8 +96,7 @@
     <ClCompile>
       <AdditionalIncludeDirectories>../../../sdk/include/stlport;../../../sdk/include/;..\xrQSlim\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;XRLC_LIGHT_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ExceptionHandling>
-      </ExceptionHandling>
+      <ExceptionHandling />
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FloatingPointModel>Fast</FloatingPointModel>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -142,25 +137,39 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="_d3d_extensions.h" />
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="xrLC_Light.h" />
-    <ClInclude Include="xrThread.h" />
-    <ClInclude Include="b_build_texture.h" />
+    <ClInclude Include="..\Shader_xrLC.h" />
     <ClInclude Include="base_basis.h" />
     <ClInclude Include="base_color.h" />
     <ClInclude Include="base_face.h" />
     <ClInclude Include="base_lighting.h" />
+    <ClInclude Include="b_build_texture.h" />
     <ClInclude Include="calculate_normals.h" />
     <ClInclude Include="ETextureParams.h" />
+    <ClInclude Include="file_compress.h" />
+    <ClInclude Include="fitter.h" />
     <ClInclude Include="hash2D.h" />
     <ClInclude Include="itterate_adjacents_static.h" />
-    <ClInclude Include="light_point.h" />
+    <ClInclude Include="lcnet_execution_tasks_add.h" />
+    <ClInclude Include="lcnet_task_manager.h" />
     <ClInclude Include="Lightmap.h" />
+    <ClInclude Include="lightstab_interface.h" />
+    <ClInclude Include="light_execute.h" />
+    <ClInclude Include="light_point.h" />
     <ClInclude Include="lm_layer.h" />
     <ClInclude Include="MeshStructure.h" />
+    <ClInclude Include="mu_model_face.h" />
+    <ClInclude Include="mu_model_face_defs.h" />
+    <ClInclude Include="net_execution.h" />
+    <ClInclude Include="net_execution_factory.h" />
+    <ClInclude Include="net_execution_lightmaps.h" />
+    <ClInclude Include="net_light.h" />
+    <ClInclude Include="net_light_task.h" />
+    <ClInclude Include="net_stream.h" />
+    <ClInclude Include="net_task.h" />
+    <ClInclude Include="net_task_manager.h" />
     <ClInclude Include="R_light.h" />
     <ClInclude Include="serialize.h" />
+    <ClInclude Include="stdafx.h" />
     <ClInclude Include="tcf.h" />
     <ClInclude Include="tga.h" />
     <ClInclude Include="uv_tri.h" />
@@ -172,57 +181,13 @@
     <ClInclude Include="xrImage_Resampler.h" />
     <ClInclude Include="xrIsect.h" />
     <ClInclude Include="xrLC_GlobalData.h" />
-    <ClInclude Include="file_compress.h" />
-    <ClInclude Include="light_execute.h" />
-    <ClInclude Include="net_light.h" />
-    <ClInclude Include="net_light_task.h" />
-    <ClInclude Include="net_stream.h" />
-    <ClInclude Include="net_task.h" />
-    <ClInclude Include="net_task_manager.h" />
-    <ClInclude Include="lcnet_execution_tasks_add.h" />
-    <ClInclude Include="lcnet_task_manager.h" />
-    <ClInclude Include="lightstab_interface.h" />
-    <ClInclude Include="net_execution.h" />
-    <ClInclude Include="net_execution_factory.h" />
-    <ClInclude Include="net_execution_lightmaps.h" />
-    <ClInclude Include="fitter.h" />
-    <ClInclude Include="mu_model_face.h" />
-    <ClInclude Include="mu_model_face_defs.h" />
+    <ClInclude Include="xrLC_Light.h" />
     <ClInclude Include="xrMU_Model.h" />
     <ClInclude Include="xrMU_Model_Reference.h" />
-    <ClInclude Include="..\Shader_xrLC.h" />
+    <ClInclude Include="xrThread.h" />
+    <ClInclude Include="_d3d_extensions.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="stdafx.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="xrLC_Light.cpp" />
-    <ClCompile Include="xrThread.cpp" />
-    <ClCompile Include="b_build_texture.cpp" />
-    <ClCompile Include="base_basis.cpp" />
-    <ClCompile Include="base_color.cpp" />
-    <ClCompile Include="base_face.cpp" />
-    <ClCompile Include="base_lighting.cpp" />
-    <ClCompile Include="ETextureParams.cpp" />
-    <ClCompile Include="Lightmap.cpp" />
-    <ClCompile Include="lm_layer.cpp" />
-    <ClCompile Include="serialize.cpp" />
-    <ClCompile Include="tcf.cpp" />
-    <ClCompile Include="tga.cpp" />
-    <ClCompile Include="uv_tri.cpp" />
-    <ClCompile Include="xrDeflectoL_Direct.cpp" />
-    <ClCompile Include="xrDeflector.cpp" />
-    <ClCompile Include="xrDeflectorLight.cpp" />
-    <ClCompile Include="xrFace.cpp" />
-    <ClCompile Include="xrImage_Filter.cpp" />
-    <ClCompile Include="xrImage_Resampler.cpp" />
-    <ClCompile Include="xrLight_Implicit.cpp" />
-    <ClCompile Include="xrMU_Model_Calc_normals.cpp" />
-    <ClCompile Include="MeshStaic.cpp" />
-    <ClCompile Include="xrLC_GlobalData.cpp" />
-    <ClCompile Include="file_compress.cpp" />
     <ClCompile Include="..\..\..\sdk\include\hxgrid\Interface\hxGridInterface.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
@@ -243,34 +208,72 @@
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeaderOutputFile>
     </ClCompile>
-    <ClCompile Include="light_execute.cpp" />
-    <ClCompile Include="net_light.cpp" />
-    <ClCompile Include="net_light_task.cpp" />
-    <ClCompile Include="net_stream.cpp" />
-    <ClCompile Include="net_task.cpp" />
-    <ClCompile Include="net_task_manager.cpp" />
+    <ClCompile Include="base_basis.cpp" />
+    <ClCompile Include="base_color.cpp" />
+    <ClCompile Include="base_face.cpp" />
+    <ClCompile Include="base_lighting.cpp" />
+    <ClCompile Include="b_build_texture.cpp" />
+    <ClCompile Include="ETextureParams.cpp" />
+    <ClCompile Include="file_compress.cpp" />
+    <ClCompile Include="fitter.cpp" />
     <ClCompile Include="lcnet_task_manager.cpp" />
     <ClCompile Include="lcnet_task_menager_run_task.cpp" />
+    <ClCompile Include="Lightmap.cpp" />
+    <ClCompile Include="light_execute.cpp" />
+    <ClCompile Include="lm_layer.cpp" />
+    <ClCompile Include="MeshStaic.cpp" />
+    <ClCompile Include="mu_model_face.cpp" />
     <ClCompile Include="net_execution.cpp" />
     <ClCompile Include="net_execution_factory.cpp" />
     <ClCompile Include="net_execution_factory_register.cpp" />
     <ClCompile Include="net_execution_lightmaps.cpp" />
+    <ClCompile Include="net_light.cpp" />
     <ClCompile Include="net_lightmaps_add_task.cpp" />
-    <ClCompile Include="fitter.cpp" />
-    <ClCompile Include="mu_model_face.cpp" />
+    <ClCompile Include="net_light_task.cpp" />
+    <ClCompile Include="net_stream.cpp" />
+    <ClCompile Include="net_task.cpp" />
+    <ClCompile Include="net_task_manager.cpp" />
+    <ClCompile Include="serialize.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="tcf.cpp" />
+    <ClCompile Include="tga.cpp" />
+    <ClCompile Include="uv_tri.cpp" />
+    <ClCompile Include="xrDeflectoL_Direct.cpp" />
+    <ClCompile Include="xrDeflector.cpp" />
+    <ClCompile Include="xrDeflectorLight.cpp" />
+    <ClCompile Include="xrFace.cpp" />
+    <ClCompile Include="xrImage_Filter.cpp" />
+    <ClCompile Include="xrImage_Resampler.cpp" />
+    <ClCompile Include="xrLC_GlobalData.cpp" />
+    <ClCompile Include="xrLC_Light.cpp" />
+    <ClCompile Include="xrLight_Implicit.cpp" />
     <ClCompile Include="xrMU_Model.cpp" />
     <ClCompile Include="xrMU_Model_Calc_faceopacity.cpp" />
     <ClCompile Include="xrMU_Model_Calc_lighting.cpp" />
     <ClCompile Include="xrMU_Model_Calc_materials.cpp" />
+    <ClCompile Include="xrMU_Model_Calc_normals.cpp" />
     <ClCompile Include="xrMU_Model_export_cform_rcast.cpp" />
     <ClCompile Include="xrMU_Model_Load.cpp" />
     <ClCompile Include="xrMU_Model_Reference.cpp" />
     <ClCompile Include="xrMU_Model_Reference_Calc_Lighting.cpp" />
+    <ClCompile Include="xrThread.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ReadMe.txt" />
+    <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\xrCDB\xrCDB.vcxproj">
+      <Project>{a19b1df2-82ec-4364-8bdf-85d13a1c89b5}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\xrCore\xrCore.vcxproj">
+      <Project>{a0f7d1fb-59a7-4717-a7e4-96f37e91998e}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
     <ProjectReference Include="..\xrDXT\DXT.vcxproj">
       <Project>{ebf9b543-0830-4866-9b48-dc0740e87e8a}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
