@@ -2,247 +2,250 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="General">
-      <UniqueIdentifier>{b4b56e20-651c-4e34-8979-9cd6f7bebd0b}</UniqueIdentifier>
+      <UniqueIdentifier>{de16abd3-b551-4a10-9e77-e8dad3533f48}</UniqueIdentifier>
     </Filter>
     <Filter Include="General\Resources">
-      <UniqueIdentifier>{93635ce2-4765-4a69-b4b7-793f9f39b74c}</UniqueIdentifier>
+      <UniqueIdentifier>{c081336b-696e-4fec-9a91-4b96d53da59a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Interfaces">
-      <UniqueIdentifier>{6742c5e4-28ca-4013-acdc-3aecbcff00d1}</UniqueIdentifier>
+      <UniqueIdentifier>{e34d2f81-7d1a-4dfb-b7b8-f0ff6ac23c9f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Interfaces\Sound">
-      <UniqueIdentifier>{dcc6bd06-dc95-4280-8ba7-131173d82e10}</UniqueIdentifier>
+      <UniqueIdentifier>{4c3abe52-0f50-4bc8-818d-ba7a3fcf2c31}</UniqueIdentifier>
     </Filter>
     <Filter Include="Interfaces\Input">
-      <UniqueIdentifier>{b4213930-22da-4597-a6a8-a4eb6a0c6648}</UniqueIdentifier>
+      <UniqueIdentifier>{55e41420-e932-45fd-85c0-ba6a14c88477}</UniqueIdentifier>
     </Filter>
     <Filter Include="Interfaces\Sheduler">
-      <UniqueIdentifier>{ddbe5636-945e-4dd0-86a2-9856e1bcb888}</UniqueIdentifier>
+      <UniqueIdentifier>{4159e76e-838f-4c10-8f2e-3692baeb917f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Interfaces\Render">
-      <UniqueIdentifier>{6b9a83ce-6ecc-4eb0-8400-8b1a5414ad06}</UniqueIdentifier>
+      <UniqueIdentifier>{9431e39f-3c24-4fe5-b81b-221f9ee34121}</UniqueIdentifier>
     </Filter>
     <Filter Include="Interfaces\SPATIAL">
-      <UniqueIdentifier>{02bd3808-aa75-4ad5-9f31-efc0553ef636}</UniqueIdentifier>
+      <UniqueIdentifier>{e690b5bb-1491-4397-83b7-56f083d52551}</UniqueIdentifier>
     </Filter>
     <Filter Include="Interfaces\Collidable">
-      <UniqueIdentifier>{4185bbfd-07e3-4246-a45c-4e0c800f0a3a}</UniqueIdentifier>
+      <UniqueIdentifier>{612546ee-e88f-485a-9945-0c47e2bc2810}</UniqueIdentifier>
     </Filter>
     <Filter Include="Interfaces\Physics">
-      <UniqueIdentifier>{52cd099b-caf2-4707-82c4-2d2048c2deb7}</UniqueIdentifier>
+      <UniqueIdentifier>{a61d0187-54f9-477a-9f9b-32c3d048d438}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game API">
-      <UniqueIdentifier>{a548b4f6-cd9c-4b97-b1de-2091f4f9d5ac}</UniqueIdentifier>
+      <UniqueIdentifier>{86f2e01c-9d15-43a8-ab87-8c5264839e74}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game API\Objects">
-      <UniqueIdentifier>{33ab29bb-3e9a-4deb-aaac-a72007672264}</UniqueIdentifier>
+      <UniqueIdentifier>{cb9f338d-7d46-4d66-940a-f038cc4806f1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game API\HUD">
-      <UniqueIdentifier>{62c30908-70b9-4aea-a545-106013789243}</UniqueIdentifier>
+      <UniqueIdentifier>{1787d8f4-70ff-45c8-849e-f2271badb45f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game API\Environment">
-      <UniqueIdentifier>{c16434a9-252d-40c3-8794-0f7c6ee2f2ae}</UniqueIdentifier>
+      <UniqueIdentifier>{c756237e-3d9a-41a6-8f93-52b0dbdcb251}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game API\Environment\Effects">
-      <UniqueIdentifier>{da8cb14b-3c59-4d4e-b25c-b2c4f94916b4}</UniqueIdentifier>
+      <UniqueIdentifier>{3fd5be70-dc9e-4e0d-af06-64237a1036d9}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game API\Cameras">
-      <UniqueIdentifier>{424eebd3-cb3f-4fb5-8b28-769b3c3a1ed7}</UniqueIdentifier>
+      <UniqueIdentifier>{817257a0-703f-4654-a6a4-6f78af335593}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game API\Collision">
-      <UniqueIdentifier>{becc5714-fd67-4810-ad5b-4b4993f51632}</UniqueIdentifier>
+      <UniqueIdentifier>{ecf05493-9f92-4914-bcbe-fbbfe23ec374}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game API\Animator">
-      <UniqueIdentifier>{87d5b9b1-9846-47ba-b62c-a35673b3e7a4}</UniqueIdentifier>
+      <UniqueIdentifier>{76be8509-673f-4ffb-b5fe-b2894c58c0a3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game API\Feelers">
-      <UniqueIdentifier>{0fe1dc77-8ff1-4c00-a24b-bdb1e65f3b2b}</UniqueIdentifier>
+      <UniqueIdentifier>{1b52439e-9460-46b6-b01f-e4c87e52eb59}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game API\Demo">
-      <UniqueIdentifier>{9ae04f09-c8d5-44af-bb68-e1f0e59e2553}</UniqueIdentifier>
+      <UniqueIdentifier>{025eedb5-7d67-46d0-b45c-36ca9eb50d68}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game API\GameMaterials">
-      <UniqueIdentifier>{f0159c01-218a-4ba8-b273-5aeed8aeef31}</UniqueIdentifier>
+      <UniqueIdentifier>{5b6011fd-76aa-4a5d-9e92-2e68856f4367}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Interfaces\Render\Visuals">
-      <UniqueIdentifier>{5386d6f3-b0ca-4f0c-a806-5a04400a6b64}</UniqueIdentifier>
+    <Filter Include="Render">
+      <UniqueIdentifier>{3e04211d-f5f7-44ec-86ee-ac6cc8e50c58}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Interfaces\Render\Visuals\Skeleton">
-      <UniqueIdentifier>{63fd5a92-4a5f-4173-8fc8-ccf16a878706}</UniqueIdentifier>
+    <Filter Include="Render\Visuals">
+      <UniqueIdentifier>{820646c6-8c18-45f3-9715-ead5de75886a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Interfaces\Render\Visibility">
-      <UniqueIdentifier>{21d45a34-44b0-4c5d-a06e-204f81c70684}</UniqueIdentifier>
+    <Filter Include="Render\Visuals\Skeleton">
+      <UniqueIdentifier>{41b7f33b-292e-4d3c-89d8-315d03cf88e9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Interfaces\Render\Visibility\Frustum">
-      <UniqueIdentifier>{603d32dc-dcac-4cab-bb9a-a77d711530de}</UniqueIdentifier>
+    <Filter Include="Render\Visibility">
+      <UniqueIdentifier>{b54fa850-1162-47f9-b740-67822346bce8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Interfaces\Render\Particle system">
-      <UniqueIdentifier>{e1781504-e606-4eef-9e31-aadb4ef3f28a}</UniqueIdentifier>
+    <Filter Include="Render\Visibility\Frustum">
+      <UniqueIdentifier>{9a249230-37ec-4cc1-b149-a27fec6a82f2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Interfaces\Render\Lighting">
-      <UniqueIdentifier>{2fc54b29-a6ef-4c1c-9d5b-184872c1d0b3}</UniqueIdentifier>
+    <Filter Include="Render\Particle system">
+      <UniqueIdentifier>{466f0ab9-3c36-4969-a272-4dbc355642ca}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Interfaces\Render\Font output">
-      <UniqueIdentifier>{4b361fc9-ed1f-41e6-9d44-edcb59f77e88}</UniqueIdentifier>
+    <Filter Include="Render\Lighting">
+      <UniqueIdentifier>{f7a11f28-d8ff-4373-b8a4-839b0884dd47}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Interfaces\Render\Execution &amp; 3D">
-      <UniqueIdentifier>{838d8abb-6295-4af8-9f45-856d1e19641c}</UniqueIdentifier>
+    <Filter Include="Render\Font output">
+      <UniqueIdentifier>{c12d2131-c017-42eb-98d3-4e7f69823a37}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Interfaces\Render\Execution &amp; 3D\Shaders">
-      <UniqueIdentifier>{021d3def-9de6-4d36-8c13-d936d06c792c}</UniqueIdentifier>
+    <Filter Include="Render\Execution &amp; 3D">
+      <UniqueIdentifier>{0603c9fd-7250-4985-95f1-ce67a4491d0b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Interfaces\Render\Execution &amp; 3D\Shaders\Textures">
-      <UniqueIdentifier>{d41da791-f02a-46e0-b6de-ee6e95d2ca5e}</UniqueIdentifier>
+    <Filter Include="Render\Execution &amp; 3D\Shaders">
+      <UniqueIdentifier>{1afeec56-bd1f-40a1-bc4a-350a5e7f25ac}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Interfaces\Render\Execution &amp; 3D\TextConsole">
-      <UniqueIdentifier>{fd618b1c-f348-41f0-be7a-551f34e80551}</UniqueIdentifier>
+    <Filter Include="Render\Execution &amp; 3D\Shaders\Textures">
+      <UniqueIdentifier>{af45aee6-a285-46e9-a1ed-5e44908da0c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Render\Execution &amp; 3D\TextConsole">
+      <UniqueIdentifier>{5aec032d-9f01-49e9-9e8f-e72beb5535b7}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine">
-      <UniqueIdentifier>{916f2e5b-dd2e-4fb2-a81e-5afcb4a83688}</UniqueIdentifier>
+      <UniqueIdentifier>{358a7714-486d-429e-a699-634476d1a985}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\Collision Core">
-      <UniqueIdentifier>{55721abc-a866-42c6-9b14-cf0193a4837f}</UniqueIdentifier>
+      <UniqueIdentifier>{c1b389b8-3dd8-46ed-9cfc-2b4a679532c9}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\Console">
-      <UniqueIdentifier>{04a5cd57-b6d0-4c90-9197-780a5bcd4dd9}</UniqueIdentifier>
+      <UniqueIdentifier>{4a21ce85-cbaf-453f-9f70-8c9a80ec5ecf}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\Console\commands">
-      <UniqueIdentifier>{e399487c-a7e3-44d2-93a5-df90740a6511}</UniqueIdentifier>
+      <UniqueIdentifier>{ec37bb50-ebc8-4fe6-ae1d-49f1a6e86af0}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\Core">
-      <UniqueIdentifier>{9e4c798e-d9cf-424f-b177-405e06fc5df8}</UniqueIdentifier>
+      <UniqueIdentifier>{8d78eb96-a999-40bb-acee-7e4623da6562}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\Core\Scripting">
-      <UniqueIdentifier>{2b9ccfa7-fb6a-4ebf-9420-b926069fb74b}</UniqueIdentifier>
+      <UniqueIdentifier>{b8b43647-146c-47e1-b478-8d147923c60a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\Noise">
-      <UniqueIdentifier>{5843b812-17ad-43ba-bc8c-542db0e51ad4}</UniqueIdentifier>
+      <UniqueIdentifier>{72f63ae4-0300-4740-a547-c264e820085a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\text_editor">
-      <UniqueIdentifier>{59ccd9c6-93b7-4562-b33e-a38aa6a0b3af}</UniqueIdentifier>
+      <UniqueIdentifier>{f13c5300-d3aa-47f4-a9dc-e7ccc4efdc98}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\text_editor\line_editor">
-      <UniqueIdentifier>{9c61846b-ba22-47f5-b179-34a2cdfb5442}</UniqueIdentifier>
+      <UniqueIdentifier>{c5896dd9-581a-4a91-a6ee-baecf760c056}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\text_editor\line_editor_control">
-      <UniqueIdentifier>{5debdc0f-1e8a-4d1c-82b9-e0355a7f9e4d}</UniqueIdentifier>
+      <UniqueIdentifier>{58d483c9-c5ad-45ca-b3f7-6df6760661b5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\text_editor\edit_actions">
-      <UniqueIdentifier>{a62c3f2b-fb6a-42af-99b4-909d465294e7}</UniqueIdentifier>
+      <UniqueIdentifier>{4a508943-6146-471d-9ce0-b2ef771485b3}</UniqueIdentifier>
     </Filter>
     <Filter Include="RenderRef">
-      <UniqueIdentifier>{e77f6370-d839-46bd-9942-ba6a4abe2264}</UniqueIdentifier>
+      <UniqueIdentifier>{83bec257-2294-4b69-b9cd-9e661b6c0873}</UniqueIdentifier>
     </Filter>
     <Filter Include="RenderRef\Execution &amp; 3D">
-      <UniqueIdentifier>{5e2ce294-59c2-4371-afcc-69b0ef2d45fa}</UniqueIdentifier>
+      <UniqueIdentifier>{23f23e6d-89ca-49f3-8802-a971d45a1244}</UniqueIdentifier>
     </Filter>
     <Filter Include="RenderRef\Execution &amp; 3D\Device">
-      <UniqueIdentifier>{266daac5-0435-451d-bc6f-2efb3dd47bfd}</UniqueIdentifier>
+      <UniqueIdentifier>{e06403a5-0ad1-43f9-82b6-3ce9a8fc1105}</UniqueIdentifier>
     </Filter>
     <Filter Include="RenderRef\Execution &amp; 3D\Visuals">
-      <UniqueIdentifier>{ee549154-4c32-47b1-9dbf-740aef25d9b9}</UniqueIdentifier>
+      <UniqueIdentifier>{72b8909c-20fa-4df9-b3a8-f9b6471f2d65}</UniqueIdentifier>
     </Filter>
     <Filter Include="RenderRef\Execution &amp; 3D\Visuals\Skeleton">
-      <UniqueIdentifier>{70e77bdc-0ff7-40e6-9416-366e88600d71}</UniqueIdentifier>
+      <UniqueIdentifier>{ec178d9c-a285-4da7-9e6f-e4205fa62d50}</UniqueIdentifier>
     </Filter>
     <Filter Include="RenderRef\doug_lea_memory_allocator">
-      <UniqueIdentifier>{39952915-5e27-4ac7-9c26-7c58b55ead48}</UniqueIdentifier>
+      <UniqueIdentifier>{c2472cd4-92bc-44b7-9db6-92fd11c6235e}</UniqueIdentifier>
     </Filter>
     <Filter Include="editor">
-      <UniqueIdentifier>{3faf96db-c52e-44be-a1db-2f7b1543764e}</UniqueIdentifier>
+      <UniqueIdentifier>{ae1a6c99-032f-499c-a2af-156c6c0af6fa}</UniqueIdentifier>
     </Filter>
     <Filter Include="editor\engine_impl">
-      <UniqueIdentifier>{4a585fdd-d831-4fa1-874a-80c6a42694f9}</UniqueIdentifier>
+      <UniqueIdentifier>{007bf21b-81e6-4804-99fc-f6454236294c}</UniqueIdentifier>
     </Filter>
     <Filter Include="editor\environment">
-      <UniqueIdentifier>{4ad72ebf-01d2-41d1-adb3-7f308c76f322}</UniqueIdentifier>
+      <UniqueIdentifier>{94917315-7a03-4758-8df0-961521e4bc6f}</UniqueIdentifier>
     </Filter>
     <Filter Include="editor\environment\suns_manager">
-      <UniqueIdentifier>{2ff597cb-1de3-455f-a3fe-ecf3afa6ea53}</UniqueIdentifier>
+      <UniqueIdentifier>{cd0ab224-b279-4ad2-9c18-26196fcbbb90}</UniqueIdentifier>
     </Filter>
     <Filter Include="editor\environment\suns_manager\sun">
-      <UniqueIdentifier>{0568325b-92aa-40ef-adc4-a2e9502b9719}</UniqueIdentifier>
+      <UniqueIdentifier>{b4a10fb9-a5aa-4fe6-8f74-6a621e5c4a25}</UniqueIdentifier>
     </Filter>
     <Filter Include="editor\environment\suns_manager\sun\gradient">
-      <UniqueIdentifier>{e4942466-90e8-40b5-ba1c-b3a1d70769f0}</UniqueIdentifier>
+      <UniqueIdentifier>{1f0fd27c-7569-438d-a0c0-2afc24df6e66}</UniqueIdentifier>
     </Filter>
     <Filter Include="editor\environment\suns_manager\sun\blend">
-      <UniqueIdentifier>{05e00cc0-09b3-453d-bb75-477617094d1a}</UniqueIdentifier>
+      <UniqueIdentifier>{f51b0161-5524-4529-b56a-3f300bd635ad}</UniqueIdentifier>
     </Filter>
     <Filter Include="editor\environment\suns_manager\sun\flares">
-      <UniqueIdentifier>{0156c439-1d75-4e63-9caa-c61d26574e8f}</UniqueIdentifier>
+      <UniqueIdentifier>{31568337-a7a1-42a0-b1bd-856d95d9a666}</UniqueIdentifier>
     </Filter>
     <Filter Include="editor\environment\suns_manager\sun\flares\flare">
-      <UniqueIdentifier>{978caeaa-7fe6-46bc-a99a-96ec5795482d}</UniqueIdentifier>
+      <UniqueIdentifier>{a65cb7aa-6d53-4937-822e-505530b36589}</UniqueIdentifier>
     </Filter>
     <Filter Include="editor\environment\levels_manager">
-      <UniqueIdentifier>{0adef4c7-007c-4de0-8a87-14f638634e92}</UniqueIdentifier>
+      <UniqueIdentifier>{a0db1f84-e210-47f5-a484-3003b81c933c}</UniqueIdentifier>
     </Filter>
     <Filter Include="editor\environment\effects_manager">
-      <UniqueIdentifier>{31123cf3-0b63-43a3-8b00-524cbd6659e6}</UniqueIdentifier>
+      <UniqueIdentifier>{8d4315a2-4aa0-4300-adc7-f88826daf314}</UniqueIdentifier>
     </Filter>
     <Filter Include="editor\environment\effects_manager\effect">
-      <UniqueIdentifier>{9599c7a5-db4b-4e23-9f70-f7b2ba439f6b}</UniqueIdentifier>
+      <UniqueIdentifier>{6ef33f5f-90b8-4d63-a56d-b7d0fe5bcb3b}</UniqueIdentifier>
     </Filter>
     <Filter Include="editor\environment\sound_channels_manager">
-      <UniqueIdentifier>{0a3cd7f1-47a8-4fc8-9d67-a6890eee5169}</UniqueIdentifier>
+      <UniqueIdentifier>{c3052a71-b75a-41db-8681-b4c43cdcdcfc}</UniqueIdentifier>
     </Filter>
     <Filter Include="editor\environment\sound_channels_manager\channel">
-      <UniqueIdentifier>{3ae1a12c-4118-4fb9-ab25-94d89cee32e6}</UniqueIdentifier>
+      <UniqueIdentifier>{cea8eff1-801b-4928-ac12-6aab9d6cbbee}</UniqueIdentifier>
     </Filter>
     <Filter Include="editor\environment\sound_channels_manager\channel\source">
-      <UniqueIdentifier>{40997426-38af-4a7a-a21f-18360b29f16e}</UniqueIdentifier>
+      <UniqueIdentifier>{5255cab5-12d4-44fe-8d87-2df3e207d919}</UniqueIdentifier>
     </Filter>
     <Filter Include="editor\environment\manager">
-      <UniqueIdentifier>{145d61dc-597c-409f-bfb1-107081c0ee35}</UniqueIdentifier>
+      <UniqueIdentifier>{250329ff-a6ef-4478-8b3b-737d96923842}</UniqueIdentifier>
     </Filter>
     <Filter Include="editor\environment\ambients">
-      <UniqueIdentifier>{e0d12c83-45e8-49f9-820e-6d2268174357}</UniqueIdentifier>
+      <UniqueIdentifier>{7dad10ce-4d6f-4dab-ae77-6c8b00118589}</UniqueIdentifier>
     </Filter>
     <Filter Include="editor\environment\ambients\ambient">
-      <UniqueIdentifier>{2d2bd606-8007-4a88-b4f5-4c7780b9919f}</UniqueIdentifier>
+      <UniqueIdentifier>{7895620f-4c4f-4eb3-b2f7-291ec73c0b13}</UniqueIdentifier>
     </Filter>
     <Filter Include="editor\environment\ambients\ambient\effect_id">
-      <UniqueIdentifier>{70dbc2d9-0ca1-4702-b38b-3098e3c50014}</UniqueIdentifier>
+      <UniqueIdentifier>{b0121dc0-5a2a-4b7f-9497-c66f25c0b9e4}</UniqueIdentifier>
     </Filter>
     <Filter Include="editor\environment\ambients\ambient\sound_id">
-      <UniqueIdentifier>{68d2066d-8278-4f30-b545-64a99f50849d}</UniqueIdentifier>
+      <UniqueIdentifier>{b254deae-414a-4b5e-b7c0-2e9e40d3a850}</UniqueIdentifier>
     </Filter>
     <Filter Include="editor\environment\thunderbolts">
-      <UniqueIdentifier>{bc1c5f79-cd0d-4bb6-a78a-397a215816bd}</UniqueIdentifier>
+      <UniqueIdentifier>{8789edcd-e8c5-4df2-8a76-c8a0a63e7f83}</UniqueIdentifier>
     </Filter>
     <Filter Include="editor\environment\thunderbolts\thunderbolt">
-      <UniqueIdentifier>{ebba6832-23a2-4abe-9326-a243bafa155e}</UniqueIdentifier>
+      <UniqueIdentifier>{034396e5-49a5-451f-9fb6-b812aaa6afe0}</UniqueIdentifier>
     </Filter>
     <Filter Include="editor\environment\thunderbolts\thunderbolt\gradient">
-      <UniqueIdentifier>{d575347a-1083-4ca3-b20e-98652e50c79d}</UniqueIdentifier>
+      <UniqueIdentifier>{372c7d24-4cb0-47c0-81dd-81e3f80bebff}</UniqueIdentifier>
     </Filter>
     <Filter Include="editor\environment\thunderbolts\thunderbolt_id">
-      <UniqueIdentifier>{3ab39af0-dfe9-450f-8339-638d9fc5e8f7}</UniqueIdentifier>
+      <UniqueIdentifier>{73f4ab44-2cac-4bd5-ac6d-783cb40affa3}</UniqueIdentifier>
     </Filter>
     <Filter Include="editor\environment\thunderbolts\collection">
-      <UniqueIdentifier>{bddbc2ee-a907-479f-b055-bc44f509e623}</UniqueIdentifier>
+      <UniqueIdentifier>{aa507879-a1b6-417b-9795-2e513276bc03}</UniqueIdentifier>
     </Filter>
     <Filter Include="editor\environment\weathers">
-      <UniqueIdentifier>{7360bb88-82f8-4ea8-b690-aaf56ea81a09}</UniqueIdentifier>
+      <UniqueIdentifier>{4492bdf1-2b96-42ff-932e-3996dd0d88ee}</UniqueIdentifier>
     </Filter>
     <Filter Include="editor\environment\weathers\weather">
-      <UniqueIdentifier>{23802487-4928-4d6f-bacb-3bc7b5208d02}</UniqueIdentifier>
+      <UniqueIdentifier>{9d3124a0-1bb3-4f5b-8498-90d84ea78a71}</UniqueIdentifier>
     </Filter>
     <Filter Include="editor\environment\weathers\weather\time">
-      <UniqueIdentifier>{bac42e35-f866-4a3a-8ca2-1e49bc89f0d0}</UniqueIdentifier>
+      <UniqueIdentifier>{d5325ccd-9e33-4014-999e-e53ecfb987f9}</UniqueIdentifier>
     </Filter>
     <Filter Include="editor\environment\detail">
-      <UniqueIdentifier>{cf80011b-250e-4645-ae54-2c241cc3cd5e}</UniqueIdentifier>
+      <UniqueIdentifier>{d97214eb-ca3f-4419-aaf9-1a487f73f4cc}</UniqueIdentifier>
     </Filter>
     <Filter Include="editor\property_collection">
-      <UniqueIdentifier>{e72ae12e-1708-467c-af52-5b5913bce921}</UniqueIdentifier>
+      <UniqueIdentifier>{87c4bb62-547f-47db-8ad6-491286aed1fc}</UniqueIdentifier>
     </Filter>
     <Filter Include="editor\ide">
-      <UniqueIdentifier>{7af83811-2695-49d9-bf12-ba88ebb85c85}</UniqueIdentifier>
+      <UniqueIdentifier>{e2373169-07dc-485a-9204-7900a367c57a}</UniqueIdentifier>
     </Filter>
     <Filter Include="OpenAutomate">
-      <UniqueIdentifier>{3654e106-8d69-41cb-bf11-6caeae0e0472}</UniqueIdentifier>
+      <UniqueIdentifier>{64b0992d-b01e-4cfd-965e-3017f4f294f1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -415,49 +418,49 @@
       <Filter>Game API\GameMaterials</Filter>
     </ClInclude>
     <ClInclude Include="EnnumerateVertices.h">
-      <Filter>Interfaces\Render\Visuals\Skeleton</Filter>
+      <Filter>Render\Visuals\Skeleton</Filter>
     </ClInclude>
     <ClInclude Include="vis_common.h">
-      <Filter>Interfaces\Render\Visibility</Filter>
+      <Filter>Render\Visibility</Filter>
     </ClInclude>
     <ClInclude Include="Frustum.h">
-      <Filter>Interfaces\Render\Visibility\Frustum</Filter>
+      <Filter>Render\Visibility\Frustum</Filter>
     </ClInclude>
     <ClInclude Include="PS_instance.h">
-      <Filter>Interfaces\Render\Particle system</Filter>
+      <Filter>Render\Particle system</Filter>
     </ClInclude>
     <ClInclude Include="LightAnimLibrary.h">
-      <Filter>Interfaces\Render\Lighting</Filter>
+      <Filter>Render\Lighting</Filter>
     </ClInclude>
     <ClInclude Include="GameFont.h">
-      <Filter>Interfaces\Render\Font output</Filter>
+      <Filter>Render\Font output</Filter>
     </ClInclude>
     <ClInclude Include="MbHelpers.h">
-      <Filter>Interfaces\Render\Font output</Filter>
+      <Filter>Render\Font output</Filter>
     </ClInclude>
     <ClInclude Include="Shader_xrLC.h">
-      <Filter>Interfaces\Render\Execution &amp; 3D\Shaders</Filter>
+      <Filter>Render\Execution &amp; 3D\Shaders</Filter>
     </ClInclude>
     <ClInclude Include="WaveForm.h">
-      <Filter>Interfaces\Render\Execution &amp; 3D\Shaders</Filter>
+      <Filter>Render\Execution &amp; 3D\Shaders</Filter>
     </ClInclude>
     <ClInclude Include="tntQAVI.h">
-      <Filter>Interfaces\Render\Execution &amp; 3D\Shaders\Textures</Filter>
+      <Filter>Render\Execution &amp; 3D\Shaders\Textures</Filter>
     </ClInclude>
     <ClInclude Include="xrImage_Resampler.h">
-      <Filter>Interfaces\Render\Execution &amp; 3D\Shaders\Textures</Filter>
+      <Filter>Render\Execution &amp; 3D\Shaders\Textures</Filter>
     </ClInclude>
     <ClInclude Include="xrTheora_Stream.h">
-      <Filter>Interfaces\Render\Execution &amp; 3D\Shaders\Textures</Filter>
+      <Filter>Render\Execution &amp; 3D\Shaders\Textures</Filter>
     </ClInclude>
     <ClInclude Include="xrTheora_Surface.h">
-      <Filter>Interfaces\Render\Execution &amp; 3D\Shaders\Textures</Filter>
+      <Filter>Render\Execution &amp; 3D\Shaders\Textures</Filter>
     </ClInclude>
     <ClInclude Include="xrTheora_Surface_mmx.h">
-      <Filter>Interfaces\Render\Execution &amp; 3D\Shaders\Textures</Filter>
+      <Filter>Render\Execution &amp; 3D\Shaders\Textures</Filter>
     </ClInclude>
     <ClInclude Include="Text_Console.h">
-      <Filter>Interfaces\Render\Execution &amp; 3D\TextConsole</Filter>
+      <Filter>Render\Execution &amp; 3D\TextConsole</Filter>
     </ClInclude>
     <ClInclude Include="Properties.h">
       <Filter>Engine</Filter>
@@ -786,40 +789,40 @@
       <Filter>Game API\GameMaterials</Filter>
     </ClCompile>
     <ClCompile Include="Frustum.cpp">
-      <Filter>Interfaces\Render\Visibility\Frustum</Filter>
+      <Filter>Render\Visibility\Frustum</Filter>
     </ClCompile>
     <ClCompile Include="PS_instance.cpp">
-      <Filter>Interfaces\Render\Particle system</Filter>
+      <Filter>Render\Particle system</Filter>
     </ClCompile>
     <ClCompile Include="LightAnimLibrary.cpp">
-      <Filter>Interfaces\Render\Lighting</Filter>
+      <Filter>Render\Lighting</Filter>
     </ClCompile>
     <ClCompile Include="GameFont.cpp">
-      <Filter>Interfaces\Render\Font output</Filter>
+      <Filter>Render\Font output</Filter>
     </ClCompile>
     <ClCompile Include="MbHelpers.cpp">
-      <Filter>Interfaces\Render\Font output</Filter>
+      <Filter>Render\Font output</Filter>
     </ClCompile>
     <ClCompile Include="tntQAVI.cpp">
-      <Filter>Interfaces\Render\Execution &amp; 3D\Shaders\Textures</Filter>
+      <Filter>Render\Execution &amp; 3D\Shaders\Textures</Filter>
     </ClCompile>
     <ClCompile Include="xrImage_Resampler.cpp">
-      <Filter>Interfaces\Render\Execution &amp; 3D\Shaders\Textures</Filter>
+      <Filter>Render\Execution &amp; 3D\Shaders\Textures</Filter>
     </ClCompile>
     <ClCompile Include="xrTheora_Stream.cpp">
-      <Filter>Interfaces\Render\Execution &amp; 3D\Shaders\Textures</Filter>
+      <Filter>Render\Execution &amp; 3D\Shaders\Textures</Filter>
     </ClCompile>
     <ClCompile Include="xrTheora_Surface.cpp">
-      <Filter>Interfaces\Render\Execution &amp; 3D\Shaders\Textures</Filter>
+      <Filter>Render\Execution &amp; 3D\Shaders\Textures</Filter>
     </ClCompile>
     <ClCompile Include="xrTheora_Surface_mmx.cpp">
-      <Filter>Interfaces\Render\Execution &amp; 3D\Shaders\Textures</Filter>
+      <Filter>Render\Execution &amp; 3D\Shaders\Textures</Filter>
     </ClCompile>
     <ClCompile Include="Text_Console.cpp">
-      <Filter>Interfaces\Render\Execution &amp; 3D\TextConsole</Filter>
+      <Filter>Render\Execution &amp; 3D\TextConsole</Filter>
     </ClCompile>
     <ClCompile Include="Text_Console_WndProc.cpp">
-      <Filter>Interfaces\Render\Execution &amp; 3D\TextConsole</Filter>
+      <Filter>Render\Execution &amp; 3D\TextConsole</Filter>
     </ClCompile>
     <ClCompile Include="pure.cpp">
       <Filter>Engine</Filter>
@@ -1002,15 +1005,17 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="splash_xrcs_en.bmp">
+    <Image Include="splash_xrcs_en.bmp">
       <Filter>General\Resources</Filter>
-    </None>
-    <None Include="stalker_cs.ico">
+    </Image>
+    <Image Include="stalker_cs.ico">
       <Filter>General\Resources</Filter>
-    </None>
-    <None Include="ClientServer.txt" />
-    <None Include="Effects description.txt" />
-    <None Include="features.txt" />
-    <None Include="TODO.txt" />
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ClientServer.txt" />
+    <Text Include="Effects description.txt" />
+    <Text Include="features.txt" />
+    <Text Include="TODO.txt" />
   </ItemGroup>
 </Project>

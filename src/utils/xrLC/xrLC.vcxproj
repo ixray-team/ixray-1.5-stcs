@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -20,17 +20,20 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
     <UseOfMfc>false</UseOfMfc>
     <UseOfAtl>false</UseOfAtl>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
     <UseOfMfc>false</UseOfMfc>
     <UseOfAtl>false</UseOfAtl>
     <CharacterSet>MultiByte</CharacterSet>
@@ -53,31 +56,22 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\..\binaries\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\..\binaries\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">..\..\..\..\binaries\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">..\..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">false</LinkIncremental>
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IncludePath);X:\sdk\dxsdk_mar2008\Include</IncludePath>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">X:\sdk\dxsdk_mar2008\Lib\x86;$(LibraryPath)</LibraryPath>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">$(IncludePath);X:\sdk\dxsdk_mar2008\Include</IncludePath>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">X:\sdk\dxsdk_mar2008\Lib\x86;$(LibraryPath)</LibraryPath>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IncludePath);X:\sdk\dxsdk_mar2008\Include</IncludePath>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">X:\sdk\dxsdk_mar2008\Lib\x86;$(LibraryPath)</LibraryPath>
+    <_ProjectFileVersion>12.0.30501.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>..\..\..\..\binaries\</OutDir>
+    <IntDir>..\..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>..\..\..\..\binaries\</OutDir>
+    <IntDir>..\..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">
+    <OutDir>..\..\..\..\binaries\</OutDir>
+    <IntDir>..\..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Midl>
@@ -99,8 +93,7 @@
       <AdditionalIncludeDirectories>../../../sdk/include/stlport;../../../sdk/include/;..\xrQSlim\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_USE_MATH_DEFINES;WIN32;_WINDOWS;_SECURE_SCL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
-      <ExceptionHandling>
-      </ExceptionHandling>
+      <ExceptionHandling />
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <FunctionLevelLinking>false</FunctionLevelLinking>
@@ -114,8 +107,7 @@
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
-      <BrowseInformation>
-      </BrowseInformation>
+      <BrowseInformation />
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -132,8 +124,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)$(ProjectName).pdb</ProgramDatabaseFile>
       <GenerateMapFile>false</GenerateMapFile>
-      <MapFileName>
-      </MapFileName>
+      <MapFileName />
       <SubSystem>Windows</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
       <OptimizeReferences>true</OptimizeReferences>
@@ -156,8 +147,7 @@
       <AdditionalIncludeDirectories>../../../sdk/include/stlport;../../../sdk/include/;..\xrQSlim\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>FORCE_NO_EXCEPTIONS;_USE_MATH_DEFINES;WIN32;DEBUG;_WINDOWS;_SECURE_SCL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
-      <ExceptionHandling>
-      </ExceptionHandling>
+      <ExceptionHandling />
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FloatingPointModel>Fast</FloatingPointModel>
@@ -169,8 +159,7 @@
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
-      <BrowseInformation>
-      </BrowseInformation>
+      <BrowseInformation />
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -185,8 +174,7 @@
       <AdditionalLibraryDirectories>..\..\..\sdk\libraries;..\..\..\..\libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <GenerateMapFile>false</GenerateMapFile>
-      <MapFileName>
-      </MapFileName>
+      <MapFileName />
       <SubSystem>Windows</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
       <ImportLibrary>..\..\..\..\libraries\$(ProjectName).lib</ImportLibrary>
@@ -224,8 +212,7 @@
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
-      <BrowseInformation>
-      </BrowseInformation>
+      <BrowseInformation />
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -244,66 +231,75 @@
       <MapExports>false</MapExports>
       <SubSystem>Windows</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
-      <TerminalServerAware>
-      </TerminalServerAware>
+      <TerminalServerAware />
       <ImportLibrary>..\..\..\libraries\$(ProjectName).lib</ImportLibrary>
       <TargetMachine>NotSet</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="defines.h" />
-    <ClInclude Include="StdAfx.h" />
-    <ClInclude Include="resource.h" />
-    <ClInclude Include="cl_log.h" />
-    <ClInclude Include="cl_intersect.h" />
-    <ClInclude Include="b_globals.h" />
-    <ClInclude Include="MeshMenderLayerOGF.h" />
-    <ClInclude Include="MeshMenderLayerOrdinaryStatic.h" />
-    <ClInclude Include="progmesh.h" />
-    <ClInclude Include="std_classes.h" />
-    <ClInclude Include="xrDXTC.h" />
-    <ClInclude Include="xrHemisphere.h" />
-    <ClInclude Include="xrOcclusion.h" />
-    <ClInclude Include="xrSpherical.h" />
-    <ClInclude Include="NV_Library\NvTriStrip.h" />
-    <ClInclude Include="NV_Library\NvTriStripObjects.h" />
-    <ClInclude Include="NV_Library\VertexCache.h" />
+    <ClInclude Include="..\..\common\face_smoth_flags.h" />
+    <ClInclude Include="..\..\common\itterate_adjacents.h" />
     <ClInclude Include="..\..\common\NvMender2003\convert.h" />
     <ClInclude Include="..\..\common\NvMender2003\mender_input_output.h" />
     <ClInclude Include="..\..\common\NvMender2003\NVMeshMender.h" />
     <ClInclude Include="..\..\common\NvMender2003\remove_isolated_verts.h" />
+    <ClInclude Include="..\Shader_xrLC.h" />
+    <ClInclude Include="ArbitraryList.h" />
+    <ClInclude Include="Build.h" />
+    <ClInclude Include="b_globals.h" />
+    <ClInclude Include="cform_build.h" />
+    <ClInclude Include="cl_intersect.h" />
+    <ClInclude Include="cl_log.h" />
+    <ClInclude Include="defines.h" />
+    <ClInclude Include="ELight_def.h" />
+    <ClInclude Include="Image.h" />
+    <ClInclude Include="MeshMenderLayerOGF.h" />
+    <ClInclude Include="MeshMenderLayerOrdinaryStatic.h" />
+    <ClInclude Include="net.h" />
     <ClInclude Include="NvMender2002\NVMeshMender.h" />
     <ClInclude Include="NvMender2002\nv_algebra.h" />
     <ClInclude Include="NvMender2002\nv_math.h" />
     <ClInclude Include="NvMender2002\nv_mathdecl.h" />
-    <ClInclude Include="_rect.h" />
-    <ClInclude Include="Build.h" />
-    <ClInclude Include="cform_build.h" />
-    <ClInclude Include="ELight_def.h" />
-    <ClInclude Include="..\..\common\face_smoth_flags.h" />
-    <ClInclude Include="..\..\common\itterate_adjacents.h" />
-    <ClInclude Include="Sector.h" />
-    <ClInclude Include="..\Shader_xrLC.h" />
-    <ClInclude Include="xrPhase_MergeLM_Rect.h" />
-    <ClInclude Include="ArbitraryList.h" />
+    <ClInclude Include="NV_Library\NvTriStrip.h" />
+    <ClInclude Include="NV_Library\NvTriStripObjects.h" />
+    <ClInclude Include="NV_Library\VertexCache.h" />
     <ClInclude Include="OGF_Face.h" />
+    <ClInclude Include="progmesh.h" />
     <ClInclude Include="PropSlimTools.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="Sector.h" />
+    <ClInclude Include="StdAfx.h" />
+    <ClInclude Include="std_classes.h" />
     <ClInclude Include="vbm.h" />
-    <ClInclude Include="Image.h" />
-    <ClInclude Include="net.h" />
+    <ClInclude Include="xrDXTC.h" />
     <ClInclude Include="xrGameMaterials.h" />
+    <ClInclude Include="xrHemisphere.h" />
+    <ClInclude Include="xrOcclusion.h" />
+    <ClInclude Include="xrPhase_MergeLM_Rect.h" />
+    <ClInclude Include="xrSpherical.h" />
+    <ClInclude Include="_rect.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="StdAfx.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    <ClCompile Include="..\..\..\sdk\include\hxgrid\Interface\hxGridInterface.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </PrecompiledHeaderOutputFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">
+      </PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">
+      </PrecompiledHeaderOutputFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeaderOutputFile>
     </ClCompile>
-    <ClCompile Include="xrLC.cpp" />
-    <ClCompile Include="cl_log.cpp" />
-    <ClCompile Include="NV_Library\NvTriStrip.cpp" />
-    <ClCompile Include="NV_Library\NvTriStripObjects.cpp" />
-    <ClCompile Include="NV_Library\VertexCache.cpp" />
     <ClCompile Include="..\..\common\NvMender2003\NVMeshMender.cpp">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
       <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
@@ -312,8 +308,42 @@
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
       <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
     </ClCompile>
+    <ClCompile Include="..\..\xrEngine\xrLoadSurface.cpp" />
+    <ClCompile Include="Build.cpp" />
+    <ClCompile Include="Build_Load.cpp" />
+    <ClCompile Include="cl_log.cpp" />
+    <ClCompile Include="fmesh.cpp" />
+    <ClCompile Include="Image.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="net.cpp" />
     <ClCompile Include="NvMender2002\NVMeshMender.cpp" />
     <ClCompile Include="NvMender2002\nv_algebra.cpp" />
+    <ClCompile Include="NV_Library\NvTriStrip.cpp" />
+    <ClCompile Include="NV_Library\NvTriStripObjects.cpp" />
+    <ClCompile Include="NV_Library\VertexCache.cpp" />
+    <ClCompile Include="OGF_CalculateTB.cpp" />
+    <ClCompile Include="OGF_CalculateTB2002.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="OGF_Face.cpp" />
+    <ClCompile Include="OGF_Face_Save.cpp" />
+    <ClCompile Include="OGF_Face_Sphere.cpp" />
+    <ClCompile Include="OGF_Face_Stripify.cpp" />
+    <ClCompile Include="OGF_RemoveIsolatedVerts.cpp" />
+    <ClCompile Include="Sector.cpp" />
+    <ClCompile Include="StdAfx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="xrBuildCForm.cpp" />
+    <ClCompile Include="xrBuildRapidModel.cpp" />
+    <ClCompile Include="xrCalcNormals.cpp" />
     <ClCompile Include="xrDetailPatch.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">true</ExcludedFromBuild>
@@ -324,55 +354,32 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="xrFlex2OGF.cpp" />
     <ClCompile Include="xrHierrarhy.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="xrLC.cpp" />
+    <ClCompile Include="xrLight.cpp" />
     <ClCompile Include="xrMergeLM.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="xrPVS.cpp">
+    <ClCompile Include="xrMU_Model_Calc_ogf.cpp" />
+    <ClCompile Include="xrMU_Model_export_cform_game.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="xrResolveMaterials.cpp">
+    <ClCompile Include="xrMU_Model_export_cform_game_s.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="xrSoftenLights.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="xrTesselate.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="xrUVmapping.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="xrVis.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="Build.cpp" />
-    <ClCompile Include="Build_Load.cpp" />
-    <ClCompile Include="Sector.cpp" />
-    <ClCompile Include="xrBuildCForm.cpp" />
-    <ClCompile Include="xrBuildRapidModel.cpp" />
-    <ClCompile Include="xrCalcNormals.cpp" />
-    <ClCompile Include="xrFlex2OGF.cpp" />
-    <ClCompile Include="xrLight.cpp" />
-    <ClCompile Include="..\..\xrEngine\xrLoadSurface.cpp" />
+    <ClCompile Include="xrMU_Model_export_geometry.cpp" />
+    <ClCompile Include="xrMU_Model_export_OGF.cpp" />
     <ClCompile Include="xrOptimizeCFORM.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">true</ExcludedFromBuild>
@@ -398,66 +405,61 @@
     </ClCompile>
     <ClCompile Include="xrPhase_UVmap.cpp" />
     <ClCompile Include="xrPreOptimize.cpp" />
+    <ClCompile Include="xrPVS.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="xrResolveMaterials.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="xrSaveLights.cpp" />
     <ClCompile Include="xrSaveOGF.cpp" />
     <ClCompile Include="xrSectors.cpp" />
+    <ClCompile Include="xrSoftenLights.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="xrTesselate.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="xrT_Junction.cpp" />
-    <ClCompile Include="fmesh.cpp" />
-    <ClCompile Include="OGF_CalculateTB.cpp" />
-    <ClCompile Include="OGF_CalculateTB2002.cpp">
+    <ClCompile Include="xrUVmapping.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="OGF_Face.cpp" />
-    <ClCompile Include="OGF_Face_Save.cpp" />
-    <ClCompile Include="OGF_Face_Sphere.cpp" />
-    <ClCompile Include="OGF_Face_Stripify.cpp" />
-    <ClCompile Include="OGF_RemoveIsolatedVerts.cpp" />
-    <ClCompile Include="Image.cpp">
+    <ClCompile Include="xrVis.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="xrMU_Model_Calc_ogf.cpp" />
-    <ClCompile Include="xrMU_Model_export_cform_game.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="xrMU_Model_export_cform_game_s.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="xrMU_Model_export_geometry.cpp" />
-    <ClCompile Include="xrMU_Model_export_OGF.cpp" />
-    <ClCompile Include="..\..\..\sdk\include\hxgrid\Interface\hxGridInterface.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </PrecompiledHeaderOutputFile>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">
-      </PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">
-      </PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">
-      </PrecompiledHeaderOutputFile>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </PrecompiledHeaderOutputFile>
-    </ClCompile>
-    <ClCompile Include="net.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\3rd party\bugtrap\zlib\zlib.vcxproj">
+      <Project>{ca2604ca-a2ac-49a1-a468-8ab5a2e6cbc9}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\xrCDB\xrCDB.vcxproj">
+      <Project>{a19b1df2-82ec-4364-8bdf-85d13a1c89b5}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\xrCore\xrCore.vcxproj">
+      <Project>{a0f7d1fb-59a7-4717-a7e4-96f37e91998e}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\..\xrXMLParser\xrXMLParser.vcxproj">
+      <Project>{94a1c366-3d19-48e6-8170-4adc2e70df98}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
     <ProjectReference Include="..\ETools\ETools.vcxproj">
       <Project>{65cbb9d0-fbc6-41a4-8316-f5e9b5d7fb33}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>

@@ -10,13 +10,13 @@
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
     <Filter Include="openssl">
-      <UniqueIdentifier>{b8d5484d-2540-40b2-9cdf-ac8fea71dfe9}</UniqueIdentifier>
+      <UniqueIdentifier>{c9460813-7895-4f28-adc7-15ca8f7b9fb4}</UniqueIdentifier>
     </Filter>
     <Filter Include="openssl\include">
-      <UniqueIdentifier>{0bba191a-7f59-49d5-808a-b356dab13120}</UniqueIdentifier>
+      <UniqueIdentifier>{05eaffd3-3190-427c-8422-8c455b9467e9}</UniqueIdentifier>
     </Filter>
     <Filter Include="openssl\src">
-      <UniqueIdentifier>{df80abf0-2daa-4850-8bf5-5ebaf4d584a9}</UniqueIdentifier>
+      <UniqueIdentifier>{893d6394-79c8-417d-a06b-7447ff6c29cf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -2,14 +2,14 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Header Files">
-      <UniqueIdentifier>{2da8e373-9fe4-49a4-921b-724853fe4ef4}</UniqueIdentifier>
+      <UniqueIdentifier>{2235d4ed-f68a-473a-8f42-e78947c50056}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc</Extensions>
     </Filter>
     <Filter Include="Shared Header Files">
-      <UniqueIdentifier>{1c54f4d4-c006-4642-8f5e-19a6b4760b6d}</UniqueIdentifier>
+      <UniqueIdentifier>{a9ddaf4f-c307-47ac-a0be-17c1e254dbce}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{b3bbda44-a3fa-42ae-94e8-62817fe5a38a}</UniqueIdentifier>
+      <UniqueIdentifier>{ce351963-52b9-4803-84e9-f0020b857326}</UniqueIdentifier>
       <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm</Extensions>
     </Filter>
   </ItemGroup>
@@ -252,6 +252,8 @@
     <None Include="..\..\..\config\msvcdefs.def">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
   </ItemGroup>
 </Project>

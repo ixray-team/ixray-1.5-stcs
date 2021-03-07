@@ -6,19 +6,19 @@
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
     <Filter Include="Light">
-      <UniqueIdentifier>{3e7e0d8d-ae07-4921-9ca6-5187a2d8cb87}</UniqueIdentifier>
+      <UniqueIdentifier>{6f40b87f-65a7-44b1-82b4-012debc3460e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Light\xrLC_GlobalData">
-      <UniqueIdentifier>{2bf388aa-b932-4dca-b241-28a0495cd2e2}</UniqueIdentifier>
+      <UniqueIdentifier>{9754e08c-e738-4de0-a245-4aa269331032}</UniqueIdentifier>
     </Filter>
     <Filter Include="Light\Net">
-      <UniqueIdentifier>{d84e29b7-4a3a-472d-b83c-06487e75be5f}</UniqueIdentifier>
+      <UniqueIdentifier>{f2fde735-d2ae-455b-87ab-805b3f3663b7}</UniqueIdentifier>
     </Filter>
     <Filter Include="Light\Net\new">
-      <UniqueIdentifier>{2f9604c1-9dd3-46b6-aad8-5c72a7023e40}</UniqueIdentifier>
+      <UniqueIdentifier>{1759f1c6-9bff-4a54-af0d-ed832c20082a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Light\models">
-      <UniqueIdentifier>{7befc090-c467-4c69-a2e9-77d969112a80}</UniqueIdentifier>
+      <UniqueIdentifier>{faefda85-a143-4061-98b0-0a5b30a17862}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
@@ -325,6 +325,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ReadMe.txt" />
+    <Text Include="ReadMe.txt" />
   </ItemGroup>
 </Project>

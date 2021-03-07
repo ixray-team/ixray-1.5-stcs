@@ -2,16 +2,16 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Math">
-      <UniqueIdentifier>{c1d81d9a-4ec5-4918-b2fc-9ff6a80c7c16}</UniqueIdentifier>
+      <UniqueIdentifier>{9c08e445-f163-48a4-94a4-13d4cf53db4e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Kernel">
-      <UniqueIdentifier>{04b146bb-5bb8-49fc-a98e-7538cd2c4e5c}</UniqueIdentifier>
+      <UniqueIdentifier>{52c692c0-a83d-476e-80b4-725037af5b93}</UniqueIdentifier>
     </Filter>
     <Filter Include="Model">
-      <UniqueIdentifier>{3254cc63-b535-4028-a2cb-f1740cb78403}</UniqueIdentifier>
+      <UniqueIdentifier>{7547fa2f-d4b9-4a17-8749-f152fcbcc916}</UniqueIdentifier>
     </Filter>
     <Filter Include="QSlim">
-      <UniqueIdentifier>{9a8efca5-b100-4c4e-870c-5c2f93b95dcf}</UniqueIdentifier>
+      <UniqueIdentifier>{9fe3dde4-c08f-455f-8572-6a0cbf943fff}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -20,17 +20,20 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -51,28 +54,22 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\..\binaries\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\..\binaries\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">..\..\..\..\binaries\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">..\..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">false</LinkIncremental>
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IncludePath);X:\sdk\dxsdk_mar2008\Include</IncludePath>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">$(IncludePath);X:\sdk\dxsdk_mar2008\Include</IncludePath>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IncludePath);X:\sdk\dxsdk_mar2008\Include</IncludePath>
+    <_ProjectFileVersion>12.0.30501.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>..\..\..\..\binaries\</OutDir>
+    <IntDir>..\..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>..\..\..\..\binaries\</OutDir>
+    <IntDir>..\..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">
+    <OutDir>..\..\..\..\binaries\</OutDir>
+    <IntDir>..\..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Midl>
@@ -97,8 +94,7 @@
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
-      <BrowseInformation>
-      </BrowseInformation>
+      <BrowseInformation />
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -113,8 +109,7 @@
       <AdditionalLibraryDirectories>..\..\..\sdk\libraries;..\..\..\..\libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <GenerateMapFile>false</GenerateMapFile>
-      <MapFileName>
-      </MapFileName>
+      <MapFileName />
       <SubSystem>Windows</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
       <ImportLibrary>..\..\..\libraries\$(ProjectName).lib</ImportLibrary>
@@ -139,8 +134,7 @@
       <AdditionalIncludeDirectories>../../../sdk/include/stlport;../../../sdk/include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_SECURE_SCL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
-      <ExceptionHandling>
-      </ExceptionHandling>
+      <ExceptionHandling />
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <FunctionLevelLinking>false</FunctionLevelLinking>
@@ -154,8 +148,7 @@
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
-      <BrowseInformation>
-      </BrowseInformation>
+      <BrowseInformation />
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -171,8 +164,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)$(ProjectName).pdb</ProgramDatabaseFile>
       <GenerateMapFile>false</GenerateMapFile>
-      <MapFileName>
-      </MapFileName>
+      <MapFileName />
       <SubSystem>Windows</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
@@ -209,8 +201,7 @@
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
-      <BrowseInformation>
-      </BrowseInformation>
+      <BrowseInformation />
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -234,52 +225,58 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="_d3d_extensions.h" />
-    <ClInclude Include="defines.h" />
-    <ClInclude Include="StdAfx.h" />
-    <ClInclude Include="tga.h" />
-    <ClInclude Include="xrSyncronize.h" />
-    <ClInclude Include="xrThread.h" />
-    <ClInclude Include="resource.h" />
-    <ClInclude Include="cl_log.h" />
-    <ClInclude Include="std_classes.h" />
-    <ClInclude Include="cl_intersect.h" />
+    <ClInclude Include="..\Shader_xrLC.h" />
     <ClInclude Include="base_lighting.h" />
     <ClInclude Include="build_texture.h" />
+    <ClInclude Include="cl_intersect.h" />
+    <ClInclude Include="cl_log.h" />
     <ClInclude Include="communicate.h" />
+    <ClInclude Include="defines.h" />
     <ClInclude Include="DetailFormat.h" />
     <ClInclude Include="ETextureParams.h" />
     <ClInclude Include="global_calculation_data.h" />
     <ClInclude Include="global_slots_data.h" />
     <ClInclude Include="light.h" />
     <ClInclude Include="LightThread.h" />
-    <ClInclude Include="R_light.h" />
     <ClInclude Include="recalculation.h" />
-    <ClInclude Include="..\Shader_xrLC.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="R_light.h" />
+    <ClInclude Include="StdAfx.h" />
+    <ClInclude Include="std_classes.h" />
+    <ClInclude Include="tga.h" />
     <ClInclude Include="xrHemisphere.h" />
     <ClInclude Include="xrLevel.h" />
     <ClInclude Include="xrShaderTypes.h" />
+    <ClInclude Include="xrSyncronize.h" />
+    <ClInclude Include="xrThread.h" />
+    <ClInclude Include="_d3d_extensions.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\xrEngine\xrLoadSurface.cpp" />
+    <ClCompile Include="base_lighting.cpp" />
+    <ClCompile Include="cl_log.cpp" />
+    <ClCompile Include="compiler.cpp" />
+    <ClCompile Include="global_calculation_data.cpp" />
+    <ClCompile Include="global_slots_data.cpp" />
+    <ClCompile Include="LightThread.cpp" />
+    <ClCompile Include="recalculation.cpp" />
     <ClCompile Include="StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="tga.cpp" />
-    <ClCompile Include="xrThread.cpp" />
-    <ClCompile Include="cl_log.cpp" />
-    <ClCompile Include="base_lighting.cpp" />
-    <ClCompile Include="compiler.cpp" />
-    <ClCompile Include="global_calculation_data.cpp" />
-    <ClCompile Include="global_slots_data.cpp" />
-    <ClCompile Include="LightThread.cpp" />
-    <ClCompile Include="recalculation.cpp" />
     <ClCompile Include="xrDO_Light.cpp" />
-    <ClCompile Include="..\..\xrEngine\xrLoadSurface.cpp" />
+    <ClCompile Include="xrThread.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\xrCDB\xrCDB.vcxproj">
+      <Project>{a19b1df2-82ec-4364-8bdf-85d13a1c89b5}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -14,46 +14,46 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx</Extensions>
     </Filter>
     <Filter Include="GameSpy">
-      <UniqueIdentifier>{0a047d0f-00fd-43b6-85da-aa806831a1e6}</UniqueIdentifier>
+      <UniqueIdentifier>{c768fb53-d968-4572-b960-078ed7567a60}</UniqueIdentifier>
     </Filter>
     <Filter Include="GameSpy\Common">
-      <UniqueIdentifier>{7897e955-7ad0-40c6-8186-8773f733bdcc}</UniqueIdentifier>
+      <UniqueIdentifier>{c735955e-84e4-4d08-8803-90d974352afd}</UniqueIdentifier>
     </Filter>
     <Filter Include="GameSpy\Common\win32">
-      <UniqueIdentifier>{70fa048c-ab0c-406c-9e77-fba8eb48d806}</UniqueIdentifier>
+      <UniqueIdentifier>{dc3810eb-df96-4c86-be38-aed44781267b}</UniqueIdentifier>
     </Filter>
     <Filter Include="GameSpy\QR2">
-      <UniqueIdentifier>{6a755278-1b70-4f81-8fdb-de82289feac6}</UniqueIdentifier>
+      <UniqueIdentifier>{1b2d180d-533e-4d3c-9c6a-04ce47c6786d}</UniqueIdentifier>
     </Filter>
     <Filter Include="GameSpy\ServerBrowsing">
-      <UniqueIdentifier>{99e0f13d-14e0-4399-b0ac-5a56f62a3547}</UniqueIdentifier>
+      <UniqueIdentifier>{ca08805c-9a59-4990-9430-a69ef23fff4d}</UniqueIdentifier>
     </Filter>
     <Filter Include="GameSpy\CD-Key">
-      <UniqueIdentifier>{2f59ff17-212f-4521-8374-dd8993aa73c0}</UniqueIdentifier>
+      <UniqueIdentifier>{25fd56fc-f90b-4426-81c2-96432c660436}</UniqueIdentifier>
     </Filter>
     <Filter Include="GameSpy\Patching">
-      <UniqueIdentifier>{cb55d8d1-3a9b-48d7-9111-68b6fc63395f}</UniqueIdentifier>
+      <UniqueIdentifier>{e9466010-b5f1-4a23-be5a-3ccabe899e00}</UniqueIdentifier>
     </Filter>
     <Filter Include="GameSpy\ghttp">
-      <UniqueIdentifier>{4ab60449-29a8-4dea-ac87-d727a4e2c2b2}</UniqueIdentifier>
+      <UniqueIdentifier>{2422a155-d9f0-44f5-9834-a9f29ce1f8a3}</UniqueIdentifier>
     </Filter>
     <Filter Include="xrGameSpy_ServerBrowser">
-      <UniqueIdentifier>{6af57c47-6630-41e2-ab97-12dfbb4999d1}</UniqueIdentifier>
+      <UniqueIdentifier>{9ccbd7ba-e995-4892-a3c1-a0fc4892592b}</UniqueIdentifier>
     </Filter>
     <Filter Include="xrGameSpy_Available">
-      <UniqueIdentifier>{9826cefe-71c4-4644-904a-5c61fd688f2d}</UniqueIdentifier>
+      <UniqueIdentifier>{5df77f03-d5a2-43a6-a29f-6d9fff1ffb06}</UniqueIdentifier>
     </Filter>
     <Filter Include="xrGameSpy_QR2">
-      <UniqueIdentifier>{aa2f8e53-3fb1-4c4b-8a98-2962e5e28ee9}</UniqueIdentifier>
+      <UniqueIdentifier>{b4bff203-dd40-423c-80c8-996a582bfca2}</UniqueIdentifier>
     </Filter>
     <Filter Include="xrGameSpy_CDKey">
-      <UniqueIdentifier>{8e59c2e0-aa39-4fb3-9d99-3e293598fe42}</UniqueIdentifier>
+      <UniqueIdentifier>{ff376e48-6416-445b-b462-9120e6c39dd0}</UniqueIdentifier>
     </Filter>
     <Filter Include="xrGameSpy_Patching">
-      <UniqueIdentifier>{c3cb1f25-b3f7-46ea-b559-77946f148d11}</UniqueIdentifier>
+      <UniqueIdentifier>{cd5a6970-207d-4df3-afeb-1487085e2513}</UniqueIdentifier>
     </Filter>
     <Filter Include="xrGameSpy_HTTP">
-      <UniqueIdentifier>{06a2935f-c7fe-4b4b-b8a4-860d92431c51}</UniqueIdentifier>
+      <UniqueIdentifier>{2ac5f7c7-883c-48c2-a06d-bfc86a4ea51f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -352,6 +352,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ReadMe.txt" />
+    <Text Include="ReadMe.txt" />
   </ItemGroup>
 </Project>

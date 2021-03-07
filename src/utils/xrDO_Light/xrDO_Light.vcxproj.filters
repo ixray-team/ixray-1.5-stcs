@@ -2,19 +2,19 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Kernel">
-      <UniqueIdentifier>{a90f01a0-756c-4612-b150-b50ccc9521e4}</UniqueIdentifier>
+      <UniqueIdentifier>{56106f77-6117-484f-826b-97a004318cae}</UniqueIdentifier>
     </Filter>
     <Filter Include="Kernel\Resources">
-      <UniqueIdentifier>{0dd6ecc9-7a5d-425c-94b5-7f93c2aaeebd}</UniqueIdentifier>
+      <UniqueIdentifier>{51196472-de84-4232-ab0d-16e3e63e1ce1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Kernel\Log">
-      <UniqueIdentifier>{450d9fdf-cb27-41ce-bc25-67c086eceea8}</UniqueIdentifier>
+      <UniqueIdentifier>{55897ce1-2069-4f57-ae90-fa05545edeae}</UniqueIdentifier>
     </Filter>
     <Filter Include="Kernel\Generic">
-      <UniqueIdentifier>{0ba313e1-b567-499c-990e-28234f4b2750}</UniqueIdentifier>
+      <UniqueIdentifier>{e6db54bd-f34b-4bec-b957-f06c70fbfea5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Kernel\CDB">
-      <UniqueIdentifier>{922eed61-0344-4ca4-80c2-521b733e8327}</UniqueIdentifier>
+      <UniqueIdentifier>{d2151a2b-a7ca-4e9e-b1b5-36e121fcb9a9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

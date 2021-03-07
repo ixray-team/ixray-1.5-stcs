@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -17,11 +17,13 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -37,19 +39,17 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\binaries\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
-    <ExtensionsToDeleteOnClean Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">*.idb%3b*.obj%3b*.ilk%3b*.pdb%3b*.tlb%3b*.tli%3b*.tlh%3b*.tmp%3b*.rsp%3b*.bat%3b$(TargetPath)</ExtensionsToDeleteOnClean>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\binaries\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <_ProjectFileVersion>12.0.30501.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>..\..\..\binaries\</OutDir>
+    <IntDir>..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
+    <ExtensionsToDeleteOnClean>*.idb%3b*.obj%3b*.ilk%3b*.pdb%3b*.tlb%3b*.tli%3b*.tlh%3b*.tmp%3b*.rsp%3b*.bat%3b$(TargetPath)</ExtensionsToDeleteOnClean>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>..\..\..\binaries\</OutDir>
+    <IntDir>..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -71,8 +71,7 @@
     <Link>
       <ModuleDefinitionFile>xrD3D9-Null.def </ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <MapFileName>
-      </MapFileName>
+      <MapFileName />
       <SubSystem>Windows</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
       <ImportLibrary>..\..\..\libraries\$(ProjectName).lib</ImportLibrary>
@@ -109,8 +108,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)$(ProjectName).pdb</ProgramDatabaseFile>
       <GenerateMapFile>false</GenerateMapFile>
-      <MapFileName>
-      </MapFileName>
+      <MapFileName />
       <SubSystem>Windows</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
       <OptimizeReferences>true</OptimizeReferences>
@@ -121,6 +119,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="IDirect3D9.cpp" />
+    <ClCompile Include="IDirect3DCubeTexture9.cpp" />
+    <ClCompile Include="IDirect3DDevice9.cpp" />
+    <ClCompile Include="IDirect3DDevice9_Caps.cpp" />
+    <ClCompile Include="IDirect3DIndexBuffer9.cpp" />
+    <ClCompile Include="IDirect3DPixelShader9.cpp" />
+    <ClCompile Include="IDirect3DQuery9.cpp" />
+    <ClCompile Include="IDirect3DStateBlock9.cpp" />
+    <ClCompile Include="IDirect3DSurface9.cpp" />
+    <ClCompile Include="IDirect3DTexture9.cpp" />
+    <ClCompile Include="IDirect3DVertexBuffer9.cpp" />
+    <ClCompile Include="IDirect3DVertexDeclaration9.cpp" />
+    <ClCompile Include="IDirect3DVertexShader9.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -129,40 +140,29 @@
     <ClCompile Include="xrD3D9-Null_OutProc.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="IDirect3D9.cpp" />
-    <ClCompile Include="IDirect3DDevice9.cpp" />
-    <ClCompile Include="IDirect3DDevice9_Caps.cpp" />
-    <ClCompile Include="IDirect3DQuery9.cpp" />
-    <ClCompile Include="IDirect3DSurface9.cpp" />
-    <ClCompile Include="IDirect3DIndexBuffer9.cpp" />
-    <ClCompile Include="IDirect3DVertexBuffer9.cpp" />
-    <ClCompile Include="IDirect3DTexture9.cpp" />
-    <ClCompile Include="IDirect3DVertexDeclaration9.cpp" />
-    <ClCompile Include="IDirect3DVertexShader9.cpp" />
-    <ClCompile Include="IDirect3DPixelShader9.cpp" />
-    <ClCompile Include="IDirect3DStateBlock9.cpp" />
-    <ClCompile Include="IDirect3DCubeTexture9.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="xrD3D9-Null.def" />
-    <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="IDirect3D9.h" />
+    <ClInclude Include="IDirect3DCubeTexture9.h" />
+    <ClInclude Include="IDirect3DDevice9.h" />
+    <ClInclude Include="IDirect3DIndexBuffer9.h" />
+    <ClInclude Include="IDirect3DPixelShader9.h" />
+    <ClInclude Include="IDirect3DQuery9.h" />
+    <ClInclude Include="IDirect3DStateBlock9.h" />
+    <ClInclude Include="IDirect3DSurface9.h" />
+    <ClInclude Include="IDirect3DTexture9.h" />
+    <ClInclude Include="IDirect3DVertexBuffer9.h" />
+    <ClInclude Include="IDirect3DVertexDeclaration9.h" />
+    <ClInclude Include="IDirect3DVertexShader9.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="xrD3D9-Null.h" />
     <ClInclude Include="xrD3D9-Null_OutProc.h" />
-    <ClInclude Include="IDirect3D9.h" />
-    <ClInclude Include="IDirect3DDevice9.h" />
-    <ClInclude Include="IDirect3DQuery9.h" />
-    <ClInclude Include="IDirect3DSurface9.h" />
-    <ClInclude Include="IDirect3DIndexBuffer9.h" />
-    <ClInclude Include="IDirect3DVertexBuffer9.h" />
-    <ClInclude Include="IDirect3DTexture9.h" />
-    <ClInclude Include="IDirect3DVertexDeclaration9.h" />
-    <ClInclude Include="IDirect3DVertexShader9.h" />
-    <ClInclude Include="IDirect3DPixelShader9.h" />
-    <ClInclude Include="IDirect3DStateBlock9.h" />
-    <ClInclude Include="IDirect3DCubeTexture9.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

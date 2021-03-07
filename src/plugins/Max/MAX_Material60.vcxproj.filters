@@ -2,16 +2,16 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Kernel">
-      <UniqueIdentifier>{9c029018-8f4e-4eac-926e-b9d23a9e6919}</UniqueIdentifier>
+      <UniqueIdentifier>{fa8a09b0-e3c1-470d-9a13-82a427ed8303}</UniqueIdentifier>
     </Filter>
     <Filter Include="Shared Files">
-      <UniqueIdentifier>{45dff990-7669-4bbb-9447-8f3f6d6ab3d7}</UniqueIdentifier>
+      <UniqueIdentifier>{1824abb8-bc2a-40f7-b598-1c8848d2a603}</UniqueIdentifier>
     </Filter>
     <Filter Include="Shared Files\Engine">
-      <UniqueIdentifier>{c56a66f2-4b6b-4daf-b540-032f53b80c62}</UniqueIdentifier>
+      <UniqueIdentifier>{dad08fbf-761d-4e96-a436-2277aa3250d2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Shared Files\Editor">
-      <UniqueIdentifier>{c3c4b493-f1ab-438a-bc1a-690b31b07f51}</UniqueIdentifier>
+      <UniqueIdentifier>{1467de66-cc98-4395-848f-acab4e433ce4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -41,8 +41,6 @@
     <None Include="..\Shared\GameMaterial.def">
       <Filter>Kernel</Filter>
     </None>
-    <None Include="Material\dmtlbut.bmp" />
-    <None Include="Material\dmtlmsk.bmp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Shared\GameMaterial.h">
@@ -74,5 +72,9 @@
     <ResourceCompile Include="Material\GameMaterial.rc">
       <Filter>Kernel</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Material\dmtlbut.bmp" />
+    <Image Include="Material\dmtlmsk.bmp" />
   </ItemGroup>
 </Project>

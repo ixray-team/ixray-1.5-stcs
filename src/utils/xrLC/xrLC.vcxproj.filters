@@ -2,58 +2,58 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Kernel">
-      <UniqueIdentifier>{9b772de5-0f20-4d31-b5c7-a7df18e11f19}</UniqueIdentifier>
+      <UniqueIdentifier>{525646c4-5dc6-4daf-aea2-a1487de3c755}</UniqueIdentifier>
     </Filter>
     <Filter Include="Kernel\Res">
-      <UniqueIdentifier>{7a216f50-720a-4af9-aece-2fcbd6f20ec4}</UniqueIdentifier>
+      <UniqueIdentifier>{5976fade-a8b5-4dc7-bc71-c1562f8ade42}</UniqueIdentifier>
     </Filter>
     <Filter Include="Kernel\Log">
-      <UniqueIdentifier>{8946b45a-2b47-4bc8-a2e4-488a39b7bcb5}</UniqueIdentifier>
+      <UniqueIdentifier>{310d9d5c-27f3-4b08-810e-d629233ff750}</UniqueIdentifier>
     </Filter>
     <Filter Include="CDB">
-      <UniqueIdentifier>{34cb8c83-70ae-4dab-88cc-db9d04fdeab1}</UniqueIdentifier>
+      <UniqueIdentifier>{141e3e02-c9e9-4f50-b4c8-df3b7770b619}</UniqueIdentifier>
     </Filter>
     <Filter Include="External">
-      <UniqueIdentifier>{0c5dcc6b-22d9-4405-a70b-2e10eff33013}</UniqueIdentifier>
+      <UniqueIdentifier>{f722a7d5-1b08-4467-90bb-76f1587487d9}</UniqueIdentifier>
     </Filter>
     <Filter Include="External\NV_Strips">
-      <UniqueIdentifier>{17ce77ea-ac4d-4f51-91b8-d26edf0a3acc}</UniqueIdentifier>
+      <UniqueIdentifier>{898e17ce-c15b-4d01-b356-fc914b17a437}</UniqueIdentifier>
     </Filter>
     <Filter Include="External\NV_Mender2003">
-      <UniqueIdentifier>{29062f70-993c-4dc4-8ee3-3942eb14b26c}</UniqueIdentifier>
+      <UniqueIdentifier>{6173ea40-f510-4c54-9767-8b2961e9576b}</UniqueIdentifier>
     </Filter>
     <Filter Include="External\NV_Mender2002">
-      <UniqueIdentifier>{54becb0a-3b4a-466e-8fbe-0bdf1b53d047}</UniqueIdentifier>
+      <UniqueIdentifier>{bbd384d9-cda1-46a9-98e1-68d69173ea48}</UniqueIdentifier>
     </Filter>
     <Filter Include="External\NV_Mender2002\NV_Basis">
-      <UniqueIdentifier>{a8589ec8-5923-4428-ab69-ff5d13a5600e}</UniqueIdentifier>
+      <UniqueIdentifier>{dff4b3e6-da60-4f65-8bbc-65a006ceade7}</UniqueIdentifier>
     </Filter>
     <Filter Include="- OLD -">
-      <UniqueIdentifier>{18e68995-d954-4701-921c-bd3ff0de202c}</UniqueIdentifier>
+      <UniqueIdentifier>{bb7f656e-0bc9-40e6-b1f5-d8361ca6dea3}</UniqueIdentifier>
     </Filter>
     <Filter Include="%2a%2a%2a COMPILER %2a%2a%2a">
-      <UniqueIdentifier>{eb370c8a-27d1-4daf-a456-5269dabf956c}</UniqueIdentifier>
+      <UniqueIdentifier>{59c3f840-33b4-4ecf-9915-d5a2cc599fe7}</UniqueIdentifier>
     </Filter>
     <Filter Include="%2a%2a%2a COMPILER %2a%2a%2a\Deflector">
-      <UniqueIdentifier>{2505af70-5a5b-4023-a530-be034844da44}</UniqueIdentifier>
+      <UniqueIdentifier>{f855c184-f01e-46ad-8649-8c3e5060929b}</UniqueIdentifier>
     </Filter>
     <Filter Include="%2a%2a%2a COMPILER %2a%2a%2a\XRAY">
-      <UniqueIdentifier>{7d010076-8d5e-42c4-acf4-7131670f6cc2}</UniqueIdentifier>
+      <UniqueIdentifier>{f288830d-f1e9-4ebb-96c0-d25b05587e83}</UniqueIdentifier>
     </Filter>
     <Filter Include="%2a%2a%2a COMPILER %2a%2a%2a\Internal">
-      <UniqueIdentifier>{b671b960-63b4-42d4-aff3-c25129033ee8}</UniqueIdentifier>
+      <UniqueIdentifier>{2774acab-38af-4c02-8aa4-766ce5ff8843}</UniqueIdentifier>
     </Filter>
     <Filter Include="%2a%2a%2a COMPILER %2a%2a%2a\Internal\Targa">
-      <UniqueIdentifier>{f527a7cb-0953-43a8-bb9b-8c80873e457b}</UniqueIdentifier>
+      <UniqueIdentifier>{2a3fb6c4-e756-491f-99b9-fe6b9c8cf35f}</UniqueIdentifier>
     </Filter>
     <Filter Include="%2a%2a%2a COMPILER %2a%2a%2a\Internal\Targa\ILoader">
-      <UniqueIdentifier>{5ff6b955-7a1c-4ba6-8fd7-94ba69195f53}</UniqueIdentifier>
+      <UniqueIdentifier>{a33d01f0-bf2f-4418-8635-c1a051bd83a9}</UniqueIdentifier>
     </Filter>
     <Filter Include="%2a%2a%2a COMPILER %2a%2a%2a\Model">
-      <UniqueIdentifier>{644a18d5-b13b-4550-a9ca-0e6f85735a54}</UniqueIdentifier>
+      <UniqueIdentifier>{3e0623f1-bf21-469f-b6b1-f705c89d623a}</UniqueIdentifier>
     </Filter>
     <Filter Include="%2a%2a%2a COMPILER %2a%2a%2a\net">
-      <UniqueIdentifier>{ecd8e7cb-ea7e-4b38-95a7-d7cab9369dc2}</UniqueIdentifier>
+      <UniqueIdentifier>{09eb3022-3586-4b3f-97be-e2a1befa5ace}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

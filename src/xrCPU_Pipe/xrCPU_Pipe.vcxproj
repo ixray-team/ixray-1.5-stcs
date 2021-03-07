@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -13,10 +13,6 @@
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Template|Win32">
-      <Configuration>Template</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{CA0649DD-D089-423A-981C-46B57A884EB9}</ProjectGuid>
@@ -24,16 +20,19 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -55,32 +54,23 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\binaries\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\binaries\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
-    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreImportLibrary>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">..\..\..\binaries\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">false</LinkIncremental>
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Template|Win32'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Template|Win32'" />
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">X:\sdk\dxsdk_mar2008\Lib\x86;$(LibraryPath)</LibraryPath>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">X:\sdk\dxsdk_mar2008\Lib\x86;$(LibraryPath)</LibraryPath>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">X:\sdk\dxsdk_mar2008\Lib\x86;$(LibraryPath)</LibraryPath>
+    <_ProjectFileVersion>12.0.30501.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>..\..\..\binaries\</OutDir>
+    <IntDir>..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>..\..\..\binaries\</OutDir>
+    <IntDir>..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
+    <IgnoreImportLibrary>true</IgnoreImportLibrary>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">
+    <OutDir>..\..\..\binaries\</OutDir>
+    <IntDir>..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Midl>
@@ -101,8 +91,7 @@
       <AdditionalIncludeDirectories>../../sdk/include/stlport;../../sdk/include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;XRCPU_PIPE_EXPORTS;_SECURE_SCL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
-      <ExceptionHandling>
-      </ExceptionHandling>
+      <ExceptionHandling />
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <FunctionLevelLinking>false</FunctionLevelLinking>
@@ -117,8 +106,7 @@
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
-      <BrowseInformation>
-      </BrowseInformation>
+      <BrowseInformation />
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -134,8 +122,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)$(ProjectName).pdb</ProgramDatabaseFile>
       <GenerateMapFile>false</GenerateMapFile>
-      <MapFileName>
-      </MapFileName>
+      <MapFileName />
       <SubSystem>NotSet</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
       <OptimizeReferences>true</OptimizeReferences>
@@ -176,8 +163,7 @@
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
-      <BrowseInformation>
-      </BrowseInformation>
+      <BrowseInformation />
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -192,12 +178,10 @@
       <AdditionalLibraryDirectories>..\..\sdk\libraries;..\..\..\libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <GenerateMapFile>false</GenerateMapFile>
-      <MapFileName>
-      </MapFileName>
+      <MapFileName />
       <MapExports>false</MapExports>
       <LargeAddressAware>true</LargeAddressAware>
-      <OptimizeReferences>
-      </OptimizeReferences>
+      <OptimizeReferences />
       <ImportLibrary>..\..\..\libraries\$(ProjectName).lib</ImportLibrary>
     </Link>
   </ItemDefinitionGroup>
@@ -228,13 +212,11 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)$(ProjectName).pch</PrecompiledHeaderOutputFile>
-      <AssemblerOutput>
-      </AssemblerOutput>
+      <AssemblerOutput />
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
-      <BrowseInformation>
-      </BrowseInformation>
+      <BrowseInformation />
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -249,35 +231,40 @@
       <AdditionalLibraryDirectories>..\..\sdk\libraries;..\..\..\libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <GenerateMapFile>false</GenerateMapFile>
-      <MapFileName>
-      </MapFileName>
+      <MapFileName />
       <LargeAddressAware>true</LargeAddressAware>
       <ImportLibrary>..\..\..\libraries\$(ProjectName).lib</ImportLibrary>
       <TargetMachine>NotSet</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="3DNow!Lib.cpp" />
     <ClCompile Include="StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="xrCPU_Pipe.cpp" />
-    <ClCompile Include="3DNow!Lib.cpp" />
+    <ClCompile Include="xrBoneLerp.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="xrBoneLerp_3DNow!.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="xrCPU_Pipe.cpp" />
+    <ClCompile Include="xrM44mul.cpp">
+      <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">AssemblyCode</AssemblerOutput>
+      <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AssemblyCode</AssemblerOutput>
+    </ClCompile>
     <ClCompile Include="xrM44mul_3DNow!.cpp" />
     <ClCompile Include="xrMemCopy8_3DNow!.cpp" />
     <ClCompile Include="xrMemFill32_3DNow!.cpp" />
+    <ClCompile Include="xrQuatSlerp.cpp" />
+    <ClCompile Include="xrSkin1W.cpp" />
     <ClCompile Include="xrSkin1W_3DNow!.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="xrSkin2W_3DNow!.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -287,25 +274,19 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="xrSkin2W.cpp">
+      <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">AssemblyAndSourceCode</AssemblerOutput>
+    </ClCompile>
+    <ClCompile Include="xrSkin2W_3DNow!.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="xrSkin2W_SSE.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AssemblyAndMachineCode</AssemblerOutput>
-    </ClCompile>
-    <ClCompile Include="xrBoneLerp.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="xrM44mul.cpp">
-      <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">AssemblyCode</AssemblerOutput>
-      <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AssemblyCode</AssemblerOutput>
-    </ClCompile>
-    <ClCompile Include="xrQuatSlerp.cpp" />
-    <ClCompile Include="xrSkin1W.cpp" />
-    <ClCompile Include="xrSkin2W.cpp">
-      <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">AssemblyAndSourceCode</AssemblerOutput>
     </ClCompile>
     <ClCompile Include="xrTransfer.cpp" />
   </ItemGroup>

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug_Dedicated|Win32">
       <Configuration>Debug_Dedicated</Configuration>
@@ -25,10 +25,6 @@
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Template|Win32">
-      <Configuration>Template</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{2578C6D8-660D-48AE-9322-7422F8664F06}</ProjectGuid>
@@ -37,33 +33,39 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_Dedicated|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Mixed_Dedicated|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_Dedicated|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -96,62 +98,41 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\binaries\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
-    <ExtensionsToDeleteOnClean Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">*.idb%3b*.obj%3b*.ilk%3b*.pdb%3b*.tlb%3b*.tli%3b*.tlh%3b*.tmp%3b*.rsp%3b*.bat%3b$(TargetPath)</ExtensionsToDeleteOnClean>
-    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreImportLibrary>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">..\..\..\binaries\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">false</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\binaries\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug_Dedicated|Win32'">..\..\..\binaries\dedicated\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug_Dedicated|Win32'">..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
-    <ExtensionsToDeleteOnClean Condition="'$(Configuration)|$(Platform)'=='Debug_Dedicated|Win32'">*.idb%3b*.obj%3b*.ilk%3b*.pdb%3b*.tlb%3b*.tli%3b*.tlh%3b*.tmp%3b*.rsp%3b*.bat%3b$(TargetPath)</ExtensionsToDeleteOnClean>
-    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Debug_Dedicated|Win32'">true</IgnoreImportLibrary>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug_Dedicated|Win32'">true</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Mixed_Dedicated|Win32'">..\..\..\binaries\dedicated\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Mixed_Dedicated|Win32'">..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Mixed_Dedicated|Win32'">true</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release_Dedicated|Win32'">..\..\..\binaries\dedicated\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release_Dedicated|Win32'">..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release_Dedicated|Win32'">false</LinkIncremental>
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug_Dedicated|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug_Dedicated|Win32'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug_Dedicated|Win32'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Mixed_Dedicated|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Mixed_Dedicated|Win32'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Mixed_Dedicated|Win32'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release_Dedicated|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release_Dedicated|Win32'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release_Dedicated|Win32'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Template|Win32'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Template|Win32'" />
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IncludePath);X:\sdk\dxsdk_mar2008\Include</IncludePath>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">X:\sdk\dxsdk_mar2008\Lib\x86;$(LibraryPath)</LibraryPath>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug_Dedicated|Win32'">$(IncludePath);X:\sdk\dxsdk_mar2008\Include</IncludePath>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug_Dedicated|Win32'">X:\sdk\dxsdk_mar2008\Lib\x86;$(LibraryPath)</LibraryPath>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">$(IncludePath);X:\sdk\dxsdk_mar2008\Include</IncludePath>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">X:\sdk\dxsdk_mar2008\Lib\x86;$(LibraryPath)</LibraryPath>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Mixed_Dedicated|Win32'">$(IncludePath);X:\sdk\dxsdk_mar2008\Include</IncludePath>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Mixed_Dedicated|Win32'">X:\sdk\dxsdk_mar2008\Lib\x86;$(LibraryPath)</LibraryPath>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IncludePath);X:\sdk\dxsdk_mar2008\Include</IncludePath>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">X:\sdk\dxsdk_mar2008\Lib\x86;$(LibraryPath)</LibraryPath>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release_Dedicated|Win32'">$(IncludePath);X:\sdk\dxsdk_mar2008\Include</IncludePath>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release_Dedicated|Win32'">X:\sdk\dxsdk_mar2008\Lib\x86;$(LibraryPath)</LibraryPath>
+    <_ProjectFileVersion>12.0.30501.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>..\..\..\binaries\</OutDir>
+    <IntDir>..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
+    <ExtensionsToDeleteOnClean>*.idb%3b*.obj%3b*.ilk%3b*.pdb%3b*.tlb%3b*.tli%3b*.tlh%3b*.tmp%3b*.rsp%3b*.bat%3b$(TargetPath)</ExtensionsToDeleteOnClean>
+    <IgnoreImportLibrary>true</IgnoreImportLibrary>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">
+    <OutDir>..\..\..\binaries\</OutDir>
+    <IntDir>..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>..\..\..\binaries\</OutDir>
+    <IntDir>..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_Dedicated|Win32'">
+    <OutDir>..\..\..\binaries\dedicated\</OutDir>
+    <IntDir>..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
+    <ExtensionsToDeleteOnClean>*.idb%3b*.obj%3b*.ilk%3b*.pdb%3b*.tlb%3b*.tli%3b*.tlh%3b*.tmp%3b*.rsp%3b*.bat%3b$(TargetPath)</ExtensionsToDeleteOnClean>
+    <IgnoreImportLibrary>true</IgnoreImportLibrary>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Mixed_Dedicated|Win32'">
+    <OutDir>..\..\..\binaries\dedicated\</OutDir>
+    <IntDir>..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_Dedicated|Win32'">
+    <OutDir>..\..\..\binaries\dedicated\</OutDir>
+    <IntDir>..\..\..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -179,8 +160,7 @@
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
-      <BrowseInformation>
-      </BrowseInformation>
+      <BrowseInformation />
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -199,8 +179,7 @@
       <IgnoreSpecificDefaultLibraries>libcmtd;libc;libcd;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <GenerateMapFile>false</GenerateMapFile>
-      <MapFileName>
-      </MapFileName>
+      <MapFileName />
       <MapExports>false</MapExports>
       <SubSystem>Windows</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
@@ -227,8 +206,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)$(ProjectName).pch</PrecompiledHeaderOutputFile>
-      <AssemblerOutput>
-      </AssemblerOutput>
+      <AssemblerOutput />
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
@@ -268,8 +246,7 @@
       <AdditionalIncludeDirectories>../../sdk/include/stlport;../../sdk/include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NDEBUG;WIN32;_WINDOWS;ENGINE_BUILD;_SECURE_SCL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
-      <ExceptionHandling>
-      </ExceptionHandling>
+      <ExceptionHandling />
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <FunctionLevelLinking>false</FunctionLevelLinking>
@@ -284,8 +261,7 @@
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
-      <BrowseInformation>
-      </BrowseInformation>
+      <BrowseInformation />
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -304,8 +280,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)$(ProjectName).pdb</ProgramDatabaseFile>
       <GenerateMapFile>false</GenerateMapFile>
-      <MapFileName>
-      </MapFileName>
+      <MapFileName />
       <SubSystem>NotSet</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
       <OptimizeReferences>true</OptimizeReferences>
@@ -340,8 +315,7 @@
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
-      <BrowseInformation>
-      </BrowseInformation>
+      <BrowseInformation />
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -360,13 +334,11 @@
       <AdditionalLibraryDirectories>..\..\sdk\libraries;..\..\..\libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>libcmtd;libcd;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <MapFileName>
-      </MapFileName>
+      <MapFileName />
       <MapExports>false</MapExports>
       <SubSystem>Windows</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
-      <ImportLibrary>
-      </ImportLibrary>
+      <ImportLibrary />
       <FixedBaseAddress>false</FixedBaseAddress>
     </Link>
   </ItemDefinitionGroup>
@@ -389,13 +361,11 @@
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
-      <AssemblerOutput>
-      </AssemblerOutput>
+      <AssemblerOutput />
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
-      <BrowseInformation>
-      </BrowseInformation>
+      <BrowseInformation />
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -413,12 +383,10 @@
       <IgnoreSpecificDefaultLibraries>libcmt;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <GenerateMapFile>false</GenerateMapFile>
-      <MapFileName>
-      </MapFileName>
+      <MapFileName />
       <SubSystem>Windows</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
-      <ImportLibrary>
-      </ImportLibrary>
+      <ImportLibrary />
       <FixedBaseAddress>false</FixedBaseAddress>
     </Link>
   </ItemDefinitionGroup>
@@ -433,8 +401,7 @@
       <AdditionalIncludeDirectories>../../sdk/include/stlport;../../sdk/include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>DEDICATED_SERVER;NDEBUG;WIN32;_WINDOWS;ENGINE_BUILD;_SECURE_SCL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
-      <ExceptionHandling>
-      </ExceptionHandling>
+      <ExceptionHandling />
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <FloatingPointModel>Fast</FloatingPointModel>
@@ -446,8 +413,7 @@
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ObjectFileName>$(IntDir)</ObjectFileName>
       <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
-      <BrowseInformation>
-      </BrowseInformation>
+      <BrowseInformation />
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -466,244 +432,153 @@
       <IgnoreSpecificDefaultLibraries>libcmt;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <GenerateMapFile>false</GenerateMapFile>
-      <MapFileName>
-      </MapFileName>
+      <MapFileName />
       <SubSystem>NotSet</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <ImportLibrary>
-      </ImportLibrary>
+      <ImportLibrary />
       <FixedBaseAddress>false</FixedBaseAddress>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="_d3d_extensions.h" />
+    <ClInclude Include="ai_script_lua_extension.h" />
+    <ClInclude Include="ai_script_lua_space.h" />
+    <ClInclude Include="ai_script_space.h" />
+    <ClInclude Include="bone.h" />
+    <ClInclude Include="CameraBase.h" />
+    <ClInclude Include="CameraDefs.h" />
+    <ClInclude Include="CameraManager.h" />
+    <ClInclude Include="cf_dynamic_mesh.h" />
+    <ClInclude Include="cl_intersect.h" />
     <ClInclude Include="CopyProtection.h" />
+    <ClInclude Include="CustomHUD.h" />
     <ClInclude Include="dedicated_server_only.h" />
     <ClInclude Include="defines.h" />
-    <ClInclude Include="mp_logging.h" />
-    <ClInclude Include="no_single.h" />
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="trivial_encryptor.h" />
-    <ClInclude Include="x_ray.h" />
-    <ClInclude Include="resource.h" />
-    <ClInclude Include="psystem.h" />
-    <ClInclude Include="IInputReceiver.h" />
-    <ClInclude Include="xr_input.h" />
-    <ClInclude Include="xr_input_xinput.h" />
-    <ClInclude Include="ISheduled.h" />
-    <ClInclude Include="xrSheduler.h" />
-    <ClInclude Include="IRenderable.h" />
-    <ClInclude Include="Render.h" />
-    <ClInclude Include="ISpatial.h" />
+    <ClInclude Include="device.h" />
+    <ClInclude Include="doug_lea_memory_allocator.h" />
+    <ClInclude Include="editor_environment_ambients_ambient.hpp" />
+    <ClInclude Include="editor_environment_ambients_effect_id.hpp" />
+    <ClInclude Include="editor_environment_ambients_manager.hpp" />
+    <ClInclude Include="editor_environment_ambients_sound_id.hpp" />
+    <ClInclude Include="editor_environment_detail.hpp" />
+    <ClInclude Include="editor_environment_effects_effect.hpp" />
+    <ClInclude Include="editor_environment_effects_manager.hpp" />
+    <ClInclude Include="editor_environment_levels_manager.hpp" />
+    <ClInclude Include="editor_environment_manager.hpp" />
+    <ClInclude Include="editor_environment_sound_channels_channel.hpp" />
+    <ClInclude Include="editor_environment_sound_channels_manager.hpp" />
+    <ClInclude Include="editor_environment_sound_channels_source.hpp" />
+    <ClInclude Include="editor_environment_suns_blend.hpp" />
+    <ClInclude Include="editor_environment_suns_flare.hpp" />
+    <ClInclude Include="editor_environment_suns_flares.hpp" />
+    <ClInclude Include="editor_environment_suns_gradient.hpp" />
+    <ClInclude Include="editor_environment_suns_manager.hpp" />
+    <ClInclude Include="editor_environment_suns_sun.hpp" />
+    <ClInclude Include="editor_environment_thunderbolts_collection.hpp" />
+    <ClInclude Include="editor_environment_thunderbolts_gradient.hpp" />
+    <ClInclude Include="editor_environment_thunderbolts_manager.hpp" />
+    <ClInclude Include="editor_environment_thunderbolts_thunderbolt.hpp" />
+    <ClInclude Include="editor_environment_thunderbolts_thunderbolt_id.hpp" />
+    <ClInclude Include="editor_environment_weathers_manager.hpp" />
+    <ClInclude Include="editor_environment_weathers_time.hpp" />
+    <ClInclude Include="editor_environment_weathers_weather.hpp" />
+    <ClInclude Include="edit_actions.h" />
+    <ClInclude Include="Effector.h" />
+    <ClInclude Include="EffectorPP.h" />
+    <ClInclude Include="Engine.h" />
+    <ClInclude Include="EngineAPI.h" />
+    <ClInclude Include="engine_impl.hpp" />
+    <ClInclude Include="EnnumerateVertices.h" />
+    <ClInclude Include="envelope.h" />
+    <ClInclude Include="Environment.h" />
+    <ClInclude Include="EventAPI.h" />
+    <ClInclude Include="FDemoPlay.h" />
+    <ClInclude Include="FDemoRecord.h" />
+    <ClInclude Include="Feel_Sound.h" />
+    <ClInclude Include="Feel_Touch.h" />
+    <ClInclude Include="Feel_Vision.h" />
+    <ClInclude Include="Fmesh.h" />
+    <ClInclude Include="Frustum.h" />
+    <ClInclude Include="GameFont.h" />
+    <ClInclude Include="GameMtlLib.h" />
     <ClInclude Include="ICollidable.h" />
+    <ClInclude Include="ide.hpp" />
+    <ClInclude Include="IGame_Level.h" />
+    <ClInclude Include="IGame_ObjectPool.h" />
+    <ClInclude Include="IGame_Persistent.h" />
+    <ClInclude Include="IInputReceiver.h" />
     <ClInclude Include="IObjectPhysicsCollision.h" />
     <ClInclude Include="IPHdebug.h" />
     <ClInclude Include="IPhysicsGeometry.h" />
     <ClInclude Include="IPhysicsShell.h" />
-    <ClInclude Include="IGame_Level.h" />
-    <ClInclude Include="IGame_Persistent.h" />
-    <ClInclude Include="xrLevel.h" />
-    <ClInclude Include="IGame_ObjectPool.h" />
-    <ClInclude Include="pure_relcase.h" />
-    <ClInclude Include="xr_object.h" />
-    <ClInclude Include="xr_object_list.h" />
-    <ClInclude Include="CustomHUD.h" />
-    <ClInclude Include="Environment.h" />
-    <ClInclude Include="xrHemisphere.h" />
-    <ClInclude Include="Rain.h" />
-    <ClInclude Include="thunderbolt.h" />
-    <ClInclude Include="xr_efflensflare.h" />
-    <ClInclude Include="CameraBase.h" />
-    <ClInclude Include="CameraDefs.h" />
-    <ClInclude Include="CameraManager.h" />
-    <ClInclude Include="Effector.h" />
-    <ClInclude Include="EffectorPP.h" />
-    <ClInclude Include="cf_dynamic_mesh.h" />
-    <ClInclude Include="xr_area.h" />
-    <ClInclude Include="xr_collide_defs.h" />
-    <ClInclude Include="xr_collide_form.h" />
-    <ClInclude Include="bone.h" />
-    <ClInclude Include="envelope.h" />
-    <ClInclude Include="motion.h" />
-    <ClInclude Include="ObjectAnimator.h" />
-    <ClInclude Include="Feel_Sound.h" />
-    <ClInclude Include="Feel_Touch.h" />
-    <ClInclude Include="Feel_Vision.h" />
-    <ClInclude Include="FDemoPlay.h" />
-    <ClInclude Include="FDemoRecord.h" />
-    <ClInclude Include="GameMtlLib.h" />
-    <ClInclude Include="EnnumerateVertices.h" />
-    <ClInclude Include="vis_common.h" />
-    <ClInclude Include="Frustum.h" />
-    <ClInclude Include="PS_instance.h" />
+    <ClInclude Include="IRenderable.h" />
+    <ClInclude Include="ISheduled.h" />
+    <ClInclude Include="ISpatial.h" />
     <ClInclude Include="LightAnimLibrary.h" />
-    <ClInclude Include="GameFont.h" />
-    <ClInclude Include="MbHelpers.h" />
-    <ClInclude Include="Shader_xrLC.h" />
-    <ClInclude Include="WaveForm.h" />
-    <ClInclude Include="tntQAVI.h" />
-    <ClInclude Include="xrImage_Resampler.h" />
-    <ClInclude Include="xrTheora_Stream.h" />
-    <ClInclude Include="xrTheora_Surface.h" />
-    <ClInclude Include="xrTheora_Surface_mmx.h" />
-    <ClInclude Include="Text_Console.h" />
-    <ClInclude Include="Properties.h" />
-    <ClInclude Include="pure.h" />
-    <ClInclude Include="std_classes.h" />
-    <ClInclude Include="cl_intersect.h" />
-    <ClInclude Include="xrXRC.h" />
-    <ClInclude Include="XR_IOConsole.h" />
-    <ClInclude Include="xr_ioc_cmd.h" />
-    <ClInclude Include="Engine.h" />
-    <ClInclude Include="EngineAPI.h" />
-    <ClInclude Include="EventAPI.h" />
-    <ClInclude Include="ai_script_lua_extension.h" />
-    <ClInclude Include="ai_script_lua_space.h" />
-    <ClInclude Include="ai_script_space.h" />
-    <ClInclude Include="perlin.h" />
     <ClInclude Include="line_editor.h" />
     <ClInclude Include="line_edit_control.h" />
-    <ClInclude Include="edit_actions.h" />
-    <ClInclude Include="device.h" />
-    <ClInclude Include="StatGraph.h" />
-    <ClInclude Include="Stats.h" />
-    <ClInclude Include="Fmesh.h" />
-    <ClInclude Include="SkeletonMotionDefs.h" />
-    <ClInclude Include="SkeletonMotions.h" />
-    <ClInclude Include="doug_lea_memory_allocator.h" />
-    <ClInclude Include="engine_impl.hpp" />
-    <ClInclude Include="editor_environment_suns_manager.hpp" />
-    <ClInclude Include="editor_environment_suns_sun.hpp" />
-    <ClInclude Include="editor_environment_suns_gradient.hpp" />
-    <ClInclude Include="editor_environment_suns_blend.hpp" />
-    <ClInclude Include="editor_environment_suns_flares.hpp" />
-    <ClInclude Include="editor_environment_suns_flare.hpp" />
-    <ClInclude Include="editor_environment_levels_manager.hpp" />
-    <ClInclude Include="editor_environment_effects_manager.hpp" />
-    <ClInclude Include="editor_environment_effects_effect.hpp" />
-    <ClInclude Include="editor_environment_sound_channels_manager.hpp" />
-    <ClInclude Include="editor_environment_sound_channels_channel.hpp" />
-    <ClInclude Include="editor_environment_sound_channels_source.hpp" />
-    <ClInclude Include="editor_environment_manager.hpp" />
-    <ClInclude Include="editor_environment_ambients_manager.hpp" />
-    <ClInclude Include="editor_environment_ambients_ambient.hpp" />
-    <ClInclude Include="editor_environment_ambients_effect_id.hpp" />
-    <ClInclude Include="editor_environment_ambients_sound_id.hpp" />
-    <ClInclude Include="editor_environment_thunderbolts_manager.hpp" />
-    <ClInclude Include="editor_environment_thunderbolts_thunderbolt.hpp" />
-    <ClInclude Include="editor_environment_thunderbolts_gradient.hpp" />
-    <ClInclude Include="editor_environment_thunderbolts_thunderbolt_id.hpp" />
-    <ClInclude Include="editor_environment_thunderbolts_collection.hpp" />
-    <ClInclude Include="editor_environment_weathers_manager.hpp" />
-    <ClInclude Include="editor_environment_weathers_weather.hpp" />
-    <ClInclude Include="editor_environment_weathers_time.hpp" />
-    <ClInclude Include="editor_environment_detail.hpp" />
+    <ClInclude Include="MbHelpers.h" />
+    <ClInclude Include="motion.h" />
+    <ClInclude Include="mp_logging.h" />
+    <ClInclude Include="no_single.h" />
+    <ClInclude Include="ObjectAnimator.h" />
+    <ClInclude Include="perlin.h" />
+    <ClInclude Include="Properties.h" />
     <ClInclude Include="property_collection.hpp" />
     <ClInclude Include="property_collection_forward.hpp" />
     <ClInclude Include="property_collection_inline.hpp" />
-    <ClInclude Include="ide.hpp" />
+    <ClInclude Include="psystem.h" />
+    <ClInclude Include="PS_instance.h" />
+    <ClInclude Include="pure.h" />
+    <ClInclude Include="pure_relcase.h" />
+    <ClInclude Include="Rain.h" />
+    <ClInclude Include="Render.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="Shader_xrLC.h" />
+    <ClInclude Include="SkeletonMotionDefs.h" />
+    <ClInclude Include="SkeletonMotions.h" />
+    <ClInclude Include="StatGraph.h" />
+    <ClInclude Include="Stats.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="std_classes.h" />
+    <ClInclude Include="Text_Console.h" />
+    <ClInclude Include="thunderbolt.h" />
+    <ClInclude Include="tntQAVI.h" />
+    <ClInclude Include="trivial_encryptor.h" />
+    <ClInclude Include="vis_common.h" />
+    <ClInclude Include="WaveForm.h" />
+    <ClInclude Include="xrHemisphere.h" />
+    <ClInclude Include="xrImage_Resampler.h" />
+    <ClInclude Include="xrLevel.h" />
     <ClInclude Include="xrSASH.h" />
+    <ClInclude Include="xrSheduler.h" />
+    <ClInclude Include="xrTheora_Stream.h" />
+    <ClInclude Include="xrTheora_Surface.h" />
+    <ClInclude Include="xrTheora_Surface_mmx.h" />
+    <ClInclude Include="xrXRC.h" />
+    <ClInclude Include="xr_area.h" />
+    <ClInclude Include="xr_collide_defs.h" />
+    <ClInclude Include="xr_collide_form.h" />
+    <ClInclude Include="xr_efflensflare.h" />
+    <ClInclude Include="xr_input.h" />
+    <ClInclude Include="xr_input_xinput.h" />
+    <ClInclude Include="XR_IOConsole.h" />
+    <ClInclude Include="xr_ioc_cmd.h" />
+    <ClInclude Include="xr_object.h" />
+    <ClInclude Include="xr_object_list.h" />
+    <ClInclude Include="x_ray.h" />
+    <ClInclude Include="_d3d_extensions.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="defines.cpp" />
-    <ClCompile Include="stdafx.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug_Dedicated|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Mixed_Dedicated|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Dedicated|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="x_ray.cpp" />
-    <ClCompile Include="IInputReceiver.cpp" />
-    <ClCompile Include="Xr_input.cpp" />
-    <ClCompile Include="xr_input_xinput.cpp" />
-    <ClCompile Include="ISheduled.cpp" />
-    <ClCompile Include="xrSheduler.cpp" />
-    <ClCompile Include="IRenderable.cpp" />
-    <ClCompile Include="Render.cpp" />
-    <ClCompile Include="ISpatial.cpp">
-      <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Mixed_Dedicated|Win32'">AssemblyAndSourceCode</AssemblerOutput>
-      <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">AssemblyAndSourceCode</AssemblerOutput>
-    </ClCompile>
-    <ClCompile Include="ISpatial_q_box.cpp" />
-    <ClCompile Include="ISpatial_q_frustum.cpp" />
-    <ClCompile Include="ISpatial_q_ray.cpp">
-      <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Mixed_Dedicated|Win32'">AssemblyAndSourceCode</AssemblerOutput>
-      <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">AssemblyAndSourceCode</AssemblerOutput>
-    </ClCompile>
-    <ClCompile Include="ISpatial_verify.cpp" />
-    <ClCompile Include="ICollidable.cpp" />
-    <ClCompile Include="phdebug.cpp" />
-    <ClCompile Include="IGame_Level.cpp" />
-    <ClCompile Include="IGame_Level_check_textures.cpp" />
-    <ClCompile Include="IGame_Persistent.cpp" />
-    <ClCompile Include="IGame_ObjectPool.cpp" />
-    <ClCompile Include="pure_relcase.cpp" />
-    <ClCompile Include="xr_object.cpp" />
-    <ClCompile Include="xr_object_list.cpp" />
-    <ClCompile Include="CustomHUD.cpp" />
-    <ClCompile Include="Environment.cpp" />
-    <ClCompile Include="Environment_misc.cpp" />
-    <ClCompile Include="Environment_render.cpp" />
-    <ClCompile Include="xrHemisphere.cpp" />
-    <ClCompile Include="Rain.cpp" />
-    <ClCompile Include="thunderbolt.cpp" />
-    <ClCompile Include="xr_efflensflare.cpp" />
-    <ClCompile Include="CameraBase.cpp" />
-    <ClCompile Include="CameraManager.cpp" />
-    <ClCompile Include="Effector.cpp" />
-    <ClCompile Include="EffectorPP.cpp" />
-    <ClCompile Include="cf_dynamic_mesh.cpp" />
-    <ClCompile Include="xr_area.cpp" />
-    <ClCompile Include="xr_area_query.cpp" />
-    <ClCompile Include="xr_area_raypick.cpp" />
-    <ClCompile Include="xr_collide_form.cpp" />
-    <ClCompile Include="bone.cpp" />
-    <ClCompile Include="Envelope.cpp" />
-    <ClCompile Include="interp.cpp" />
-    <ClCompile Include="motion.cpp" />
-    <ClCompile Include="ObjectAnimator.cpp" />
-    <ClCompile Include="Feel_Touch.cpp" />
-    <ClCompile Include="Feel_Vision.cpp" />
-    <ClCompile Include="FDemoPlay.cpp" />
-    <ClCompile Include="FDemoRecord.cpp" />
-    <ClCompile Include="GameMtlLib.cpp" />
-    <ClCompile Include="GameMtlLib_Engine.cpp" />
-    <ClCompile Include="Frustum.cpp">
-      <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Mixed_Dedicated|Win32'">AssemblyAndSourceCode</AssemblerOutput>
-      <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">AssemblyAndSourceCode</AssemblerOutput>
-    </ClCompile>
-    <ClCompile Include="PS_instance.cpp" />
-    <ClCompile Include="LightAnimLibrary.cpp" />
-    <ClCompile Include="GameFont.cpp" />
-    <ClCompile Include="MbHelpers.cpp" />
-    <ClCompile Include="tntQAVI.cpp" />
-    <ClCompile Include="xrImage_Resampler.cpp" />
-    <ClCompile Include="xrTheora_Stream.cpp" />
-    <ClCompile Include="xrTheora_Surface.cpp" />
-    <ClCompile Include="xrTheora_Surface_mmx.cpp" />
-    <ClCompile Include="Text_Console.cpp" />
-    <ClCompile Include="Text_Console_WndProc.cpp" />
-    <ClCompile Include="pure.cpp" />
-    <ClCompile Include="xrXRC.cpp" />
-    <ClCompile Include="XR_IOConsole.cpp" />
-    <ClCompile Include="XR_IOConsole_callback.cpp" />
-    <ClCompile Include="XR_IOConsole_get.cpp" />
-    <ClCompile Include="xr_ioc_cmd.cpp" />
-    <ClCompile Include="Engine.cpp" />
-    <ClCompile Include="EngineAPI.cpp" />
-    <ClCompile Include="EventAPI.cpp" />
-    <ClCompile Include="mailSlot.cpp" />
-    <ClCompile Include="_scripting.cpp" />
     <ClCompile Include="ai_script_lua_debug.cpp" />
     <ClCompile Include="ai_script_lua_extension.cpp" />
-    <ClCompile Include="perlin.cpp" />
-    <ClCompile Include="line_editor.cpp" />
-    <ClCompile Include="line_edit_control.cpp" />
-    <ClCompile Include="edit_actions.cpp" />
+    <ClCompile Include="bone.cpp" />
+    <ClCompile Include="CameraBase.cpp" />
+    <ClCompile Include="CameraManager.cpp" />
+    <ClCompile Include="cf_dynamic_mesh.cpp" />
+    <ClCompile Include="CustomHUD.cpp" />
+    <ClCompile Include="defines.cpp" />
     <ClCompile Include="device.cpp" />
     <ClCompile Include="Device_create.cpp" />
     <ClCompile Include="Device_destroy.cpp" />
@@ -711,10 +586,6 @@
     <ClCompile Include="Device_Misc.cpp" />
     <ClCompile Include="Device_overdraw.cpp" />
     <ClCompile Include="Device_wndproc.cpp" />
-    <ClCompile Include="StatGraph.cpp" />
-    <ClCompile Include="Stats.cpp" />
-    <ClCompile Include="fmesh.cpp" />
-    <ClCompile Include="SkeletonMotions.cpp" />
     <ClCompile Include="doug_lea_memory_allocator.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug_Dedicated|Win32'">
       </PrecompiledHeader>
@@ -735,19 +606,14 @@
       </PrecompiledHeader>
       <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4127; 4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
-    <ClCompile Include="engine_impl.cpp" />
-    <ClCompile Include="editor_environment_suns_manager.cpp" />
-    <ClCompile Include="editor_environment_suns_sun.cpp" />
-    <ClCompile Include="editor_environment_suns_gradient.cpp" />
-    <ClCompile Include="editor_environment_suns_blend.cpp" />
-    <ClCompile Include="editor_environment_suns_flares.cpp" />
-    <ClCompile Include="editor_environment_suns_flare.cpp" />
-    <ClCompile Include="editor_environment_levels_manager.cpp" />
-    <ClCompile Include="editor_environment_effects_manager.cpp" />
+    <ClCompile Include="editor_environment_ambients_ambient.cpp" />
+    <ClCompile Include="editor_environment_ambients_effect_id.cpp" />
+    <ClCompile Include="editor_environment_ambients_manager.cpp" />
+    <ClCompile Include="editor_environment_ambients_sound_id.cpp" />
+    <ClCompile Include="editor_environment_detail.cpp" />
     <ClCompile Include="editor_environment_effects_effect.cpp" />
-    <ClCompile Include="editor_environment_sound_channels_manager.cpp" />
-    <ClCompile Include="editor_environment_sound_channels_channel.cpp" />
-    <ClCompile Include="editor_environment_sound_channels_source.cpp" />
+    <ClCompile Include="editor_environment_effects_manager.cpp" />
+    <ClCompile Include="editor_environment_levels_manager.cpp" />
     <ClCompile Include="editor_environment_manager.cpp" />
     <ClCompile Include="editor_environment_manager_properties.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_Dedicated|Win32'">true</ExcludedFromBuild>
@@ -757,31 +623,131 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_Dedicated|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="editor_environment_ambients_manager.cpp" />
-    <ClCompile Include="editor_environment_ambients_ambient.cpp" />
-    <ClCompile Include="editor_environment_ambients_effect_id.cpp" />
-    <ClCompile Include="editor_environment_ambients_sound_id.cpp" />
+    <ClCompile Include="editor_environment_sound_channels_channel.cpp" />
+    <ClCompile Include="editor_environment_sound_channels_manager.cpp" />
+    <ClCompile Include="editor_environment_sound_channels_source.cpp" />
+    <ClCompile Include="editor_environment_suns_blend.cpp" />
+    <ClCompile Include="editor_environment_suns_flare.cpp" />
+    <ClCompile Include="editor_environment_suns_flares.cpp" />
+    <ClCompile Include="editor_environment_suns_gradient.cpp" />
+    <ClCompile Include="editor_environment_suns_manager.cpp" />
+    <ClCompile Include="editor_environment_suns_sun.cpp" />
+    <ClCompile Include="editor_environment_thunderbolts_collection.cpp" />
+    <ClCompile Include="editor_environment_thunderbolts_gradient.cpp" />
     <ClCompile Include="editor_environment_thunderbolts_manager.cpp" />
     <ClCompile Include="editor_environment_thunderbolts_thunderbolt.cpp" />
-    <ClCompile Include="editor_environment_thunderbolts_gradient.cpp" />
     <ClCompile Include="editor_environment_thunderbolts_thunderbolt_id.cpp" />
-    <ClCompile Include="editor_environment_thunderbolts_collection.cpp" />
     <ClCompile Include="editor_environment_weathers_manager.cpp" />
-    <ClCompile Include="editor_environment_weathers_weather.cpp" />
     <ClCompile Include="editor_environment_weathers_time.cpp" />
-    <ClCompile Include="editor_environment_detail.cpp" />
+    <ClCompile Include="editor_environment_weathers_weather.cpp" />
+    <ClCompile Include="edit_actions.cpp" />
+    <ClCompile Include="Effector.cpp" />
+    <ClCompile Include="EffectorPP.cpp" />
+    <ClCompile Include="Engine.cpp" />
+    <ClCompile Include="EngineAPI.cpp" />
+    <ClCompile Include="engine_impl.cpp" />
+    <ClCompile Include="Envelope.cpp" />
+    <ClCompile Include="Environment.cpp" />
+    <ClCompile Include="Environment_misc.cpp" />
+    <ClCompile Include="Environment_render.cpp" />
+    <ClCompile Include="EventAPI.cpp" />
+    <ClCompile Include="FDemoPlay.cpp" />
+    <ClCompile Include="FDemoRecord.cpp" />
+    <ClCompile Include="Feel_Touch.cpp" />
+    <ClCompile Include="Feel_Vision.cpp" />
+    <ClCompile Include="fmesh.cpp" />
+    <ClCompile Include="Frustum.cpp">
+      <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Mixed_Dedicated|Win32'">AssemblyAndSourceCode</AssemblerOutput>
+      <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">AssemblyAndSourceCode</AssemblerOutput>
+    </ClCompile>
+    <ClCompile Include="GameFont.cpp" />
+    <ClCompile Include="GameMtlLib.cpp" />
+    <ClCompile Include="GameMtlLib_Engine.cpp" />
+    <ClCompile Include="ICollidable.cpp" />
+    <ClCompile Include="IGame_Level.cpp" />
+    <ClCompile Include="IGame_Level_check_textures.cpp" />
+    <ClCompile Include="IGame_ObjectPool.cpp" />
+    <ClCompile Include="IGame_Persistent.cpp" />
+    <ClCompile Include="IInputReceiver.cpp" />
+    <ClCompile Include="interp.cpp" />
+    <ClCompile Include="IRenderable.cpp" />
+    <ClCompile Include="ISheduled.cpp" />
+    <ClCompile Include="ISpatial.cpp">
+      <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Mixed_Dedicated|Win32'">AssemblyAndSourceCode</AssemblerOutput>
+      <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">AssemblyAndSourceCode</AssemblerOutput>
+    </ClCompile>
+    <ClCompile Include="ISpatial_q_box.cpp" />
+    <ClCompile Include="ISpatial_q_frustum.cpp" />
+    <ClCompile Include="ISpatial_q_ray.cpp">
+      <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Mixed_Dedicated|Win32'">AssemblyAndSourceCode</AssemblerOutput>
+      <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">AssemblyAndSourceCode</AssemblerOutput>
+    </ClCompile>
+    <ClCompile Include="ISpatial_verify.cpp" />
+    <ClCompile Include="LightAnimLibrary.cpp" />
+    <ClCompile Include="line_editor.cpp" />
+    <ClCompile Include="line_edit_control.cpp" />
+    <ClCompile Include="mailSlot.cpp" />
+    <ClCompile Include="MbHelpers.cpp" />
+    <ClCompile Include="motion.cpp" />
+    <ClCompile Include="ObjectAnimator.cpp" />
+    <ClCompile Include="perlin.cpp" />
+    <ClCompile Include="phdebug.cpp" />
+    <ClCompile Include="PS_instance.cpp" />
+    <ClCompile Include="pure.cpp" />
+    <ClCompile Include="pure_relcase.cpp" />
+    <ClCompile Include="Rain.cpp" />
+    <ClCompile Include="Render.cpp" />
+    <ClCompile Include="SkeletonMotions.cpp" />
+    <ClCompile Include="StatGraph.cpp" />
+    <ClCompile Include="Stats.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug_Dedicated|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Mixed_Dedicated|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Dedicated|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Text_Console.cpp" />
+    <ClCompile Include="Text_Console_WndProc.cpp" />
+    <ClCompile Include="thunderbolt.cpp" />
+    <ClCompile Include="tntQAVI.cpp" />
+    <ClCompile Include="xrHemisphere.cpp" />
+    <ClCompile Include="xrImage_Resampler.cpp" />
     <ClCompile Include="xrSASH.cpp" />
+    <ClCompile Include="xrSheduler.cpp" />
+    <ClCompile Include="xrTheora_Stream.cpp" />
+    <ClCompile Include="xrTheora_Surface.cpp" />
+    <ClCompile Include="xrTheora_Surface_mmx.cpp" />
+    <ClCompile Include="xrXRC.cpp" />
+    <ClCompile Include="xr_area.cpp" />
+    <ClCompile Include="xr_area_query.cpp" />
+    <ClCompile Include="xr_area_raypick.cpp" />
+    <ClCompile Include="xr_collide_form.cpp" />
+    <ClCompile Include="xr_efflensflare.cpp" />
+    <ClCompile Include="Xr_input.cpp" />
+    <ClCompile Include="xr_input_xinput.cpp" />
+    <ClCompile Include="XR_IOConsole.cpp" />
+    <ClCompile Include="XR_IOConsole_callback.cpp" />
+    <ClCompile Include="XR_IOConsole_get.cpp" />
+    <ClCompile Include="xr_ioc_cmd.cpp" />
+    <ClCompile Include="xr_object.cpp" />
+    <ClCompile Include="xr_object_list.cpp" />
+    <ClCompile Include="x_ray.cpp" />
+    <ClCompile Include="_scripting.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="splash_xrcs_en.bmp" />
-    <None Include="stalker_cs.ico" />
-    <None Include="ClientServer.txt" />
-    <None Include="Effects description.txt" />
-    <None Include="features.txt" />
-    <None Include="TODO.txt" />
+    <Image Include="splash_xrcs_en.bmp" />
+    <Image Include="stalker_cs.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ClientServer.txt" />
+    <Text Include="Effects description.txt" />
+    <Text Include="features.txt" />
+    <Text Include="TODO.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\3rd party\luabind\luabind.beta7-devel.rc4.vcxproj">

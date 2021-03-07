@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -17,11 +17,13 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -38,21 +40,17 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\..\binaries_plugs\$(Configuration)\$(ProjectName)\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\..\intermediate_plugs\$(Configuration)\$(ProjectName)\</IntDir>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\..\binaries_plugs\$(Configuration)\$(ProjectName)\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\..\intermediate_plugs\$(Configuration)\$(ProjectName)\</IntDir>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">X:\sdk\dxsdk_mar2008\Lib\x86;$(LibraryPath)</LibraryPath>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">X:\sdk\dxsdk_mar2008\Lib\x86;$(LibraryPath)</LibraryPath>
+    <_ProjectFileVersion>12.0.30501.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>..\..\..\..\binaries_plugs\$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir>..\..\..\..\intermediate_plugs\$(Configuration)\$(ProjectName)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>..\..\..\..\binaries_plugs\$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir>..\..\..\..\intermediate_plugs\$(Configuration)\$(ProjectName)\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Midl>
@@ -67,8 +65,7 @@
       <AdditionalIncludeDirectories>../../../sdk/3d_sdk/lw/ver-8.0/include; ../../../sdk/3d_sdk/lw/ver-8.0/include/lwsdk; ../Shared;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NDEBUG;_X86_;_WIN32;WIN32;_WINDOWS;_USRDLL;_LW_PLUGIN;_LW_EXPORT;XRCORE_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
-      <ExceptionHandling>
-      </ExceptionHandling>
+      <ExceptionHandling />
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <FloatingPointModel>Fast</FloatingPointModel>
@@ -95,8 +92,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>Server/$(Configuration)/; ../../../../Libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>Server\serv.def</ModuleDefinitionFile>
-      <ProgramDatabaseFile>
-      </ProgramDatabaseFile>
+      <ProgramDatabaseFile />
       <ImportLibrary>..\..\..\..\intermediate_plugs\$(Configuration)\$(ProjectName).lib</ImportLibrary>
     </Link>
   </ItemDefinitionGroup>
@@ -126,8 +122,7 @@
       <ObjectFileName>..\..\..\..\intermediate_plugs\$(Configuration)\$(ProjectName)\</ObjectFileName>
       <ProgramDataBaseFileName>..\..\..\..\intermediate_plugs\$(Configuration)\$(ProjectName)\</ProgramDataBaseFileName>
       <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
-      <BrowseInformation>
-      </BrowseInformation>
+      <BrowseInformation />
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
@@ -150,17 +145,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Export\stdafx.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Shared\bone.cpp" />
-    <ClCompile Include="..\Shared\Envelope.cpp">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
-      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
-    </ClCompile>
-    <ClCompile Include="..\Shared\interp.cpp" />
-    <ClCompile Include="..\Shared\motion.cpp" />
     <ClCompile Include="..\..\editors\ECore\Editor\EditMesh.cpp">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
       <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
@@ -193,33 +177,6 @@
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
       <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
     </ClCompile>
-    <ClCompile Include="Server\servmain.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </PrecompiledHeader>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename).obj</ObjectFileName>
-      <GenerateXMLDocumentationFiles Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</GenerateXMLDocumentationFiles>
-      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename).xdc</XMLDocumentationFileName>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </PrecompiledHeader>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\..\intermediate_plugs\$(Configuration)\$(ProjectName)</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="Export\bone_lw.cpp" />
-    <ClCompile Include="Export\envtest.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </PrecompiledHeader>
-      <GenerateXMLDocumentationFiles Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</GenerateXMLDocumentationFiles>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="Export\LW_export_keys.cpp" />
-    <ClCompile Include="Export\LW_export_motion.cpp" />
-    <ClCompile Include="Export\LW_export_object.cpp" />
-    <ClCompile Include="Export\motion_lw.cpp" />
-    <ClCompile Include="Export\scenscan\objectdb.cpp" />
-    <ClCompile Include="Export\scenscan\ptsearch.cpp" />
-    <ClCompile Include="Export\scenscan\surface.cpp" />
-    <ClCompile Include="Export\scenscan\vecmat.cpp" />
-    <ClCompile Include="Export\scenscan\vmap.cpp" />
     <ClCompile Include="..\..\utils\LWO\clip.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
@@ -314,35 +271,65 @@
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
       <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
     </ClCompile>
+    <ClCompile Include="..\Shared\bone.cpp" />
+    <ClCompile Include="..\Shared\Envelope.cpp">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
+    </ClCompile>
+    <ClCompile Include="..\Shared\interp.cpp" />
+    <ClCompile Include="..\Shared\motion.cpp" />
+    <ClCompile Include="Export\bone_lw.cpp" />
+    <ClCompile Include="Export\envtest.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </PrecompiledHeader>
+      <GenerateXMLDocumentationFiles Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</GenerateXMLDocumentationFiles>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Export\LW_export_keys.cpp" />
+    <ClCompile Include="Export\LW_export_motion.cpp" />
+    <ClCompile Include="Export\LW_export_object.cpp" />
+    <ClCompile Include="Export\motion_lw.cpp" />
+    <ClCompile Include="Export\scenscan\objectdb.cpp" />
+    <ClCompile Include="Export\scenscan\ptsearch.cpp" />
+    <ClCompile Include="Export\scenscan\surface.cpp" />
+    <ClCompile Include="Export\scenscan\vecmat.cpp" />
+    <ClCompile Include="Export\scenscan\vmap.cpp" />
+    <ClCompile Include="Export\stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Server\servmain.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </PrecompiledHeader>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename).obj</ObjectFileName>
+      <GenerateXMLDocumentationFiles Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</GenerateXMLDocumentationFiles>
+      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename).xdc</XMLDocumentationFileName>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\..\intermediate_plugs\$(Configuration)\$(ProjectName)</ObjectFileName>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Export\stdafx.h" />
-    <ClInclude Include="..\Shared\bone.h" />
-    <ClInclude Include="..\Shared\envelope.h" />
-    <ClInclude Include="..\Shared\motion.h" />
     <ClInclude Include="..\..\editors\ECore\Editor\EditMesh.h" />
     <ClInclude Include="..\..\editors\ECore\Editor\EditObject.h" />
     <ClInclude Include="..\..\editors\ECore\Editor\ELog.h" />
+    <ClInclude Include="..\..\utils\LWO\envelope.h" />
+    <ClInclude Include="..\..\utils\LWO\lwo2.h" />
+    <ClInclude Include="..\..\utils\LWO\StdAfx.h" />
+    <ClInclude Include="..\Shared\bone.h" />
+    <ClInclude Include="..\Shared\envelope.h" />
+    <ClInclude Include="..\Shared\motion.h" />
     <ClInclude Include="Export\lwo2.h" />
     <ClInclude Include="Export\resource.h" />
     <ClInclude Include="Export\scenscan\objectdb.h" />
     <ClInclude Include="Export\scenscan\scenscan.h" />
     <ClInclude Include="Export\scenscan\vecmat.h" />
-    <ClInclude Include="..\..\utils\LWO\envelope.h" />
-    <ClInclude Include="..\..\utils\LWO\lwo2.h" />
-    <ClInclude Include="..\..\utils\LWO\StdAfx.h" />
+    <ClInclude Include="Export\stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\utils\LWO\LWO.vcxproj">
       <Project>{a6ebbbbb-5fef-4c20-8460-dfab11734ded}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-    <ProjectReference Include="..\..\xrCore\xrCoreStatic.vcxproj">
-      <Project>{f1066eac-ee25-4c7a-9023-5957a6f7ba27}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-    <ProjectReference Include="LW_Server.vcxproj">
-      <Project>{6ba3121a-acbc-4685-9246-4549ca1efffd}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>

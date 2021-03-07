@@ -2,242 +2,242 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Compiler">
-      <UniqueIdentifier>{0136eb77-c4d1-425f-b33f-4f421eb4e0cc}</UniqueIdentifier>
+      <UniqueIdentifier>{3eaa1d1d-ff74-449d-b66d-703cacd7c7ed}</UniqueIdentifier>
     </Filter>
     <Filter Include="Compiler\quad_tree">
-      <UniqueIdentifier>{7905faae-615a-4bde-970f-bc485f6e80c4}</UniqueIdentifier>
+      <UniqueIdentifier>{0e764a3f-2925-4957-b253-1c8e227356cd}</UniqueIdentifier>
     </Filter>
     <Filter Include="Compiler\cover_point">
-      <UniqueIdentifier>{b1d2d2f4-9f7c-467f-9b19-477b487e7add}</UniqueIdentifier>
+      <UniqueIdentifier>{fadc8039-aedc-45be-bda5-9fe5698607b2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Compiler\Kernel">
-      <UniqueIdentifier>{e6c5b5c7-5c97-4a92-b7d5-2a4a50aefec3}</UniqueIdentifier>
+      <UniqueIdentifier>{413390a7-3e4a-4a14-8ef4-2c9d6945301d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Compiler\Kernel\Resource Files">
-      <UniqueIdentifier>{8e5b26ac-dcff-42d9-9939-8ab952e7e2df}</UniqueIdentifier>
+      <UniqueIdentifier>{ed2574d3-fdeb-4fe7-9cae-9487b3ebdf42}</UniqueIdentifier>
       <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
     </Filter>
     <Filter Include="Compiler\Kernel\Log">
-      <UniqueIdentifier>{3e4b572b-76b9-4c24-96f5-c9fa4ddafaa3}</UniqueIdentifier>
+      <UniqueIdentifier>{f8817705-89be-47bf-a18a-14a384c54b9b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Compiler\Kernel\Generic">
-      <UniqueIdentifier>{d307e1c3-0d00-4ac2-8220-8baf6aabd532}</UniqueIdentifier>
+      <UniqueIdentifier>{925faad9-6bd9-4f32-a1ff-a86b1a4ca3df}</UniqueIdentifier>
     </Filter>
     <Filter Include="Compiler\Kernel\Generic\CDB">
-      <UniqueIdentifier>{5dba5430-4a87-4771-86ad-3d5422371902}</UniqueIdentifier>
+      <UniqueIdentifier>{9a3d7dc6-aa2d-4cd5-8cc4-2db9096a819d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Compiler\Kernel\Random32">
-      <UniqueIdentifier>{ff21c63c-ea40-472e-8c9d-45119a83e4c9}</UniqueIdentifier>
+      <UniqueIdentifier>{34be2567-6750-4685-8538-a8c4781f7545}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife">
-      <UniqueIdentifier>{e009b909-0ca8-45b8-9b5d-d23cc2133e7f}</UniqueIdentifier>
+      <UniqueIdentifier>{987cfac4-0560-4f57-ad8c-49c6c23eee45}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\search">
-      <UniqueIdentifier>{2e0fdc7a-d686-42be-8e65-5d2fb4c99fc0}</UniqueIdentifier>
+      <UniqueIdentifier>{4662e799-3a6d-4baf-b131-dc39d670da04}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\search\path_managers">
-      <UniqueIdentifier>{e9655ce9-0aab-48df-babc-42b88b3c5aae}</UniqueIdentifier>
+      <UniqueIdentifier>{4ac52eb6-fd74-4199-8b2f-67cd51087d16}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\search\path_managers\path_manager_game">
-      <UniqueIdentifier>{4686df62-b506-4f94-857a-02fabcce4371}</UniqueIdentifier>
+      <UniqueIdentifier>{8b55c6dd-a3c6-41c0-a2f6-20fe87480c71}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\search\path_managers\path_manager_game\path_manager_game_vertex_type">
-      <UniqueIdentifier>{8c6c1489-4697-4a05-b8c1-d052e90c9ee4}</UniqueIdentifier>
+      <UniqueIdentifier>{70de1bdf-96ab-4122-8ca1-84e768583a9b}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\search\path_managers\path_manager_game\path_manager_game_level">
-      <UniqueIdentifier>{6255d652-235c-4d68-af30-aa994221f103}</UniqueIdentifier>
+      <UniqueIdentifier>{e61daa09-1d84-4595-90c8-39510ebc653c}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\search\path_managers\path_manager_generic">
-      <UniqueIdentifier>{c32a70b2-b70c-45fc-9e3f-63777a6a99c5}</UniqueIdentifier>
+      <UniqueIdentifier>{b2f757f4-c788-4474-87ef-52b8f80091c6}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\search\path_managers\path_manager_level">
-      <UniqueIdentifier>{6b626624-3840-4d50-8179-5abedb14eeb5}</UniqueIdentifier>
+      <UniqueIdentifier>{67ef4ff1-a9e1-47c3-bfb3-705a89c943bf}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\search\path_managers\path_manager_level\path_manager_level_evaluator">
-      <UniqueIdentifier>{13a12929-54d7-4c5a-9c36-859fcbc0460e}</UniqueIdentifier>
+      <UniqueIdentifier>{33cc1dfa-9274-493d-97d6-c224b6b9f3eb}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\search\path_managers\path_manager_level\path_manager_level_flooder">
-      <UniqueIdentifier>{ced24798-eb47-4983-b51b-dff4b59f7151}</UniqueIdentifier>
+      <UniqueIdentifier>{2cc58202-9b82-49af-aed4-8b8fd408b3cf}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\search\path_managers\path_manager_level\path_manager_level_straight_line">
-      <UniqueIdentifier>{97be4d84-6b33-4d46-ab52-aa6a6a35f80f}</UniqueIdentifier>
+      <UniqueIdentifier>{8e04dc53-93b7-47f3-8282-189530b0c0ab}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\search\path_managers\path_manager_params">
-      <UniqueIdentifier>{59c1169f-5229-4540-8f04-1d07c55f3fae}</UniqueIdentifier>
+      <UniqueIdentifier>{3c614663-1536-4f48-9abc-f9599e2b7b26}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\search\algorithms">
-      <UniqueIdentifier>{fafc9b15-295b-4950-a52d-4c87a2bf460c}</UniqueIdentifier>
+      <UniqueIdentifier>{449e13b5-881e-44ca-9f5b-d6cf32e1ea34}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\search\algorithms\A%2a">
-      <UniqueIdentifier>{31c7ad6c-58e8-45eb-8230-fe3918145cb0}</UniqueIdentifier>
+      <UniqueIdentifier>{bc64a19e-073d-4640-a721-cd5b2fc107f2}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\search\algorithms\Dijkstra">
-      <UniqueIdentifier>{2437ad79-c6bb-44f3-9a74-31402b8bb309}</UniqueIdentifier>
+      <UniqueIdentifier>{88d08274-076b-4302-9df2-5553582b5e08}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\search\data_storages">
-      <UniqueIdentifier>{e74a1426-5ee7-45c1-86ce-85c552bf816a}</UniqueIdentifier>
+      <UniqueIdentifier>{6258a147-2988-4b99-80b3-f6bcd3037137}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\search\data_storages\algorithms">
-      <UniqueIdentifier>{3812bece-8a2a-4d26-99ef-340eae77eade}</UniqueIdentifier>
+      <UniqueIdentifier>{5149c575-32c5-43fe-85e8-82988d7fa6f7}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\search\data_storages\algorithms\priority_queues">
-      <UniqueIdentifier>{7f4e257d-bbf8-4950-852d-af4fd09e4556}</UniqueIdentifier>
+      <UniqueIdentifier>{1487096f-4a06-427e-b4f5-9451361947e4}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\search\data_storages\algorithms\priority_queues\binary_heap">
-      <UniqueIdentifier>{8665d94f-bc44-48d2-a4be-53483f18ec75}</UniqueIdentifier>
+      <UniqueIdentifier>{ad560cdc-2f8d-4411-9c71-5cdc87766d1a}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\search\data_storages\algorithms\lists">
-      <UniqueIdentifier>{f86fc503-cd4f-49be-8581-92e034e35b7b}</UniqueIdentifier>
+      <UniqueIdentifier>{d13e394f-98a5-4bba-946c-2aaf6e47541f}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\search\data_storages\algorithms\lists\bucket_list">
-      <UniqueIdentifier>{cb867713-64ac-4655-987f-8736282ff8e1}</UniqueIdentifier>
+      <UniqueIdentifier>{c0b97da0-fdd0-4152-9bcf-c12b3a5372a5}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\search\data_storages\algorithms\lists\double_linked_list">
-      <UniqueIdentifier>{fba31e4b-20f0-485a-9465-d0f72d56c233}</UniqueIdentifier>
+      <UniqueIdentifier>{67a6edb1-428f-42d5-a2e1-0b0b0baab48f}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\search\data_storages\algorithms\lists\single_linked_list">
-      <UniqueIdentifier>{81886a7b-9401-40f0-a382-ca909993a787}</UniqueIdentifier>
+      <UniqueIdentifier>{a5c6a5da-36c2-47b4-aca5-aba1fd65085b}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\search\data_storages\data_storage_constructors">
-      <UniqueIdentifier>{085c918a-1f84-4e50-831d-fa5df4cd84d6}</UniqueIdentifier>
+      <UniqueIdentifier>{46b94b09-7fd9-45fa-ad61-a76f97d43823}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\search\data_storages\data_storage_constructors\builder_allocator">
-      <UniqueIdentifier>{a4a83a66-cfdf-4448-ac97-e2ec60965383}</UniqueIdentifier>
+      <UniqueIdentifier>{26cd73e5-6cfa-4ee2-a78e-acfb6a0c739a}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\search\data_storages\data_storage_constructors\manager_builder_allocator">
-      <UniqueIdentifier>{77be8b40-7d9d-44ca-b533-1a1e3f8efcb2}</UniqueIdentifier>
+      <UniqueIdentifier>{60dcf313-c3fd-46ac-b999-3ca389e216d2}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\search\data_storages\path_builders">
-      <UniqueIdentifier>{f91aff8c-7cf1-43ef-a0fe-c8fc0885dc07}</UniqueIdentifier>
+      <UniqueIdentifier>{75137fcb-541f-4eef-a065-1711f2295651}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\search\data_storages\path_builders\edge_path">
-      <UniqueIdentifier>{713be7f4-aa62-46f6-89a9-b69dcc9e246e}</UniqueIdentifier>
+      <UniqueIdentifier>{639d4123-df5e-4ef1-b370-51fd8fc22b7f}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\search\data_storages\path_builders\vertex_path">
-      <UniqueIdentifier>{2726258c-f878-4f96-8ad8-c6cd68e84756}</UniqueIdentifier>
+      <UniqueIdentifier>{ef452b64-e7e6-4c97-a200-aaac41c228fc}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\search\data_storages\vertex_allocators">
-      <UniqueIdentifier>{fccc905e-529b-414d-bc8f-8a9f0257e2f6}</UniqueIdentifier>
+      <UniqueIdentifier>{a0aedc79-1290-4944-9e63-a2ac34eeec57}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\search\data_storages\vertex_allocators\fixed">
-      <UniqueIdentifier>{074f796f-e5df-4c9d-9000-233236ef3c33}</UniqueIdentifier>
+      <UniqueIdentifier>{8ec34d7d-eb81-4383-a954-2913bc5bed42}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\search\data_storages\vertex_managers">
-      <UniqueIdentifier>{b9263289-946f-47fa-8bfe-b40baed763de}</UniqueIdentifier>
+      <UniqueIdentifier>{c370f935-3739-4090-872a-5919022a54a2}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\search\data_storages\vertex_managers\fixed">
-      <UniqueIdentifier>{fe5aaa31-11fc-4eea-a8e9-894feeda67b5}</UniqueIdentifier>
+      <UniqueIdentifier>{75038581-811f-4085-bbe1-5dfcba74a370}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\search\data_storages\vertex_managers\hash_fixed">
-      <UniqueIdentifier>{dedf9103-e0a6-4d59-8c05-3f1560b6fe0f}</UniqueIdentifier>
+      <UniqueIdentifier>{11b3b444-e4df-4653-9c6a-5ab47e888007}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\search\graphs">
-      <UniqueIdentifier>{a2f462a8-a0ce-4414-9fd0-321e355657b9}</UniqueIdentifier>
+      <UniqueIdentifier>{cc231196-84b8-4a68-bd3c-11906a68245f}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\search\graphs\abstract_graph">
-      <UniqueIdentifier>{5c8fdbe4-6fe5-4994-b537-8efced6f75bf}</UniqueIdentifier>
+      <UniqueIdentifier>{379d9b28-0d09-43a2-9898-b7f204648daf}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\search\graphs\abstract_graph\graph_edge">
-      <UniqueIdentifier>{438ed403-9410-426e-bf5a-1a9ceb421408}</UniqueIdentifier>
+      <UniqueIdentifier>{0db492e7-955e-40a7-afba-87dd5f128574}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\search\graphs\abstract_graph\graph_vertex">
-      <UniqueIdentifier>{1c5d758a-072d-49cb-814d-719648756779}</UniqueIdentifier>
+      <UniqueIdentifier>{9d00c253-62a9-4d84-8af4-2d230c676793}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\search\graphs\cross_table">
-      <UniqueIdentifier>{c8bb43ad-143f-49a4-8f98-27217828a874}</UniqueIdentifier>
+      <UniqueIdentifier>{18015429-6a56-43e9-b4cc-193291e6a45e}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\search\graphs\game_graph">
-      <UniqueIdentifier>{254e72e0-b210-4bee-89b1-7043e597e17f}</UniqueIdentifier>
+      <UniqueIdentifier>{01b6c9b3-4e1c-4df8-a0f7-422f3c31211b}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\search\graphs\level_graph">
-      <UniqueIdentifier>{7a11e76d-fb81-416f-a249-f3e4523235a2}</UniqueIdentifier>
+      <UniqueIdentifier>{70c2beaf-ee40-48be-9a68-2c52d2924e3f}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\search\graph_engine">
-      <UniqueIdentifier>{6d159248-5046-4cb5-8b9f-3f5a1c989aeb}</UniqueIdentifier>
+      <UniqueIdentifier>{b88d9b35-238f-441b-a332-a73513a9d4a4}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\Cross">
-      <UniqueIdentifier>{8f525ee1-d33c-43b9-ac6d-5b2838df845b}</UniqueIdentifier>
+      <UniqueIdentifier>{2b0daac3-5b4e-4b8d-9771-6d549b989562}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\Graph">
-      <UniqueIdentifier>{c8b26331-e0e6-45dd-9a84-e57240f90d13}</UniqueIdentifier>
+      <UniqueIdentifier>{3addf946-826b-4f12-9cb4-78a27b985748}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\Merge">
-      <UniqueIdentifier>{e956932e-e7f2-4fde-a032-864541f75ad7}</UniqueIdentifier>
+      <UniqueIdentifier>{d4b48932-228a-42ed-b996-9ad70c1ebf15}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\Shared">
-      <UniqueIdentifier>{0de28ef5-4ac2-4741-b3f1-42479916c83c}</UniqueIdentifier>
+      <UniqueIdentifier>{3d967f44-7601-40a9-aef3-9dc860bf3f36}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\Shared\ALife">
-      <UniqueIdentifier>{b884c6af-76c6-4a6d-be4f-fadf672277fc}</UniqueIdentifier>
+      <UniqueIdentifier>{6fccacc5-3cf0-432e-bf67-dcc75cc26f55}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\Shared\ALife\alife_artefact_order">
-      <UniqueIdentifier>{91e21c51-6f33-40a8-8fe5-fd19a205004b}</UniqueIdentifier>
+      <UniqueIdentifier>{84d6a11c-abc8-4492-8ac2-df25a2677f82}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\Shared\ALife\alife_human_brain">
-      <UniqueIdentifier>{7fb63171-2651-4e35-9e73-172538091925}</UniqueIdentifier>
+      <UniqueIdentifier>{919d8c3f-2d92-411b-8594-127d44aa550d}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\Shared\ALife\alife_monster_brain">
-      <UniqueIdentifier>{c79233d6-4a6b-4746-ab70-231dcbffedda}</UniqueIdentifier>
+      <UniqueIdentifier>{fec129a6-8a59-4382-ad0d-42694f0ca694}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\Shared\ALife\alife_space">
-      <UniqueIdentifier>{1bf7aa32-8045-42e2-971a-6dd394713c7c}</UniqueIdentifier>
+      <UniqueIdentifier>{6d19ebc2-eafb-4ddf-96ab-1ddb32e7bfcd}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\Shared\ServerEntities">
-      <UniqueIdentifier>{76981f89-5e05-4f7a-8302-d61cbd1614c7}</UniqueIdentifier>
+      <UniqueIdentifier>{81daa242-a49a-42b2-b879-7878a4b04df1}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\Shared\Server">
-      <UniqueIdentifier>{033a05d1-d300-4c08-b8a2-7118e2bbde0d}</UniqueIdentifier>
+      <UniqueIdentifier>{02686f8b-6d9b-446a-9d55-b186e6f7f7f5}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\Shared\ObjectBroker">
-      <UniqueIdentifier>{63bb26eb-e97f-422b-9e8d-b44afc95e9ce}</UniqueIdentifier>
+      <UniqueIdentifier>{1ccd5714-77b8-4f9a-b297-5ebedba575cf}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\Shared\Common">
-      <UniqueIdentifier>{f8c5a0ce-8994-4660-a1dc-8d45dad9abbb}</UniqueIdentifier>
+      <UniqueIdentifier>{115b4749-1a68-4b73-b0cd-5ae9d06655d2}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\Shared\IntrusivePtr">
-      <UniqueIdentifier>{7c9b2230-2999-467a-b287-60aa44f523d7}</UniqueIdentifier>
+      <UniqueIdentifier>{60886524-4d28-4366-abec-b76be30e796d}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\Shared\associative_vector">
-      <UniqueIdentifier>{e4536ef5-9cef-40bd-a43d-f43185cc3277}</UniqueIdentifier>
+      <UniqueIdentifier>{67dff969-cf4d-461a-97e9-feb787c294e1}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\Shared\buffer_vector">
-      <UniqueIdentifier>{157e4091-fc97-4799-927e-5b8c107b2569}</UniqueIdentifier>
+      <UniqueIdentifier>{7cda0a3f-d7c0-4ee1-9826-00b5b5d4f2e8}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\Spawn">
-      <UniqueIdentifier>{acea8965-eff6-471d-b312-ec79502d9a7b}</UniqueIdentifier>
+      <UniqueIdentifier>{4a1447d0-bedc-4174-9a39-993b72104c1c}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\Spawn\game_spawn_constructor">
-      <UniqueIdentifier>{62104072-a7b3-4db7-974a-7e0edd6332dd}</UniqueIdentifier>
+      <UniqueIdentifier>{050aed10-7369-4cb8-a7e1-a49f81d306f4}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\Spawn\level_spawn_constructor">
-      <UniqueIdentifier>{c50fc9cc-a869-4e69-947a-26e2bb5e03c6}</UniqueIdentifier>
+      <UniqueIdentifier>{f9d2be71-07b3-43b0-9e71-248e516e5c19}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\Spawn\level_spawn_constructor\space_restrictor_wrapper">
-      <UniqueIdentifier>{1dc379ad-9594-4942-a363-5cffa61cea2b}</UniqueIdentifier>
+      <UniqueIdentifier>{95d92b46-a3cf-487e-9141-69009e6902a1}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\Spawn\server_entity_wrapper">
-      <UniqueIdentifier>{5d2632a6-3cef-499f-8b13-f649c897913a}</UniqueIdentifier>
+      <UniqueIdentifier>{c36b9792-d40f-4ac2-86ec-7867fc5fbeeb}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\Spawn\patrol_paths">
-      <UniqueIdentifier>{2cd208a2-b55b-4da1-a2dd-fb7042b42932}</UniqueIdentifier>
+      <UniqueIdentifier>{23de6b74-8c1f-49e7-a2b4-0b8d04d5d55d}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\Spawn\patrol_paths\patrol_path">
-      <UniqueIdentifier>{3f0ba5b2-b6f0-491d-87d3-5ddae6bb0d78}</UniqueIdentifier>
+      <UniqueIdentifier>{ca236fa1-088b-4da0-9724-a67abcbf9b0c}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\Spawn\patrol_paths\patrol_path_storage">
-      <UniqueIdentifier>{f205a939-d56e-4707-84a7-ef5a427141ee}</UniqueIdentifier>
+      <UniqueIdentifier>{d504f5a8-9f9d-4428-9cd2-cfab6f1db17f}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\Spawn\patrol_paths\patrol_point">
-      <UniqueIdentifier>{e9d86de5-be24-4d36-8d39-3058024cea5d}</UniqueIdentifier>
+      <UniqueIdentifier>{98929054-be49-4ab2-bd2a-c144b7c7fffe}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\Spawn\spawn_patcher">
-      <UniqueIdentifier>{59bdac8a-a180-4bbd-bba7-1b593c511559}</UniqueIdentifier>
+      <UniqueIdentifier>{84660283-b3e3-47b3-9d10-6560f55b0883}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\Verify">
-      <UniqueIdentifier>{0940320c-a334-4fad-aaf7-be5952bd2880}</UniqueIdentifier>
+      <UniqueIdentifier>{347096bb-5d6f-4b30-8c81-d0f83fdb8110}</UniqueIdentifier>
     </Filter>
     <Filter Include="ALife\guid_generator">
-      <UniqueIdentifier>{860f9ab7-f47a-4773-b0f1-c35f9cca6d61}</UniqueIdentifier>
+      <UniqueIdentifier>{0e5fbdcc-0c65-455e-a892-297a9e8371d9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
