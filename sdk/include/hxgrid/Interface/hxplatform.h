@@ -15,19 +15,17 @@
 
 #else _WINDOWS_ANYWAY
 
-#define _WIN32_WINNT	0x0500
-
 #include <windows.h>
 
 #endif
 
 #ifdef __cplusplus
 
-//count указывает количество элементов типа
+//count СѓРєР°Р·С‹РІР°РµС‚ РєРѕР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ С‚РёРїР°
 template<typename T> 
 void __inline ChangeByteOrder(T* ptr, DWORD count = 1)
 {
- char a[0]; //для такого типа конвертирование не определено
+ char a[0]; //РґР»СЏ С‚Р°РєРѕРіРѕ С‚РёРїР° РєРѕРЅРІРµСЂС‚РёСЂРѕРІР°РЅРёРµ РЅРµ РѕРїСЂРµРґРµР»РµРЅРѕ
 }
 
 template<> 
