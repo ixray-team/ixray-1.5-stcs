@@ -166,6 +166,7 @@
       <SubSystem>Console</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
       <ImportLibrary />
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">
