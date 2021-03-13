@@ -180,6 +180,16 @@
     <ClInclude Include="shader\resource.h" />
     <ClInclude Include="shader\stdafx.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\xrCore\xrCoreStatic.vcxproj">
+      <Project>{f1066eac-ee25-4c7a-9023-5957a6f7ba27}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="LW_Server.vcxproj">
+      <Project>{6ba3121a-acbc-4685-9246-4549ca1efffd}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
