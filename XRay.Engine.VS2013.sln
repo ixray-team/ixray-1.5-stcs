@@ -98,6 +98,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mp_screenshots_info", "src\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mp_configs_verifyer", "src\utils\mp_configs_verifyer\mp_configs_verifyer.vcxproj", "{1924EF23-A05E-40E5-93F2-6CCD64BE1F8B}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrLC_LightStab", "src\utils\xrLC_LightStab\xrLC_LightStab.vcxproj", "{EC924B9B-4991-4931-8623-E1DB9AE005CA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug_Dedicated|Win32 = Debug_Dedicated|Win32
@@ -504,6 +506,18 @@ Global
 		{1924EF23-A05E-40E5-93F2-6CCD64BE1F8B}.Release_Dedicated|Win32.Build.0 = Release|Win32
 		{1924EF23-A05E-40E5-93F2-6CCD64BE1F8B}.Release|Win32.ActiveCfg = Release|Win32
 		{1924EF23-A05E-40E5-93F2-6CCD64BE1F8B}.Release|Win32.Build.0 = Release|Win32
+		{EC924B9B-4991-4931-8623-E1DB9AE005CA}.Debug_Dedicated|Win32.ActiveCfg = Debug|Win32
+		{EC924B9B-4991-4931-8623-E1DB9AE005CA}.Debug_Dedicated|Win32.Build.0 = Debug|Win32
+		{EC924B9B-4991-4931-8623-E1DB9AE005CA}.Debug|Win32.ActiveCfg = Debug|Win32
+		{EC924B9B-4991-4931-8623-E1DB9AE005CA}.Debug|Win32.Build.0 = Debug|Win32
+		{EC924B9B-4991-4931-8623-E1DB9AE005CA}.Mixed_Dedicated|Win32.ActiveCfg = Mixed|Win32
+		{EC924B9B-4991-4931-8623-E1DB9AE005CA}.Mixed_Dedicated|Win32.Build.0 = Mixed|Win32
+		{EC924B9B-4991-4931-8623-E1DB9AE005CA}.Mixed|Win32.ActiveCfg = Mixed|Win32
+		{EC924B9B-4991-4931-8623-E1DB9AE005CA}.Mixed|Win32.Build.0 = Mixed|Win32
+		{EC924B9B-4991-4931-8623-E1DB9AE005CA}.Release_Dedicated|Win32.ActiveCfg = Release|Win32
+		{EC924B9B-4991-4931-8623-E1DB9AE005CA}.Release_Dedicated|Win32.Build.0 = Release|Win32
+		{EC924B9B-4991-4931-8623-E1DB9AE005CA}.Release|Win32.ActiveCfg = Release|Win32
+		{EC924B9B-4991-4931-8623-E1DB9AE005CA}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -539,6 +553,7 @@ Global
 		{FA169092-EA3E-40C1-8E5A-A2B575700FE8} = {2BFC806B-CE92-4EA4-8FE8-5F2EA54BA348}
 		{032A10AB-E44C-4751-A290-001EF99E664A} = {89F6A7EE-3BBE-45D3-A8A8-5D9366CD987B}
 		{1924EF23-A05E-40E5-93F2-6CCD64BE1F8B} = {89F6A7EE-3BBE-45D3-A8A8-5D9366CD987B}
+		{EC924B9B-4991-4931-8623-E1DB9AE005CA} = {89F6A7EE-3BBE-45D3-A8A8-5D9366CD987B}
 	EndGlobalSection
 	GlobalSection(DPCodeReviewSolutionGUID) = preSolution
 		DPCodeReviewSolutionGUID = {00000000-0000-0000-0000-000000000000}
