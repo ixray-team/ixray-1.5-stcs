@@ -2,49 +2,49 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Maya_Export_45", "Maya\Maya_Export45.vcxproj", "{B0ED3CE1-1417-46EF-AE39-59BCFF67268B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Maya_Export_45", "src\plugins\Maya\Maya_Export45.vcxproj", "{B0ED3CE1-1417-46EF-AE39-59BCFF67268B}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Maya_Export_50", "Maya\Maya_Export50.vcxproj", "{B0ED3CE1-1417-46EF-AE39-59BCFF672650}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Maya_Export_50", "src\plugins\Maya\Maya_Export50.vcxproj", "{B0ED3CE1-1417-46EF-AE39-59BCFF672650}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Maya_Export_60", "Maya\Maya_Export601.vcxproj", "{B0ED3CE1-1417-46EF-AE39-59BCFF672660}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Maya_Export_60", "src\plugins\Maya\Maya_Export601.vcxproj", "{B0ED3CE1-1417-46EF-AE39-59BCFF672660}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Maya_Export_70", "Maya\Maya_Export70.vcxproj", "{B0ED3CE1-1417-46EF-AE39-59BCFF672670}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Maya_Export_70", "src\plugins\Maya\Maya_Export70.vcxproj", "{B0ED3CE1-1417-46EF-AE39-59BCFF672670}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Maya_Material_45", "Maya\Maya_Material45.vcxproj", "{B0ED3CE1-1417-46EF-AE39-59BCFF672045}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Maya_Material_45", "src\plugins\Maya\Maya_Material45.vcxproj", "{B0ED3CE1-1417-46EF-AE39-59BCFF672045}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Maya_Material_50", "Maya\Maya_Material50.vcxproj", "{B0ED3CE1-1417-46EF-AE39-59BCFF672050}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Maya_Material_50", "src\plugins\Maya\Maya_Material50.vcxproj", "{B0ED3CE1-1417-46EF-AE39-59BCFF672050}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Maya_Material_60", "Maya\Maya_Material601.vcxproj", "{B0ED3CE1-1417-46EF-AE39-59BCFF672060}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Maya_Material_60", "src\plugins\Maya\Maya_Material601.vcxproj", "{B0ED3CE1-1417-46EF-AE39-59BCFF672060}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Maya_Material_70", "Maya\Maya_Material70.vcxproj", "{B0ED3CE1-1417-46EF-AE39-59BCFF672070}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Maya_Material_70", "src\plugins\Maya\Maya_Material70.vcxproj", "{B0ED3CE1-1417-46EF-AE39-59BCFF672070}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LW_Shader_70", "lw\LW_Shader70.vcxproj", "{39EE310B-4F1D-4716-A39F-4AB844DB3670}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LW_Shader_70", "src\plugins\lw\LW_Shader70.vcxproj", "{39EE310B-4F1D-4716-A39F-4AB844DB3670}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LW_Server", "lw\LW_Server.vcxproj", "{6BA3121A-ACBC-4685-9246-4549CA1EFFFD}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LW_Server", "src\plugins\lw\LW_Server.vcxproj", "{6BA3121A-ACBC-4685-9246-4549CA1EFFFD}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LW_Shader_80", "lw\LW_Shader80.vcxproj", "{39EE310B-4F1D-4716-A39F-4AB844DB3680}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LW_Shader_80", "src\plugins\lw\LW_Shader80.vcxproj", "{39EE310B-4F1D-4716-A39F-4AB844DB3680}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LW_Export_70", "lw\LW_Export70.vcxproj", "{F573DE85-0866-4775-955F-6C3241D2AE70}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LW_Export_70", "src\plugins\lw\LW_Export70.vcxproj", "{F573DE85-0866-4775-955F-6C3241D2AE70}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LW_Export_80", "lw\LW_Export80.vcxproj", "{F573DE85-0866-4775-955F-6C3241D2AE80}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LW_Export_80", "src\plugins\lw\LW_Export80.vcxproj", "{F573DE85-0866-4775-955F-6C3241D2AE80}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LW_Export_75", "lw\LW_Export75.vcxproj", "{F573DE85-0866-4775-955F-6C3241D2AE75}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LW_Export_75", "src\plugins\lw\LW_Export75.vcxproj", "{F573DE85-0866-4775-955F-6C3241D2AE75}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LW_Shader_75", "lw\LW_Shader75.vcxproj", "{39EE310B-4F1D-4716-A39F-4AB844DB3675}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LW_Shader_75", "src\plugins\lw\LW_Shader75.vcxproj", "{39EE310B-4F1D-4716-A39F-4AB844DB3675}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Max_Export_60", "Max\MAX_Export60.vcxproj", "{93AD3B7E-71DE-4FA2-90E7-A79782ED4960}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Max_Export_60", "src\plugins\Max\MAX_Export60.vcxproj", "{93AD3B7E-71DE-4FA2-90E7-A79782ED4960}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Max_Material_60", "Max\MAX_Material60.vcxproj", "{56AD8F54-F89E-4B5A-93F8-8A617BFD1160}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Max_Material_60", "src\plugins\Max\MAX_Material60.vcxproj", "{56AD8F54-F89E-4B5A-93F8-8A617BFD1160}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Maya_Export_80", "Maya\Maya_Export80.vcxproj", "{B0ED3CE2-1417-46EF-AE39-59BCFF672670}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Maya_Export_80", "src\plugins\Maya\Maya_Export80.vcxproj", "{B0ED3CE2-1417-46EF-AE39-59BCFF672670}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Maya_Material_80", "Maya\Maya_Material80.vcxproj", "{B0ED3CE2-1417-46EF-AE39-59BCFF672070}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Maya_Material_80", "src\plugins\Maya\Maya_Material80.vcxproj", "{B0ED3CE2-1417-46EF-AE39-59BCFF672070}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrCoreStatic", "..\xrCore\xrCoreStatic.vcxproj", "{F1066EAC-EE25-4C7A-9023-5957A6F7BA27}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrCoreStatic", "src\xrCore\xrCoreStatic.vcxproj", "{F1066EAC-EE25-4C7A-9023-5957A6F7BA27}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Maya_Export_85", "Maya\Maya_Export85.vcxproj", "{C2A6CB42-D6EC-4045-9452-B73FE1A4FABB}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Maya_Export_85", "src\plugins\Maya\Maya_Export85.vcxproj", "{C2A6CB42-D6EC-4045-9452-B73FE1A4FABB}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Maya_Material_85", "Maya\Maya_Material85.vcxproj", "{F5FE7239-50EB-4AC0-AD32-6374C1A6DD6C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Maya_Material_85", "src\plugins\Maya\Maya_Material85.vcxproj", "{F5FE7239-50EB-4AC0-AD32-6374C1A6DD6C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
