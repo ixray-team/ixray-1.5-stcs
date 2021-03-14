@@ -20,6 +20,7 @@ bool CEditableObject::ExportLWO(LPCSTR fname)
 	F->begin_save();
 		// tags
 		F->open_chunk(ID_TAGS);
+		SurfaceIt s_it;
 			for (SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
 				CSurface* S=*s_it;
 				F->w_stringZ(S->_Name());
