@@ -46,6 +46,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Maya_Export_85", "src\plugi
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Maya_Material_85", "src\plugins\Maya\Maya_Material85.vcxproj", "{F5FE7239-50EB-4AC0-AD32-6374C1A6DD6C}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Maya_Export_2008", "src\plugins\Maya\Maya_Export2008.vcxproj", "{C928FBB1-EDD8-4198-90DC-170A54C2AD72}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Maya_Material_2008", "src\plugins\Maya\Maya_Material2008.vcxproj", "{84D91673-C1A1-47FF-9A75-4E73F31F4C63}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -140,6 +144,14 @@ Global
 		{F5FE7239-50EB-4AC0-AD32-6374C1A6DD6C}.Debug|Win32.Build.0 = Debug|Win32
 		{F5FE7239-50EB-4AC0-AD32-6374C1A6DD6C}.Release|Win32.ActiveCfg = Release|Win32
 		{F5FE7239-50EB-4AC0-AD32-6374C1A6DD6C}.Release|Win32.Build.0 = Release|Win32
+		{C928FBB1-EDD8-4198-90DC-170A54C2AD72}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C928FBB1-EDD8-4198-90DC-170A54C2AD72}.Debug|Win32.Build.0 = Debug|Win32
+		{C928FBB1-EDD8-4198-90DC-170A54C2AD72}.Release|Win32.ActiveCfg = Release|Win32
+		{C928FBB1-EDD8-4198-90DC-170A54C2AD72}.Release|Win32.Build.0 = Release|Win32
+		{84D91673-C1A1-47FF-9A75-4E73F31F4C63}.Debug|Win32.ActiveCfg = Debug|Win32
+		{84D91673-C1A1-47FF-9A75-4E73F31F4C63}.Debug|Win32.Build.0 = Debug|Win32
+		{84D91673-C1A1-47FF-9A75-4E73F31F4C63}.Release|Win32.ActiveCfg = Release|Win32
+		{84D91673-C1A1-47FF-9A75-4E73F31F4C63}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
