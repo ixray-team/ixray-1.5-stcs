@@ -1,6 +1,6 @@
-# X-Ray
+# IX-Ray
 
-Original *X-Ray* 1.5 game engine source codes
+Improved *X-Ray* 1.5 game engine
 
 ## License
 
