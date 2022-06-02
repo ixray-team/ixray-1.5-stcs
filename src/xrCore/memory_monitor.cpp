@@ -33,7 +33,7 @@ STATIC inline FILE *file()
 		string256				file;
 		strconcat				(sizeof(file),file,output_folder,file_name,output_extension);
 
-		m_file					= fopen(file,"wb");
+		fopen_s(&m_file, file, "wb");
 		VERIFY					(m_file);
 		setvbuf					(m_file,buffer,_IOFBF,buffer_size);
 	}

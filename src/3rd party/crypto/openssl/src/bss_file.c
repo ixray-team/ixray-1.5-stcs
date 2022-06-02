@@ -120,8 +120,8 @@ BIO *BIO_new_file(const char *filename, const char *mode)
 	{
 	BIO *ret;
 	FILE *file;
-
-	if ((file=fopen(filename,mode)) == NULL)
+	fopen_s(&file, filename, mode);
+	if (file == NULL)
 		{
 		SYSerr(SYS_F_FOPEN,get_last_sys_error());
 		ERR_add_error_data(5,"fopen('",filename,"','",mode,"')");
