@@ -303,7 +303,7 @@ void CLocatorAPI::LoadArchive(archive& A, LPCSTR entrypoint)
 	{
 
 		shared_str read_path	= A.header->r_string("header","entry_point");
-		if(0==stricmp(read_path.c_str(),"gamedata"))
+		if(0==_stricmp(read_path.c_str(),"gamedata"))
 		{
 			read_path				= "$fs_root$";
 			FS_Path* root			= FS.get_path(read_path.c_str());
@@ -999,11 +999,20 @@ int CLocatorAPI::file_list(FS_FileSet& dest, LPCSTR path, u32 flags, LPCSTR mask
 				}
 				if (!bOK)			continue;
 			}
-			xr_string fn			= entry_begin;
-			// insert file entry
-			if (flags&FS_ClampExt)fn= EFS.ChangeFileExt(fn,"");
-			u32 fl = (entry.vfs!=0xffffffff?FS_File::flVFS:0);
-			dest.insert(FS_File(fn,entry.size_real,entry.modif,fl));
+
+			FS_File file;
+
+			if (flags & FS_ClampExt)
+				file.name			= EFS.ChangeFileExt(entry_begin, "");
+			else
+				file.name			= entry_begin;
+
+			u32 fl = (entry.vfs != 0xffffffff ? FS_File::flVFS : 0);
+			file.size = entry.size_real;
+			file.time_write = entry.modif;
+			file.attrib = fl;
+
+			dest.insert(std::move(file));
 		} else {
 			// folder
 			if ((flags&FS_ListFolders) == 0)	continue;
@@ -1404,7 +1413,7 @@ BOOL CLocatorAPI::dir_delete(LPCSTR path,LPCSTR nm,BOOL remove_files)
 			if ((*end_symbol) !='\\'){
 //		        const char* entry_begin = entry.name+base_len;
 				if (!remove_files) return FALSE;
-		    	unlink		(entry.name);
+		    	_unlink		(entry.name);
 				m_files.erase	(cur_item);
 	        }else{
             	folders.insert(entry);
@@ -1432,7 +1441,7 @@ void CLocatorAPI::file_delete(LPCSTR path, LPCSTR nm)
     const files_it I	= file_find_it(fname);
     if (I!=m_files.end()){
 	    // remove file
-    	unlink			(I->name);
+    	_unlink			(I->name);
 		char* str		= LPSTR(I->name);
 		xr_free			(str);
 	    m_files.erase		(I);
@@ -1461,7 +1470,7 @@ void CLocatorAPI::file_rename(LPCSTR src, LPCSTR dest, bool bOwerwrite)
 		files_it D		= file_find_it(dest);
 		if (D!=m_files.end()){ 
 	        if (!bOwerwrite) return;
-            unlink		(D->name);
+            _unlink		(D->name);
 			char* str	= LPSTR(D->name);
 			xr_free		(str);
 			m_files.erase	(D);
@@ -1618,11 +1627,12 @@ BOOL CLocatorAPI::can_write_to_folder(LPCSTR path)
 		string_path		temp;       
         LPCSTR fn		= "$!#%TEMP%#!$.$$$";
 	    strconcat		(sizeof(temp),temp,path,path[xr_strlen(path)-1]!='\\'?"\\":"",fn);
-		FILE* hf		= fopen	(temp, "wb");
+		FILE* hf;
+		fopen_s(&hf, temp, "wb");
 		if (hf==0)		return FALSE;
         else{
         	fclose 		(hf);
-	    	unlink		(temp);
+	    	_unlink		(temp);
             return 		TRUE;
         }
     }else{
@@ -1639,7 +1649,8 @@ BOOL CLocatorAPI::can_write_to_alias(LPCSTR path)
 
 BOOL CLocatorAPI::can_modify_file(LPCSTR fname)
 {
-	FILE* hf			= fopen	(fname, "r+b");
+	FILE* hf;
+	fopen_s(&hf, fname, "r+b");
     if (hf){	
     	fclose			(hf);
         return 			TRUE;
