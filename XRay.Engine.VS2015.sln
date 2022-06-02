@@ -89,7 +89,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lua.JIT.1.1.4", "src\3rd pa
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrLC_Light", "src\utils\xrLC_Light\xrLC_Light.vcxproj", "{EFB76D6F-0092-439C-A783-C0BE10BD17C9}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CxImage", "src\3rd party\cximage\CxImage\cximage.vcxproj", "{880CD250-BA77-4DAF-A8D4-552F12DD3AE4}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cximage", "src\3rd party\cximage\CxImage\cximage.vcxproj", "{880CD250-BA77-4DAF-A8D4-552F12DD3AE4}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "jpeg", "src\3rd party\cximage\jpeg\Jpeg.vcxproj", "{E6343391-13FC-479E-B62F-1C24F7B85408}"
 EndProject
