@@ -551,7 +551,8 @@ void foo	()
 	typedef void*	pvoid;
 
 	LPCSTR			path = "d:\\network\\stalker_net2";
-	FILE			*f = fopen(path,"rb");
+	FILE *f;
+	fopen_s(&f, path, "rb");
 	int				file_handle = _fileno(f);
 	u32				buffer_size = _filelength(file_handle);
 	pvoid			buffer = xr_malloc(buffer_size);
@@ -564,7 +565,10 @@ void foo	()
 	u32				compressed_size = rtc_compress(compressed_buffer,compressed_buffer_size,buffer,buffer_size);
 
 	LPCSTR			compressed_path = "d:\\network\\stalker_net2.rtc";
-	FILE			*f1 = fopen(compressed_path,"wb");
+
+	FILE *f1;
+	fopen_s(&fl, compressed_path, "wb");
+
 	fwrite			(compressed_buffer,compressed_size,1,f1);
 	fclose			(f1);
 }

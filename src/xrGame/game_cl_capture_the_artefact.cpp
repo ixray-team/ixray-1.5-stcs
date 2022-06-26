@@ -119,9 +119,9 @@ void game_cl_CaptureTheArtefact::shedule_Update(u32 dt)
 		string32	tmp_buf2;
 		//st.translate("demo play active : ").c_str() (need to translate ?)
 		STRCONCAT(demo_play_string, "demo play active : ",
-			itoa( int(Level().GetDemoPlayPos() * 100), tmp_buf1, 10),
+			_itoa( int(Level().GetDemoPlayPos() * 100), tmp_buf1, 10),
 			"%%, play speed: ",
-			itoa( int(Level().GetDemoPlaySpeed()), tmp_buf2, 10),
+			_itoa( int(Level().GetDemoPlaySpeed()), tmp_buf2, 10),
 			"x");
 		m_game_ui->SetDemoPlayCaption(demo_play_string);
 		game_PlayerState* lookat_player = Game().lookat_player();
@@ -245,7 +245,7 @@ void game_cl_CaptureTheArtefact::UpdateMoneyIndicator()
 	}
 	if (total_money != last_money)
 	{
-		itoa(total_money, MoneyStr, 10);
+		_itoa(total_money, MoneyStr, 10);
 		m_game_ui->ChangeTotalMoneyIndicator(MoneyStr);
 		last_money = total_money;
 	}

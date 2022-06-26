@@ -59,6 +59,7 @@ void test_key	(int dik);
 
 #include "../Include/xrRender/Kinematics.h"
 
+#include <functional>
 
 using namespace InventoryUtilities;
 //BOOL		g_old_style_ui_hud			= FALSE;
@@ -498,7 +499,7 @@ void CUIMainIngameWnd::RenderQuickInfos()
 	UIStaticQuickHelp.Show				(NULL!=actor_action);
 
 	if(NULL!=actor_action){
-		if(stricmp(actor_action,UIStaticQuickHelp.GetText()))
+		if(_stricmp(actor_action,UIStaticQuickHelp.GetText()))
 			UIStaticQuickHelp.SetTextST				(actor_action);
 	}
 

@@ -20,6 +20,7 @@
 //#define DELAYED_ROUND_TIME	7000
 #include "ui\UIBuyWndShared.h"
 #include "../xrEngine/xr_ioconsole.h"
+#include <functional>
 
 #define UNBUYABLESLOT		20
 

@@ -1223,7 +1223,7 @@ void	game_cl_mp::OnEventMoneyChanged			(NET_Packet& P)
 	OnMoneyChanged();
 	{
 		string256					MoneyStr;
-		itoa(local_player->money_for_round, MoneyStr, 10);
+		_itoa(local_player->money_for_round, MoneyStr, 10);
 		m_game_ui_custom->ChangeTotalMoneyIndicator	(MoneyStr);
 	}
 	s32 Money_Added = P.r_s32();

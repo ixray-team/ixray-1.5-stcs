@@ -65,7 +65,8 @@ IDeviceState*
 dx10StateCache<IDeviceState, StateDecs>
 ::FindState( const StateDecs& desc, u32 StateCRC )
 {
-	for (u32 i=0; i<m_StateArray.size(); ++i)
+	u32 i = 0;
+	for (; i<m_StateArray.size(); ++i)
 	{
 		if (m_StateArray[i].m_crc==StateCRC)
 		{

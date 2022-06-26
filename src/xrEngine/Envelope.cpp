@@ -29,7 +29,8 @@ void CEnvelope::Clear()
 
 void CEnvelope::FindNearestKey(float t, KeyIt& min_k, KeyIt& max_k, float eps)
 {
-	for (KeyIt k_it=keys.begin(); k_it!=keys.end(); k_it++){
+    KeyIt k_it = keys.begin();
+	for (; k_it!=keys.end(); k_it++){
     	if (fsimilar((*k_it)->time,t,eps)){
         	max_k = k_it+1;
         	min_k = (k_it==keys.begin())?k_it:k_it-1;
@@ -56,7 +57,8 @@ KeyIt CEnvelope::FindKey(float t, float eps)
 
 void CEnvelope::InsertKey(float t, float val)
 {	
-	for (KeyIt k_it=keys.begin(); k_it!=keys.end(); k_it++){
+    KeyIt k_it = keys.begin();
+	for (; k_it!=keys.end(); k_it++){
     	if (fsimilar((*k_it)->time,t,EPS_L)){ 
         	(*k_it)->value= val;
             return;
@@ -107,7 +109,7 @@ BOOL CEnvelope::ScaleKeys(float from_time, float to_time, float scale_factor, fl
             t0			= (*it)->time;
         	(*it)->time = new_time;
         }
-    	for (; it!=keys.end(); it++){
+    	for (KeyIt it = min_k + 1; it!=keys.end(); it++){
         	float new_time = offset+(*it)->time;
             offset		+= ((new_time-(*(it-1))->time)-((*it)->time-t0));
         	(*it)->time = new_time;

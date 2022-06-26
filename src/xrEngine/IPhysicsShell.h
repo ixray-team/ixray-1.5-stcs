@@ -2,8 +2,8 @@
 #define __IPHYSICSSHELL_H__
 #pragma once
 
-xr_pure_interface IPhysicsGeometry;
-xr_pure_interface	IPhysicsElement
+class IPhysicsGeometry;
+class	IPhysicsElement
 {
 public:
 	virtual	const	Fmatrix			&XFORM				()							const			= 0;
@@ -15,7 +15,7 @@ public:
 	virtual	const	IPhysicsGeometry*geometry			( u16 i )					const			= 0;
 };
 
-xr_pure_interface	IPhysicsShell
+class	IPhysicsShell
 {
 public:
 	virtual	const	Fmatrix				&XFORM				()				const	= 0;
