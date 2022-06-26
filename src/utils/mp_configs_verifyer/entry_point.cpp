@@ -155,7 +155,7 @@ void run_configs_verifyer_server()
 	string_path	file_to_check;
 	file_to_check[0] = 0;
 	xr_string	tmp_stirng;
-	while (gets(file_to_check))
+	while (gets_s(file_to_check))
 	{
 		check_file(file_to_check);
 	}

@@ -35,7 +35,8 @@ static unsigned _LZO_MaxPacketSize = 8*1024;
 static void
 _UnpackPackets( const char* src_bin, const char* dst_name="" )
 {
-    FILE*   src_file = fopen( src_bin, "rb" );
+    FILE* src_file;
+    fopen_s(&src_file, src_bin, "rb");
 
     if( src_file )
     {
@@ -67,7 +68,9 @@ _UnpackPackets( const char* src_bin, const char* dst_name="" )
                 _snprintf( bin_name, sizeof(bin_name)-1, "data-%08u.bin", count+1 );
             
                 u16     sz  = *((u16*)data);
-                FILE*   bin = fopen( bin_name, "wb" );
+                
+                FILE* bin;
+                fopen_s(&bin, bin_name, "wb");
 
                 data += sizeof(u16);
                 fwrite( data, sz, 1, bin );
@@ -182,7 +185,8 @@ _BuildDictionary( const char* bins_file, const char* dst_name="" )
     vector<PacketInfo>  packet_info;
     unsigned            total_packet_count = 0;
     
-    FILE*   src_file = fopen( bins_file, "rb" );
+    FILE* src_file;
+    fopen_s(&src_file, bins_file, "rb" );
 
     if( src_file )
     {
@@ -298,7 +302,8 @@ _BuildDictionary( const char* bins_file, const char* dst_name="" )
     // build dictionary
 
     const char* dic_file    = IsEmptyString(dst_name)  ? "lzo.dic"  : dst_name;
-    FILE*       dic         = fopen( dic_file, "wb" );
+    FILE* dic;
+    fopen_s(&dic, dic_file, "wb");
 
     if( dic )
     {
@@ -318,7 +323,7 @@ _BuildDictionary( const char* bins_file, const char* dst_name="" )
             unsigned    cnt = (info.size < 32) 
                               ? unsigned((10000.0f/float(info.size)) * info.weight)
                               : 1;
-            unsigned    n   = 0;
+            //unsigned    n   = 0;
             
             for( unsigned p=0,n=0; p<cnt; ++p,++n )
             {

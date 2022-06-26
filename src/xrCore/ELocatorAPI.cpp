@@ -426,7 +426,7 @@ void CLocatorAPI::file_delete(LPCSTR path, LPCSTR nm)
     	update_path	(fname,path,nm);
     else
     	strcpy		(fname,nm);
-    unlink			(fname);
+    _unlink			(fname);
 }
 
 void CLocatorAPI::file_copy(LPCSTR src, LPCSTR dest)
@@ -446,7 +446,7 @@ void CLocatorAPI::file_copy(LPCSTR src, LPCSTR dest)
 
 void CLocatorAPI::file_rename(LPCSTR src, LPCSTR dest, bool bOwerwrite)
 {
-	if (bOwerwrite&&exist(dest)) unlink(dest);
+	if (bOwerwrite&&exist(dest)) _unlink(dest);
     // physically rename file
     VerifyPath			(dest);
     rename				(src,dest);
@@ -516,7 +516,7 @@ BOOL CLocatorAPI::can_write_to_folder(LPCSTR path)
 		if (hf==0)		return FALSE;
         else{
         	fclose 		(hf);
-	    	unlink		(temp);
+	    	_unlink		(temp);
             return 		TRUE;
         }
     }else{
