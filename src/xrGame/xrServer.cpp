@@ -23,6 +23,7 @@
 #pragma warning(push)
 #pragma warning(disable:4995)
 #include <malloc.h>
+#include <functional>
 #pragma warning(pop)
 
 xrClientData::xrClientData	():IClient(Device.GetTimerGlobal())
@@ -741,7 +742,7 @@ u32 xrServer::OnMessage	(NET_Packet& P, ClientID sender)			// Non-Zero means bro
 			shared_str				user;
 			shared_str				pass;
 			P.r_stringZ				(user);
-			if(0==stricmp(user.c_str(),"logoff"))
+			if(0==_stricmp(user.c_str(),"logoff"))
 			{
 				CL->m_admin_rights.m_has_admin_rights	= FALSE;
 				strcpy_s				(reason,"logged off");

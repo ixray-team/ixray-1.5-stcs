@@ -202,45 +202,45 @@ void CUISequenceSimpleItem::Start()
 		bool bShowPda			= false;
 		CUIGameSP* ui_game_sp	= smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 
-/*		if(!stricmp(m_pda_section,"pda_contacts"))
+/*		if(!_stricmp(m_pda_section,"pda_contacts"))
 		{
 			ui_game_sp->PdaMenu->SetActiveSubdialog("eptContacts");
 			bShowPda = true;
-//.			}else if(!stricmp(m_pda_section,"pda_map"))
+//.			}else if(!_stricmp(m_pda_section,"pda_map"))
 //.			{
 //.				ui_game_sp->PdaMenu->SetActiveSubdialog(eptMap);
 //.				bShowPda = true;
-		}else if(!stricmp(m_pda_section,"pda_quests"))
+		}else if(!_stricmp(m_pda_section,"pda_quests"))
 		{
 			ui_game_sp->PdaMenu->SetActiveSubdialog("eptQuests");
 			bShowPda = true;
-		}else if(!stricmp(m_pda_section,"pda_diary"))
+		}else if(!_stricmp(m_pda_section,"pda_diary"))
 		{
 			ui_game_sp->PdaMenu->SetActiveSubdialog("eptDiary");
 			bShowPda = true;
-		}else if(!stricmp(m_pda_section,"pda_ranking"))
+		}else if(!_stricmp(m_pda_section,"pda_ranking"))
 		{
 			ui_game_sp->PdaMenu->SetActiveSubdialog("eptRanking");
 			bShowPda = true;
-		}else if(!stricmp(m_pda_section,"pda_statistics"))
+		}else if(!_stricmp(m_pda_section,"pda_statistics"))
 		{
 			ui_game_sp->PdaMenu->SetActiveSubdialog("eptActorStatistic");
 			bShowPda = true;
-		}else if(!stricmp(m_pda_section,"pda_encyclopedia"))
+		}else if(!_stricmp(m_pda_section,"pda_encyclopedia"))
 		{
 			ui_game_sp->PdaMenu->SetActiveSubdialog("eptEncyclopedia");
 			bShowPda = true;
 		}
 */
-		if (     !stricmp( m_pda_section, "pda_tasks"       ) ) {ui_game_sp->PdaMenu().SetActiveSubdialog("eptTasks");		bShowPda = true;	}
-		else if( !stricmp( m_pda_section, "pda_fraction_war") ) {ui_game_sp->PdaMenu().SetActiveSubdialog("eptFractionWar");bShowPda = true;	}
-		else if( !stricmp( m_pda_section, "pda_ranking"     ) ) {ui_game_sp->PdaMenu().SetActiveSubdialog("eptRanking");	bShowPda = true;	}
-		else if( !stricmp( m_pda_section, "pda_logs"        ) ) {ui_game_sp->PdaMenu().SetActiveSubdialog("eptLogs");		bShowPda = true;	}
-		else if( !stricmp( m_pda_section, "pda_show_second_task_wnd" ) )
+		if (     !_stricmp( m_pda_section, "pda_tasks"       ) ) {ui_game_sp->PdaMenu().SetActiveSubdialog("eptTasks");		bShowPda = true;	}
+		else if( !_stricmp( m_pda_section, "pda_fraction_war") ) {ui_game_sp->PdaMenu().SetActiveSubdialog("eptFractionWar");bShowPda = true;	}
+		else if( !_stricmp( m_pda_section, "pda_ranking"     ) ) {ui_game_sp->PdaMenu().SetActiveSubdialog("eptRanking");	bShowPda = true;	}
+		else if( !_stricmp( m_pda_section, "pda_logs"        ) ) {ui_game_sp->PdaMenu().SetActiveSubdialog("eptLogs");		bShowPda = true;	}
+		else if( !_stricmp( m_pda_section, "pda_show_second_task_wnd" ) )
 		{
 			ui_game_sp->PdaMenu().Show_SecondTaskWnd(true);	bShowPda = true;
 		}
-		/*else if( !stricmp( m_pda_section, "pda_show_map_legend_wnd"  ) )
+		/*else if( !_stricmp( m_pda_section, "pda_show_map_legend_wnd"  ) )
 		{
 			ui_game_sp->PdaMenu().Show_MapLegendWnd(true);//	bShowPda = true;
 		}*/

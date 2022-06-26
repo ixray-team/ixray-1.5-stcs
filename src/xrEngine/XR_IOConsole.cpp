@@ -285,7 +285,7 @@ void CConsole::OnRender()
 	pFont->SetColor( color_rgba(205, 205, 25, 105) );
 	u32 log_line = LogFile->size()-1;
 	string16 q;
-	itoa( log_line, q, 10 );
+	_itoa( log_line, q, 10 );
 	u32 qn = xr_strlen( q );
 	pFont->OutI( 0.95f - 0.02f * qn, fMaxY - 2.0f * LDIST, "[%d]", log_line );
 		
@@ -335,7 +335,7 @@ void CConsole::ExecuteCommand( LPCSTR cmd_str, bool record_cmd )
 		{
 			if ( cc->bLowerCaseArgs )
 			{
-				strlwr( last );
+				_strlwr( last );
 			}
 			if ( last[0] == 0 )
 			{

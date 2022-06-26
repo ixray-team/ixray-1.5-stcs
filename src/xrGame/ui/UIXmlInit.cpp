@@ -146,13 +146,13 @@ bool CUIXmlInit::InitOptionsItem(CUIXml& xml_doc, LPCSTR path, int index, CUIOpt
 		{
 			CUIOptionsItem::ESystemDepends d = CUIOptionsItem::sdNothing;
 
-			if(0==stricmp(depends,"vid"))
+			if(0==_stricmp(depends,"vid"))
 				d = CUIOptionsItem::sdVidRestart;
 			else
-			if(0==stricmp(depends,"snd"))
+			if(0==_stricmp(depends,"snd"))
 				d = CUIOptionsItem::sdSndRestart;
 			else
-			if(0==stricmp(depends,"restart"))
+			if(0==_stricmp(depends,"restart"))
 				d = CUIOptionsItem::sdSystemRestart;
 			else
 				Msg("! unknown param [%s] in optionsItem [%s]", depends, entry.c_str());
@@ -578,10 +578,10 @@ bool CUIXmlInit::InitProgressBar(CUIXml& xml_doc, LPCSTR path,
 	{
 		mode = CUIProgressBar::om_horz;
 	}
-	else if ( stricmp( mode_str, "horz" ) == 0 )	{	mode = CUIProgressBar::om_horz;	}
-	else if ( stricmp( mode_str, "vert" ) == 0 )	{	mode = CUIProgressBar::om_vert;	}
-	else if ( stricmp( mode_str, "back" ) == 0 )	{	mode = CUIProgressBar::om_back;	}
-	else if ( stricmp( mode_str, "down" ) == 0 )	{	mode = CUIProgressBar::om_down;	}
+	else if ( _stricmp( mode_str, "horz" ) == 0 )	{	mode = CUIProgressBar::om_horz;	}
+	else if ( _stricmp( mode_str, "vert" ) == 0 )	{	mode = CUIProgressBar::om_vert;	}
+	else if ( _stricmp( mode_str, "back" ) == 0 )	{	mode = CUIProgressBar::om_back;	}
+	else if ( _stricmp( mode_str, "down" ) == 0 )	{	mode = CUIProgressBar::om_down;	}
 	
 	pWnd->InitProgressBar(pos, size, mode);
 

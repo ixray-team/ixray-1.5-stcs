@@ -1,8 +1,8 @@
 #pragma once
 
-xr_pure_interface IPhysicsShell;
-xr_pure_interface IPhysicsElement;
-xr_pure_interface IObjectPhysicsCollision
+class IPhysicsShell;
+class IPhysicsElement;
+class IObjectPhysicsCollision
 {
 public:
 	virtual	const IPhysicsShell		*physics_shell()const		= 0;

@@ -290,9 +290,9 @@ void xrGameSpyServer::GetServerInfo( CServerInfo* si )
 	si->AddItem( "Server name", HostName.c_str(), RGB(128,128,255) );
 	si->AddItem( "Map", MapName.c_str(), RGB(255,0,128) );
 	
-	strcpy_s( tmp, itoa( GetPlayersCount(), tmp2, 10 ) );
+	strcpy_s( tmp, _itoa( GetPlayersCount(), tmp2, 10 ) );
 	strcat_s( tmp, " / ");
-	strcat_s( tmp, itoa( m_iMaxPlayers, tmp2, 10 ) );
+	strcat_s( tmp, _itoa( m_iMaxPlayers, tmp2, 10 ) );
 	si->AddItem( "Players", tmp, RGB(255,128,255) );
 
 	string256 res;
@@ -311,6 +311,6 @@ void xrGameSpyServer::GetServerInfo( CServerInfo* si )
 	}
 	si->AddItem( "Access to server", res, RGB(200,155,155) );
 
-	si->AddItem( "GameSpy port", itoa( iGameSpyBasePort, tmp, 10 ), RGB(200,5,155) );
+	si->AddItem( "GameSpy port", _itoa( iGameSpyBasePort, tmp, 10 ), RGB(200,5,155) );
 	inherited::GetServerInfo( si );
 }

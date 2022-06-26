@@ -16,10 +16,10 @@ char const * ComputeClientDigest(string128& dest, bool lower_case)
 	}
 	if (lower_case)
 	{
-		strlwr(cd_key);
+		_strlwr(cd_key);
 	} else
 	{
-		strupr(cd_key);
+		_strupr(cd_key);
 	}
 	MD5Digest(reinterpret_cast<unsigned char*>(cd_key), cd_keylen, md5hash);
 	md5hash[33] = 0;

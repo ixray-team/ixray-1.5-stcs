@@ -576,44 +576,29 @@ void CUIGameCTA::SetPlayerItemsToBuyMenu()
 		);
 		TryToDefuseAllWeapons(add_ammo);
 		
-		std::for_each(
-			actor->inventory().m_slots.begin(),
-			actor->inventory().m_slots.end(),
-			std::bind1st(
-				std::mem_fun<void, CUIGameCTA, CInventorySlot const &>(
-					&CUIGameCTA::BuyMenuItemInserter
-				),
-				this
-			)
-		);
-		std::for_each(
-			actor->inventory().m_belt.begin(),
-			actor->inventory().m_belt.end(),
-			std::bind1st(
-				std::mem_fun<void, CUIGameCTA, PIItem const &>(
-					&CUIGameCTA::BuyMenuItemInserter
-				),
-				this
-			)
-		);
-		std::for_each(
-			actor->inventory().m_ruck.begin(),
-			actor->inventory().m_ruck.end(),
-			std::bind1st(
-				std::mem_fun<void, CUIGameCTA, PIItem const &>(
-					&CUIGameCTA::BuyMenuItemInserter
-				),
-				this
-			)
-		);
-		std::for_each(add_ammo.begin(), add_ammo.end(),
-			std::bind1st(
-				std::mem_fun<void, CUIGameCTA, aditional_ammo_t::value_type const &>(
-					&CUIGameCTA::AdditionalAmmoInserter
-				), 
-				this
-			)
-		);
+		for (xr_vector<CInventorySlot>::iterator i = actor->inventory().m_slots.begin();
+			i != actor->inventory().m_slots.end(); i++)
+		{
+			BuyMenuItemInserter(*i);
+		}
+
+		for (TIItemContainer::const_iterator i = actor->inventory().m_belt.begin();
+			i != actor->inventory().m_belt.end(); i++)
+		{
+			BuyMenuItemInserter(*i);
+		}
+
+		for (TIItemContainer::const_iterator i = actor->inventory().m_ruck.begin();
+			i != actor->inventory().m_ruck.end(); i++)
+		{
+			BuyMenuItemInserter(*i);
+		}
+
+		for (aditional_ammo_t::const_iterator i = add_ammo.begin();
+			i != add_ammo.end(); i++)
+		{
+			AdditionalAmmoInserter(*i);
+		}
 	} else
 	{
 		SetPlayerDefItemsToBuyMenu();
@@ -1014,7 +999,7 @@ void CUIGameCTA::LoadDefItemsForRank()
 	char tmp[5];
 	for (int i=1; i<=local_player->rank; i++)
 	{
-		strconcat(sizeof(RankStr),RankStr,"rank_",itoa(i,tmp,10));
+		strconcat(sizeof(RankStr),RankStr,"rank_",_itoa(i,tmp,10));
 		if (!pSettings->section_exist(RankStr)) continue;
 		for (u32 it=0; it<PlayerDefItems.size(); it++)
 		{

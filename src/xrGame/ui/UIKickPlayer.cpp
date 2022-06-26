@@ -225,7 +225,7 @@ void CUIKickPlayer::Update()
 	for( ; I != E; ++I)
 	{
 		game_PlayerState* pI = I->second;
-		if( m_selected_item_text.size() && !stricmp(pI->name, m_selected_item_text.c_str()) )
+		if( m_selected_item_text.size() && !_stricmp(pI->name, m_selected_item_text.c_str()) )
 			bHasSelected		= true;
 
 
@@ -233,7 +233,7 @@ void CUIKickPlayer::Update()
 		if(fit==m_current_set.end())
 			bNeedRefresh = true;
 		else
-		if( stricmp( (*fit)->name, pI->name) )
+		if( _stricmp( (*fit)->name, pI->name) )
 			bNeedRefresh = true;
 	}
 	if(m_current_set.size() != items.size())
