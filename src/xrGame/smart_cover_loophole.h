@@ -8,7 +8,6 @@
 #ifndef SMART_COVER_LOOPHOLE_H_INCLUDED
 #define SMART_COVER_LOOPHOLE_H_INCLUDED
 
-#include <boost/noncopyable.hpp>
 #include "smart_cover_detail.h"
 #include "script_space_forward.h"
 #include "associative_vector.h"
@@ -19,10 +18,7 @@ namespace smart_cover {
 
 class object;
 
-class loophole : 
-	private debug::make_final<loophole>, 
-	private boost::noncopyable 
-{
+class loophole : private debug::make_final<loophole> {
 private:
 	class action_predicate {
 
@@ -57,6 +53,9 @@ private:
 	bool					m_exitable;
 
 public:
+	loophole(const loophole& other) = delete;
+	loophole& operator =(const loophole& other) = delete;
+
 							loophole				(luabind::object const &description);
 							~loophole				();
 	IC	shared_str	const	&id						()		const;

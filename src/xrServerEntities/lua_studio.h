@@ -14,7 +14,6 @@
 #endif// #ifdef DEBUG
 
 #include <cs/lua_debugger/interfaces.h>
-#include <boost/noncopyable.hpp>
 
 namespace luabind {
 	namespace detail {
@@ -22,10 +21,11 @@ namespace luabind {
 	} // namespace detail
 } // namespace luabind
 
-class lua_studio_engine :
-	public cs::lua_debugger::engine,
-	private boost::noncopyable
-{
+class lua_studio_engine : public cs::lua_debugger::engine {
+public:
+	lua_studio_engine(const lua_studio_engine& other) = delete;
+	lua_studio_engine& operator =(const lua_studio_engine& other) = delete;
+
 public:
 	virtual	int				CS_LUA_DEBUGGER_CALL	luaL_loadstring				(lua_State *L, const char *s);
 	virtual	int				CS_LUA_DEBUGGER_CALL	luaL_newmetatable			(lua_State *L, const char *tname);
