@@ -17,7 +17,7 @@ class CAI_Rat;
 // #include "../../../steering_behaviour_cohesion.h"
 // #include "../../../steering_behaviour_alignment.h"
 // #include "../../../steering_behaviour_separation.h"
-	private debug::make_final<manager> {
+	{
 public:
 	manager(const manager& other) = delete;
 	manager& operator =(const manager& other) = delete;

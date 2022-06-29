@@ -16,10 +16,7 @@ class CAI_Rat;
 
 namespace steering_behaviour {
 
-class separation :
-	public base,
-	private debug::make_final<separation>
-{
+class separation final : public base {
 public:
 	separation(const separation& other) = delete;
 	separation& operator =(const separation& other) = delete;
