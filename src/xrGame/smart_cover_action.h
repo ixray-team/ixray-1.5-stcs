@@ -8,7 +8,6 @@
 #ifndef SMART_COVER_ACTION_H_INCLUDED
 #define SMART_COVER_ACTION_H_INCLUDED
 
-#include <boost/noncopyable.hpp>
 #include "smart_cover_detail.h"
 #include "script_space_forward.h"
 #include "ai_monster_space.h"
@@ -17,10 +16,11 @@
 
 namespace smart_cover{
 
-class action :
-	private debug::make_final<action>,
-	private boost::noncopyable
-{
+class action : private debug::make_final<action> {
+public:
+	action(const action& other) = delete;
+	action& operator =(const action& other) = delete;
+
 private:
 	class animation_predicate {
 

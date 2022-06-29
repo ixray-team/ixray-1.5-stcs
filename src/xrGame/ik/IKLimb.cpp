@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "IKLimb.h"
 
-#include <boost/noncopyable.hpp>
-
 #include "../../include/xrrender/Kinematics.h"
 
 #include "gameobject.h"
@@ -1011,9 +1009,7 @@ float	CIKLimb::get_time_to_step_begin	( const CBlend& B )	const
 		return dInfinity;
 }
 
-struct ssaved_callback :
-	private boost::noncopyable
-{
+struct ssaved_callback : {
 	ssaved_callback( CBoneInstance &bi ):
 		_bi					( bi						)		,
 		callback			( bi.callback()				)		,		
@@ -1030,6 +1026,10 @@ struct ssaved_callback :
 	const BOOL				callback_overwrite;	
 	const u32				callback_type;
 	CBoneInstance			&_bi;
+
+public:
+	ssaved_callback(const ssaved_callback& other) = delete;
+	ssaved_callback& operator =(const ssaved_callback& other) = delete;
 };
 static void get_matrix( CBoneInstance* P )
 {
