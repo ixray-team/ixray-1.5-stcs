@@ -11,7 +11,6 @@
 
 #ifdef INGAME_EDITOR
 
-#include <boost/noncopyable.hpp>
 #include "property_collection_forward.hpp"
 
 namespace editor {
@@ -34,8 +33,11 @@ namespace ambients {
 
 class ambient;
 
-class manager : private boost::noncopyable {
+class manager {
 public:
+	manager(const manager& other) = delete;
+	manager& operator =(const manager& other) = delete;
+
 							manager			(::editor::environment::manager const& manager);
 							~manager		();
 			void			load			();

@@ -11,7 +11,6 @@
 
 #ifdef INGAME_EDITOR
 
-#include <boost/noncopyable.hpp>
 #include "property_collection_forward.hpp"
 
 class CLensFlareDescriptor;
@@ -28,8 +27,11 @@ namespace suns {
 
 class sun;
 
-class manager : private boost::noncopyable {
+class manager {
 public:
+	manager(const manager& other) = delete;
+	manager& operator =(const manager& other) = delete;
+
 					manager			(environment::manager* environment);
 					~manager		();
 			void	load			();
