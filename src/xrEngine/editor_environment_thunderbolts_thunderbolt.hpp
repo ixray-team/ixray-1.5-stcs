@@ -11,7 +11,6 @@
 
 #ifdef INGAME_EDITOR
 
-#include <boost/noncopyable.hpp>
 #include "../include/editor/property_holder.hpp"
 #include "editor_environment_thunderbolts_gradient.hpp"
 #include "thunderbolt.h"
@@ -27,13 +26,15 @@ class manager;
 
 class thunderbolt :
 	public SThunderboltDesc,
-	public editor::property_holder_holder,
-	private boost::noncopyable
+	public editor::property_holder_holder
 {
 private:
 	typedef SThunderboltDesc			inherited;
 
 public:
+	thunderbolt(const thunderbolt& other) = delete;
+	thunderbolt& operator =(const thunderbolt& other) = delete;
+
 							thunderbolt				(manager* manager, shared_str const& id);
 	virtual					~thunderbolt			();
 			void			load					(CInifile& config);

@@ -11,18 +11,17 @@
 
 #ifdef INGAME_EDITOR
 
-#include <boost/noncopyable.hpp>
 #include "../include/editor/property_holder.hpp"
 
 namespace editor {
 namespace environment {
 namespace suns {
 
-class flare :
-	public editor::property_holder_holder,
-	private boost::noncopyable
-{
+class flare : public editor::property_holder_holder {
 public:
+	flare(const flare& other) = delete;
+	flare& operator =(const flare& other) = delete;
+
 						flare		();
 	virtual				~flare		();
 			void		fill		(editor::property_holder_collection* collection);
