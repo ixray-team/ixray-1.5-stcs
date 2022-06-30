@@ -24,6 +24,7 @@ public:
 	storage(const storage& other) = delete;
 	storage& operator =(const storage& other) = delete;
 
+			storage() : m_descriptions() {}
 							~storage		();
 			DescriptionPtr	description		(shared_str const &table_id);
 			void			collect_garbage	();

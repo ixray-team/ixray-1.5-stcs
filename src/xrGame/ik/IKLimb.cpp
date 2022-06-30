@@ -1009,7 +1009,7 @@ float	CIKLimb::get_time_to_step_begin	( const CBlend& B )	const
 		return dInfinity;
 }
 
-struct ssaved_callback : {
+struct ssaved_callback {
 	ssaved_callback( CBoneInstance &bi ):
 		_bi					( bi						)		,
 		callback			( bi.callback()				)		,		

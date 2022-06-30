@@ -25,6 +25,7 @@ private:
 	float				m_exit_min_enemy_distance;
 
 public:
+	object() = default;
 	object(const object& other) = delete;
 	object& operator =(const object& other) = delete;
 

@@ -250,7 +250,7 @@ void	CActor::cam_Lookout	( const Fmatrix &xform, float camera_height )
 					da			= PI/1000.f;
 					if (!fis_zero(r_torso.roll))
 						da		*= r_torso.roll/_abs(r_torso.roll);
-					float angle = 0.f
+					float angle = 0.f;
 					for (; _abs(angle)<_abs(alpha); angle+=da)
 					{
 						Fvector				pt;
