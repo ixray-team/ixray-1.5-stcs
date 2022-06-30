@@ -275,7 +275,7 @@ void CShaderTool::RegisterTools()
     	case aeSoundEnv:	tools = xr_new<CSHSoundEnvTools>	(ISHInit( EToolsID(k),	m_Items,	fraLeftBar->tsSoundEnv,	m_ItemProps,	m_PreviewProps));	break;
         }
         R_ASSERT(tools);
-		m_Tools.insert(mk_pair(k,tools));
+		m_Tools.insert(std::make_pair(k,tools));
     }
 }
 
