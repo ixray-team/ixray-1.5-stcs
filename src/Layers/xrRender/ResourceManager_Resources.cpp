@@ -572,7 +572,7 @@ void	CResourceManager::DBG_VerifyTextures	()
 CMatrix*	CResourceManager::_CreateMatrix	(LPCSTR Name)
 {
 	R_ASSERT(Name && Name[0]);
-	if (0==stricmp(Name,"$null"))	return NULL;
+	if (0==_stricmp(Name,"$null"))	return NULL;
 
 	LPSTR N = LPSTR(Name);
 	map_Matrix::iterator I = m_matrices.find	(N);
@@ -606,7 +606,7 @@ void	CResourceManager::ED_UpdateMatrix		(LPCSTR Name, CMatrix* data)
 CConstant*	CResourceManager::_CreateConstant	(LPCSTR Name)
 {
 	R_ASSERT(Name && Name[0]);
-	if (0==stricmp(Name,"$null"))	return NULL;
+	if (0==_stricmp(Name,"$null"))	return NULL;
 
 	LPSTR N = LPSTR(Name);
 	map_Constant::iterator I	= m_constants.find	(N);

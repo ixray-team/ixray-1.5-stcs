@@ -428,7 +428,7 @@ void CPHMovementControl::PathNearestPoint(const xr_vector<DetailPathManager::STr
 	Fvector path_point,vtemp;
 	float temp;
 
-	int i = 0
+	int i = 0;
 	for(; i<m_path_size-1;++i)
 	{
 		const Fvector &first=path[i].position, &second=path[i+1].position;

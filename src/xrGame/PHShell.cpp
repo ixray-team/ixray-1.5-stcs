@@ -1202,8 +1202,12 @@ void CPHShell::SetCallbacks( )
 	std::for_each( elements.begin(), elements.end(), set_bone_callback() );
 
 	struct set_bone_reference {
+		set_bone_reference(const set_bone_reference& other) = delete;
+		set_bone_reference& operator =(const set_bone_reference& other) = delete;
+
 		IKinematics &K;
 		set_bone_reference( IKinematics &K_ ): K( K_ ){}
+		set_bone_reference(set_bone_reference&& other) : K(other.K) {}
 		void operator() ( u16 id )
 		{
 			CBoneInstance &bi  = K.LL_GetBoneInstance(id);
@@ -1214,9 +1218,6 @@ void CPHShell::SetCallbacks( )
 					bi.set_callback( bctPhysics, 0, cast_PhysicsElement( root_e ) );
 			}
 		}
-	public:
-		set_bone_reference(const set_bone_reference& other) = delete;
-		set_bone_reference& operator =(const set_bone_reference& other) = delete;
 	};
 	for_each_bone_id( *PKinematics(), set_bone_reference( *PKinematics() ) );
 	

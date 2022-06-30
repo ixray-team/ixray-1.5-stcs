@@ -32,6 +32,7 @@ private:
 			void	add_actions		();
 
 public:
+	target_selector() = default;
 	target_selector(const target_selector& other) = delete;
 	target_selector& operator =(const target_selector& other) = delete;
 
