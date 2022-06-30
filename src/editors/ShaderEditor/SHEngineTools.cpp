@@ -285,7 +285,7 @@ void CSHEngineTools::Load()
                 fs->r_stringZ	(name,sizeof(name));
                 CConstant*		C = xr_new<CConstant>();
                 C->Load			(fs);
-                m_Constants.insert(mk_pair(xr_strdup(name),C));
+                m_Constants.insert(std::make_pair(xr_strdup(name),C));
             }
             fs->close();
         }
@@ -297,7 +297,7 @@ void CSHEngineTools::Load()
                 fs->r_stringZ	(name,sizeof(name));
                 CMatrix*		M = xr_new<CMatrix>();
                 M->Load			(fs);
-                m_Matrices.insert(mk_pair(xr_strdup(name),M));
+                m_Matrices.insert(std::make_pair(xr_strdup(name),M));
             }
             fs->close();
         }
@@ -322,7 +322,7 @@ void CSHEngineTools::Load()
                     B->Load			(*chunk,desc.version);
 
                     LPSTR blender_name = xr_strdup(desc.cName);
-                    std::pair<BlenderPairIt, bool> I =  m_Blenders.insert(mk_pair(blender_name,B));
+                    std::pair<BlenderPairIt, bool> I =  m_Blenders.insert(std::make_pair(blender_name,B));
                     R_ASSERT2		(I.second,"shader.xr - found duplicate name!!!");
                 }
                 chunk->close	();
@@ -549,7 +549,7 @@ LPCSTR CSHEngineTools::AppendItem(LPCSTR folder_name, LPCSTR parent_name)
     m_LastSelection			= FHelper.GenerateName(pref.c_str(),2,fastdelegate::bind<TFindObjectByName>(this,&CSHEngineTools::ItemExist),false,true);
     B->getDescription().Setup(m_LastSelection.c_str());
     // insert blender
-	std::pair<BlenderPairIt, bool> I = m_Blenders.insert(mk_pair(xr_strdup(m_LastSelection.c_str()),B));
+	std::pair<BlenderPairIt, bool> I = m_Blenders.insert(std::make_pair(xr_strdup(m_LastSelection.c_str()),B));
 	R_ASSERT2 		(I.second,"shader.xr - found duplicate name!!!");
     // insert to TreeView
     ExecCommand		(COMMAND_UPDATE_LIST);
@@ -572,7 +572,7 @@ void CSHEngineTools::RealRenameItem(LPCSTR old_full_name, LPCSTR new_full_name)
 	m_Blenders.erase(I);
 	// rename
     B->getDescription().Setup(new_full_name);
-	std::pair<BlenderPairIt, bool> RES = m_Blenders.insert(mk_pair(xr_strdup(new_full_name),B));
+	std::pair<BlenderPairIt, bool> RES = m_Blenders.insert(std::make_pair(xr_strdup(new_full_name),B));
 	R_ASSERT2 		(RES.second,"shader.xr - found duplicate name!!!");
 
 	if (B==m_CurrentBlender) UpdateStreamFromObject();
@@ -604,7 +604,7 @@ LPCSTR CSHEngineTools::AppendConstant(CConstant* src, CConstant** dest)
     if (src) *C = *src;
     C->dwReference = 1;
     char name[128];
-    std::pair<ConstantPairIt, bool> I = m_Constants.insert(mk_pair(xr_strdup(GenerateConstantName(name)),C));
+    std::pair<ConstantPairIt, bool> I = m_Constants.insert(std::make_pair(xr_strdup(GenerateConstantName(name)),C));
     VERIFY(I.second);
     if (dest) *dest = C;
     return I.first->first;
@@ -616,7 +616,7 @@ LPCSTR CSHEngineTools::AppendMatrix(CMatrix* src, CMatrix** dest)
     if (src) *M = *src;
     M->dwReference = 1;
     char name[128];
-    std::pair<MatrixPairIt, bool> I = m_Matrices.insert(mk_pair(xr_strdup(GenerateMatrixName(name)),M));
+    std::pair<MatrixPairIt, bool> I = m_Matrices.insert(std::make_pair(xr_strdup(GenerateMatrixName(name)),M));
     VERIFY(I.second);
     if (dest) *dest = M;
     return I.first->first;
@@ -730,7 +730,7 @@ void CSHEngineTools::CollapseMatrix(LPSTR name)
     // append new optimized matrix
     CMatrix* N = xr_new<CMatrix>(*M);
     N->dwReference=1;
-	m_OptMatrices.insert(mk_pair(xr_strdup(name),N));
+	m_OptMatrices.insert(std::make_pair(xr_strdup(name),N));
 }
 
 void CSHEngineTools::CollapseConstant(LPSTR name)
@@ -749,7 +749,7 @@ void CSHEngineTools::CollapseConstant(LPSTR name)
     // append opt constant
     CConstant* N = xr_new<CConstant>(*C);
     N->dwReference=1;
-	m_OptConstants.insert(mk_pair(xr_strdup(name),N));
+	m_OptConstants.insert(std::make_pair(xr_strdup(name),N));
 }
 
 void CSHEngineTools::UpdateMatrixRefs(LPSTR name)
