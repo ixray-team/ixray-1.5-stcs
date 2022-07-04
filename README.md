@@ -9,7 +9,7 @@
   </p>
 
   <p>
-    <a href="https://github.com/ixray-team/ixray-1.5-stcs/releases/tag/r0.1">
+    <a href="https://github.com/ixray-team/ixray-1.5-stcs/releases/tag/r0.2">
       <img src="https://img.shields.io/github/v/release/ixray-team/ixray-1.5-stcs?include_prereleases" alt="Latest release" />
     </a>
   </p>
