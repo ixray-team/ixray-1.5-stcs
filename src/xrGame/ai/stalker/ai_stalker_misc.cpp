@@ -30,6 +30,8 @@
 #include "../../visual_memory_manager.h"
 #include "../../agent_enemy_manager.h"
 
+#include "../../ai_object_location_impl.h"
+
 const u32 TOLLS_INTERVAL					= 2000;
 const u32 GRENADE_INTERVAL					= 0*1000;
 const float FRIENDLY_GRENADE_ALARM_DIST		= 5.f;

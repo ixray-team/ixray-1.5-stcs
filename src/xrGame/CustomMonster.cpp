@@ -50,6 +50,8 @@
 // Lain: added
 #include "../xrEngine/IGame_Level.h"
 
+#include "ai_object_location_impl.h"
+
 #ifdef DEBUG
 #	include "debug_renderer.h"
 #   include "animation_movement_controller.h"
