@@ -2,15 +2,11 @@
 //
 
 #include "stdafx.h"
-#pragma warning(push)
-#pragma warning(disable:4244)
-#pragma warning(disable:4018)
-#include "dxtlib.h"
-#pragma warning(pop)
 #include "ETextureParams.h"
 #include <dds.h>
 #include <ddraw.h>
 #include <DirectXTex.h>
+#include "dxtlib.h"
 #include <memory>
 
 BOOL APIENTRY DllMain( HANDLE hModule, 
