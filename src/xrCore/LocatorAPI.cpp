@@ -598,7 +598,7 @@ bool CLocatorAPI::Recurse		(const char* path)
 
 //.	std::copy		(&*rec_files.begin(),&*rec_files.end(),buffer);
 
-	rec_files.clear_not_free();
+	rec_files.clear();
 	std::sort		(buffer, buffer + count, pred_str_ff);
 	for (_finddata_t *I = buffer, *E = buffer + count; I != E; ++I)
 		ProcessOne	(path,I);
