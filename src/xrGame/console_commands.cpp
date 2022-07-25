@@ -632,7 +632,7 @@ class CCC_ClearLog : public IConsole_Command {
 public:
 	CCC_ClearLog(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
 	virtual void Execute(LPCSTR) {
-		LogFile->clear_not_free	();
+		LogFile->clear();
 		FlushLog				();
 		Msg						("* Log file has been cleaned successfully!");
 	}
