@@ -36,13 +36,9 @@ class ENGINE_API		CEngineAPI
 private:
 	HMODULE				hGame;
 	HMODULE				hRender;
-	HMODULE				hTuner;
 public:
 	Factory_Create*		pCreate;
 	Factory_Destroy*	pDestroy;
-	BOOL				tune_enabled;
-	VTPause*			tune_pause	;
-	VTResume*			tune_resume	;
 	void				Initialize	();
 	void				Destroy		();
 
