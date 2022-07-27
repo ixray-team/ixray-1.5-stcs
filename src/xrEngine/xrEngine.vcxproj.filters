@@ -244,9 +244,6 @@
     <Filter Include="editor\ide">
       <UniqueIdentifier>{e2373169-07dc-485a-9204-7900a367c57a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="OpenAutomate">
-      <UniqueIdentifier>{64b0992d-b01e-4cfd-965e-3017f4f294f1}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="_d3d_extensions.h">
@@ -627,9 +624,6 @@
     <ClInclude Include="ide.hpp">
       <Filter>editor\ide</Filter>
     </ClInclude>
-    <ClInclude Include="xrSASH.h">
-      <Filter>OpenAutomate</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="defines.cpp">
@@ -994,9 +988,6 @@
     </ClCompile>
     <ClCompile Include="editor_environment_detail.cpp">
       <Filter>editor\environment\detail</Filter>
-    </ClCompile>
-    <ClCompile Include="xrSASH.cpp">
-      <Filter>OpenAutomate</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -19,8 +19,6 @@
 #include "actor.h"
 #include "spectator.h"
 
-#include "../xrEngine/xrSASH.h"
-
 #ifndef MASTER_GOLD
 #	include "custommonster.h"
 #endif // MASTER_GOLD
@@ -431,7 +429,7 @@ void CGamePersistent::start_logo_intro		()
 #ifdef MASTER_GOLD
 	if (g_SASH.IsRunning())
 #else	// #ifdef MASTER_GOLD
-	if ((0!=strstr(Core.Params,"-nointro")) || g_SASH.IsRunning())
+	if ((0!=strstr(Core.Params,"-nointro")))
 #endif	// #ifdef MASTER_GOLD
 	{
 		m_intro_event			= 0;
