@@ -99,9 +99,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Reference Include="DockPanelSkin">
-      <HintPath>..\..\sdk\binaries\DockPanelSkin.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.VisualC">
       <CopyLocalSatelliteAssemblies>true</CopyLocalSatelliteAssemblies>
       <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
@@ -130,11 +127,14 @@
       <CopyLocalSatelliteAssemblies>true</CopyLocalSatelliteAssemblies>
       <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
     </Reference>
-    <Reference Include="WeifenLuo.WinFormsUI.Docking">
-      <HintPath>..\..\sdk\binaries\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\proj\dockpanelsuite\ThemeVS2015.csproj">
+      <Project>{8d9bfe16-2ba2-4f6e-b4a5-d2b040ca367b}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\proj\dockpanelsuite\WinFormsUI.csproj">
+      <Project>{e52a678f-a417-4cfc-95b2-17c67c925fd9}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\editor_controls\editor_controls.vcxproj">
       <Project>{b45374aa-c7ed-42cf-bbd3-deaa2b7acb48}</Project>
       <CopyLocalSatelliteAssemblies>true</CopyLocalSatelliteAssemblies>
