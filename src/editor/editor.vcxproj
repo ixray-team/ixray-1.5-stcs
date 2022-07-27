@@ -102,9 +102,6 @@
     <Reference Include="DockPanelSkin">
       <HintPath>..\..\sdk\binaries\DockPanelSkin.dll</HintPath>
     </Reference>
-    <Reference Include="Flobbster.Windows.Forms.PropertyGrid">
-      <HintPath>..\..\sdk\binaries\Flobbster.Windows.Forms.PropertyGrid.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.VisualC">
       <CopyLocalSatelliteAssemblies>true</CopyLocalSatelliteAssemblies>
       <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
@@ -142,6 +139,9 @@
       <Project>{b45374aa-c7ed-42cf-bbd3-deaa2b7acb48}</Project>
       <CopyLocalSatelliteAssemblies>true</CopyLocalSatelliteAssemblies>
       <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\Flobbster.Windows.Forms\Flobbster.Windows.Forms.csproj">
+      <Project>{75061919-dc91-4085-afea-a66c5218c8d9}</Project>
     </ProjectReference>
     <ProjectReference Include="..\xrCore\xrCore.vcxproj">
       <Project>{a0f7d1fb-59a7-4717-a7e4-96f37e91998e}</Project>
