@@ -177,7 +177,9 @@ public:
 																				else
 																					return  m_pParentWnd->GetFont();}
 
-	DEF_UILIST				(WINDOW_LIST, CUIWindow*);
+	using WINDOW_LIST = ui_list<CUIWindow*>;
+	using WINDOW_LIST_it = WINDOW_LIST::iterator;
+
 	WINDOW_LIST&			GetChildWndList		()							{return m_ChildWndList; }
 
 
