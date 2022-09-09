@@ -40,8 +40,6 @@ Download needed components:
 
 Unpack a contents to the root agreeing to merge
 
-If need to build editors run `InstallElpack.bat` and `InstallOther.bat` with administrator permissions
-
 ### Engine
 
 #### Debug
