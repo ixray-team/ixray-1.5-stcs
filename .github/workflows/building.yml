@@ -1,0 +1,53 @@
+name: 'Building'
+
+on: [ push, pull_request ]
+
+jobs:
+  build:
+    name: 'Build'
+
+    runs-on: windows-latest
+
+    strategy:
+      matrix:
+        configuration: [ Debug, Mixed, Release, Debug_Dedicated, Mixed_Dedicated, Release_Dedicated ]
+        platform: [ Win32 ]
+
+    env:
+      solution_name: XRay.Engine.sln
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Get dependencies
+      run: |
+        curl https://github.com/ixray-team/ixray-1.5-stcs/releases/download/r0.2/sdk-directxsdk-mar2009.7z -O directxsdk-mar2009.7z
+        7z x directxsdk-mar2009.7z
+        git clone --branch aug2021 --depth 1 https://github.com/microsoft/DirectXTex.git dep/DirectXTex
+        git clone --branch Release_3.1.0 --depth 1 https://github.com/dockpanelsuite/dockpanelsuite.git dep/dockpanelsuite
+      shell: powershell
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1.1
+
+    - name: Build solution
+      run: |
+        msbuild $env:solution_name -p:Configuration=${{ matrix.configuration }} -p:Platform=${{ matrix.platform }} -r -m -nologo
+
+    - name: Cleanup
+      run: |
+        if exist bin\*.ilk (del /s bin\*.ilk)
+        if exist bin\*.pdb (del /s bin\*.pdb)
+        if exist lib\*.pdb (del /s lib\*.pdb)
+      shell: cmd
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: out (${{ matrix.configuration }})
+        path: |
+          bin/
+          lib/
