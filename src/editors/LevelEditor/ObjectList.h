@@ -76,7 +76,10 @@ private:	// User declarations
     struct SFolderStore{
     	bool expanded;
     };
-    DEFINE_MAP				(AnsiString,SFolderStore,FolderStoreMap,FolderStorePairIt);
+
+    using FolderStoreMap = xr_map<AnsiString, SFolderStore>;
+    using FolderStorePairIt = FolderStoreMap::iterator;
+
     FolderStoreMap			ItemsStore;
 
 	void					storeExpandedItems();
