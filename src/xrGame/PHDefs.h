@@ -9,12 +9,17 @@ class CShellSplitInfo;
 
 typedef std::pair<CPhysicsShell*,u16>	shell_root;
 
-DEFINE_VECTOR(CPHElement*,ELEMENT_STORAGE,ELEMENT_I)
-typedef		xr_vector<CPHElement*>::const_iterator	ELEMENT_CI;
-DEFINE_VECTOR(CPHJoint*,JOINT_STORAGE,JOINT_I)
-DEFINE_VECTOR(shell_root,PHSHELL_PAIR_VECTOR,SHELL_PAIR_I)
-typedef xr_vector<shell_root>::reverse_iterator SHELL_PAIR_RI;
+using ELEMENT_STORAGE = xr_vector<CPHElement*>;
+using ELEMENT_I = ELEMENT_STORAGE::iterator;
+using ELEMENT_CI = xr_vector<CPHElement*>::const_iterator;
 
-typedef		xr_vector<CPHElement*>::reverse_iterator	ELEMENT_RI;
+using JOINT_STORAGE = xr_vector<CPHJoint*>;
+using JOINT_I = JOINT_STORAGE::iterator;
+
+using PHSHELL_PAIR_VECTOR = xr_vector<shell_root>;
+using SHELL_PAIR_I = PHSHELL_PAIR_VECTOR::iterator;
+
+using SHELL_PAIR_RI = xr_vector<shell_root>::reverse_iterator;
+using ELEMENT_RI = xr_vector<CPHElement*>::reverse_iterator;
 
 #endif

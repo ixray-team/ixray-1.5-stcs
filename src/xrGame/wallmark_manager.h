@@ -1,8 +1,9 @@
 #pragma once
 
+// Igor
+//using SHADER_VECTOR = xr_vector<ref_shader>;
+//using SHADER_VECTOR_IT = SHADER_VECTOR::iterator;
 
-
-// Igor DEFINE_VECTOR(ref_shader, SHADER_VECTOR, SHADER_VECTOR_IT);
 class CWalmarkManager
 {
 private:
