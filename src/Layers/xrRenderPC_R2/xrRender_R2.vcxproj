@@ -89,6 +89,7 @@
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4005;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <AdditionalDependencies>nvapi.lib;atimgpud_mtdll_x86.lib;legacy_stdio_definitions.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -123,6 +124,7 @@
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4005;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <AdditionalDependencies>nvapi.lib;atimgpud_mtdll_x86.lib;legacy_stdio_definitions.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -157,6 +159,7 @@
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4005;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <AdditionalDependencies>nvapi.lib;atimgpud_mtdll_x86.lib;legacy_stdio_definitions.lib;%(AdditionalDependencies)</AdditionalDependencies>
