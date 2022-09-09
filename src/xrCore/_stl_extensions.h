@@ -124,9 +124,6 @@ struct pred_stri	: public std::binary_function<char*, char*, bool>	{
 	IC bool operator()(const char* x, const char* y) const				{	return _stricmp(x,y)<0;	}
 };
 
-// STL extensions
-#define DEFINE_STACK(T,N)			typedef xr_stack< T > N;
-
 #include "FixedVector.h"
 #include "buffer_vector.h"
 
