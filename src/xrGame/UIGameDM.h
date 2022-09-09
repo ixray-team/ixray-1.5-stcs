@@ -34,8 +34,8 @@ protected:
 		flShowFragList	= (1<<1),
 		fl_force_dword	= u32(-1)	};
 
-
-//.	DEF_VECTOR			(PLAYERS_LISTS, CUIDMPlayerList*);
+	//using PLAYERS_LISTS = xr_vector<CUIDMPlayerList*>;
+	//using PLAYERS_LISTS_it = PLAYERS_LISTS::iterator;
 
 	CUIWindow*				m_pFragLists;
 	CUIWindow*				m_pPlayerLists;
