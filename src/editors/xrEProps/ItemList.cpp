@@ -29,7 +29,10 @@
 //---------------------------------------------------------------------------
 // IItemList vector
 //---------------------------------------------------------------------------
-DEFINE_VECTOR					(TItemList*,ILVec,ILVecIt);
+
+using ILVec = xr_vector<TItemList*>;
+using ILVecIt = ILVec::iterator;
+
 static  ILVec					ILForms;
 
 //---------------------------------------------------------------------------
