@@ -37,13 +37,7 @@ dep/
 *.~cpp
 
 # X-Ray resources
-gamedata/
-rawdata/
-levels/
-localization/
-mp/
-patches/
-resources/
+*.db*
 
 # X-Ray user files
 _appdata_/

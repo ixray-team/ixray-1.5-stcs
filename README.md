@@ -20,8 +20,11 @@ Stable repository of the modernized *X-Ray* 1.5 game engine
 
 ## Requirements
 
-* Visual Studio 2015 Community Edition
-* Borland C++ Builder 6
+- Visual Studio 2022 Community Edition
+  - MFC
+  - C++/CLI
+  - Windows SDK 10.0.19041.0
+- Borland C++ Builder 6
 
 ## Building
 
@@ -33,7 +36,7 @@ git clone https://github.com/ixray-team/ixray-1.5-stcs.git
 
 Download needed components:
 
-* DirectX SDK March 2009
+- DirectX SDK March 2009
 
 Unpack a contents to the root agreeing to merge
 
@@ -43,20 +46,21 @@ If need to build editors run `InstallElpack.bat` and `InstallOther.bat` with adm
 
 #### Debug
 
-* Build `XRay.Dependencies.VS2015.sln` on `Debug`
-* Build `XRay.Engine.VS2015.sln` on `Debug` except projects from `utils`
+- Run `download-dependencies.ps1`
+- Build `XRay.Engine.sln` on `Win32` without projects from `utils`
 
-#### Mixed or Release
-
-* Build `XRay.Dependencies.VS2015.sln` on `Release`
-* Build `XRay.Engine.VS2015.sln` on `Mixed` or `Release` except projects from `utils`
+There may be `fatal error C1002` at the linking stage of __xrGame__. In this case try to set [`/Zm`](https://docs.microsoft.com/en-us/cpp/build/reference/zm-specify-precompiled-header-memory-allocation-limit) parameter of compiler and check the swap file of __Windows__
 
 ### Editors
 
-* Build `XRay.Dependencies.VS2015.sln` on `Release`
-* Build `XRay.Engine.VS2015.sln` on `Mixed` except projects from `engine_game`
-* Run `ConvertLibraries.bat`
-* Build `XRay.Editors.BCB6.bpg`
+- Run `contrib/install-elpack.bat` and `contrib/install-other.bat` with administrator permissions
+- Build `XRay.Engine.sln` on `Mixed` and `Win32` without projects from `engine_game`
+- Run `contrib/convert-libraries.bat`
+- Build `XRay.Editors.BCB6.bpg`
+
+## Changelog
+
+All significant changes to this repository are documented in [this](CHANGELOG.md) file
 
 ## License
 
