@@ -82,11 +82,14 @@ u32 GetATIGpuNum()
 	return iGpuNum;
 }
 
-u32 GetGpuNum()
-{
-	u32 res = GetNVGpuNum();
+u32 GetGpuNum() {
+	u32 res = 0;
 
-	res = _max( res, GetATIGpuNum() );
+	if(HW.Caps.id_vendor == 0x1002) { //AMD
+		res = GetATIGpuNum();
+	} else if(HW.Caps.id_vendor == 0x10DE) { //NVIDIA
+		res = GetNVGpuNum();
+	}
 
 	res = _max( res, 2 );
 
