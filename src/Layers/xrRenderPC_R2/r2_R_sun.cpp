@@ -8,7 +8,7 @@ const	float	tweak_ortho_xform_initial_offs	= 1000.f	;	//. ?
 const	float	tweak_guaranteed_range			= 20.f		;	//. ?
 
 //float			OLES_SUN_LIMIT_27_01_07			= 180.f		;
-float			OLES_SUN_LIMIT_27_01_07			= 100.f		;
+float			OLES_SUN_LIMIT_27_01_07			= 90.0f;
 
 //////////////////////////////////////////////////////////////////////////
 // tables to calculate view-frustum bounds in world space
