@@ -241,9 +241,8 @@ void CRenderDevice::on_idle		()
 		return;
 	}
 
-#ifdef DEDICATED_SERVER
 	u32 FrameStartTime = TimerGlobal.GetElapsed_ms();
-#endif
+
 	if (psDeviceFlags.test(rsStatistic))	g_bEnableStatGather	= TRUE;
 	else									g_bEnableStatGather	= FALSE;
 	if(g_loading_events.size())
@@ -316,35 +315,18 @@ void CRenderDevice::on_idle		()
 		seqFrameMT.Process					(rp_Frame);
 	}
 
-#ifdef DEDICATED_SERVER
-	u32 FrameEndTime = TimerGlobal.GetElapsed_ms();
-	u32 FrameTime = (FrameEndTime - FrameStartTime);
-	/*
-	string1024 FPS_str = "";
-	string64 tmp;
-	strcat(FPS_str, "FPS Real - ");
-	if (dwTimeDelta != 0)
-		strcat(FPS_str, ltoa(1000/dwTimeDelta, tmp, 10));
-	else
-		strcat(FPS_str, "~~~");
-
-	strcat(FPS_str, ", FPS Proj - ");
-	if (FrameTime != 0)
-		strcat(FPS_str, ltoa(1000/FrameTime, tmp, 10));
-	else
-		strcat(FPS_str, "~~~");
-	
-*/
-	u32 DSUpdateDelta = 1000/g_svDedicateServerUpdateReate;
-	if (FrameTime < DSUpdateDelta)
+#ifndef DEDICATED_SERVER
+	if(!g_pGameLevel || g_pGamePersistent->m_pMainMenu->IsActive())
+	#endif // DEDICATED_SERVER
 	{
-		Sleep(DSUpdateDelta - FrameTime);
-//		Msg("sleep for %d", DSUpdateDelta - FrameTime);
-//		strcat(FPS_str, ", sleeped for ");
-//		strcat(FPS_str, ltoa(DSUpdateDelta - FrameTime, tmp, 10));
+		u32 FrameEndTime = TimerGlobal.GetElapsed_ms();
+		u32 FrameTime = (FrameEndTime - FrameStartTime);
+
+		u32 DSUpdateDelta = 1000 / g_svDedicateServerUpdateReate;
+		if(FrameTime < DSUpdateDelta) {
+			Sleep(DSUpdateDelta - FrameTime - 1);
+		}
 	}
-//	Msg(FPS_str);
-#endif // #ifdef DEDICATED_SERVER
 
 	if (!b_is_Active)
 		Sleep		(1);
