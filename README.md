@@ -1,6 +1,5 @@
 # IX-Ray
 
-<!-- markdownlint-disable MD033 -->
 <div align="center">
   <p>
     <a href="https://github.com/ixray-team">
@@ -9,12 +8,14 @@
   </p>
 
   <p>
-    <a href="https://github.com/ixray-team/ixray-1.5-stcs/releases/tag/r0.2">
-      <img src="https://img.shields.io/github/v/release/ixray-team/ixray-1.5-stcs?include_prereleases" alt="Latest release" />
+    <a href="https://github.com/ixray-team/ixray-1.5-stcs/releases/tag/r0.3">
+      <img src="https://img.shields.io/github/v/release/ixray-team/ixray-1.5-stcs?include_prereleases&label=Release" alt="Latest release" />
+    </a>
+    <a  href="https://github.com/ixray-team/ixray-1.5-stcs/actions/workflows/build-engine.yml">
+      <img src="https://github.com/ixray-team/ixray-1.5-stcs/actions/workflows/build-engine.yml/badge.svg" alt="Build engine" />
     </a>
   </p>
 </div>
-<!-- markdownlint-enable MD033 -->
 
 Stable repository of the modernized *X-Ray* 1.5 game engine
 
@@ -24,7 +25,6 @@ Stable repository of the modernized *X-Ray* 1.5 game engine
   - MFC
   - C++/CLI
   - Windows SDK 10.0.19041.0
-- Borland C++ Builder 6
 
 ## Building
 
@@ -34,27 +34,10 @@ Download the repository:
 git clone https://github.com/ixray-team/ixray-1.5-stcs.git
 ```
 
-Download needed components:
-
-- DirectX SDK March 2009
-
-Unpack a contents to the root agreeing to merge
-
 ### Engine
-
-#### Debug
 
 - Run `download-dependencies.ps1`
 - Build `XRay.Engine.sln` on `Win32` without projects from `utils`
-
-There may be `fatal error C1002` at the linking stage of __xrGame__. In this case try to set [`/Zm`](https://docs.microsoft.com/en-us/cpp/build/reference/zm-specify-precompiled-header-memory-allocation-limit) parameter of compiler and check the swap file of __Windows__
-
-### Editors
-
-- Run `contrib/install-elpack.bat` and `contrib/install-other.bat` with administrator permissions
-- Build `XRay.Engine.sln` on `Mixed` and `Win32` without projects from `engine_game`
-- Run `contrib/convert-libraries.bat`
-- Build `XRay.Editors.BCB6.bpg`
 
 ## Changelog
 
