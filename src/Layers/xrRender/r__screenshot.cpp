@@ -165,39 +165,44 @@ void CRender::ScreenshotImpl	(ScreenshotMode mode, LPCSTR name, CMemoryWriter* m
 			break;
 		case IRender_interface::SM_FOR_LEVELMAP:
 		case IRender_interface::SM_FOR_CUBEMAP:
-			{
-				VERIFY(!"CRender::Screenshot. This screenshot type is not supported for DX10.");
-				/*
-				string64			t_stemp;
-				string_path			buf;
-				VERIFY				(name);
-				strconcat			(sizeof(buf),buf,"ss_",Core.UserName,"_",timestamp(t_stemp),"_#",name);
-				strcat				(buf,".tga");
-				IWriter*		fs	= FS.w_open	("$screenshots$",buf); R_ASSERT(fs);
-				TGAdesc				p;
-				p.format			= IMG_24B;
+		{
+			ID3DTexture2D* pSrcSmallTexture;
 
-				//	TODO: DX10: This is totally incorrect but mimics 
-				//	original behaviour. Fix later.
-				hr					= pFB->LockRect(&D,0,D3DLOCK_NOSYSLOCK);
-				if(hr!=D3D_OK)		return;
-				hr					= pFB->UnlockRect();
-				if(hr!=D3D_OK)		goto _end_;
+			D3D_TEXTURE2D_DESC desc;
+			ZeroMemory(&desc, sizeof(desc));
+			desc.Width = Device.dwHeight;
+			desc.Height = Device.dwHeight;
+			desc.MipLevels = 1;
+			desc.ArraySize = 1;
+			desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+			desc.SampleDesc.Count = 1;
+			desc.Usage = D3D10_USAGE_DEFAULT;
+			desc.BindFlags = D3D10_BIND_SHADER_RESOURCE;
 
-				// save
-				u32* data			= (u32*)xr_malloc(Device.dwHeight*Device.dwHeight*4);
-				imf_Process			(data,Device.dwHeight,Device.dwHeight,(u32*)D.pBits,Device.dwWidth,Device.dwHeight,imf_lanczos3);
-				p.scanlenght		= Device.dwHeight*4;
-				p.width				= Device.dwHeight;
-				p.height			= Device.dwHeight;
-				p.data				= data;
-				p.maketga			(*fs);
-				xr_free				(data);
+			CHK_DX(HW.pDevice->CreateTexture2D(&desc, nullptr, &pSrcSmallTexture));
 
-				FS.w_close			(fs);
-				*/
+			CHK_DX(D3DX10LoadTextureFromTexture(pSrcTexture,
+				NULL, pSrcSmallTexture));
+
+			// save (logical & physical)
+			ID3DBlob* saved = nullptr;
+			HRESULT hr = D3DX10SaveTextureToMemory(pSrcSmallTexture, D3DX10_IFF_DDS, &saved, 0);
+			if(hr == D3D_OK) {
+				string_path buf;
+				VERIFY(name);
+				strconcat(sizeof(buf), buf, name, ".dds");
+				IWriter *fs = FS.w_open("$screenshots$", buf);
+				if(fs) {
+					fs->w(saved->GetBufferPointer(), (u32)saved->GetBufferSize());
+					FS.w_close(fs);
+				}
 			}
-			break;
+			_RELEASE(saved);
+
+			// cleanup
+			_RELEASE(pSrcSmallTexture);
+		}
+		break;
 	}
 
 	_RELEASE(pSrcTexture);
