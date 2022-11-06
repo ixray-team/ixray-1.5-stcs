@@ -426,9 +426,7 @@ void CGamePersistent::WeathersUpdate()
 
 void CGamePersistent::start_logo_intro		()
 {
-#ifndef MASTER_GOLD
-	if ((0!=strstr(Core.Params,"-nointro")))
-#endif	// #ifdef MASTER_GOLD
+	if (strstr(Core.Params,"-nointro"))
 	{
 		m_intro_event			= 0;
 		Console->Show			();
@@ -458,14 +456,6 @@ void CGamePersistent::update_logo_intro			()
 
 void CGamePersistent::start_game_intro		()
 {
-#ifndef MASTER_GOLD
-	if ((0!=strstr(Core.Params,"-nointro")))
-#endif	// #ifdef MASTER_GOLD
-	{
-		m_intro_event			= 0;
-		return;
-	}
-
 	if (g_pGameLevel && g_pGameLevel->bReady && Device.dwPrecacheFrame<=2){
 		m_intro_event.bind		(this,&CGamePersistent::update_game_intro);
 		if (0==_stricmp(m_game_params.m_new_or_load,"new")){
