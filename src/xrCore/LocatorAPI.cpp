@@ -462,6 +462,7 @@ void CLocatorAPI::unload_archive(CLocatorAPI::archive& A)
 			char* str		= LPSTR(I->name);
 			xr_free			(str);
 			m_files.erase	(I);
+			break;
 		}
 	}	
 	A.close();
@@ -592,16 +593,11 @@ bool CLocatorAPI::Recurse		(const char* path)
 
 	_findclose		( hFile );
 
-	u32				count = rec_files.size();
-	_finddata_t		*buffer = (_finddata_t*)_alloca(count*sizeof(_finddata_t));
-	std::copy		(&*rec_files.begin(), &*rec_files.begin() + count, buffer);
-
-//.	std::copy		(&*rec_files.begin(),&*rec_files.end(),buffer);
-
+	FFVec buffer(rec_files);
 	rec_files.clear();
-	std::sort		(buffer, buffer + count, pred_str_ff);
-	for (_finddata_t *I = buffer, *E = buffer + count; I != E; ++I)
-		ProcessOne	(path,I);
+	std::sort		(buffer.begin(), buffer.end(), pred_str_ff);
+	for (FFIt I = buffer.begin(), E = buffer.end(); I != E; ++I)
+		ProcessOne	(path, &*I);
 
 	// insert self
     if (path&&path[0])\
