@@ -68,9 +68,9 @@ xr_token							qminmax_sm_token					[ ]={
 	{ 0,							0												}
 };
 
-//	“Off”
-//	“DX10.0 style [Standard]”
-//	“DX10.1 style [Higher quality]”
+//	ï¿½Offï¿½
+//	ï¿½DX10.0 style [Standard]ï¿½
+//	ï¿½DX10.1 style [Higher quality]ï¿½
 
 // Common
 extern int			psSkeletonUpdate;
@@ -125,6 +125,8 @@ float		ps_r2_tf_Mipbias			= 0.0f	;
 
 // R2-specific
 Flags32		ps_r2_ls_flags				= { R2FLAG_SUN 
+	| R2FLAG_SUN_FOCUS
+	| R2FLAG_SUN_TSM
 	//| R2FLAG_SUN_IGNORE_PORTALS
 	| R2FLAG_EXP_DONT_TEST_UNSHADOWED 
 	| R2FLAG_USE_NVSTENCIL | R2FLAG_EXP_SPLIT_SCENE 
@@ -164,17 +166,17 @@ float		ps_r2_GI_refl				= .9f;				// .9f
 float		ps_r2_ls_depth_scale		= 1.00001f;			// 1.00001f
 float		ps_r2_ls_depth_bias			= -0.0001f;			// -0.0001f
 float		ps_r2_ls_squality			= 1.0f;				// 1.00f
-float		ps_r2_sun_tsm_projection	= 0.18f;			// 0.18f
-float		ps_r2_sun_tsm_bias			= -0.05f;			// 
-float		ps_r2_sun_near				= 12.f;				// 12.0f
+float		ps_r2_sun_tsm_projection	= 0.6f;				// 0.6f
+float		ps_r2_sun_tsm_bias			= -0.3f;			// -0.3f
+float		ps_r2_sun_near				= 16.f;				// 12.0f
 
 extern float OLES_SUN_LIMIT_27_01_07;	//	actually sun_far
 
-float		ps_r2_sun_near_border		= 0.75f;			// 1.0f
-float		ps_r2_sun_depth_far_scale	= 1.00000f;			// 1.00001f
-float		ps_r2_sun_depth_far_bias	= 0.00000f;			// -0.0000f
-float		ps_r2_sun_depth_near_scale	= 1.00001f;			// 1.00001f
-float		ps_r2_sun_depth_near_bias	= -0.00004f;		// -0.00005f
+float		ps_r2_sun_near_border		= 1.0f;			// 1.0f
+float		ps_r2_sun_depth_far_scale	= 1.0f;			// 1.0f
+float		ps_r2_sun_depth_far_bias	= 0.0f;			// 0.0f
+float		ps_r2_sun_depth_near_scale	= 1.0f;			// 1.0f
+float		ps_r2_sun_depth_near_bias	= 0.0f;			// 0.0f
 float		ps_r2_sun_lumscale			= 1.0f;				// 1.0f
 float		ps_r2_sun_lumscale_hemi		= 1.0f;				// 1.0f
 float		ps_r2_sun_lumscale_amb		= 1.0f;
