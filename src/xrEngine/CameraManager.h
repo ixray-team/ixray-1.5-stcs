@@ -102,7 +102,7 @@ struct ENGINE_API SPPInfo {
 	void		validate(LPCSTR str);
 };
 
-using EffectorCamVec = xr_vector<CEffectorCam*>;
+using EffectorCamVec = xr_list<CEffectorCam*>;
 using EffectorCamIt = EffectorCamVec::iterator;
 
 using EffectorPPVec = xr_vector<CEffectorPP*>;
