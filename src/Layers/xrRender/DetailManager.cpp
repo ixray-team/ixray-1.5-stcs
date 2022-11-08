@@ -185,11 +185,15 @@ extern ECORE_API float r_ssaDISCARD;
 
 void CDetailManager::UpdateVisibleM()
 {
-	Fvector		EYE				= Device.vCameraPosition;
+	Fvector		EYE				= Device.vCameraPosition_saved;
 	
 	CFrustum	View;
-	View.CreateFromMatrix		(Device.mFullTransform, FRUSTUM_P_LRTB + FRUSTUM_P_FAR);
-
+	View.CreateFromMatrix		(Device.mFullTransform_saved, FRUSTUM_P_LRTB + FRUSTUM_P_FAR);
+	
+	CFrustum View_old;
+	Fmatrix Viewm_old = Device.mFullTransform;
+	View_old.CreateFromMatrix(Viewm_old, FRUSTUM_P_LRTB + FRUSTUM_P_FAR);
+	
 	float fade_limit			= dm_fade;	fade_limit=fade_limit*fade_limit;
 	float fade_start			= 1.f;		fade_start=fade_start*fade_start;
 	float fade_range			= fade_limit-fade_start;
@@ -311,7 +315,7 @@ void __stdcall	CDetailManager::MT_CALC		()
 	if (m_frame_calc!=Device.dwFrame)	
 		if ((m_frame_rendered+1)==Device.dwFrame) //already rendered
 		{
-			Fvector		EYE				= Device.vCameraPosition;
+			Fvector		EYE				= Device.vCameraPosition_saved;
 			int s_x	= iFloor			(EYE.x/dm_slot_size+.5f);
 			int s_z	= iFloor			(EYE.z/dm_slot_size+.5f);
 
