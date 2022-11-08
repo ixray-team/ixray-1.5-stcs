@@ -1547,10 +1547,33 @@ private:
 };
 
 #endif
+
+class CCC_SetWeather : public IConsole_Command {
+public:
+	CCC_SetWeather(LPCSTR N) : IConsole_Command(N) {
+	}
+
+	virtual void Execute(LPCSTR weather_name) {
+		if(!g_pGamePersistent && !OnServer()) {
+			return;
+		}
+
+		if(weather_name && weather_name[0]) {
+			g_pGamePersistent->Environment().SetWeather(weather_name, IsGameTypeSingle());
+		}
+	}
+
+	virtual void Info(TInfo &I) {
+		strcpy_s(I, "Set new weather");
+	}
+};
+
 void CCC_RegisterCommands()
 {
 	// options
 	g_OptConCom.Init();
+
+	CMD1(CCC_SetWeather, "set_weather");
 
 	CMD1(CCC_MemStats,			"stat_memory"			);
 	// game
