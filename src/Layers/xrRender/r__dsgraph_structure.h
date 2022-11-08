@@ -42,6 +42,7 @@ public:
 	R_dsgraph::mapHUD_T											mapHUD;
 	R_dsgraph::mapLOD_T											mapLOD;
 	R_dsgraph::mapSorted_T										mapDistort;
+	R_dsgraph::mapHUD_T											mapHUDSorted;
 
 #if RENDER!=R_R1
 	R_dsgraph::mapSorted_T										mapWmark;			// sorted
@@ -145,10 +146,12 @@ public:
 		mapHUD.destroy			();
 		mapLOD.destroy			();
 		mapDistort.destroy		();
+		mapHUDSorted.destroy();
 
 #if RENDER!=R_R1
 		mapWmark.destroy		();
 		mapEmissive.destroy		();
+		mapHUDEmissive.destroy();
 #endif
 	}
 
@@ -168,7 +171,7 @@ public:
 	void		r_dsgraph_render_subspace						(IRender_Sector* _sector, CFrustum* _frustum, Fmatrix& mCombined, Fvector& _cop, BOOL _dynamic, BOOL _precise_portals=FALSE	);
 	void		r_dsgraph_render_subspace						(IRender_Sector* _sector, Fmatrix& mCombined, Fvector& _cop, BOOL _dynamic, BOOL _precise_portals=FALSE	);
 	void		r_dsgraph_render_R1_box							(IRender_Sector* _sector, Fbox& _bb, int _element);
-
+	
 public:
 	virtual		u32						memory_usage			()
 	{
