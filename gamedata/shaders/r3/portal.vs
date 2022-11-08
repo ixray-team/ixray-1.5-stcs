@@ -26,6 +26,7 @@ v2p main (v_vert v)
 	float scale = s_tonemap.Load(int3(0,0,0)).x;
 //	float scale = s_tonemap.Load(int3(1,1,0)).x;
 	o.c.rgb		= o.c.rgb*scale;      		// copy color, pre-scale by tonemap //float4 ( v.c.rgb*scale*2, v.c.a );
+	o.c.a		= o.fog;
 
 	return o;
 	
