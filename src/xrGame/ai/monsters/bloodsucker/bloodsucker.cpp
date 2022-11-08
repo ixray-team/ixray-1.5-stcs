@@ -309,11 +309,11 @@ void  CAI_Bloodsucker::BoneCallback(CBoneInstance *B)
 
 void CAI_Bloodsucker::vfAssignBones()
 {
-	// Установка callback на кости
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ callback пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 
 	bone_spine =	&smart_cast<IKinematics*>(Visual())->LL_GetBoneInstance(smart_cast<IKinematics*>(Visual())->LL_BoneID("bip01_spine"));
 	bone_head =		&smart_cast<IKinematics*>(Visual())->LL_GetBoneInstance(smart_cast<IKinematics*>(Visual())->LL_BoneID("bip01_head"));
-	if(!PPhysicsShell())//нельзя ставить колбеки, если создан физ шел - у него стоят свои колбеки!!!
+	if(!PPhysicsShell())//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ - пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ!!!
 	{
 		bone_spine->set_callback(bctCustom,BoneCallback,this);
 		bone_head->set_callback(bctCustom,BoneCallback,this);
@@ -330,15 +330,15 @@ void CAI_Bloodsucker::vfAssignBones()
 
 void CAI_Bloodsucker::LookDirection(Fvector to_dir, float bone_turn_speed)
 {
-	//// получаем вектор направления к источнику звука и его мировые углы
+	//// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 	//float		yaw,pitch;
 	//to_dir.getHP(yaw,pitch);
 
-	//// установить параметры вращения по yaw
-	//float cur_yaw = -movement().m_body.current.yaw;						// текущий мировой угол монстра
-	//float bone_angle;											// угол для боны	
+	//// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ yaw
+	//float cur_yaw = -movement().m_body.current.yaw;						// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	//float bone_angle;											// пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ	
 
-	//float dy = _abs(angle_normalize_signed(yaw - cur_yaw));		// дельта, на которую нужно поворачиваться
+	//float dy = _abs(angle_normalize_signed(yaw - cur_yaw));		// пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 
 	//if (angle_difference(cur_yaw,yaw) <= MAX_BONE_ANGLE) {		// bone turn only
 	//	bone_angle = dy;
@@ -354,7 +354,7 @@ void CAI_Bloodsucker::LookDirection(Fvector to_dir, float bone_turn_speed)
 	//Bones.SetMotion(bone_spine, AXIS_X, bone_angle, bone_turn_speed, 100);
 	//Bones.SetMotion(bone_head,	AXIS_X, bone_angle, bone_turn_speed, 100);
 
-	//// установить параметры вращения по pitch
+	//// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ pitch
 	//clamp(pitch, -MAX_BONE_ANGLE, MAX_BONE_ANGLE);
 	//pitch /= 2; 
 
@@ -477,7 +477,7 @@ void CAI_Bloodsucker::post_fsm_update()
 
 	//EMonsterState state = StateMan->get_state_type();
 	//
-	// установить агрессивность
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	//bool aggressive =	(is_state(state, eStateAttack)) || 
 	//					(is_state(state, eStatePanic))	|| 
 	//					(is_state(state, eStateHitted));
@@ -676,10 +676,6 @@ bool CAI_Bloodsucker::in_solid_state ()
 
 void CAI_Bloodsucker::Hit(SHit* pHDS)
 {
-	if ( state_invisible )
-	{
-		return;
-	}
 	if ( !collision_hit_off )
 	{
 		inherited::Hit(pHDS);
