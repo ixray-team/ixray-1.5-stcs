@@ -12,7 +12,7 @@ struct   vf
         half3        v2point        :        TEXCOORD6        ;
 	float4      tctexgen    :         TEXCOORD7        ;
            half4        c0                :          COLOR0                ;
-//        float          fog        :         FOG                ;
+        float          fog        :         FOG                ;
 };
 
 uniform sampler2D	s_nmap;
@@ -45,7 +45,7 @@ half4   main         ( v2p I )  : COLOR
 }
 */
 
-half4   main_ps_2_0  ( vf I )          : COLOR
+half4 main( vf I ) : COLOR
 {
 	half4	base	= tex2D (s_base,I.tbase);
 	half3	n0	= tex2D (s_nmap,I.tnorm0);
@@ -120,11 +120,18 @@ half4   main_ps_2_0  ( vf I )          : COLOR
 
 #endif	//	USE_SOFT_WATER
 
-	return  half4   (final, alpha*I.c0.a*I.c0.a )                ;
+	//	Fogging
+	final = lerp(fog_color, final, I.fog);
+	alpha *= I.fog*I.fog;
+
+	return  float4(final, alpha );
 
 #else	//	NEED_SOFT_WATER
 
-        return  half4   (final, 1 )                ;
+	//	Fogging
+	final = lerp(fog_color, final, I.fog);
+	
+	return  float4(final, I.fog*I.fog);
 
 #endif	//	NEED_SOFT_WATER
 }
