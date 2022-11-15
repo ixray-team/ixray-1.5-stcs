@@ -93,12 +93,14 @@ void CUIHudStatesWnd::InitFromXml( CUIXml& xml, LPCSTR path )
 	m_resist_back[ALife::infl_fire] = UIHelper::CreateStatic( xml, "resist_back_fire", this );
 	m_resist_back[ALife::infl_acid] = UIHelper::CreateStatic( xml, "resist_back_acid", this );
 	m_resist_back[ALife::infl_psi]  = UIHelper::CreateStatic( xml, "resist_back_psi", this );
+	m_resist_back_starvation = UIHelper::CreateStatic(xml, "resist_back_starvation", this);
 	// electra = no has CStatic!!
 
 	m_indik[ALife::infl_rad]  = UIHelper::CreateStatic( xml, "indik_rad", this );
 	m_indik[ALife::infl_fire] = UIHelper::CreateStatic( xml, "indik_fire", this );
 	m_indik[ALife::infl_acid] = UIHelper::CreateStatic( xml, "indik_acid", this );
 	m_indik[ALife::infl_psi]  = UIHelper::CreateStatic( xml, "indik_psi", this );
+	m_ind_starvation = UIHelper::CreateStatic(xml, "indicator_starvation", this);
 
 	m_lanim_name._set( xml.ReadAttrib( "indik_rad", 0, "light_anim", "" ) );
 
@@ -444,12 +446,12 @@ void CUIHudStatesWnd::UpdateZones()
 			if ( dist_to_zone < rad_zone )
 			{
 				fRelPow *= 0.3f;
-				fRelPow *= ( 2.5f - 2.0f * power ); // звук зависит от силы зоны
+				fRelPow *= ( 2.5f - 2.0f * power ); // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 			}
 		}
 		clamp( fRelPow, 0.0f, 1.0f );
 
-		//определить текущую частоту срабатывания сигнала
+		//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		zone_info.cur_period = zone_type->freq.x + (zone_type->freq.y - zone_type->freq.x) * (fRelPow * fRelPow);
 		
 		//string256	buff_z;

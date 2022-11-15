@@ -27,6 +27,8 @@ private:
 
 	CUIStatic*			m_resist_back[it_max];
 	CUIStatic*			m_indik[it_max];
+	CUIStatic* m_ind_starvation;
+	CUIStatic* m_resist_back_starvation;
 
 	CUIStatic*			m_ui_weapon_sign_ammo;
 	CUIStatic*			m_ui_weapon_icon;
