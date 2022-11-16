@@ -16,6 +16,11 @@
 #include "UIInventoryUtilities.h"
 #include "../HUDManager.h"
 
+static const u32 c_white = color_rgba(255, 255, 255, 255);
+static const u32 c_green = color_rgba(0, 255, 0, 255);
+static const u32 c_yellow = color_rgba(255, 255, 0, 255);
+static const u32 c_red = color_rgba(255, 0, 0, 255);
+
 CUIHudStatesWnd::CUIHudStatesWnd()
 {
 	m_last_time = Device.dwTimeGlobal;
@@ -446,12 +451,12 @@ void CUIHudStatesWnd::UpdateZones()
 			if ( dist_to_zone < rad_zone )
 			{
 				fRelPow *= 0.3f;
-				fRelPow *= ( 2.5f - 2.0f * power ); // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
+				fRelPow *= ( 2.5f - 2.0f * power ); // звук зависит от силы зоны
 			}
 		}
 		clamp( fRelPow, 0.0f, 1.0f );
 
-		//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+		//определить текущую частоту срабатывания сигнала
 		zone_info.cur_period = zone_type->freq.x + (zone_type->freq.y - zone_type->freq.x) * (fRelPow * fRelPow);
 		
 		//string256	buff_z;
@@ -471,9 +476,29 @@ void CUIHudStatesWnd::UpdateZones()
 
 void CUIHudStatesWnd::UpdateIndicators( CActor* actor )
 {
+	UpdateSatiety(actor);
+
 	for ( int i = 0; i < it_max ; ++i ) // it_max = ALife::infl_max_count-1
 	{
 		UpdateIndicatorType( actor, (ALife::EInfluenceType)i );
+	}
+}
+
+void CUIHudStatesWnd::UpdateSatiety(CActor* actor) {
+	float satiety = actor->conditions().GetSatiety();
+	float satiety_critical = actor->conditions().SatietyCritical();
+	float satiety_koef = (satiety - satiety_critical) / (satiety >= satiety_critical ? 1 - satiety_critical : satiety_critical);
+	
+	if (satiety_koef > 0.5) {
+		m_ind_starvation->SetColor(c_white);
+	} else {
+		if (satiety_koef > 0.0f) {
+			m_ind_starvation->SetColor(c_green);
+		} else if (satiety_koef > -0.5f) {
+			m_ind_starvation->SetColor(c_yellow);
+		} else {
+			m_ind_starvation->SetColor(c_red);
+		}
 	}
 }
 
@@ -485,10 +510,6 @@ void CUIHudStatesWnd::UpdateIndicatorType( CActor* actor, ALife::EInfluenceType 
 		return;
 	}
 
-	u32 c_white  = color_rgba( 255, 255, 255, 255 );
-	u32 c_green  = color_rgba( 0, 255, 0, 255 );
-	u32 c_yellow = color_rgba( 255, 255, 0, 255 );
-	u32 c_red    = color_rgba( 255, 0, 0, 255 );
 
 	float           hit_power = m_zone_cur_power[type];
 	ALife::EHitType hit_type  = m_zone_hit_type[type];
