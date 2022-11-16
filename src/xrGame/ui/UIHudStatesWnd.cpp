@@ -16,6 +16,11 @@
 #include "UIInventoryUtilities.h"
 #include "../HUDManager.h"
 
+static const u32 c_white = color_rgba(255, 255, 255, 255);
+static const u32 c_green = color_rgba(0, 255, 0, 255);
+static const u32 c_yellow = color_rgba(255, 255, 0, 255);
+static const u32 c_red = color_rgba(255, 0, 0, 255);
+
 CUIHudStatesWnd::CUIHudStatesWnd()
 {
 	m_last_time = Device.dwTimeGlobal;
@@ -93,12 +98,14 @@ void CUIHudStatesWnd::InitFromXml( CUIXml& xml, LPCSTR path )
 	m_resist_back[ALife::infl_fire] = UIHelper::CreateStatic( xml, "resist_back_fire", this );
 	m_resist_back[ALife::infl_acid] = UIHelper::CreateStatic( xml, "resist_back_acid", this );
 	m_resist_back[ALife::infl_psi]  = UIHelper::CreateStatic( xml, "resist_back_psi", this );
+	m_resist_back_starvation = UIHelper::CreateStatic(xml, "resist_back_starvation", this);
 	// electra = no has CStatic!!
 
 	m_indik[ALife::infl_rad]  = UIHelper::CreateStatic( xml, "indik_rad", this );
 	m_indik[ALife::infl_fire] = UIHelper::CreateStatic( xml, "indik_fire", this );
 	m_indik[ALife::infl_acid] = UIHelper::CreateStatic( xml, "indik_acid", this );
 	m_indik[ALife::infl_psi]  = UIHelper::CreateStatic( xml, "indik_psi", this );
+	m_ind_starvation = UIHelper::CreateStatic(xml, "indicator_starvation", this);
 
 	m_lanim_name._set( xml.ReadAttrib( "indik_rad", 0, "light_anim", "" ) );
 
@@ -469,9 +476,29 @@ void CUIHudStatesWnd::UpdateZones()
 
 void CUIHudStatesWnd::UpdateIndicators( CActor* actor )
 {
+	UpdateSatiety(actor);
+
 	for ( int i = 0; i < it_max ; ++i ) // it_max = ALife::infl_max_count-1
 	{
 		UpdateIndicatorType( actor, (ALife::EInfluenceType)i );
+	}
+}
+
+void CUIHudStatesWnd::UpdateSatiety(CActor* actor) {
+	float satiety = actor->conditions().GetSatiety();
+	float satiety_critical = actor->conditions().SatietyCritical();
+	float satiety_koef = (satiety - satiety_critical) / (satiety >= satiety_critical ? 1 - satiety_critical : satiety_critical);
+	
+	if (satiety_koef > 0.5) {
+		m_ind_starvation->SetColor(c_white);
+	} else {
+		if (satiety_koef > 0.0f) {
+			m_ind_starvation->SetColor(c_green);
+		} else if (satiety_koef > -0.5f) {
+			m_ind_starvation->SetColor(c_yellow);
+		} else {
+			m_ind_starvation->SetColor(c_red);
+		}
 	}
 }
 
@@ -483,10 +510,6 @@ void CUIHudStatesWnd::UpdateIndicatorType( CActor* actor, ALife::EInfluenceType 
 		return;
 	}
 
-	u32 c_white  = color_rgba( 255, 255, 255, 255 );
-	u32 c_green  = color_rgba( 0, 255, 0, 255 );
-	u32 c_yellow = color_rgba( 255, 255, 0, 255 );
-	u32 c_red    = color_rgba( 255, 0, 0, 255 );
 
 	float           hit_power = m_zone_cur_power[type];
 	ALife::EHitType hit_type  = m_zone_hit_type[type];
