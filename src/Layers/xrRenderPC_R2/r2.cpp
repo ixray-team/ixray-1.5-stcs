@@ -300,6 +300,7 @@ void					CRender::destroy				()
 	xr_delete					(Target);
 	PSLibrary.OnDestroy			();
 	Device.seqFrame.Remove		(this);
+	r_dsgraph_destroy();
 }
 
 void CRender::reset_begin()
