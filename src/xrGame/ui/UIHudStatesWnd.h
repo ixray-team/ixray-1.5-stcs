@@ -81,6 +81,7 @@ public:
 
 			void 	UpdateZones			();
 			void	UpdateIndicators	( CActor* actor );
+			void UpdateSatiety(CActor* actor);
 
 			float	get_zone_cur_power	( ALife::EHitType hit_type );
 			float	get_main_sensor_value()	{ return m_radia_hit; }
