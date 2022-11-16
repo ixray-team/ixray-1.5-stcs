@@ -43,6 +43,9 @@ public:
 	IC float				GetPower				() const			{return m_fPower;}	
 	IC float				GetRadiation			() const			{return m_fRadiation;}
 	IC float				GetPsyHealth			() const			{return m_fPsyHealth;}
+	IC float GetSatiety() const {
+		return 1.0f;
+	}
 
 	IC float 				GetEntityMorale			() const			{return m_fEntityMorale;}
 
@@ -50,7 +53,7 @@ public:
 
 	virtual bool 			IsLimping				() const;
 
-	virtual void			ChangeSatiety			(float value)		{};
+	virtual void			ChangeSatiety			(const float value)		{};
 	void 					ChangeHealth			(float value);
 	void 					ChangePower				(float value);
 	void 					ChangeRadiation			(float value);
