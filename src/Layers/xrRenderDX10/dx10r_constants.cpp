@@ -248,11 +248,17 @@ BOOL R_constant_table::parseResources(ID3D10ShaderReflection* pReflection, int R
 
 		//u16	r_index = u16( ResDesc.BindPoint + ((destination&1)? 0 : CTexture::rstVertex) );
 
-		u16	r_index = u16( ResDesc.BindPoint + 
-			((destination&RC_dest_pixel) 
-			? CTexture::rstPixel : (destination&RC_dest_vertex)
-			? CTexture::rstVertex : CTexture::rstGeometry)
-			);
+		u16	r_index = u16(-1);
+
+		if (destination & RC_dest_pixel) {
+			r_index = u16(ResDesc.BindPoint + CTexture::rstPixel);
+		} else if (destination & RC_dest_vertex) {
+			r_index = u16(ResDesc.BindPoint + CTexture::rstVertex);
+		} else if (destination & RC_dest_geometry) {
+			r_index = u16(ResDesc.BindPoint + CTexture::rstGeometry);
+		} else {
+			VERIFY(0);
+		}
 
 		ref_constant	C		=	get	(ResDesc.Name);
 		if (!C)	
