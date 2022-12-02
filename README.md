@@ -8,7 +8,7 @@
   </p>
 
   <p>
-    <a href="https://github.com/ixray-team/ixray-1.5-stcs/releases/tag/r0.3">
+    <a href="https://github.com/ixray-team/ixray-1.5-stcs/releases/tag/r0.4">
       <img src="https://img.shields.io/github/v/release/ixray-team/ixray-1.5-stcs?include_prereleases&label=Release" alt="Latest release" />
     </a>
     <a  href="https://github.com/ixray-team/ixray-1.5-stcs/actions/workflows/build-engine.yml">
@@ -17,7 +17,7 @@
   </p>
 </div>
 
-Stable repository of the modernized *X-Ray* 1.5 game engine
+Stable repository of the modernized _X-Ray_ 1.5 game engine
 
 ## Requirements
 
