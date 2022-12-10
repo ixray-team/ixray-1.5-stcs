@@ -1,12 +1,12 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "Blender_light_direct.h"
+#include "blender_light_direct_cascade.h"
 
-CBlender_accum_direct::CBlender_accum_direct	()	{	description.CLS		= 0;	}
-CBlender_accum_direct::~CBlender_accum_direct	()	{	}
+CBlender_accum_direct_cascade::CBlender_accum_direct_cascade	()	{	description.CLS		= 0;	}
+CBlender_accum_direct_cascade::~CBlender_accum_direct_cascade	()	{	}
 
-void	CBlender_accum_direct::Compile(CBlender_Compile& C)
+void	CBlender_accum_direct_cascade::Compile(CBlender_Compile& C)
 {
 	IBlender::Compile		(C);
 
@@ -20,7 +20,7 @@ void	CBlender_accum_direct::Compile(CBlender_Compile& C)
 	{
 	case SE_SUN_NEAR:		// near pass - enable Z-test to perform depth-clipping
 	case SE_SUN_MIDDLE:
-		C.r_Pass			("accum_volume",	"accum_sun_near",	false,	TRUE,	FALSE,blend,D3DBLEND_ONE,dest);
+		C.r_Pass			("accum_volume",	"accum_sun_cascade",	false,	TRUE,	FALSE,blend,D3DBLEND_ONE,dest);
 		C.PassSET_ZB		(TRUE,FALSE,TRUE	);	// force inverted Z-Buffer
 		C.r_Sampler_rtf		("s_position",		r2_RT_P			);
 		C.r_Sampler_rtf		("s_normal",		r2_RT_N			);
@@ -33,12 +33,19 @@ void	CBlender_accum_direct::Compile(CBlender_Compile& C)
 				C.r_Sampler_rtf		("s_smap",r2_RT_smap_depth	);
 			}
 		}
-		else				C.r_Sampler_rtf		("s_smap",r2_RT_smap_surf	);
+		else				
+			C.r_Sampler_rtf		("s_smap",r2_RT_smap_surf	);
+
 		jitter				(C);
+// 		{
+// 			u32 s = C.i_Sampler("s_smap");
+// 			C.i_Address		(s, D3DTADDRESS_BORDER);	
+// 			C.i_BorderColor	(s, D3DCOLOR_ARGB(255, 255, 255, 255));
+// 		}
 		C.r_End				();
 		break;
 	case SE_SUN_FAR:		// far pass, only stencil clipping performed
-		C.r_Pass			("accum_volume",			"accum_sun_near",	false,	TRUE,	FALSE,blend,D3DBLEND_ONE,dest);
+		C.r_Pass			("accum_volume",			"accum_sun_cascade_far",	false,	TRUE,	FALSE,blend,D3DBLEND_ONE,dest);
 		C.r_Sampler_rtf		("s_position",		r2_RT_P			);
 		C.r_Sampler_rtf		("s_normal",		r2_RT_N			);
 		C.r_Sampler_clw		("s_material",		r2_material		);
@@ -50,15 +57,11 @@ void	CBlender_accum_direct::Compile(CBlender_Compile& C)
 		}
 		else				C.r_Sampler_rtf		("s_smap",r2_RT_smap_surf	);
 		jitter				(C);
-		C.r_End				();
-		break;
-	case SE_SUN_LUMINANCE:	// luminance pass
-		C.r_Pass			("null",			"accum_sun",		false,	FALSE,	FALSE);
-		C.r_Sampler_rtf		("s_position",		r2_RT_P			);
-		C.r_Sampler_rtf		("s_normal",		r2_RT_N			);
-		C.r_Sampler_clw		("s_material",		r2_material		);
-		C.r_Sampler_clf		("s_smap",			r2_RT_generic0	);
-		jitter				(C);
+		{
+			u32 s = C.i_Sampler("s_smap");
+			C.i_Address		(s, D3DTADDRESS_BORDER);
+			C.i_BorderColor	(s, D3DCOLOR_ARGB(255, 255, 255, 255));
+		}
 		C.r_End				();
 		break;
 	}

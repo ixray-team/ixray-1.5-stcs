@@ -17,6 +17,7 @@
 #include "../xrRender/light_db.h"
 #include "light_render_direct.h"
 #include "../xrRender/LightTrack.h"
+#include "../xrRender/r_sun_cascades.h"
 
 #include "../../xrEngine/irenderable.h"
 #include "../../xrEngine/fmesh.h"
@@ -129,6 +130,8 @@ public:
 	u32															q_sync_count	;
 
 	bool														m_bMakeAsyncSS;
+	xr_vector<sun::cascade> m_sun_cascades;
+
 private:
 	// Loading / Unloading
 	void							LoadBuffers					(CStreamReader	*fs,	BOOL	_alternative);
@@ -150,10 +153,11 @@ public:
 	void							render_smap_direct			(Fmatrix& mCombined);
 	void							render_indirect				(light*			L	);
 	void							render_lights				(light_Package& LP	);
-	void							render_sun					();
-	void							render_sun_near				();
-	void							render_sun_filtered			();
 	void							render_menu					();
+	void render_sun_cascade(u32 cascade_ind);
+	void init_cacades();
+	void render_sun_cascades();
+
 public:
 	ShaderElement*					rimp_select_sh_static		(dxRender_Visual	*pVisual, float cdist_sq);
 	ShaderElement*					rimp_select_sh_dynamic		(dxRender_Visual	*pVisual, float cdist_sq);
