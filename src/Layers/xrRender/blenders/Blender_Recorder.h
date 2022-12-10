@@ -95,6 +95,7 @@ public:
 	void				i_dx10Filter_Mag	(u32 s, u32		f);
 	void				i_dx10FilterAnizo	(u32 s, BOOL	value);
 	void				i_dx10Filter		(u32 s, u32 _min, u32 _mip, u32 _mag);
+	void				i_dx10BorderColor	(u32 s, u32 color);
 #else	//	USE_DX10
 	u32					i_Sampler			(LPCSTR name);
 	void				i_Texture			(u32 s, LPCSTR	name);

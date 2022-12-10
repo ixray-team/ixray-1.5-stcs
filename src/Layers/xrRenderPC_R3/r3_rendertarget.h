@@ -175,6 +175,7 @@ private:
 	ref_geom					g_combine;
 	ref_geom					g_combine_VP;		// xy=p,zw=tc
 	ref_geom					g_combine_2UV;
+	ref_geom					g_combine_cuboid;
 	ref_geom					g_aa_blur;
 	ref_geom					g_aa_AA;
 	ref_shader				s_combine_dbg_0;
@@ -266,6 +267,7 @@ public:
 
 	void						draw_volume				(light* L);
 	void						accum_direct			(u32	sub_phase);
+	void						accum_direct_cascade	(u32	sub_phase, Fmatrix& xform, Fmatrix& xform_prev, float fBias );
 	void						accum_direct_f			(u32	sub_phase);
 	void						accum_direct_lum		();
 	void						accum_direct_blend		();
