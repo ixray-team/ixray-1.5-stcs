@@ -2,9 +2,9 @@
 #include "Text_Console.h"
 #include "line_editor.h"
 
-extern const char *		ioc_prompt;
-extern const char *		ch_cursor;
-int g_svTextConsoleUpdateRate = 10;
+extern char const * const ioc_prompt;
+extern char const * const ch_cursor;
+int g_svTextConsoleUpdateRate = 1;
 
 CTextConsole::CTextConsole()
 {
@@ -187,7 +187,7 @@ void CTextConsole::Destroy()
 	DestroyWindow( m_hConsoleWnd );
 }
 
-void CTextConsole::OnRender() {} //disable ÑConsole::OnRender()
+void CTextConsole::OnRender() {} //disable ï¿½Console::OnRender()
 
 void CTextConsole::OnPaint()
 {

@@ -23,12 +23,36 @@ xr_token							vid_bpp_token							[ ]={
 	{ 0,							0											}
 };
 //-----------------------------------------------------------------------
+
+void IConsole_Command::add_to_LRU(shared_str const& arg) {
+	if (arg.size() == 0 || bEmptyArgsHandled) {
+		return;
+	}
+
+	bool dup = (std::find(m_LRU.begin(), m_LRU.end(), arg) != m_LRU.end());
+	if (!dup) {
+		m_LRU.push_back(arg);
+		if (m_LRU.size() > LRU_MAX_COUNT) {
+			m_LRU.erase(m_LRU.begin());
+		}
+	}
+}
+
+void  IConsole_Command::add_LRU_to_tips(vecTips& tips) {
+	vecLRU::reverse_iterator it_rb = m_LRU.rbegin();
+	vecLRU::reverse_iterator it_re = m_LRU.rend();
+	for (; it_rb != it_re; ++it_rb) {
+		tips.push_back((*it_rb));
+	}
+}
+
+// =======================================================
+
 class CCC_Quit : public IConsole_Command
 {
 public:
 	CCC_Quit(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = TRUE; };
 	virtual void Execute(LPCSTR args) {
-//		TerminateProcess(GetCurrentProcess(),0);
 		Console->Hide();
 		Engine.Event.Defer("KERNEL:disconnect");
 		Engine.Event.Defer("KERNEL:quit");
@@ -143,7 +167,8 @@ public:
 		Log("Key: Insert           === Toggle mode <Insert> ");
 		Log("Key: Back / Delete          === Delete symbol left / right ");
 
-		Log("Key: Up   / Down            === Prev / Next executing command ");
+		Log("Key: Up   / Down            === Prev / Next command in tips list ");
+		Log("Key: Ctrl + Up / Ctrl + Down === Prev / Next executing command ");
 		Log("Key: Left, Right, Home, End {+Shift/+Ctrl}       === Navigation in text ");
 		Log("Key: PageUp / PageDown      === Scrolling history ");
 		Log("Key: Tab  / Shift + Tab     === Next / Prev possible command from list");
@@ -365,6 +390,29 @@ public :
 		strcpy_s(I,sizeof(I),"change screen resolution WxH");
 	}
 
+	virtual void fill_tips(vecTips& tips, u32 mode) {
+		TStatus  str, cur;
+		Status(cur);
+
+		bool res = false;
+		xr_token* tok = GetToken();
+		while (tok->name && !res) {
+			if (!xr_strcmp(tok->name, cur)) {
+				sprintf_s(str, sizeof(str), "%s  (current)", tok->name);
+				tips.push_back(str);
+				res = true;
+			}
+			tok++;
+		}
+		if (!res) {
+			tips.push_back("---  (current)");
+		}
+		tok = GetToken();
+		while (tok->name) {
+			tips.push_back(tok->name);
+			tok++;
+		}
+	}
 
 };
 //-----------------------------------------------------------------------
