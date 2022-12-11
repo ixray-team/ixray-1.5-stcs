@@ -175,6 +175,10 @@ void CInput::SetKBDAcquire( BOOL bAcquire )
 BOOL b_altF4 = FALSE;
 void CInput::KeyUpdate	( )
 {
+	if (b_altF4) { 
+		return;
+	}
+
 	HRESULT						hr;
 	DWORD dwElements			= KEYBOARDBUFFERSIZE;
 	DIDEVICEOBJECTDATA			od[KEYBOARDBUFFERSIZE];
@@ -183,36 +187,80 @@ void CInput::KeyUpdate	( )
 	VERIFY(pKeyboard);
 
 	hr = pKeyboard->GetDeviceData( sizeof(DIDEVICEOBJECTDATA), &od[0], &dwElements, 0 );
-	if (( hr == DIERR_INPUTLOST )||( hr == DIERR_NOTACQUIRED )){
+	if ((hr == DIERR_INPUTLOST)||(hr == DIERR_NOTACQUIRED)) {
 		hr = pKeyboard->Acquire();
-		if ( hr != S_OK ) return;
+		if (hr != S_OK) {
+			return;
+		}
+
 		hr = pKeyboard->GetDeviceData( sizeof(DIDEVICEOBJECTDATA), &od[0], &dwElements, 0 );
-		if ( hr != S_OK ) return;
-	}
-
-	bool b_alt_tab = false;
-	for (u32 i = 0; i < dwElements; i++)
-	{
-		key					= od[i].dwOfs;
-		KBState[key]		= od[i].dwData & 0x80;
-		if ( KBState[key])	
-			cbStack.back()->IR_OnKeyboardPress	( key );
-
-		if (!KBState[key])	
-		{
-			cbStack.back()->IR_OnKeyboardRelease	( key );
-			if(key==DIK_TAB  && (iGetAsyncKeyState(DIK_RMENU) || iGetAsyncKeyState(DIK_LMENU)) )
-				b_alt_tab = true;
+		if (hr != S_OK) { 
+			return;
 		}
 	}
 
-	for (u32 i = 0; i < COUNT_KB_BUTTONS; i++ )
-		if (KBState[i]) 
-			cbStack.back()->IR_OnKeyboardHold( i );
+	bool b_dik_pause_was_pressed = false;
+	for (u32 idx = 0; idx < dwElements; idx++) {
+		if (od[idx].dwOfs == DIK_PAUSE) {
+			if (od[idx].dwData & 0x80) {
+				b_dik_pause_was_pressed = true;
+			}
 
+			if (b_dik_pause_was_pressed && !(od[idx].dwData & 0x80)) {
+				od[idx].uAppData = 666;
+				continue; //skip one-frame pause key on-off switch
+			}
+		}
+		KBState[od[idx].dwOfs] = od[idx].dwData & 0x80;
+	}
+
+#ifndef _EDITOR
+	bool b_alt_tab = false;
+
+	if (!b_altF4 && KBState[DIK_F4] && (KBState[DIK_RMENU] || KBState[DIK_LMENU])) {
+		b_altF4				= TRUE;
+		Engine.Event.Defer	("KERNEL:disconnect");
+		Engine.Event.Defer	("KERNEL:quit");
+	}
+#endif
+
+	if (b_altF4) { 
+		return;
+	}
+
+	#ifndef _EDITOR
+	if (Device.dwPrecacheFrame==0)
+	#endif
+	{
+
+	for (u32 i = 0; i < dwElements; i++)
+		{
+		if(od[i].uAppData == 666) { //ignored action
+			continue;
+		}
+		key					= od[i].dwOfs;
+		if (od[i].dwData & 0x80) {
+			cbStack.back()->IR_OnKeyboardPress	(key);
+		} else {
+			cbStack.back()->IR_OnKeyboardRelease	(key);
+	#ifndef _EDITOR
+			if(key==DIK_TAB  && (iGetAsyncKeyState(DIK_RMENU) || iGetAsyncKeyState(DIK_LMENU)) )
+				b_alt_tab = true;
+	#endif
+		}
+	}
+
+		for (int i = 0; i < COUNT_KB_BUTTONS; i++ ) {
+			if (KBState[i]) { 
+			cbStack.back()->IR_OnKeyboardHold( i );
+			}
+		}
+	}
+
+#ifndef _EDITOR
 	if(b_alt_tab)
 		SendMessage(Device.m_hWnd, WM_SYSCOMMAND, SC_MINIMIZE, 0);
-
+#endif
 /*
 #ifndef _EDITOR
 //update xinput if exist
@@ -249,17 +297,8 @@ void CInput::KeyUpdate	( )
 //xinput
 #endif
 */
-#ifndef _EDITOR
-	if(!b_altF4 && iGetAsyncKeyState(DIK_F4) && (iGetAsyncKeyState(DIK_RMENU) || iGetAsyncKeyState(DIK_LMENU)))
-	{
-		b_altF4				= TRUE;
-		Engine.Event.Defer	("KERNEL:disconnect");
-		Engine.Event.Defer	("KERNEL:quit");
-	}
-#endif
 
 }
-
 bool CInput::get_dik_name(int dik, LPSTR dest_str, int dest_sz)
 {
 	DIPROPSTRING keyname;
@@ -275,8 +314,7 @@ bool CInput::get_dik_name(int dik, LPSTR dest_str, int dest_sz)
 	if(0==wcslen(wct))
 		return					false;
 
-//.	size_t cnt					= wcstombs(dest_str, wct, dest_sz);
-	int cnt						= WideCharToMultiByte(CP_THREAD_ACP,0,keyname.wsz,-1,dest_str,dest_sz,NULL,NULL);
+	int cnt = WideCharToMultiByte(CP_ACP, 0, keyname.wsz, -1, dest_str, dest_sz, NULL, NULL);
 	if(cnt==-1)
 	{
 		Msg("! cant convert dik_name for dik[%d], prop=[%S]", dik, keyname.wsz);

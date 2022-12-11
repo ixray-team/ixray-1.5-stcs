@@ -25,6 +25,7 @@ enum key_state // Flags32
 	ks_RCtrl  = u32(1) << 3,
 	ks_LAlt   = u32(1) << 4,
 	ks_RAlt   = u32(1) << 5,
+	ks_CapsLock = u32(1) << 6,
 
 	ks_Shift  = u32( ks_LShift | ks_RShift ),
 	ks_Ctrl   = u32( ks_LCtrl  | ks_RCtrl  ),
@@ -66,10 +67,8 @@ public:
 
 			void	insert_character	( char c );
 
-//	IC	Flags32		get_key_state		() const							{ return m_key_state; }
 	IC	bool		get_key_state		( key_state mask ) const			{ return (mask)? !!(m_key_state.test( mask ) ) : true; }
 	IC	void		set_key_state		( key_state mask, bool value )		{ m_key_state.set( mask, value ); }
-	IC	void		reset_key_state		()									{ m_key_state.zero(); }
 
 	IC	bool		cursor_view			()	const	{ return m_cursor_view; }
 	IC	bool		need_update			()	const	{ return m_need_update; }
@@ -80,10 +79,6 @@ public:
 	IC	LPCSTR		str_mark			()	const	{ return m_buf2; }
 	IC	LPCSTR		str_after_mark		()	const	{ return m_buf3; }
 
-//			int		current_pos			()	const	{ return m_cur_pos; }
-//			int		begin_selected_pos	()	const	{ return m_p1; }
-//			int		end_selected_pos	()	const	{ return m_p2; }
-
 		void		set_edit			( LPCSTR str );
 		void		set_selected_mode	( bool status )		{ m_unselected_mode = !status; }
 		bool		get_selected_mode	() const			{ return !m_unselected_mode; }
@@ -92,6 +87,7 @@ private:
 					line_edit_control	( line_edit_control const& );
 	line_edit_control const& operator=	( line_edit_control const& );
 
+	void update_key_states();
 			void	update_bufs			();
 
 	void xr_stdcall	undo_buf			();
@@ -113,11 +109,11 @@ private:
 	void xr_stdcall delete_selected_forward();
 	void xr_stdcall	delete_word_back	();
 	void xr_stdcall	delete_word_forward	();
+	void xr_stdcall SwitchKL();
 			
 			void	assign_char_pairs	( init_mode mode );
 			void	create_key_state	( u32 const dik, key_state state );
 			void	create_char_pair	( u32 const dik, char c, char c_shift, bool translate = false );
-			void	assign_action		( u32 const dik, Base* const action );
 
 			void	clear_inserted		();
 			bool	empty_inserted		();
@@ -131,9 +127,6 @@ private:
 private:
 	enum			{ DIK_COUNT = 256 };
 	Base*			m_actions[DIK_COUNT];
-
-	int				m_buffer_size;
-	enum			{ MIN_BUF_SIZE = 8, MAX_BUF_SIZE = 4096 };
 	
 	char*			m_edit_str;
 	char*			m_undo_buf;
@@ -143,6 +136,13 @@ private:
 	char*			m_buf2;
 	char*			m_buf3;
 
+	enum { 
+		MIN_BUF_SIZE = 8, 
+		MAX_BUF_SIZE = 4096
+	};
+
+	int m_buffer_size;
+
 	int				m_cur_pos;
 	int				m_select_start;
 	int				m_p1;
@@ -151,9 +151,11 @@ private:
 	float			m_accel;
 	float			m_cur_time;
 	float			m_rep_time;
+	float m_last_key_time;
 	u32				m_last_frame_time;
-	float			m_last_key_time;
 	u32				m_last_changed_frame;
+
+	Flags32 m_key_state;
 
 	bool			m_hold_mode;
 	bool			m_insert_mode;
@@ -162,9 +164,6 @@ private:
 	bool			m_cursor_view;
 	bool			m_need_update;
 	bool			m_unselected_mode;
-
-	Flags32			m_key_state;
-
 }; // class line_edit_control
 
 } // namespace text_editor
