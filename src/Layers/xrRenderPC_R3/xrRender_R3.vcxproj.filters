@@ -207,9 +207,6 @@
     <ClInclude Include="r3.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="r3_R_sun_support.h">
-      <Filter>Core</Filter>
-    </ClInclude>
     <ClInclude Include="..\xrRender\r__dsgraph_structure.h">
       <Filter>Core</Filter>
     </ClInclude>
@@ -714,6 +711,12 @@
     <ClInclude Include="..\xrRender\Debug\dxPixEventWrapper.h">
       <Filter>Debug</Filter>
     </ClInclude>
+    <ClInclude Include="..\xrRender\r_sun_cascades.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\xrRender\R_sun_support.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -737,9 +740,6 @@
     <ClCompile Include="r2_R_lights.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="r2_R_sun.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
     <ClCompile Include="r2_sector_detect.cpp">
       <Filter>Core</Filter>
     </ClCompile>
@@ -756,9 +756,6 @@
       <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="r3_R_render.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="r3_R_sun_support.cpp">
       <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="..\xrRender\r__dsgraph_build.cpp">
@@ -1300,6 +1297,12 @@
     </ClCompile>
     <ClCompile Include="..\xrRender\Debug\dxPixEventWrapper.cpp">
       <Filter>Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\xrRender\R_sun.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\xrRender\R_sun_support.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
