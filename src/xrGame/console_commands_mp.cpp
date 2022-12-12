@@ -20,6 +20,7 @@
 #include "../xrGameSpy/xrGameSpy_MainDefs.h"
 
 EGameIDs ParseStringToGameType(LPCSTR str);
+LPCSTR GameTypeToString(EGameIDs gt, bool bShort);
 
 extern	float	g_cl_lvInterp;
 extern	int		g_cl_InterpolationType; //0 - Linear, 1 - BSpline, 2 - HSpline
@@ -287,11 +288,11 @@ public:
 		}
 	}//Execute
 	virtual void		Save			(IWriter *F)	{};
-	/*virtual void		get_tips		(xr_vector<shared_str>& tips)
-	{
+
+	virtual void fill_tips (vecTips& tips, u32 mode) {
 		tips.push_back( "xxxx-xxxx-xxxx-xxxx" );
 		tips.push_back( "clear" );
-	}*/
+	}
 };
 
 //most useful predicates 
@@ -1124,7 +1125,19 @@ public:
 		CCC_ChangeLevelGameType::Execute((LPCSTR)argsNew);
 	};
 
-	virtual void	Info	(TInfo& I)	{strcpy_s(I,"Changing Game Type"); };
+	virtual void Info(TInfo& I) {
+		strcpy_s(I,"Changing Game Type : <dm>,<tdm>,<ah>,<cta>");
+	}
+
+	virtual void fill_tips(vecTips& tips, u32 mode) {
+		if (g_pGameLevel && Level().Server && OnServer() && Level().Server->game) {
+			EGameIDs type = Level().Server->game->Type();
+			TStatus str;
+			sprintf_s(str, sizeof(str), "%s  (current game type)  [dm,tdm,ah,cta]", GameTypeToString(type, true));
+			tips.push_back(str);
+		}
+		IConsole_Command::fill_tips( tips, mode );
+	}
 };
 
 class CCC_ChangeLevel : public CCC_ChangeLevelGameType {

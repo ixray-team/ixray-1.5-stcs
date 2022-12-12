@@ -989,6 +989,9 @@
     <ClCompile Include="editor_environment_detail.cpp">
       <Filter>editor\environment\detail</Filter>
     </ClCompile>
+    <ClCompile Include="XR_IOConsole_control.cpp">
+      <Filter>Engine\Console</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc">

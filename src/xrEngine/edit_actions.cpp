@@ -92,7 +92,7 @@ void type_pair::on_key_press( line_edit_control* const control )
 		
 		if ( pInput->get_dik_name( m_dik, buff, sizeof(buff) ) )
 		{
-			if ( _isalpha_l(buff[0], current_locale) || buff[0] == char(-1) ) // "ÿ" = -1
+			if ( _isalpha_l(buff[0], current_locale) || buff[0] == char(-1) ) // "ï¿½" = -1
 			{
 				_strlwr_l	(buff, current_locale);
 				c			= buff[0];
@@ -101,16 +101,14 @@ void type_pair::on_key_press( line_edit_control* const control )
 			}
 		}
 		
-		if ( control->get_key_state( ks_Shift ) )
-		{
+		if (control->get_key_state(ks_Shift) != control->get_key_state(ks_CapsLock)) {
 			c = c_shift;
 		}
 	}
 	else
 	{
 		c = m_char;
-		if ( control->get_key_state( ks_Shift ) )
-		{
+		if (control->get_key_state(ks_Shift) != control->get_key_state(ks_CapsLock)) {
 			c = m_char_shift;
 		}
 	}
@@ -119,18 +117,19 @@ void type_pair::on_key_press( line_edit_control* const control )
 
 // -------------------------------------------------------------------------------------------------
 
-key_state_base::key_state_base( key_state state )
-{
-	 m_state = state;
+key_state_base::key_state_base(key_state state, base* type_pair) : m_type_pair(type_pair), m_state(state) {
 }
 
-key_state_base::~key_state_base()
-{
+key_state_base::~key_state_base() {
+	xr_delete(m_type_pair);
 }
 
 void key_state_base::on_key_press( line_edit_control* const control )
 {
 	control->set_key_state( m_state, true );
+	if (m_type_pair) {
+		m_type_pair->on_key_press(control);
+	}
 }
 
 } // namespace text_editor
