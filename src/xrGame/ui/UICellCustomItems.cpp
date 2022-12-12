@@ -239,6 +239,28 @@ CUIStatic* CUIWeaponCellItem::GetIcon(eAddonType t)
 	return m_addons[t];
 }
 
+void CUIWeaponCellItem::RefreshOffset() {
+	if (object()->SilencerAttachable()) {
+		m_addon_offset[eSilencer].set(object()->GetSilencerX(), object()->GetSilencerY());
+	}
+
+	if (object()->ScopeAttachable()) {
+		m_addon_offset[eScope].set(object()->GetScopeX(), object()->GetScopeY());
+	}
+
+	if (object()->GrenadeLauncherAttachable()) {
+		m_addon_offset[eLauncher].set(object()->GetGrenadeLauncherX(), object()->GetGrenadeLauncherY());
+	}
+}
+
+void CUIWeaponCellItem::Draw() {	
+	inherited::Draw();
+
+	if (m_upgrade && m_upgrade->IsShown()) {
+		m_upgrade->Draw();
+	}
+}
+
 void CUIWeaponCellItem::Update()
 {
 	bool b						= Heading();
@@ -253,6 +275,7 @@ void CUIWeaponCellItem::Update()
 			if (!GetIcon(eSilencer) || bForceReInitAddons)
 			{
 				CreateIcon	(eSilencer);
+				RefreshOffset();
 				InitAddon	(GetIcon(eSilencer), *object()->GetSilencerName(), m_addon_offset[eSilencer], Heading());
 			}
 		}
@@ -269,6 +292,7 @@ void CUIWeaponCellItem::Update()
 			if (!GetIcon(eScope) || bForceReInitAddons)
 			{
 				CreateIcon	(eScope);
+				RefreshOffset();
 				InitAddon	(GetIcon(eScope), *object()->GetScopeName(), m_addon_offset[eScope], Heading());
 			}
 		}
@@ -285,6 +309,7 @@ void CUIWeaponCellItem::Update()
 			if (!GetIcon(eLauncher) || bForceReInitAddons)
 			{
 				CreateIcon	(eLauncher);
+				RefreshOffset();
 				InitAddon	(GetIcon(eLauncher), *object()->GetGrenadeLauncherName(), m_addon_offset[eLauncher], Heading());
 			}
 		}
@@ -358,6 +383,7 @@ void CUIWeaponCellItem::InitAddon(CUIStatic* s, LPCSTR section, Fvector2 addon_o
 			new_offset.x		= addon_offset.y*base_scale.x;
 			new_offset.y		= GetHeight() - addon_offset.x*base_scale.x - cell_size.x;
 			addon_offset		= new_offset;
+			addon_offset.x		*= UI()->get_current_kx();
 		}else
 		{
 			s->SetWndSize		(cell_size);
