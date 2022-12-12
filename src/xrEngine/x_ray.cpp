@@ -610,7 +610,7 @@ int APIENTRY WinMain_impl(HINSTANCE hInstance,
 
 	// Check for another instance
 #ifdef NO_MULTI_INSTANCES
-	#define STALKER_PRESENCE_MUTEX "STALKER-SoC"
+	#define STALKER_PRESENCE_MUTEX "Local\\STALKER-CS"
 	
 	HANDLE hCheckPresenceMutex = INVALID_HANDLE_VALUE;
 	hCheckPresenceMutex = OpenMutex( READ_CONTROL , FALSE ,  STALKER_PRESENCE_MUTEX );
