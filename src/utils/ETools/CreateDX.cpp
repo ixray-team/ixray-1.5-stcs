@@ -11,12 +11,7 @@ extern "C" __declspec(dllexport) bool  __stdcall FSColorPickerExecute(unsigned i
 	return FSColorPickerDoModal(currentColor, originalColor, initialExpansionState);
 }
 
-extern "C"{ 
-	ETOOLS_API UINT WINAPI D3DX_GetDriverLevel(LPDIRECT3DDEVICE9 pDevice)
-	{
-		return D3DXGetDriverLevel(pDevice);
-	}
-	
+extern "C"{
 	ETOOLS_API HRESULT WINAPI	
 		D3DX_GetImageInfoFromFileInMemory(
 		LPCVOID					pSrcData, 
