@@ -15,7 +15,7 @@ If (!(Test-Path "sdk\dxsdk_mar2009")) {
 }
 
 # Getting another dependencies from Git
-git clone --branch aug2021 --depth 1 https://github.com/microsoft/DirectXTex.git dep/DirectXTex
+git clone --branch jul2022 --depth 1 https://github.com/microsoft/DirectXTex.git dep/DirectXTex
 git clone --branch Release_3.1.0 --depth 1 https://github.com/dockpanelsuite/dockpanelsuite.git dep/dockpanelsuite
 
 # Pause
