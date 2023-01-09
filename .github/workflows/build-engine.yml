@@ -98,3 +98,61 @@ jobs:
         with:
           name: gamedata ${{ github.sha }}
           path: gamedata/
+
+  pack-assets:
+    name: 'Packing'
+
+    needs: build-engine
+
+    strategy:
+      matrix:
+        system:
+          - windows-2022
+        config:
+          - Release
+        platform:
+          - Win32
+
+    runs-on: ${{ matrix.system }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Get binaries
+        uses: actions/download-artifact@v3
+        with:
+          name: bin (${{ matrix.config }}) ${{ github.sha }}
+          path: bin/
+
+      - name: Get assets
+        run: |
+          git clone `
+            ${{ github.workspace }}/.git `
+            ${{ github.workspace }}/temp
+          cd temp
+          git checkout `
+            f23bc66ed4a4a6e75d8c9000bf8731d3adc062d7
+          cd ..
+          move ${{ github.workspace }}/temp/gamedata `
+            ${{ github.workspace }}/gamedata_origin
+
+      - name: Generate patch
+        run: |
+          ${{ github.workspace }}\bin\xrCompress.exe `
+            -diff gamedata gamedata_origin `
+            -out patch
+
+      - name: Pack patch
+        run: |
+          ${{ github.workspace }}\bin\xrCompress.exe patch `
+            -ltx datapack.ltx
+          move patch.pack_#0 xpatch_11.db
+
+      - name: Upload patch
+        uses: actions/upload-artifact@v3
+        with:
+          name: patch ${{ github.sha }}
+          path: xpatch_11.db
