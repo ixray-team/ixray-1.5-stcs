@@ -18,9 +18,17 @@ jobs:
 
     strategy:
       matrix:
-        system: [ windows-2022 ]
-        config: [ Debug, Mixed, Release, Debug_Dedicated, Mixed_Dedicated, Release_Dedicated ]
-        platform: [ x86 ]
+        system:
+          - windows-2022
+        config:
+          - Debug
+          - Mixed
+          - Release
+          - Debug_Dedicated
+          - Mixed_Dedicated
+          - Release_Dedicated
+        platform:
+          - x86
 
     runs-on: ${{ matrix.system }}
 
