@@ -4,7 +4,7 @@ $Host.UI.RawUI.WindowTitle = "IX-Ray"
 # Set path to 7-Zip
 $path = Join-Path -Path ${env:ProgramFiles} -ChildPath "7-Zip\7z.exe"
 
-# Getting DirectX SDK March 2009
+# Getting DirectX SDK March 2009 from archive
 If (!(Test-Path "sdk\dxsdk_mar2009")) {
     Invoke-WebRequest -Uri "https://github.com/ixray-team/ixray-1.5-stcs/releases/download/r0.2/sdk-directxsdk-mar2009.7z" `
                       -OutFile "sdk-directxsdk-mar2009.7z"
