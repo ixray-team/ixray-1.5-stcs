@@ -39,7 +39,6 @@
 		<disable>ui_pda_jobs</disable>
     </info_portion>
 
-   
    <info_portion id="ui_pda_contracts"></info_portion>
    
    <info_portion id="ui_pda_diary"></info_portion>
@@ -56,8 +55,6 @@
    <info_portion id="retreat"></info_portion>
    <info_portion id="alert"></info_portion>
 
-
-   
    <info_portion id="ui_inventory">
 		<disable>ui_inventory_hide</disable>
    </info_portion>
@@ -84,6 +81,12 @@
     </info_portion>
     <info_portion id="ui_car_body_hide">
 		<disable>ui_car_body</disable>
+    </info_portion>
+    <info_portion id="ui_talk_show">
+		<disable>ui_talk_show_hide</disable>
+    </info_portion>
+    <info_portion id="ui_talk_show_hide">
+		<disable>ui_talk_show</disable>
     </info_portion>
     
     <info_portion id="test_info_1"></info_portion>
