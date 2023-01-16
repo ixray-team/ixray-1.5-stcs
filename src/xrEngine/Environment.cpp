@@ -251,6 +251,10 @@ float CEnvironment::TimeWeight(float val, float min_t, float max_t)
 	return			weight;
 }
 
+void CEnvironment::ChangeGameTime(float game_time) {
+	fGameTime = NormalizeTime(fGameTime + game_time);
+};
+
 void CEnvironment::SetGameTime(float game_time, float time_factor)
 {
 #ifndef _EDITOR
@@ -356,6 +360,19 @@ bool CEnvironment::SetWeatherFX(shared_str name)
 		FATAL				("! Empty weather effect name");
 #endif
 	}
+	return true;
+}
+
+bool CEnvironment::StartWeatherFXFromTime(shared_str name, float time) {
+	if (!SetWeatherFX(name)) {
+		return false;
+	}
+
+	for (EnvIt it=CurrentWeather->begin(); it!=CurrentWeather->end(); it++) {
+		(*it)->exec_time = NormalizeTime((*it)->exec_time - wfx_time + time);
+	}
+
+	wfx_time = time;
 	return true;
 }
 

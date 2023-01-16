@@ -180,9 +180,21 @@ IC	profile_timer_script	operator+	(const profile_timer_script &portion0, const p
 // }
 
 #ifdef XRGAME_EXPORTS
-ICF	u32	script_time_global	()	{ return Device.dwTimeGlobal; }
+ICF u32 script_time_global() {
+	return Device.dwTimeGlobal;
+}
+
+ICF u32 script_time_global_async() { 
+	return Device.TimerAsync_MMT(); 
+}
 #else
-ICF	u32	script_time_global	()	{ return 0; }
+ICF u32 script_time_global() {
+	return 0;
+}
+
+ICF u32 script_time_global_async() {
+	return 0;
+}
 #endif
 
 #pragma optimize("s",on)
@@ -212,6 +224,7 @@ void CScriptEngine::script_register(lua_State *L)
 	function	(L,	"bit_not",						bit_not);
 	function	(L, "user_name",					user_name);
 	function	(L, "time_global",					script_time_global);
+	function(L, "time_global_async", script_time_global_async);
 #ifdef XRGAME_EXPORTS
 	function	(L,	"device",						get_device);
 #endif
