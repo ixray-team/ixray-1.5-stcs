@@ -163,6 +163,13 @@ bool CPhraseDialog::SayPhrase (DIALOG_SHARED_PTR& phrase_dialog, const shared_st
 	return phrase_dialog?!phrase_dialog->m_bFinished:true;
 }
 
+CPhrase* CPhraseDialog::GetPhrase(const shared_str& phrase_id) {
+	CPhraseGraph::CVertex* phrase_vertex = data()->m_PhraseGraph.vertex(phrase_id);
+	THROW(phrase_vertex);
+
+	return phrase_vertex->data();
+}
+
 LPCSTR CPhraseDialog::GetPhraseText	(const shared_str& phrase_id, bool current_speaking)
 {
 	
@@ -305,6 +312,8 @@ void CPhraseDialog::AddPhrase	(CUIXml* pXml, XML_NODE* phrase_node, const shared
 	CPhrase* ph			= AddPhrase			(sText, phrase_id, prev_phrase_id, gw);
 	if(!ph)				return;
 	
+	int fin = pXml->ReadInt(phrase_node, "is_final", 0, 0);
+	ph->SetFinalizer(fin == 1);
 	ph->m_script_text_id	= pXml->Read		(phrase_node, "script_text", 0, "");
 	
 	ph->GetScriptHelper()->Load				(pXml, phrase_node);
