@@ -150,7 +150,7 @@ public:
 
 protected:
 	CInventoryItem*		m_pPickUpItem;
-	CUIStatic			UIPickUpItemIcon;
+	CUIStatic* UIPickUpItemIcon;
 
 	float				m_iPickUpItemIconX;
 	float				m_iPickUpItemIconY;
