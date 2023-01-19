@@ -89,6 +89,7 @@ CUIMainIngameWnd::CUIMainIngameWnd()
 }
 
 #include "UIProgressShape.h"
+#include "UIHelper.h"
 extern CUIProgressShape* g_MissileForceShape;
 
 CUIMainIngameWnd::~CUIMainIngameWnd()
@@ -123,15 +124,13 @@ void CUIMainIngameWnd::Init()
 	UIWeaponIcon.SetShader		(GetEquipmentIconsShader());
 	UIWeaponIcon_rect			= UIWeaponIcon.GetWndRect();
 */	//---------------------------------------------------------
-	AttachChild					(&UIPickUpItemIcon);
-	xml_init.InitStatic			(uiXml, "pick_up_item", 0, &UIPickUpItemIcon);
-	UIPickUpItemIcon.SetShader	(GetEquipmentIconsShader());
-	UIPickUpItemIcon.ClipperOn	();
+	UIPickUpItemIcon = UIHelper::CreateStatic(uiXml, "pick_up_item", this);
+	UIPickUpItemIcon->SetShader(GetEquipmentIconsShader());
 
-	m_iPickUpItemIconWidth		= UIPickUpItemIcon.GetWidth();
-	m_iPickUpItemIconHeight		= UIPickUpItemIcon.GetHeight();
-	m_iPickUpItemIconX			= UIPickUpItemIcon.GetWndRect().left;
-	m_iPickUpItemIconY			= UIPickUpItemIcon.GetWndRect().top;
+	m_iPickUpItemIconWidth = UIPickUpItemIcon->GetWidth();
+	m_iPickUpItemIconHeight = UIPickUpItemIcon->GetHeight();
+	m_iPickUpItemIconX = UIPickUpItemIcon->GetWndRect().left;
+	m_iPickUpItemIconY = UIPickUpItemIcon->GetWndRect().top;
 	//---------------------------------------------------------
 
 	//индикаторы 
@@ -665,7 +664,7 @@ void CUIMainIngameWnd::UpdatePickUpItem	()
 {
 	if (!m_pPickUpItem || !Level().CurrentViewEntity() || !smart_cast<CActor*>(Level().CurrentViewEntity())) 
 	{
-		UIPickUpItemIcon.Show(false);
+		UIPickUpItemIcon->Show(false);
 		return;
 	};
 
@@ -690,22 +689,19 @@ void CUIMainIngameWnd::UpdatePickUpItem	()
 
 	float scale = scale_x<scale_y?scale_x:scale_y;
 
-	UIPickUpItemIcon.GetUIStaticItem().SetOriginalRect(
-		float(m_iXPos * INV_GRID_WIDTH),
-		float(m_iYPos * INV_GRID_HEIGHT),
-		float(m_iGridWidth * INV_GRID_WIDTH),
-		float(m_iGridHeight * INV_GRID_HEIGHT));
+	Frect texture_rect = {};
+	texture_rect.lt.set(m_iXPos * INV_GRID_WIDTH, m_iYPos * INV_GRID_HEIGHT);
+	texture_rect.rb.set(m_iGridWidth * INV_GRID_WIDTH, m_iGridHeight * INV_GRID_HEIGHT);
+	texture_rect.rb.add(texture_rect.lt);
 
-	UIPickUpItemIcon.SetStretchTexture(true);
-
-	UIPickUpItemIcon.SetWidth(m_iGridWidth*INV_GRID_WIDTH*scale);
-	UIPickUpItemIcon.SetHeight(m_iGridHeight*INV_GRID_HEIGHT*scale);
-
-	UIPickUpItemIcon.SetWndPos(Fvector2().set(	m_iPickUpItemIconX+(m_iPickUpItemIconWidth-UIPickUpItemIcon.GetWidth())/2.0f,
-												m_iPickUpItemIconY+(m_iPickUpItemIconHeight-UIPickUpItemIcon.GetHeight())/2.0f) );
-
-	UIPickUpItemIcon.SetColor(color_rgba(255,255,255,192));
-	UIPickUpItemIcon.Show(true);
+	UIPickUpItemIcon->GetStaticItem()->SetOriginalRect(texture_rect);
+	UIPickUpItemIcon->SetStretchTexture(true);
+	UIPickUpItemIcon->SetWidth(m_iGridWidth * INV_GRID_WIDTH * scale * UI()->get_current_kx());
+	UIPickUpItemIcon->SetHeight(m_iGridHeight * INV_GRID_HEIGHT * scale);
+	UIPickUpItemIcon->SetWndPos(Fvector2().set(m_iPickUpItemIconX + (m_iPickUpItemIconWidth - UIPickUpItemIcon->GetWidth()) / 2.0f,
+		m_iPickUpItemIconY + (m_iPickUpItemIconHeight - UIPickUpItemIcon->GetHeight()) / 2.0f));
+	UIPickUpItemIcon->SetTextureColor(color_rgba(255, 255, 255, 192));
+	UIPickUpItemIcon->Show(true);
 };
 
 void CUIMainIngameWnd::OnConnected()
