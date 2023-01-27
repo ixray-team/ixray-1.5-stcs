@@ -92,8 +92,8 @@ MPxFileTranslator::MFileKind CXRayObjectExport::identifyFile (
     const char * name = fileName.name().asChar();
     int   nameLength = xr_strlen(name);
     
-    //if ((nameLength > 7) && !stricmp(name+nameLength-7, ".object"))
-	if ((nameLength > 4) && !stricmp(name+nameLength-4, ".xro"))
+    //if ((nameLength > 7) && !_stricmp(name+nameLength-7, ".object"))
+	if ((nameLength > 4) && !_stricmp(name+nameLength-4, ".xro"))
         return kCouldBeMyFileType;
     else
         return kNotMyFileType;
@@ -989,7 +989,7 @@ MPxFileTranslator::MFileKind CXRayCameraExport::identifyFile (
     const char * name = fileName.name().asChar();
     int   nameLength = xr_strlen(name);
     
-	if ((nameLength > 4) && !stricmp(name+nameLength-4, ".anm"))
+	if ((nameLength > 4) && !_stricmp(name+nameLength-4, ".anm"))
         return kCouldBeMyFileType;
     else
         return kNotMyFileType;

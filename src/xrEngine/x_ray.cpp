@@ -1137,7 +1137,7 @@ int CApplication::Level_ID(LPCSTR name, LPCSTR ver, bool bSet)
 		{
 			LPCSTR ln = A.header->r_string("header", "level_name");
 			LPCSTR lv = A.header->r_string("header", "level_ver");
-			if ( 0==stricmp(ln,name) && 0==stricmp(lv,ver) )
+			if ( 0==_stricmp(ln,name) && 0==_stricmp(lv,ver) )
 			{
 				FS.LoadArchive(A);
 				arch_res = true;
@@ -1152,7 +1152,7 @@ int CApplication::Level_ID(LPCSTR name, LPCSTR ver, bool bSet)
 	strconcat		(sizeof(buffer),buffer,name,"\\");
 	for (u32 I=0; I<Levels.size(); ++I)
 	{
-		if (0==stricmp(buffer,Levels[I].folder))	
+		if (0==_stricmp(buffer,Levels[I].folder))	
 		{
 			result = int(I);	
 			break;
@@ -1179,7 +1179,7 @@ CInifile*  CApplication::GetArchiveHeader(LPCSTR name, LPCSTR ver)
 
 		LPCSTR ln = A.header->r_string("header", "level_name");
 		LPCSTR lv = A.header->r_string("header", "level_ver");
-		if ( 0==stricmp(ln,name) && 0==stricmp(lv,ver) )
+		if ( 0==_stricmp(ln,name) && 0==_stricmp(lv,ver) )
 		{
 			return A.header;
 		}
