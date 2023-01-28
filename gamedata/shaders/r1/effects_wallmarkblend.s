@@ -1,7 +1,7 @@
 function normal		(shader, t_base, t_second, t_detail)
 	shader:begin	("wmark",	"vert")
 			: sorting	(2, false)
-			: blend		(true,blend.zero,blend.one)
+            : blend (true,blend.srcalpha,blend.invsrcalpha)
 			: aref 		(true,0)
 			: zb 		(true,false)
 			: fog		(true)
