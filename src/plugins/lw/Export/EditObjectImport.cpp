@@ -67,7 +67,7 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize)
                     Osf->m_Flags.set(CSurface::sf2Sided,(Isf->sideflags==3)?TRUE:FALSE);
                     AnsiString en_name="default", lc_name="default", gm_name="default";
                     XRShader* sh_info = 0;
-                    if (Isf->nshaders&&(stricmp(Isf->shader->name,SH_PLUGIN_NAME)==0)){
+                    if (Isf->nshaders&&(_stricmp(Isf->shader->name,SH_PLUGIN_NAME)==0)){
                     	sh_info 	= (XRShader*)Isf->shader->data;
                         en_name 	= sh_info->en_name;
                         lc_name 	= sh_info->lc_name;
