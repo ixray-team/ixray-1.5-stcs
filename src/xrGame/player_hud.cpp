@@ -709,22 +709,28 @@ void player_hud::detach_item_idx(u16 idx)
 	{
 		u16 part_idR			= m_model->partitions().part_id("right_hand");
 		u32 bc					= m_model->LL_PartBlendsCount(part_idR);
-		for(u32 bidx=0; bidx<bc; ++bidx)
-		{
-			CBlend* BR			= m_model->LL_PartBlend(part_idR, bidx);
-			MotionID M			= BR->motionID;
+		for(u32 bidx=0; bidx<bc; ++bidx) {
+			CBlend* BR = m_model->LL_PartBlend(part_idR, bidx);
+			if (!BR) {
+				continue;
+			}
 
-			u16 pc					= m_model->partitions().count();
-			for(u16 pid=0; pid<pc; ++pid)
-			{
-				if(pid!=part_idR)
-				{
-					CBlend* B			= m_model->PlayCycle(pid, M, TRUE);
-					u16 bop				= B->bone_or_part;
-					*B					= *BR;
-					B->bone_or_part		= bop;
+			MotionID motionId = BR->motionID;
+			u16 pc = m_model->partitions().count();
+			for (u16 pid = 0; pid < pc; ++pid) {
+				if (pid != part_idR) {
+					CBlend* B = m_model->PlayCycle(pid, motionId, TRUE); //this can destroy BR calling UpdateTracks !
+					if (BR->blend != CBlend::eFREE_SLOT) {
+						u16 bop = B->bone_or_part;
+						*B = *BR;
+						B->bone_or_part = bop;
+					}
 				}
 			}
+		}
+	} else {
+		if (idx == 0 && attached_item(1)) {
+			OnMovementChanged(mcAnyMove);
 		}
 	}
 }
