@@ -17,7 +17,7 @@ CHudItem::CHudItem()
 	EnableHudInertion			(TRUE);
 	AllowHudInertion			(TRUE);
 //	m_hud_item_shared_data		= NULL;
-	m_bStopAtEndAnimIsRunning	= false;
+	m_bStopAtEndAnimIsRunning = false;
 	m_current_motion_def		= NULL;
 	m_started_rnd_anim_idx		= u8(-1);
 }
@@ -229,7 +229,7 @@ void CHudItem::UpdateCL()
 				m_dwMotionStartTm					= 0;
 				m_dwMotionEndTm						= 0;
 				m_dwMotionCurrTm					= 0;
-				m_bStopAtEndAnimIsRunning			= false;
+				m_bStopAtEndAnimIsRunning = false;
 				OnAnimationEnd						(m_startedMotionState);
 			}
 		}
@@ -292,13 +292,14 @@ u32 CHudItem::PlayHUDMotion(const shared_str& M, BOOL bMixIn, CHudItem*  W, u32 
 	u32 anim_time					= PlayHUDMotion_noCB(M, bMixIn);
 	if (anim_time>0)
 	{
-		m_bStopAtEndAnimIsRunning	= true;
+		m_bStopAtEndAnimIsRunning = true;
 		m_dwMotionStartTm			= Device.dwTimeGlobal;
 		m_dwMotionCurrTm			= m_dwMotionStartTm;
 		m_dwMotionEndTm				= m_dwMotionStartTm + anim_time;
 		m_startedMotionState		= state;
+	} else {
+		m_bStopAtEndAnimIsRunning = false;
 	}
-
 	return anim_time;
 }
 
@@ -331,7 +332,7 @@ void CHudItem::StopCurrentAnimWithoutCallback()
 	m_dwMotionStartTm			= 0;
 	m_dwMotionEndTm				= 0;
 	m_dwMotionCurrTm			= 0;
-	m_bStopAtEndAnimIsRunning	= false;
+	m_bStopAtEndAnimIsRunning = false;
 	m_current_motion_def		= NULL;
 }
 
@@ -340,13 +341,7 @@ BOOL CHudItem::GetHUDmode()
 	if(object().H_Parent())
 	{
 		CActor* A = smart_cast<CActor*>(object().H_Parent());
-		return ( A && A->HUDview() && HudItemData() && 
-				(HudItemData())
-//				(
-//				HudItemData()==g_player_hud->attached_item(0) ||
-//				HudItemData()==g_player_hud->attached_item(1) 
-//				)
-			);
+		return ( A && A->HUDview() && HudItemData() && HudItemData());
 	}else
 		return FALSE;
 }
@@ -394,7 +389,7 @@ void CHudItem::PlayAnimIdleSprint()
 
 void CHudItem::OnMovementChanged(ACTOR_DEFS::EMoveCommand cmd)
 {
-	if(GetState()==eIdle)
+	if(GetState()==eIdle && !m_bStopAtEndAnimIsRunning)
 	{
 		if( (cmd == ACTOR_DEFS::mcSprint) || (cmd == ACTOR_DEFS::mcAnyMove)  )
 		{
