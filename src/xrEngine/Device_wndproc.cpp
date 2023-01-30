@@ -3,6 +3,9 @@
 bool CRenderDevice::on_message	(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT &result)
 {
 	switch (uMsg) {
+		case WM_SYSKEYDOWN : {
+			return true;
+						   }
 		case WM_ACTIVATE : {
 #ifdef INGAME_EDITOR
 			if (editor()) {
