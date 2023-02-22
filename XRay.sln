@@ -102,6 +102,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ctool", "src\utils\ctool\ctool.vcxproj", "{2FAAC8BA-369F-465E-B465-2235963FD377}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ETools", "src\utils\ETools\ETools.vcxproj", "{65CBB9D0-FBC6-41A4-8316-F5E9B5D7FB33}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6857F086-F6FE-4150-9ED7-7446F1C1C220} = {6857F086-F6FE-4150-9ED7-7446F1C1C220}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LWO", "src\utils\LWO\LWO.vcxproj", "{A6EBBBBB-5FEF-4C20-8460-DFAB11734DED}"
 EndProject
@@ -118,6 +121,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DXT", "src\utils\xrDXT\DXT.vcxproj", "{EBF9B543-0830-4866-9B48-DC0740E87E8A}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrLC", "src\utils\xrLC\xrLC.vcxproj", "{A4ABD75E-825B-4D09-B3B2-2709682E40C8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6857F086-F6FE-4150-9ED7-7446F1C1C220} = {6857F086-F6FE-4150-9ED7-7446F1C1C220}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrLC_Light", "src\utils\xrLC_Light\xrLC_Light.vcxproj", "{EFB76D6F-0092-439C-A783-C0BE10BD17C9}"
 EndProject
@@ -650,10 +656,10 @@ Global
 		{6857F086-F6FE-4150-9ED7-7446F1C1C220}.Debug_Dedicated|x86.Build.0 = Debug|Win32
 		{6857F086-F6FE-4150-9ED7-7446F1C1C220}.Debug|x86.ActiveCfg = Debug|Win32
 		{6857F086-F6FE-4150-9ED7-7446F1C1C220}.Debug|x86.Build.0 = Debug|Win32
-		{6857F086-F6FE-4150-9ED7-7446F1C1C220}.Mixed_Dedicated|x86.ActiveCfg = Debug|Win32
-		{6857F086-F6FE-4150-9ED7-7446F1C1C220}.Mixed_Dedicated|x86.Build.0 = Debug|Win32
-		{6857F086-F6FE-4150-9ED7-7446F1C1C220}.Mixed|x86.ActiveCfg = Debug|Win32
-		{6857F086-F6FE-4150-9ED7-7446F1C1C220}.Mixed|x86.Build.0 = Debug|Win32
+		{6857F086-F6FE-4150-9ED7-7446F1C1C220}.Mixed_Dedicated|x86.ActiveCfg = Release|Win32
+		{6857F086-F6FE-4150-9ED7-7446F1C1C220}.Mixed_Dedicated|x86.Build.0 = Release|Win32
+		{6857F086-F6FE-4150-9ED7-7446F1C1C220}.Mixed|x86.ActiveCfg = Release|Win32
+		{6857F086-F6FE-4150-9ED7-7446F1C1C220}.Mixed|x86.Build.0 = Release|Win32
 		{6857F086-F6FE-4150-9ED7-7446F1C1C220}.Release_Dedicated|x86.ActiveCfg = Release|Win32
 		{6857F086-F6FE-4150-9ED7-7446F1C1C220}.Release_Dedicated|x86.Build.0 = Release|Win32
 		{6857F086-F6FE-4150-9ED7-7446F1C1C220}.Release|x86.ActiveCfg = Release|Win32
