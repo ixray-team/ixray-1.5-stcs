@@ -14,6 +14,9 @@
 
 #include "../xrRenderDX10/dx10BufferUtils.h"
 
+#include <Utilities\FlexibleVertexFormat.h>
+using namespace FVF;
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -121,7 +124,7 @@ void Fvisual::Load		(const char* N, IReader *data, u32 dwFlags)
 			CHK_DX				(D3DXDeclaratorFromFVF(fvf,dcl));
 			vFormat				= dcl;
 			vCount				= data->r_u32				();
-			u32 vStride			= D3DXGetFVFVertexSize		(fvf);
+			u32 vStride = ComputeVertexSize(fvf);
 
 #ifdef	USE_DX10
 			VERIFY				(NULL==p_rm_Vertices);
