@@ -159,9 +159,12 @@ extern "C"{
 	ETOOLS_API HRESULT WINAPI
 		D3DX_DeclaratorFromFVF(
 		DWORD							FVF,
-		D3DVERTEXELEMENT9				pDeclarator[MAX_FVF_DECL_SIZE])
+		D3DVERTEXELEMENT9 pDeclarator[MAXD3DDECLLENGTH + 1])
 	{
-		return D3DXDeclaratorFromFVF(FVF,pDeclarator);
+		auto vec = std::vector<D3DVERTEXELEMENT9>(MAXD3DDECLLENGTH + 1);
+		auto result = FVF::CreateDeclFromFVF(FVF, vec);
+		CopyMemory(pDeclarator, vec.data(), sizeof(pDeclarator) * sizeof(D3DVERTEXELEMENT9));
+		return result;
 	}
 
 	ETOOLS_API UINT WINAPI 
