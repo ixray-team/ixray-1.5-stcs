@@ -13,6 +13,9 @@
 #include <malloc.h>
 #pragma warning(pop)
 
+#include <Utilities/FlexibleVertexFormat.h>
+using namespace FVF;
+
 void CRender::level_Load(IReader *fs)
 {
 	R_ASSERT			(0!=g_pGameLevel);
@@ -186,7 +189,7 @@ void CRender::LoadBuffers	(CStreamReader *base_fs)
 			fs->r				(dcl,buffer_size);
 			fs->advance			(-(int)buffer_size);
 
-			u32 dcl_len			= D3DXGetDeclLength		(dcl)+1;
+			u32 dcl_len = GetDeclLength(dcl) + 1;
 
 			DCL[i].resize		(dcl_len);
 			fs->r				(DCL[i].begin(),dcl_len*sizeof(D3DVERTEXELEMENT9));
@@ -194,7 +197,7 @@ void CRender::LoadBuffers	(CStreamReader *base_fs)
 
 			// count, size
 			u32 vCount			= fs->r_u32	();
-			u32 vSize			= D3DXGetDeclVertexSize	(dcl,0);
+			u32 vSize = ComputeVertexSize(dcl, 0);
 			Msg	("* [Loading VB] %d verts, %d Kb",vCount,(vCount*vSize)/1024);
 
 			// Create and fill
