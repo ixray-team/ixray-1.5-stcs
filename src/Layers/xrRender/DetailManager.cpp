@@ -199,6 +199,13 @@ void CDetailManager::UpdateVisibleM()
 	float fade_range			= fade_limit-fade_start;
 	float		r_ssaCHEAP		= 16*r_ssaDISCARD;
 
+	for (u8 i = 0; i != 3; i++) {
+		auto& list = m_visibles[i];
+		for (u32 j = 0; j != list.size(); j++) {
+			list[j].clear();
+		}
+	}
+
 	// Initialize 'vis' and 'cache'
 	// Collect objects for rendering
 	Device.Statistic->RenderDUMP_DT_VIS.Begin	();
