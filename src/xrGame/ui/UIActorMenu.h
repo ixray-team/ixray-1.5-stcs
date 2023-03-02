@@ -96,6 +96,12 @@ protected:
 	enum						{e_af_count = 5};
 	CUIStatic*					m_belt_list_over[e_af_count];
 
+	/*CUIStatic*					m_InvSlot2Highlight;
+	CUIStatic*					m_InvSlot3Highlight;
+	CUIStatic*					m_OutfitSlotHighlight;
+	CUIStatic*					m_DetectorSlotHighlight;
+	CUIStatic*					m_ArtefactSlotsHighlight[e_af_count];*/
+
 	CUIInventoryUpgradeWnd*		m_pUpgradeWnd;
 	
 	CUIStatic*					m_LeftBackground;
@@ -142,6 +148,7 @@ protected:
 
 	u32							m_last_time;
 	bool						m_repair_mode;
+	bool						m_highlight_clear;
 	u32							m_trade_partner_inventory_state;
 public:
 	void						SetMenuMode					(EMenuMode mode);
@@ -158,6 +165,14 @@ private:
 	void						PropertiesBoxForDrop		(CUICellItem* cell_item, PIItem item, bool& b_show);
 	void						PropertiesBoxForRepair		(PIItem item, bool& b_show);
 
+	void						clear_highlight_lists		();
+	void						set_highlight_item			(CUICellItem* cell_item);
+	void						highlight_item_slot			(CUICellItem* cell_item);
+	void						highlight_armament			(PIItem item, CUIDragDropListEx* ddlist);
+	void						highlight_ammo_for_weapon	(PIItem weapon_item, CUIDragDropListEx* ddlist);
+	void						highlight_weapons_for_ammo	(PIItem ammo_item, CUIDragDropListEx* ddlist);
+	bool						highlight_addons_for_weapon	(PIItem weapon_item, CUICellItem* ci);
+	void						highlight_weapons_for_addon	(PIItem addon_item, CUIDragDropListEx* ddlist);
 protected:			
 	void						Construct					();
 	void						InitCallbacks				();
