@@ -32,7 +32,9 @@ protected:
 	
 public:
 	bool				m_bUseColor;
+	bool				m_bUseMidColor;
 	Fcolor				m_minColor;
+	Fcolor				m_middleColor;
 	Fcolor				m_maxColor;
 	float				m_inertion;	//
 public:
