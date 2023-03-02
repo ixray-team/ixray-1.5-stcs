@@ -437,6 +437,9 @@ void CWeapon::Load		(LPCSTR section)
 		strconcat					(sizeof(temp),temp,"hit_probability_",get_token_name(difficulty_type_token,i));
 		m_hit_probability[i]		= READ_IF_EXISTS(pSettings,r_float,section,temp,1.f);
 	}
+
+	// Added by Axel, to enable optional condition use on any item
+	m_flags.set(FUsingCondition, READ_IF_EXISTS(pSettings, r_bool, section, "use_condition", true));
 }
 
 void CWeapon::LoadFireParams		(LPCSTR section)
