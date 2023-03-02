@@ -90,6 +90,17 @@ void CUIActorMenu::Construct()
 	m_PartnerWeight		= UIHelper::CreateStatic(uiXml, "partner_weight", this);
 	m_PartnerBottomInfo->AdjustWidthToText();
 	m_PartnerWeight_end_x = m_PartnerWeight->GetWndPos().x;
+/*
+	m_InvSlot2Highlight			= UIHelper::CreateStatic(uiXml, "inv_slot2_highlight", this);
+	m_InvSlot2Highlight			->Show(false);
+	m_InvSlot3Highlight			= UIHelper::CreateStatic(uiXml, "inv_slot3_highlight", this);
+	m_InvSlot3Highlight			->Show(false);
+	m_OutfitSlotHighlight		= UIHelper::CreateStatic(uiXml, "outfit_slot_highlight", this);
+	m_OutfitSlotHighlight		->Show(false);
+	m_DetectorSlotHighlight		= UIHelper::CreateStatic(uiXml, "detector_slot_highlight", this);
+	m_DetectorSlotHighlight		->Show(false);
+	m_ArtefactSlotsHighlight[0]	= UIHelper::CreateStatic(uiXml, "artefact_slot_highlight", this);
+	m_ArtefactSlotsHighlight[0]	->Show(false);*/
 
 	m_pInventoryBagList			= UIHelper::CreateDragDropListEx(uiXml, "dragdrop_bag", this);
 	m_pInventoryBeltList		= UIHelper::CreateDragDropListEx(uiXml, "dragdrop_belt", this);
@@ -104,8 +115,18 @@ void CUIActorMenu::Construct()
 
 	m_belt_list_over[0] = UIHelper::CreateStatic(uiXml, "belt_list_over", this);
 	Fvector2 pos;
+	float dy = 0.f;
+	/*pos								= m_ArtefactSlotsHighlight[0]->GetWndPos();
+	dy								= uiXml.ReadAttribFlt("artefact_slot_highlight", 0, "dy", 24.0f);
+	for(u8 i=1;i<e_af_count;i++)
+	{
+		pos.y						+= dy;
+		m_ArtefactSlotsHighlight[i]	= UIHelper::CreateStatic(uiXml, "artefact_slot_highlight", this);
+		m_ArtefactSlotsHighlight[i]	->SetWndPos(pos);
+		m_ArtefactSlotsHighlight[i]	->Show(false);
+	}*/
 	pos = m_belt_list_over[0]->GetWndPos();
-	float dy = uiXml.ReadAttribFlt("belt_list_over", 0, "dy", 10.0f);
+	dy = uiXml.ReadAttribFlt("belt_list_over", 0, "dy", 10.0f);
 	for ( u8 i = 1; i < e_af_count; ++i )
 	{
 		pos.y += dy;
@@ -229,6 +250,7 @@ void CUIActorMenu::Construct()
 	m_actor_trade						= NULL;
 	m_partner_trade						= NULL;
 	m_repair_mode						= false;
+	m_highlight_clear					= false;
 
 	DeInitInventoryMode					();
 	DeInitTradeMode						();

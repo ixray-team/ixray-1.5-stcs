@@ -868,15 +868,21 @@ void CUICellContainer::Draw()
 			cpos.add( TopVisibleCell() );
 			CUICell& ui_cell = GetCellAt( cpos );
 			u8 select_mode = 0;
-			if ( !ui_cell.Empty() && ui_cell.m_item->m_cur_mark )
+			if ( !ui_cell.Empty() )
 			{
-				select_mode = 2;
+				if ( ui_cell.m_item->m_cur_mark )
+				{
+					select_mode = 2;
+				}
+				else if ( ui_cell.m_item->m_selected )
+				{
+					select_mode = 1;
+				}
+				else if ( ui_cell.m_item->m_select_armament )
+				{
+					select_mode = 3;
+				}
 			}
-			else if ( !ui_cell.Empty() && ui_cell.m_item->m_selected )
-			{
-				select_mode = 1;
-			}
-
 			Fvector2			tp;
 			GetTexUVLT			(tp, tgt_cells.x1+x, tgt_cells.y1+y, select_mode);
 
@@ -896,7 +902,7 @@ void CUICellContainer::Draw()
 			}//for k
 		}//for y
 	}// for x
-	UI()->PushScissor					(clientArea);
+	UI()->PushScissor				(clientArea);
 
 	UIRender->SetShader( *hShader );
 	UIRender->FlushPrimitive();
@@ -944,4 +950,20 @@ void CUIDragDropListEx::SetCellsHorizAlignment(xr_string alignment)
 		return;
 	}
 	m_virtual_cells_alignment.x = 1;
+}
+
+void CUIDragDropListEx::clear_select_armament()
+{
+	m_container->clear_select_armament(); }
+
+void CUICellContainer::clear_select_armament()
+{
+    UI_CELLS_VEC_IT itb = m_cells.begin();
+    UI_CELLS_VEC_IT ite = m_cells.end();
+    for (; itb != ite; ++itb) {
+        CUICell& cell = (*itb);
+        if (cell.m_item) {
+            cell.m_item->m_select_armament = false;
+        }
+    }
 }
