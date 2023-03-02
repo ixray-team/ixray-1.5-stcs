@@ -107,6 +107,9 @@ void CCustomOutfit::Load(LPCSTR section)
 	}
 	CActor* pActor = smart_cast<CActor*>( Level().CurrentViewEntity() );
 	ReloadBonesProtection( pActor );
+
+	// Added by Axel, to enable optional condition use on any item
+	m_flags.set(FUsingCondition, READ_IF_EXISTS(pSettings, r_bool, section, "use_condition", true));
 }
 
 void CCustomOutfit::ReloadBonesProtection( CActor* pActor )
@@ -148,7 +151,7 @@ float CCustomOutfit::HitThroughArmor( float hit_power, s16 element, float ap, bo
 
 	if( ap > EPS && ap > BoneArmor )
 	{
-		//пуля пробила бронь
+		//РїСѓР»СЏ РїСЂРѕР±РёР»Р° Р±СЂРѕРЅСЊ
 		float d_ap = ap - BoneArmor;
 		NewHitPower *= ( d_ap / ap );
 
@@ -163,14 +166,14 @@ float CCustomOutfit::HitThroughArmor( float hit_power, s16 element, float ap, bo
 		
 		if ( NewHitPower < 0.0f ) { NewHitPower = 0.0f; }
 
-		//увеличить изношенность костюма
+		//СѓРІРµР»РёС‡РёС‚СЊ РёР·РЅРѕС€РµРЅРЅРѕСЃС‚СЊ РєРѕСЃС‚СЋРјР°
 		Hit( NewHitPower, ALife::eHitTypeFireWound );
 	}
 	else
 	{
-		//пуля НЕ пробила бронь
+		//РїСѓР»СЏ РќР• РїСЂРѕР±РёР»Р° Р±СЂРѕРЅСЊ
 		NewHitPower *= m_boneProtection->m_fHitFracActor;
-		add_wound = false; 	//раны нет
+		add_wound = false; 	//СЂР°РЅС‹ РЅРµС‚
 		Hit( NewHitPower, ALife::eHitTypeFireWound );
 	}// if >=
 
