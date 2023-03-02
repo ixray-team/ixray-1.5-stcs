@@ -22,6 +22,19 @@
 #include "UIMessageBoxEx.h"
 #include "UIPropertiesBox.h"
 #include "UIMainIngameWnd.h"
+#include "../Scope.h"
+#include "../Silencer.h"
+#include "../Weapon.h"
+#include "../WeaponPistol.h"
+#include "../WeaponBinoculars.h"
+#include "../WeaponKnife.h"
+#include "../CustomOutfit.h"
+#include "../WeaponMagazinedWGrenade.h"
+#include "../CustomDetector.h"
+#include "../GrenadeLauncher.h"
+#ifdef DEBUG
+#include <dinput.h>
+#endif
 
 void CUIActorMenu::SetActor(CInventoryOwner* io)
 {
@@ -241,7 +254,7 @@ void CUIActorMenu::Update()
 	m_ItemInfo->Update();
 	m_hint_wnd->Update();
 }
-bool CUIActorMenu::StopAnyMove()  // true = àêò¸ð íå èä¸ò ïðè îòêðûòîì ìåíþ
+bool CUIActorMenu::StopAnyMove()  // true = Ð°ÐºÑ‚Ñ‘Ñ€ Ð½Ðµ Ð¸Ð´Ñ‘Ñ‚ Ð¿Ñ€Ð¸ Ð¾Ñ‚ÐºÑ€Ñ‹Ñ‚Ð¾Ð¼ Ð¼ÐµÐ½ÑŽ
 {
 	switch ( m_currMenuMode )
 	{
@@ -662,6 +675,21 @@ bool CUIActorMenu::OnKeyboard(int dik, EUIMessages keyboard_action)
 		return true;
 	}	
 
+#ifdef DEBUG
+	if (WINDOW_KEY_PRESSED == keyboard_action)
+	{
+		{
+			if (DIK_NUMPAD7 == dik && CurrentIItem() && CurrentIItem()->IsUsingCondition())
+			{
+				CurrentIItem()->ChangeCondition(-0.05f);
+			}
+			else if (DIK_NUMPAD8 == dik && CurrentIItem() && CurrentIItem()->IsUsingCondition())
+			{
+				CurrentIItem()->ChangeCondition(0.05f);
+			}
+		}
+	}
+#endif
 	if( inherited::OnKeyboard(dik,keyboard_action) )return true;
 
 	return false;
