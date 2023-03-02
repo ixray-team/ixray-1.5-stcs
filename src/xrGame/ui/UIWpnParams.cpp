@@ -6,6 +6,9 @@
 #include "../ai_space.h"
 #include "../../xrServerEntities/script_engine.h"
 #include "inventory_item_object.h"
+#include "WeaponBinoculars.h"
+#include "WeaponKnife.h"
+#include "Silencer.h"
 
 
 struct SLuaWpnParams
@@ -120,15 +123,16 @@ void CUIWpnParams::SetInfo( CInventoryItem const* slot_wpn, CInventoryItem const
 	m_progressRPM.SetTwoPos(      cur_rpm,    slot_rpm );
 }
 
-bool CUIWpnParams::Check(const shared_str& wpn_section)
+bool CUIWpnParams::Check(CInventoryItem& wpn_section)
 {
-	if (pSettings->line_exist(wpn_section, "fire_dispersion_base"))
+	LPCSTR wpn_sect = wpn_section.object().cNameSect().c_str();
+	if (pSettings->line_exist(wpn_sect, "fire_dispersion_base"))
 	{
-        if (0==xr_strcmp(wpn_section, "wpn_addon_silencer"))
+        if (smart_cast<CSilencer*>(&wpn_section))
             return false;
-        if (0==xr_strcmp(wpn_section, "wpn_binoc"))
+        if (smart_cast<CWeaponBinoculars*>(&wpn_section))
             return false;
-        if (0==xr_strcmp(wpn_section, "mp_wpn_binoc"))
+        if (smart_cast<CWeaponKnife*>(&wpn_section))
             return false;
 
         return true;		
