@@ -116,6 +116,7 @@ void CUIHudStatesWnd::InitFromXml( CUIXml& xml, LPCSTR path )
 	m_ui_weapon_icon->SetShader( InventoryUtilities::GetEquipmentIconsShader() );
 	m_ui_weapon_icon->Enable( false );
 	m_ui_weapon_icon_rect = m_ui_weapon_icon->GetWndRect();
+	m_ui_weapon_icon_scale = xml.ReadAttribFlt("static_wpn_icon", 0, "scale", 1.f);
 
 	m_fire_mode = UIHelper::CreateStatic( xml, "static_fire_mode", this );
 	
@@ -322,6 +323,9 @@ void CUIHudStatesWnd::SetAmmoIcon( const shared_str& sect_name )
 		// all others ammo (1x1, 1x2) will be not scaled (original picture)
 		float h = gridHeight * INV_GRID_HEIGHT * 0.65f;
 		float w = gridWidth  * INV_GRID_WIDTH  * 0.65f;
+		float posx_16 = 8.33f;
+		float posx = 10.0f;
+
 		if ( gridWidth > 2.01f )
 		{
 			w = INV_GRID_WIDTH * 1.5f;
@@ -330,16 +334,16 @@ void CUIHudStatesWnd::SetAmmoIcon( const shared_str& sect_name )
 		bool is_16x10 = UI()->is_16_9_mode();
 		if ( gridWidth < 1.01f )
 		{
-			m_ui_weapon_icon->SetTextureOffset( (is_16x10)? 8.33f : 10.0f, 0.0f );
+			m_ui_weapon_icon->SetTextureOffset( (is_16x10)? posx_16 : posx, 0.0f);
 		}
 		else
 		{
-			m_ui_weapon_icon->SetTextureOffset( 0.0f, 0.0f );
+			m_ui_weapon_icon->SetTextureOffset( 0.0f, 2.0f );
 		}
 
 
-		m_ui_weapon_icon->SetWidth( (is_16x10)? w*0.833f : w );
-		m_ui_weapon_icon->SetHeight( h );
+		m_ui_weapon_icon->SetWidth( (is_16x10)? w*0.833f * m_ui_weapon_icon_scale : w * m_ui_weapon_icon_scale);
+		m_ui_weapon_icon->SetHeight( h * m_ui_weapon_icon_scale);
 	}
 
 }
@@ -451,12 +455,12 @@ void CUIHudStatesWnd::UpdateZones()
 			if ( dist_to_zone < rad_zone )
 			{
 				fRelPow *= 0.3f;
-				fRelPow *= ( 2.5f - 2.0f * power ); // çâóê çàâèñèò îò ñèëû çîíû
+				fRelPow *= ( 2.5f - 2.0f * power ); // Ð·Ð²ÑƒÐº Ð·Ð°Ð²Ð¸ÑÐ¸Ñ‚ Ð¾Ñ‚ ÑÐ¸Ð»Ñ‹ Ð·Ð¾Ð½Ñ‹
 			}
 		}
 		clamp( fRelPow, 0.0f, 1.0f );
 
-		//îïðåäåëèòü òåêóùóþ ÷àñòîòó ñðàáàòûâàíèÿ ñèãíàëà
+		//Ð¾Ð¿Ñ€ÐµÐ´ÐµÐ»Ð¸Ñ‚ÑŒ Ñ‚ÐµÐºÑƒÑ‰ÑƒÑŽ Ñ‡Ð°ÑÑ‚Ð¾Ñ‚Ñƒ ÑÑ€Ð°Ð±Ð°Ñ‚Ñ‹Ð²Ð°Ð½Ð¸Ñ ÑÐ¸Ð³Ð½Ð°Ð»Ð°
 		zone_info.cur_period = zone_type->freq.x + (zone_type->freq.y - zone_type->freq.x) * (fRelPow * fRelPow);
 		
 		//string256	buff_z;

@@ -32,6 +32,7 @@ private:
 
 	CUIStatic*			m_ui_weapon_sign_ammo;
 	CUIStatic*			m_ui_weapon_icon;
+	float				m_ui_weapon_icon_scale;
 	Frect				m_ui_weapon_icon_rect;
 	CUIStatic*			m_fire_mode;
 
