@@ -40,6 +40,7 @@ void CUIActorMenu::InitInventoryMode()
 	m_pInventoryDetectorList->Show		(true);
 	m_pInventoryPistolList->Show		(true);
 	m_pInventoryAutomaticList->Show		(true);
+	m_pTrashList->Show					(true);
 	
 	m_RightDelimiter->Show				(false);
 	m_clock_value->Show					(true);
@@ -52,6 +53,7 @@ void CUIActorMenu::InitInventoryMode()
 
 void CUIActorMenu::DeInitInventoryMode()
 {
+	m_pTrashList->Show					(false);
 	m_clock_value->Show					(false);
 }
 
