@@ -235,9 +235,9 @@ void CWeapon::Load		(LPCSTR section)
 	iMagazineSize		= pSettings->r_s32		(section,"ammo_mag_size"	);
 	
 	////////////////////////////////////////////////////
-	// äèñïåðñèÿ ñòðåëüáû
+	// Ð´Ð¸ÑÐ¿ÐµÑ€ÑÐ¸Ñ ÑÑ‚Ñ€ÐµÐ»ÑŒÐ±Ñ‹
 
-	//ïîäáðàñûâàíèå êàìåðû âî âðåìÿ îòäà÷è
+	//Ð¿Ð¾Ð´Ð±Ñ€Ð°ÑÑ‹Ð²Ð°Ð½Ð¸Ðµ ÐºÐ°Ð¼ÐµÑ€Ñ‹ Ð²Ð¾ Ð²Ñ€ÐµÐ¼Ñ Ð¾Ñ‚Ð´Ð°Ñ‡Ð¸
 	u8 rm = READ_IF_EXISTS( pSettings, r_u8, section, "cam_return", 1 );
 	cam_recoil.ReturnMode = (rm == 1);
 	
@@ -285,8 +285,8 @@ void CWeapon::Load		(LPCSTR section)
 	
 	cam_recoil.DispersionFrac	= _abs( READ_IF_EXISTS( pSettings, r_float, section, "cam_dispersion_frac", 0.7f ) );
 
-	//ïîäáðàñûâàíèå êàìåðû âî âðåìÿ îòäà÷è â ðåæèìå zoom ==> ironsight or scope
-	//zoom_cam_recoil.Clone( cam_recoil ); ==== íåëüçÿ !!!!!!!!!!
+	//Ð¿Ð¾Ð´Ð±Ñ€Ð°ÑÑ‹Ð²Ð°Ð½Ð¸Ðµ ÐºÐ°Ð¼ÐµÑ€Ñ‹ Ð²Ð¾ Ð²Ñ€ÐµÐ¼Ñ Ð¾Ñ‚Ð´Ð°Ñ‡Ð¸ Ð² Ñ€ÐµÐ¶Ð¸Ð¼Ðµ zoom ==> ironsight or scope
+	//zoom_cam_recoil.Clone( cam_recoil ); ==== Ð½ÐµÐ»ÑŒÐ·Ñ !!!!!!!!!!
 	zoom_cam_recoil.RelaxSpeed		= cam_recoil.RelaxSpeed;
 	zoom_cam_recoil.RelaxSpeed_AI	= cam_recoil.RelaxSpeed_AI;
 	zoom_cam_recoil.DispersionFrac	= cam_recoil.DispersionFrac;
@@ -371,7 +371,7 @@ void CWeapon::Load		(LPCSTR section)
 	m_fMaxRadius		= pSettings->r_float		(section,"max_radius");
 
 
-	// èíôîðìàöèÿ î âîçìîæíûõ àïãðåéäàõ è èõ âèçóàëèçàöèè â èíâåíòàðå
+	// Ð¸Ð½Ñ„Ð¾Ñ€Ð¼Ð°Ñ†Ð¸Ñ Ð¾ Ð²Ð¾Ð·Ð¼Ð¾Ð¶Ð½Ñ‹Ñ… Ð°Ð¿Ð³Ñ€ÐµÐ¹Ð´Ð°Ñ… Ð¸ Ð¸Ñ… Ð²Ð¸Ð·ÑƒÐ°Ð»Ð¸Ð·Ð°Ñ†Ð¸Ð¸ Ð² Ð¸Ð½Ð²ÐµÐ½Ñ‚Ð°Ñ€Ðµ
 	m_eScopeStatus			 = (ALife::EWeaponAddonStatus)pSettings->r_s32(section,"scope_status");
 	m_eSilencerStatus		 = (ALife::EWeaponAddonStatus)pSettings->r_s32(section,"silencer_status");
 	m_eGrenadeLauncherStatus = (ALife::EWeaponAddonStatus)pSettings->r_s32(section,"grenade_launcher_status");
@@ -502,7 +502,7 @@ void CWeapon::net_Destroy	()
 {
 	inherited::net_Destroy	();
 
-	//óäàëèòü îáúåêòû ïàðòèêëîâ
+	//ÑƒÐ´Ð°Ð»Ð¸Ñ‚ÑŒ Ð¾Ð±ÑŠÐµÐºÑ‚Ñ‹ Ð¿Ð°Ñ€Ñ‚Ð¸ÐºÐ»Ð¾Ð²
 	StopFlameParticles	();
 	StopFlameParticles2	();
 	StopLight			();
@@ -700,7 +700,7 @@ void CWeapon::OnActiveItem ()
 //-
 
 	inherited::OnActiveItem		();
-	//åñëè ìû çàíðóæàåìñÿ è îðóæèå áûëî â ðóêàõ
+	//ÐµÑÐ»Ð¸ Ð¼Ñ‹ Ð·Ð°Ð½Ñ€ÑƒÐ¶Ð°ÐµÐ¼ÑÑ Ð¸ Ð¾Ñ€ÑƒÐ¶Ð¸Ðµ Ð±Ñ‹Ð»Ð¾ Ð² Ñ€ÑƒÐºÐ°Ñ…
 //.	SetState					(eIdle);
 //.	SetNextState				(eIdle);
 }
@@ -755,10 +755,10 @@ void CWeapon::UpdateCL		()
 {
 	inherited::UpdateCL		();
 	UpdateHUDAddonsVisibility();
-	//ïîäñâåòêà îò âûñòðåëà
+	//Ð¿Ð¾Ð´ÑÐ²ÐµÑ‚ÐºÐ° Ð¾Ñ‚ Ð²Ñ‹ÑÑ‚Ñ€ÐµÐ»Ð°
 	UpdateLight				();
 
-	//íàðèñîâàòü ïàðòèêëû
+	//Ð½Ð°Ñ€Ð¸ÑÐ¾Ð²Ð°Ñ‚ÑŒ Ð¿Ð°Ñ€Ñ‚Ð¸ÐºÐ»Ñ‹
 	UpdateFlameParticles	();
 	UpdateFlameParticles2	();
 
@@ -792,11 +792,11 @@ void CWeapon::renderable_Render		()
 {
 	UpdateXForm				();
 
-	//íàðèñîâàòü ïîäñâåòêó
+	//Ð½Ð°Ñ€Ð¸ÑÐ¾Ð²Ð°Ñ‚ÑŒ Ð¿Ð¾Ð´ÑÐ²ÐµÑ‚ÐºÑƒ
 
 	RenderLight				();	
 
-	//åñëè ìû â ðåæèìå ñíàéïåðêè, òî ñàì HUD ðèñîâàòü íå íàäî
+	//ÐµÑÐ»Ð¸ Ð¼Ñ‹ Ð² Ñ€ÐµÐ¶Ð¸Ð¼Ðµ ÑÐ½Ð°Ð¹Ð¿ÐµÑ€ÐºÐ¸, Ñ‚Ð¾ ÑÐ°Ð¼ HUD Ñ€Ð¸ÑÐ¾Ð²Ð°Ñ‚ÑŒ Ð½Ðµ Ð½Ð°Ð´Ð¾
 	if(IsZoomed() && !IsRotatingToZoom() && ZoomTexture())
 		RenderHud		(FALSE);
 	else
@@ -839,7 +839,7 @@ bool CWeapon::Action(s32 cmd, u32 flags)
 	{
 		case kWPN_FIRE: 
 			{
-				//åñëè îðóæèå ÷åì-òî çàíÿòî, òî íè÷åãî íå äåëàòü
+				//ÐµÑÐ»Ð¸ Ð¾Ñ€ÑƒÐ¶Ð¸Ðµ Ñ‡ÐµÐ¼-Ñ‚Ð¾ Ð·Ð°Ð½ÑÑ‚Ð¾, Ñ‚Ð¾ Ð½Ð¸Ñ‡ÐµÐ³Ð¾ Ð½Ðµ Ð´ÐµÐ»Ð°Ñ‚ÑŒ
 				{				
 					if(IsPending())		
 						return				false;
@@ -999,7 +999,7 @@ int CWeapon::GetSuitableAmmoTotal(bool use_item_to_spawn) const
 	int l_count = iAmmoElapsed;
 	if(!m_pInventory) return l_count;
 
-	//÷òîá íå äåëàòü ëèøíèõ ïåðåñ÷åòîâ
+	//Ñ‡Ñ‚Ð¾Ð± Ð½Ðµ Ð´ÐµÐ»Ð°Ñ‚ÑŒ Ð»Ð¸ÑˆÐ½Ð¸Ñ… Ð¿ÐµÑ€ÐµÑÑ‡ÐµÑ‚Ð¾Ð²
 	if(m_pInventory->ModifyFrame()<=m_dwAmmoCurrentCalcFrame)
 		return l_count + iAmmoCurrent;
 
@@ -1048,7 +1048,7 @@ int CWeapon::GetCurrentTypeAmmoTotal() const
 		return l_count;
 	}
 
-	//÷òîá íå äåëàòü ëèøíèõ ïåðåñ÷åòîâ
+	//Ñ‡Ñ‚Ð¾Ð± Ð½Ðµ Ð´ÐµÐ»Ð°Ñ‚ÑŒ Ð»Ð¸ÑˆÐ½Ð¸Ñ… Ð¿ÐµÑ€ÐµÑÑ‡ÐµÑ‚Ð¾Ð²
 	if ( m_pInventory->ModifyFrame() <= m_dwAmmoCurrentCalcFrame )
 	{
 		return l_count + iAmmoCurrent;
@@ -1634,7 +1634,7 @@ LPCSTR	CWeapon::GetCurrentAmmo_ShortName	()
 	return *(l_cartridge.m_InvShortName);
 }
 
-float CWeapon::Weight()
+float CWeapon::Weight() const
 {
 	float res = CInventoryItemObject::Weight();
 	if(IsGrenadeLauncherAttached()&&GetGrenadeLauncherName().size()){
@@ -1653,6 +1653,32 @@ float CWeapon::Weight()
 		float bs	= pSettings->r_float(*m_ammoTypes[m_ammoType],"box_size");
 
 		res			+= w*(iAmmoElapsed/bs);
+	}
+	return res;
+}
+
+u32 CWeapon::Cost() const
+{
+	u32 res = CInventoryItem::Cost();
+	if (IsGrenadeLauncherAttached() && GetGrenadeLauncherName().size())
+	{
+		res += pSettings->r_u32(GetGrenadeLauncherName(), "cost");
+	}
+	if (IsScopeAttached() && GetScopeName().size())
+	{
+		res += pSettings->r_u32(GetScopeName(), "cost");
+	}
+	if (IsSilencerAttached() && GetSilencerName().size())
+	{
+		res += pSettings->r_u32(GetSilencerName(), "cost");
+	}
+
+	if (iAmmoElapsed)
+	{
+		float w = pSettings->r_float(m_ammoTypes[m_ammoType].c_str(), "cost");
+		float bs = pSettings->r_float(m_ammoTypes[m_ammoType].c_str(), "box_size");
+
+		res += iFloor(w * (iAmmoElapsed / bs));
 	}
 	return res;
 }
