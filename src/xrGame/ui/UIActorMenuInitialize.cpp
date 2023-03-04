@@ -148,6 +148,10 @@ void CUIActorMenu::Construct()
 	m_pDeadBodyBagList->SetAutoDelete	(true);
 	xml_init.InitDragDropListEx			(uiXml, "dragdrop_deadbody_bag", 0, m_pDeadBodyBagList);
 
+	m_pTrashList				= UIHelper::CreateDragDropListEx		(uiXml, "dragdrop_trash", this);
+	m_pTrashList->m_f_item_drop	= CUIDragDropListEx::DRAG_DROP_EVENT	(this,&CUIActorMenu::OnItemDrop);
+	m_pTrashList->m_f_drag_event= CUIDragDropListEx::DRAG_ITEM_EVENT	(this,&CUIActorMenu::OnDragItemOnTrash);
+
 	m_ActorStateInfo					= xr_new<ui_actor_state_wnd>();
 	m_ActorStateInfo->init_from_xml		(uiXml, "actor_state_info");
 	m_ActorStateInfo->SetAutoDelete		(true);
@@ -210,6 +214,10 @@ void CUIActorMenu::Construct()
 	BindDragDropListEvents				(m_pTradePartnerBagList);
 	BindDragDropListEvents				(m_pTradePartnerList);
 	BindDragDropListEvents				(m_pDeadBodyBagList);
+
+	m_allowed_drops[iTrashSlot].push_back(iActorBag);
+	m_allowed_drops[iTrashSlot].push_back(iActorSlot);
+	m_allowed_drops[iTrashSlot].push_back(iActorBelt);
 
 	m_allowed_drops[iActorSlot].push_back(iActorBag);
 	m_allowed_drops[iActorSlot].push_back(iActorTrade);

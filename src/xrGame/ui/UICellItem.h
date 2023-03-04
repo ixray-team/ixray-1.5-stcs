@@ -10,8 +10,15 @@ class CUICellItem;
 class ICustomDrawCell
 {
 public:
-	virtual				~ICustomDrawCell	()	{};
-	virtual void		OnDraw				(CUICellItem* cell)	= 0;
+	virtual				~ICustomDrawCell		()	{};
+	virtual void		OnDraw					(CUICellItem* cell)	= 0;
+};
+
+class ICustomDrawDragItem
+{
+public:
+	virtual				~ICustomDrawDragItem	()	{};
+	virtual void		OnDraw					(CUIDragItem* drag_item)	= 0;
 };
 
 class CUICellItem :public CUIStatic
@@ -79,16 +86,17 @@ public:
 
 class CUIDragItem: public CUIWindow, public pureRender, public pureFrame
 {
-private:
 	typedef		CUIWindow	inherited;
 	CUIStatic				m_static;
 	CUICellItem*			m_pParent;
 	Fvector2				m_pos_offset;
 	CUIDragDropListEx*		m_back_list;
+	ICustomDrawDragItem*	m_custom_draw;
 public:
-							CUIDragItem(CUICellItem* parent);
-	virtual		void		Init(const ui_shader& sh, const Frect& rect, const Frect& text_rect);
-	virtual					~CUIDragItem();
+							CUIDragItem				(CUICellItem* parent);
+	virtual		void		Init					(const ui_shader& sh, const Frect& rect, const Frect& text_rect);
+	virtual					~CUIDragItem			();
+				void		SetCustomDraw			(ICustomDrawDragItem* c);
 			CUIStatic*		wnd						() {return &m_static;}
 	virtual		bool		OnMouse					(float x, float y, EUIMessages mouse_action);
 	virtual		void		Draw					();
