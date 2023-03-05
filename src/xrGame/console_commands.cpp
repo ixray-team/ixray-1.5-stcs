@@ -1263,6 +1263,17 @@ public:
 	}
 };
 
+class CCC_UI_Reload : public IConsole_Command
+{
+public:
+	CCC_UI_Reload(LPCSTR N) : IConsole_Command(N) { bEmptyArgsHandled = TRUE; };
+	virtual void Execute(LPCSTR args)
+	{
+		if (g_pGamePersistent && g_pGameLevel && Level().game)
+			HUD().OnScreenRatioChanged();// перезагружаем UI через эту команду
+	}
+};
+
 #include "GamePersistent.h"
 
 
@@ -1721,7 +1732,8 @@ void CCC_RegisterCommands()
 	CMD1(CCC_LoadLastSave,		"load_last_save"		);		// load last saved game from ...
 
 	CMD1(CCC_FlushLog,			"flush"					);		// flush log
-	CMD1(CCC_ClearLog,			"clear_log"					);
+	CMD1(CCC_ClearLog,			"clear_log"				);
+	CMD1(CCC_UI_Reload,			"ui_reload"				);	// перезагрузка UI
 
 #ifndef MASTER_GOLD
 	CMD1(CCC_ALifeTimeFactor,		"al_time_factor"		);		// set time factor
