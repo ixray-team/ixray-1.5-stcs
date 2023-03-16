@@ -638,12 +638,10 @@ void CWeaponMagazinedWGrenade::PlayAnimIdle()
 				if(st.bSprint)
 				{
 					act_state = 1;
-					PlayHUDMotion("anm_idle_sprint", TRUE, NULL,GetState());
 				}else
 				if(pActor->AnyMove())
 				{
 					act_state = 2;
-					PlayHUDMotion("anm_idle_moving", TRUE, NULL, GetState());
 				}
 			}
 
