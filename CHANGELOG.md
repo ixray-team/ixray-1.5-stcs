@@ -2,6 +2,78 @@
 
 Full changelog of _IX-Ray_ 1.5 project
 
+## Release 0.5 (March 2023)
+
+### Common
+
+- Enabled assets packing
+- Replaced `dxerr` with Windows SDK analog
+- Replaced `stricmp` with POSIX analog
+- Simplificated `get-dependencies` script launching
+- Incompletely integrated __DirectXMesh__
+
+### Engine
+
+- Enabled screenshots capturing in windowed mode on __Direct3D 9__
+- Enabled autocompletion for ingame console
+- Fixed language layout switching in ingame console
+- Fixed damage accounting on playing NPC animations
+- Fixed playing animation of getting weapons
+- Fixed playing animation of running
+- Fixed pistol dropping with detector in left hand
+- Fixed bloodsucker solid state
+- Replaced crashing with warning when there is no sound
+
+### Render
+
+- Fixed skybox displaying on __Direct3D 10__
+- Fixed tree lighting on static render
+- Fixed water displaying on static lightning
+- Fixed `sload` for correct nearest bumps displaying
+- Enabled light accounting for water foam
+- Enabled fog accounting for grass on static lightning
+- Enabled fog accounting for wallmarks on static lightning
+- Enabled fog accounting for particles
+- Enabled static sun shadows on disabled cascades
+- Enabled `Ldynamic_dir` counting for `accum_direct_volumetric()` on __Direct3D 9__
+- Increased gloss for rain
+- Implemented actor shadow
+- Prevented writing alpha-blended geometry to depth buffer
+- Replaced TSM shadows with sun cascades
+- Restored grass shadow
+
+### User interface
+
+- Fixed bleeding icon on widescreen resolutions
+- Fixed offset of weapon addon icons
+- Fixed icon stretching on displaying in center of screen
+- Fixed character info for deadbody color
+- Fixed progress bar for optional using of `middle_color`
+- Fixed scaling in for ammo icon
+- Fixed displaying of current bullet resistance
+- Fixed crashing on missing task markers
+- Fixed displaying of real items cost
+- Fixed crashing on dropping item from container
+- Fixed crashing when there are more than 9 dialogs
+- Fixed map spots
+- Fixed texture offset in dialog window
+- Fixed upgrade icons on widescreen resolutions
+- Enabled changing items condition by Num7 and Num8
+- Implemented dialog menu selection by number
+- Implemented item highlighters
+- Implement `ui_reload` command
+- Allowed to change upgrade icon color by config
+- Allowed to use min and max colors for double progress bar
+- Disabled stats by class and not by section
+
+### Resources
+
+- Exported time change methods to scripts
+- Implemented `use_condition` parameter
+- Implemented notification restarting for `r2_sun` command
+- Disabled condition drawing for binoculars
+- Removed temporary icons for quests
+
 ## Release 0.4 (December 2022)
 
 ### Common
