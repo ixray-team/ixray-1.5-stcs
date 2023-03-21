@@ -8,7 +8,7 @@
   </p>
 
   <p>
-    <a href="https://github.com/ixray-team/ixray-1.5-stcs/releases/tag/r0.4">
+    <a href="https://github.com/ixray-team/ixray-1.5-stcs/releases/tag/r0.5">
       <img src="https://img.shields.io/github/v/release/ixray-team/ixray-1.5-stcs?include_prereleases&label=Release" alt="Latest release" />
     </a>
     <a  href="https://github.com/ixray-team/ixray-1.5-stcs/actions/workflows/build-engine.yml">
@@ -37,7 +37,11 @@ git clone https://github.com/ixray-team/ixray-1.5-stcs.git
 ### Engine
 
 - Run `download-dependencies.ps1`
-- Build `XRay.Engine.sln` on `Win32` without projects from `utils`
+- Build `XRay.sln` on `Win32` without projects from `utils`
+
+### Assets
+
+- Run `generate-patch.bat` to get packed assets
 
 ## Changelog
 
