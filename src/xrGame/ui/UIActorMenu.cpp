@@ -1023,10 +1023,12 @@ bool CUIActorMenu::OnKeyboard(int dik, EUIMessages keyboard_action)
 			if (DIK_NUMPAD7 == dik && CurrentIItem() && CurrentIItem()->IsUsingCondition())
 			{
 				CurrentIItem()->ChangeCondition(-0.05f);
+				m_pCurrentCellItem->UpdateConditionProgressBar();
 			}
 			else if (DIK_NUMPAD8 == dik && CurrentIItem() && CurrentIItem()->IsUsingCondition())
 			{
 				CurrentIItem()->ChangeCondition(0.05f);
+				m_pCurrentCellItem->UpdateConditionProgressBar();
 			}
 		}
 	}
