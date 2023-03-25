@@ -492,6 +492,9 @@ bool CUIXmlInit::InitDragDropListEx(CUIXml& xml_doc, const char* path, int index
 	tmp						= xml_doc.ReadAttribInt(path, index, "always_show_scroll", 0);
 	pWnd->SetAlwaysShowScroll(tmp!=0);
 
+	tmp						= xml_doc.ReadAttribInt(path, index, "condition_progress_bar", 0);
+	pWnd->SetConditionProgBarVisibility(tmp!=0);
+
 	tmp = xml_doc.ReadAttribInt(path, index, "virtual_cells", 0);
 	pWnd->SetVirtualCells(tmp != 0);
 

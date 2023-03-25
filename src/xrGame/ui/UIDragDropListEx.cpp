@@ -23,6 +23,7 @@ CUIDragDropListEx::CUIDragDropListEx()
 	m_vScrollBar				= xr_new<CUIScrollBar>();
 	m_vScrollBar->SetAutoDelete	(true);
 	m_selected_item				= NULL;
+	m_bConditionProgBarVisible	= false;
 
 	SetCellSize					(Ivector2().set(50,50));
 	SetCellsCapacity			(Ivector2().set(0,0));

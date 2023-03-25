@@ -42,6 +42,7 @@ private:
 	Flags8					m_flags;
 	Ivector2				m_orig_cell_capacity;
 	Ivector2				m_virtual_cells_alignment;
+	bool					m_bConditionProgBarVisible;
 
 protected:
 	
@@ -111,6 +112,9 @@ public:
 			void			SetAlwaysShowScroll	(bool b);
 			bool			GetVirtualCells		();
 			void			SetVirtualCells		(bool b);
+
+			bool			GetConditionProgBarVisibility() {return m_bConditionProgBarVisible;};
+			void			SetConditionProgBarVisibility(bool b) {m_bConditionProgBarVisible = b;};
 public:
 			// items management
 			virtual void	SetItem				(CUICellItem* itm); //auto
