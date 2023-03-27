@@ -120,6 +120,10 @@ void					CRender::reset_end				()
 //.	HWOCC.occq_create			(occq_size);
 	Target						=	xr_new<CRenderTarget>	();
 	if (L_Projector)			L_Projector->invalidate		();
+
+	// Set this flag true to skip the first render frame,
+	// that some data is not ready in the first frame (for example device camera position)
+	m_bFirstFrameAfterReset = true;
 }
 
 void					CRender::OnFrame				()
@@ -302,7 +306,7 @@ IC		void			gm_SetNearer		(BOOL bNearer)
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-CRender::CRender	()
+CRender::CRender() : m_bFirstFrameAfterReset(false)
 {
 }
 
@@ -536,6 +540,11 @@ void	CRender::rmNormal	()
 extern u32 g_r;
 void	CRender::Render		()
 {
+	if (m_bFirstFrameAfterReset) {
+		m_bFirstFrameAfterReset = false;
+		return;
+	}
+
 	g_r											= 1;
 	Device.Statistic->RenderDUMP.Begin();
 	// Begin

@@ -82,6 +82,7 @@ public:
 	shared_str													c_ldynamic_props		;
 
 	bool														m_bMakeAsyncSS;
+	bool m_bFirstFrameAfterReset; // Determines weather the frame is the first after resetting device.
 private:
 	// Loading / Unloading
 	void								LoadBuffers				(CStreamReader	*fs);
