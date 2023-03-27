@@ -623,7 +623,7 @@ void	R_dsgraph_structure::r_dsgraph_render_distort	()
 void	R_dsgraph_structure::r_dsgraph_render_subspace	(IRender_Sector* _sector, Fmatrix& mCombined, Fvector& _cop, BOOL _dynamic, BOOL _precise_portals)
 {
 	CFrustum	temp;
-	temp.CreateFromMatrix			(mCombined,	FRUSTUM_P_ALL);
+	temp.CreateFromMatrix(mCombined, FRUSTUM_P_ALL & (~FRUSTUM_P_NEAR));
 	r_dsgraph_render_subspace		(_sector,&temp,mCombined,_cop,_dynamic,_precise_portals);
 }
 
