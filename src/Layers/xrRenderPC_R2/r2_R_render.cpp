@@ -200,6 +200,12 @@ void CRender::Render		()
 	bool	bMenu = pMainMenu?pMainMenu->CanSkipSceneRendering():false;
 
 	if( !(g_pGameLevel && g_pGameLevel->pHUD) || bMenu)	return;
+
+	if (m_bFirstFrameAfterReset) {
+		m_bFirstFrameAfterReset = false;
+		return;
+	}
+
 //.	VERIFY					(g_pGameLevel && g_pGameLevel->pHUD);
 
 	// Configure

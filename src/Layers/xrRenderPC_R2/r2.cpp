@@ -340,6 +340,10 @@ void CRender::reset_end()
 	Target						=	xr_new<CRenderTarget>	();
 
 	xrRender_apply_tf			();
+
+	// Set this flag true to skip the first render frame,
+	// that some data is not ready in the first frame (for example device camera position)
+	m_bFirstFrameAfterReset = true;
 }
 /*
 void CRender::OnFrame()
@@ -510,7 +514,7 @@ void					CRender::rmNormal			()
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-CRender::CRender()
+CRender::CRender() : m_bFirstFrameAfterReset(false)
 {
 	init_cacades();
 }

@@ -159,7 +159,8 @@ public:
 	u32															q_sync_count	;
 
 	bool														m_bMakeAsyncSS;
-	
+	bool m_bFirstFrameAfterReset; // Determines weather the frame is the first after resetting device.
+
 	xr_vector<sun::cascade>										m_sun_cascades;
 
 private:
