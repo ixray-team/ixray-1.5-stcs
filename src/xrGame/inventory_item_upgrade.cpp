@@ -19,6 +19,9 @@
 #include "inventory_upgrade.h"
 #include "Level.h"
 #include "WeaponMagazinedWGrenade.h"
+#include "Torch.h"
+#include "Actor.h"
+#include "CustomOutfit.h"
 
 bool CInventoryItem::has_upgrade( const shared_str& upgrade_id )
 {
@@ -217,7 +220,10 @@ void CInventoryItem::pre_install_upgrade()
 		{
 			weapon->Detach( weapon->GetGrenadeLauncherName().c_str(), true );
 		}
+		return;
 	}
-
-
+	CCustomOutfit* pOutfit = smart_cast<CCustomOutfit*>(this);
+	CTorch* pTorch = smart_cast<CTorch*>(Actor()->inventory().ItemFromSlot(TORCH_SLOT));
+	if (Actor()->GetOutfit()->ID() == pOutfit->ID() && pOutfit->m_NightVisionSect != 0 && pTorch && pTorch->GetNightVisionStatus())
+			pTorch->SwitchNightVision(false);
 }
