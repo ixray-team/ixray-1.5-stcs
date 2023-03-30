@@ -351,7 +351,7 @@ void CUIWeaponCellItem::OnAfterChild(CUIDragDropListEx* parent_list)
 		InitAddon	(GetIcon(eLauncher), *object()->GetGrenadeLauncherName(),m_addon_offset[eLauncher], parent_list->GetVerticalPlacement());
 }
 
-void CUIWeaponCellItem::InitAddon(CUIStatic* s, LPCSTR section, Fvector2 addon_offset, bool b_rotate)
+void CUIWeaponCellItem::InitAddon(CUIStatic* s, LPCSTR section, Fvector2 addon_offset, bool b_rotate, bool is_dragging, bool is_scope, bool is_silencer, bool is_gl)
 {
 	
 		Frect					tex_rect;
@@ -378,18 +378,57 @@ void CUIWeaponCellItem::InitAddon(CUIStatic* s, LPCSTR section, Fvector2 addon_o
 
 		cell_size.mul			(base_scale);
 
-		if(b_rotate)
+		if (is_dragging && Heading() && UI()->is_16_9_mode())
 		{
-			s->SetWndSize		(Fvector2().set(cell_size.y, cell_size.x) );
-			Fvector2 new_offset;
-			new_offset.x		= addon_offset.y*base_scale.x;
-			new_offset.y		= GetHeight() - addon_offset.x*base_scale.x - cell_size.x;
-			addon_offset		= new_offset;
-			addon_offset.x		*= UI()->get_current_kx();
-		}else
+			if (is_scope)
+			{
+				addon_offset.y *= UI()->get_current_kx();
+			}
+			if (is_silencer)
+			{
+				addon_offset.y *= UI()->get_current_kx() * 1.8f;
+			}
+			if (is_gl)
+			{
+				addon_offset.y *= UI()->get_current_kx() * 1.5f;
+			}
+			addon_offset.x *= UI()->get_current_kx() / 0.9f;
+			cell_size.x /= UI()->get_current_kx() * 1.6f;
+			cell_size.y *= UI()->get_current_kx() * 1.6f;
+		}
+		if (!is_dragging)
 		{
-			s->SetWndSize		(cell_size);
-			addon_offset.mul	(base_scale);
+			if (b_rotate)
+			{
+				s->SetWndSize(Fvector2().set(cell_size.y, cell_size.x));
+				Fvector2 new_offset;
+				new_offset.x = addon_offset.y * base_scale.x;
+				new_offset.y = GetHeight() - addon_offset.x * base_scale.x - cell_size.x;
+				addon_offset = new_offset;
+				addon_offset.x *= UI()->get_current_kx();
+			}
+			else
+			{
+				s->SetWndSize(cell_size);
+				addon_offset.mul(base_scale);
+			}
+		}
+		else
+		{
+			if (b_rotate)
+			{
+				s->SetWndSize(Fvector2().set(cell_size.y, cell_size.x));
+				Fvector2 new_offset;
+				new_offset.x = addon_offset.y * base_scale.x;
+				new_offset.y = GetHeight() - addon_offset.x * base_scale.x - cell_size.x;
+				addon_offset = new_offset;
+				addon_offset.x *= UI()->get_current_kx();
+			}
+			else
+			{
+				s->SetWndSize(cell_size);
+				addon_offset.mul(base_scale);
+			}
 		}
 
 		s->SetWndPos			(addon_offset);
@@ -416,7 +455,7 @@ CUIDragItem* CUIWeaponCellItem::CreateDragItem()
 	{
 		s				= xr_new<CUIStatic>(); s->SetAutoDelete(true);
 		s->SetShader	(InventoryUtilities::GetEquipmentIconsShader());
-		InitAddon		(s, *object()->GetSilencerName(), m_addon_offset[eSilencer], false);
+		InitAddon		(s, *object()->GetSilencerName(), m_addon_offset[eSilencer], false, true, false, true, false);
 		s->SetColor		(i->wnd()->GetColor());
 		i->wnd			()->AttachChild	(s);
 	}
@@ -425,7 +464,7 @@ CUIDragItem* CUIWeaponCellItem::CreateDragItem()
 	{
 		s				= xr_new<CUIStatic>(); s->SetAutoDelete(true);
 		s->SetShader	(InventoryUtilities::GetEquipmentIconsShader());
-		InitAddon		(s,	*object()->GetScopeName(),		m_addon_offset[eScope], false);
+		InitAddon		(s,	*object()->GetScopeName(),		m_addon_offset[eScope], false, true, true, false, false);
 		s->SetColor		(i->wnd()->GetColor());
 		i->wnd			()->AttachChild	(s);
 	}
@@ -434,7 +473,7 @@ CUIDragItem* CUIWeaponCellItem::CreateDragItem()
 	{
 		s				= xr_new<CUIStatic>(); s->SetAutoDelete(true);
 		s->SetShader	(InventoryUtilities::GetEquipmentIconsShader());
-		InitAddon		(s, *object()->GetGrenadeLauncherName(),m_addon_offset[eLauncher], false);
+		InitAddon		(s, *object()->GetGrenadeLauncherName(),m_addon_offset[eLauncher], false, true, false, false, true);
 		s->SetColor		(i->wnd()->GetColor());
 		i->wnd			()->AttachChild	(s);
 	}
