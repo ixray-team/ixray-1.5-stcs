@@ -194,8 +194,6 @@ public:
 
 	IC bool					CursorOverWindow	() const					{ return m_bCursorOverWindow; }
 	IC u32					FocusReceiveTime	() const					{ return m_dwFocusReceiveTime; }
-	virtual	bool			AlignHintWndPos		(Frect const& vis_rect, float border = 0.0f, float dx16pos = 0.0f );
-	static	bool			is_in				(Frect const& a, Frect const& b); //b in a
 	
 	IC bool					GetCustomDraw		() const					{return m_bCustomDraw;}
 	IC void					SetCustomDraw		(bool b) 					{m_bCustomDraw = b;}
@@ -254,6 +252,8 @@ protected:
 public:
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+
+bool fit_in_rect(CUIWindow* w, Frect const& vis_rect, float border = 0.0f, float dx16pos = 0.0f );
 
 add_to_type_list(CUIWindow)
 #undef script_type_list
