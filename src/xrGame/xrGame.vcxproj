@@ -1782,6 +1782,7 @@
     <ClInclude Include="ui\UIWpnParams.h" />
     <ClInclude Include="ui\UIXmlInit.h" />
     <ClInclude Include="ui\ui_af_params.h" />
+    <ClInclude Include="ui\UIBoosterInfo.h" />
     <ClInclude Include="ui\ui_arrow.h" />
     <ClInclude Include="ui\UI_IB_Static.h" />
     <ClInclude Include="ui\xrUIXmlParser.h" />
@@ -5305,6 +5306,7 @@
     </ClCompile>
     <ClCompile Include="ui\UIXmlInit.cpp" />
     <ClCompile Include="ui\ui_af_params.cpp" />
+    <ClCompile Include="ui\UIBoosterInfo.cpp" />
     <ClCompile Include="ui\ui_arrow.cpp" />
     <ClCompile Include="ui\UI_IB_Static.cpp" />
     <ClCompile Include="ui\xrUIXmlParser.cpp" />

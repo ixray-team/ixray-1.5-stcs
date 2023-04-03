@@ -18,11 +18,13 @@
 #include "../PhysicsShellHolder.h"
 #include "UIWpnParams.h"
 #include "ui_af_params.h"
+#include "UIBoosterInfo.h"
 #include "UICellItem.h"
 #include "UIInvUpgradeProperty.h"
 #include "UIOutfitInfo.h"
 #include "../Weapon.h"
 #include "../CustomOutfit.h"
+#include "../eatable_item.h"
 
 extern const LPCSTR g_inventory_upgrade_xml;
 
@@ -46,6 +48,7 @@ CUIItemInfo::CUIItemInfo()
 	UIName						= NULL;
 	UIBackground				= NULL;
 	m_pInvItem					= NULL;
+	UIBoosterInfo				= NULL;
 	m_b_FitToHeight				= false;
 	m_complex_desc				= false;
 }
@@ -57,6 +60,8 @@ CUIItemInfo::~CUIItemInfo()
 	xr_delete	(UIArtefactParams);
 	xr_delete	(UIProperties);
 	xr_delete	(UIOutfitInfo);
+	if (UIBoosterInfo)
+		xr_delete	(UIBoosterInfo);
 }
 
 void CUIItemInfo::InitItemInfo(LPCSTR xml_name)
@@ -127,6 +132,12 @@ void CUIItemInfo::InitItemInfo(LPCSTR xml_name)
 		UIWpnParams->InitFromXml		(uiXml);
 		UIArtefactParams				= xr_new<CUIArtefactParams>();
 		UIArtefactParams->InitFromXml	(uiXml);
+		
+		if (uiXml.NavigateToNode("booster_params", 0))
+		{
+			UIBoosterInfo					= xr_new<CUIBoosterInfo>();
+			UIBoosterInfo->InitFromXml		(uiXml);
+		}
 
 		if ( ai().get_alife() ) // (-designer)
 		{
@@ -299,6 +310,7 @@ void CUIItemInfo::InitItem(CUICellItem* pCellItem, CInventoryItem* pCompareItem,
 		TryAddArtefactInfo					(pInvItem->object().cNameSect());
 		TryAddOutfitInfo					(*pInvItem, pCompareItem);
 		TryAddUpgradeInfo					(*pInvItem);
+		TryAddBoosterInfo					(*pInvItem);
 
 		if(m_b_FitToHeight)
 		{
@@ -365,6 +377,16 @@ void CUIItemInfo::TryAddArtefactInfo	(const shared_str& af_section)
 	{
 		UIArtefactParams->SetInfo( af_section );
 		UIDesc->AddWindow( UIArtefactParams, false );
+	}
+}
+
+void CUIItemInfo::TryAddBoosterInfo(CInventoryItem& itm)
+{
+	CEatableItem* food = smart_cast<CEatableItem*>(&itm);
+	if (food && UIBoosterInfo)
+	{
+		UIBoosterInfo->SetInfo(itm);
+		UIDesc->AddWindow(UIBoosterInfo, false);
 	}
 }
 
