@@ -18,6 +18,7 @@
 #include "../PhysicsShellHolder.h"
 #include "UIWpnParams.h"
 #include "ui_af_params.h"
+#include "UICellItem.h"
 #include "UIInvUpgradeProperty.h"
 #include "UIOutfitInfo.h"
 #include "../Weapon.h"
@@ -33,6 +34,7 @@ CUIItemInfo::CUIItemInfo()
 	UIItemImageSize.set			(0.0f,0.0f);
 	
 	UICost						= NULL;
+	UITradeTip					= NULL;
 	UIWeight					= NULL;
 	UIItemImage					= NULL;
 	UIDesc						= NULL;
@@ -109,6 +111,14 @@ void CUIItemInfo::InitItemInfo(LPCSTR xml_name)
 		xml_init.InitStatic		(uiXml, "static_cost", 0,			UICost);
 	}
 
+	if(uiXml.NavigateToNode("static_no_trade",0))
+	{
+		UITradeTip					= xr_new<CUIStatic>();
+		AttachChild					(UITradeTip);
+		UITradeTip->SetAutoDelete	(true);
+		xml_init.InitStatic			(uiXml, "static_no_trade", 0,		UITradeTip);
+	}
+
 	if(uiXml.NavigateToNode("descr_list",0))
 	{
 		UIConditionWnd					= xr_new<CUIConditionParams>();
@@ -164,8 +174,16 @@ void CUIItemInfo::InitItemInfo(Fvector2 pos, Fvector2 size, LPCSTR xml_name)
 
 bool	IsGameTypeSingle();
 
-void CUIItemInfo::InitItem(CInventoryItem* pInvItem, CInventoryItem* pCompareItem)
+void CUIItemInfo::InitItem(CUICellItem* pCellItem, CInventoryItem* pCompareItem, u32 item_price, LPCSTR trade_tip)
 {
+	if(!pCellItem)
+	{
+		m_pInvItem			= NULL;
+		Enable				(false);
+		return;
+	}
+
+	PIItem pInvItem			= (PIItem)pCellItem->m_pData;
 	m_pInvItem				= pInvItem;
 	Enable					(NULL != m_pInvItem);
 	if(!m_pInvItem)			return;
@@ -189,10 +207,16 @@ void CUIItemInfo::InitItem(CInventoryItem* pInvItem, CInventoryItem* pCompareIte
 			{
 				// its helper item, m_boxCur is zero, so recalculate via CInventoryItem::Weight()
 				weight = pInvItem->CInventoryItem::Weight();
+				for( u32 j = 0; j < pCellItem->ChildsCount(); ++j )
+				{
+					PIItem jitem	= (PIItem)pCellItem->Child(j)->m_pData;
+					weight			+= jitem->CInventoryItem::Weight();
+				}
+
 			}
 		}
 
-		sprintf				(str, "%3.2f %s", weight, kg_str );
+		xr_sprintf			(str, "%3.2f %s", weight, kg_str );
 		UIWeight->SetText	(str);
 		
 		pos.x = UIWeight->GetWndPos().x;
@@ -203,14 +227,21 @@ void CUIItemInfo::InitItem(CInventoryItem* pInvItem, CInventoryItem* pCompareIte
 	}
 	if ( UICost && IsGameTypeSingle() )
 	{
-		sprintf				(str, "%d RU", pInvItem->Cost());		// will be owerwritten in multiplayer
-		UICost->SetText		(str);
-		pos.x = UICost->GetWndPos().x;
-		if ( m_complex_desc )
+		if (item_price != u32(-1))
 		{
-			UICost->SetWndPos	(pos);
+			xr_sprintf(str, "%d RU", item_price);// will be owerwritten in multiplayer
+			UICost->SetText(str);
+			UICost->Show(true);
+		}
+		else if (item_price == u32(-1))
+		{
+			xr_sprintf(str, "%d RU", pInvItem->Cost());// will be owerwritten in multiplayer
+			UICost->SetText(str);
+			UICost->Show(true);
 		}
 	}
+	else
+		UICost->Show(false);
 	
 //	CActor* actor = smart_cast<CActor*>( Level().CurrentViewEntity() );
 //	if ( g_pGameLevel && Level().game && actor )
@@ -219,14 +250,34 @@ void CUIItemInfo::InitItem(CInventoryItem* pInvItem, CInventoryItem* pCompareIte
 //		IBuyWnd* buy_menu = gs_mp->pCurBuyMenu->GetItemPrice();
 //		GetItemPrice();
 //	}
-	
-	if ( UIDesc )
+
+	if ( UITradeTip && IsGameTypeSingle())
 	{
-		pos.y = UIDesc->GetWndPos().y;
+		pos.y = UITradeTip->GetWndPos().y;
 		if ( UIWeight && m_complex_desc )
 		{
 			pos.y = UIWeight->GetWndPos().y + UIWeight->GetHeight() + 4.0f;
 		}
+
+		if(trade_tip==NULL)
+			UITradeTip->Show(false);
+		else
+		{
+			UITradeTip->SetText(CStringTable().translate(trade_tip).c_str());
+			UITradeTip->AdjustHeightToText();
+			UITradeTip->SetWndPos(pos);
+			UITradeTip->Show(true);
+		}
+	}
+	
+	if ( UIDesc )
+	{
+		pos.y = UIDesc->GetWndPos().y;
+		if ( UIWeight )
+			pos.y = UIWeight->GetWndPos().y + UIWeight->GetHeight() + 4.0f;
+
+		if(UITradeTip && trade_tip!=NULL)
+			pos.y = UITradeTip->GetWndPos().y + UITradeTip->GetHeight() + 4.0f;
 
 		pos.x					= UIDesc->GetWndPos().x;
 		UIDesc->SetWndPos		(pos);
