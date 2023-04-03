@@ -7008,6 +7008,9 @@
     <ClInclude Include="ui\ui_af_params.h">
       <Filter>UI\Common\ui-item-infos</Filter>
     </ClInclude>
+    <ClInclude Include="ui\UIBoosterInfo.h">
+      <Filter>UI\Common\ui-item-infos</Filter>
+    </ClInclude>
     <ClInclude Include="ui\UIItemInfo.h">
       <Filter>UI\Common\ui-item-infos</Filter>
     </ClInclude>
@@ -10596,6 +10599,9 @@
       <Filter>UI\Common\PDA\logs\News</Filter>
     </ClCompile>
     <ClCompile Include="ui\ui_af_params.cpp">
+      <Filter>UI\Common\ui-item-infos</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\UIBoosterInfo.cpp">
       <Filter>UI\Common\ui-item-infos</Filter>
     </ClCompile>
     <ClCompile Include="ui\UIItemInfo.cpp">

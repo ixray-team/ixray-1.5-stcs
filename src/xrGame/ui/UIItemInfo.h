@@ -10,6 +10,7 @@ class CUIProgressBar;
 class CUIConditionParams;
 class CUIWpnParams;
 class CUIArtefactParams;
+class CUIBoosterInfo;
 class CUIFrameWindow;
 class UIInvUpgPropertiesWnd;
 class CUIOutfitInfo;
@@ -40,6 +41,7 @@ public:
 	void				TryAddConditionInfo	(CInventoryItem& pInvItem, CInventoryItem* pCompareItem);
 	void				TryAddWpnInfo		(CInventoryItem& pInvItem, CInventoryItem* pCompareItem);
 	void				TryAddArtefactInfo	(const shared_str& af_section);
+	void				TryAddBoosterInfo	(CInventoryItem& itm);
 	void				TryAddOutfitInfo	(CInventoryItem& pInvItem, CInventoryItem* pCompareItem);
 	void				TryAddUpgradeInfo	(CInventoryItem& pInvItem);
 	
@@ -58,6 +60,7 @@ public:
 	CUIConditionParams*		UIConditionWnd;
 	CUIWpnParams*			UIWpnParams;
 	CUIArtefactParams*		UIArtefactParams;
+	CUIBoosterInfo*			UIBoosterInfo;
 	UIInvUpgPropertiesWnd*	UIProperties;
 	CUIOutfitInfo*			UIOutfitInfo;
 
