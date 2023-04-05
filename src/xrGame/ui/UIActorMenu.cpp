@@ -544,8 +544,9 @@ bool CUIActorMenu::OnItemDbClick(CUICellItem* itm)
 				ToDeadBodyBag( itm, false );
 				break;
 			}
-			if ( TryUseItem( itm ) )
+			if(m_currMenuMode!=mmUpgrade && TryUseItem( itm ))
 			{
+				m_item_info_view = false;
 				break;
 			}
 			if ( TryActiveSlot( itm ) )
@@ -628,12 +629,16 @@ bool CUIActorMenu::OnItemRButtonClick(CUICellItem* itm)
 	SetCurrentItem( itm );
 	InfoCurItem( NULL );
 	ActivatePropertiesBox();
+	m_item_info_view = false;
 	return false;
 }
 
 bool CUIActorMenu::OnItemFocusReceive(CUICellItem* itm)
 {
 	InfoCurItem( NULL );
+	m_item_info_view = true;
+
+	itm->m_selected = true;
 	set_highlight_item(itm);
 	return true;
 }
@@ -664,7 +669,7 @@ bool CUIActorMenu::OnItemFocusedUpdate(CUICellItem* itm)
 	{
 		return true; //false
 	}
-	if ( CUIDragDropListEx::m_drag_item || m_UIPropertiesBox->IsShown() )
+	if ( CUIDragDropListEx::m_drag_item || m_UIPropertiesBox->IsShown() || !m_item_info_view )
 	{
 		return true;
 	}	
