@@ -453,7 +453,7 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 		STRCONCAT(demo_play_string, "demo play active : ",
 			_itoa( int(Level().GetDemoPlayPos() * 100), tmp_buf1, 10),
 			"%%, play speed: ",
-			itoa( int(Level().GetDemoPlaySpeed()), tmp_buf2, 10),
+			_itoa( int(Level().GetDemoPlaySpeed()), tmp_buf2, 10),
 			"x");
 		m_game_ui->SetDemoPlayCaption(demo_play_string);
 	}

@@ -23,15 +23,15 @@ IC	const CPatrolPath::CVertex *CPatrolPath::point	(const Fvector &position, cons
 {
 	const CPatrolPath::CVertex	*nearest = 0;
 	float						best_distance = flt_max;
-	const_vertex_iterator		I = vertices().begin();
-	const_vertex_iterator		E = vertices().end();
-	for ( ; I != E; ++I) {
-		if (!evaluator((*I).second->data().position()))
+	const_vertex_iterator		I_ = vertices().begin();
+	const_vertex_iterator		E_ = vertices().end();
+	for ( ; I_ != E_; ++I_) {
+		if (!evaluator((*I_).second->data().position()))
 			continue;
-		float					distance = (*I).second->data().position().distance_to_sqr(position);
+		float					distance = (*I_).second->data().position().distance_to_sqr(position);
 		if (distance < best_distance) {
 			best_distance		= distance;
-			nearest				= (*I).second;
+			nearest				= (*I_).second;
 		}
 	}
 	return						(nearest);

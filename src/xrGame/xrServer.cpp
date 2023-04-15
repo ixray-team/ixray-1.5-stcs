@@ -591,14 +591,14 @@ u32 xrServer::OnMessage	(NET_Packet& P, ClientID sender)			// Non-Zero means bro
 		}break;
 	case M_CL_UPDATE:
 		{
-			xrClientData* CL		= ID_to_client	(sender);
-			if (!CL)				break;
-			CL->net_Ready			= TRUE;
+			xrClientData* CL_		= ID_to_client	(sender);
+			if (!CL_)				break;
+			CL_->net_Ready			= TRUE;
 
-			if (!CL->net_PassUpdates)
+			if (!CL_->net_PassUpdates)
 				break;
 			//-------------------------------------------------------------------
-			u32 ClientPing = CL->stats.getPing();
+			u32 ClientPing = CL_->stats.getPing();
 			P.w_seek(P.r_tell()+2, &ClientPing, 4);
 			//-------------------------------------------------------------------
 			if (SV_Client) 
@@ -607,16 +607,16 @@ u32 xrServer::OnMessage	(NET_Packet& P, ClientID sender)			// Non-Zero means bro
 		}break;
 	case M_MOVE_PLAYERS_RESPOND:
 		{
-			xrClientData* CL		= ID_to_client	(sender);
-			if (!CL)				break;
-			CL->net_Ready			= TRUE;
-			CL->net_PassUpdates		= TRUE;
+			xrClientData* CL_		= ID_to_client	(sender);
+			if (!CL_)				break;
+			CL_->net_Ready			= TRUE;
+			CL_->net_PassUpdates		= TRUE;
 		}break;
 	//-------------------------------------------------------------------
 	case M_CL_INPUT:
 		{
-			xrClientData* CL		= ID_to_client	(sender);
-			if (CL)	CL->net_Ready	= TRUE;
+			xrClientData* CL_		= ID_to_client	(sender);
+			if (CL_)	CL_->net_Ready	= TRUE;
 			if (SV_Client) SendTo	(SV_Client->ID, P, net_flags(TRUE, TRUE));
 			VERIFY					(verify_entities());
 		}break;
@@ -627,18 +627,18 @@ u32 xrServer::OnMessage	(NET_Packet& P, ClientID sender)			// Non-Zero means bro
 		}break;
 	case M_CLIENTREADY:
 		{
-			xrClientData* CL		= ID_to_client(sender);
-			if ( CL )	
+			xrClientData* CL_		= ID_to_client(sender);
+			if ( CL_ )	
 			{
-				CL->net_Ready	= TRUE;
-				CL->ps->DeathTime = Device.dwTimeGlobal;
+				CL_->net_Ready	= TRUE;
+				CL_->ps->DeathTime = Device.dwTimeGlobal;
 				game->OnPlayerConnectFinished(sender);
-				CL->ps->setName( CL->name.c_str() );
+				CL_->ps->setName( CL_->name.c_str() );
 				
 #ifdef BATTLEYE
 				if ( g_pGameLevel && Level().battleye_system.server )
 				{
-					Level().battleye_system.server->AddConnected_OnePlayer( CL );
+					Level().battleye_system.server->AddConnected_OnePlayer( CL_ );
 				}
 #endif // BATTLEYE
 			};
@@ -1150,7 +1150,7 @@ void xrServer::GetServerInfo( CServerInfo* si )
 	string32  tmp;
 	string256 tmp256;
 
-	si->AddItem( "Server port", itoa( GetPort(), tmp, 10 ), RGB(128,128,255) );
+	si->AddItem( "Server port", _itoa( GetPort(), tmp, 10 ), RGB(128,128,255) );
 	LPCSTR time = InventoryUtilities::GetTimeAsString( Device.dwTimeGlobal, InventoryUtilities::etpTimeToSecondsAndDay ).c_str();
 	si->AddItem( "Uptime", time, RGB(255,228,0) );
 
@@ -1159,13 +1159,13 @@ void xrServer::GetServerInfo( CServerInfo* si )
 	if ( game->Type() == eGameIDDeathmatch || game->Type() == eGameIDTeamDeathmatch )
 	{
 		strcat_s( tmp256, " [" );
-		strcat_s( tmp256, itoa( g_sv_dm_dwFragLimit, tmp, 10 ) );
+		strcat_s( tmp256, _itoa( g_sv_dm_dwFragLimit, tmp, 10 ) );
 		strcat_s( tmp256, "] " );
 	}
 	else if ( game->Type() == eGameIDArtefactHunt || game->Type() == eGameIDCaptureTheArtefact )
 	{
 		strcat_s( tmp256, " [" );
-		strcat_s( tmp256, itoa( g_sv_ah_dwArtefactsNum, tmp, 10 ) );
+		strcat_s( tmp256, _itoa( g_sv_ah_dwArtefactsNum, tmp, 10 ) );
 		strcat_s( tmp256, "] " );
 		g_sv_ah_iReinforcementTime;
 	}
@@ -1173,13 +1173,13 @@ void xrServer::GetServerInfo( CServerInfo* si )
 	//if ( g_sv_dm_dwTimeLimit > 0 )
 	{
 		strcat_s( tmp256, " time limit [" );
-		strcat_s( tmp256, itoa( g_sv_dm_dwTimeLimit, tmp, 10 ) );
+		strcat_s( tmp256, _itoa( g_sv_dm_dwTimeLimit, tmp, 10 ) );
 		strcat_s( tmp256, "] " );
 	}
 	if ( game->Type() == eGameIDArtefactHunt || game->Type() == eGameIDCaptureTheArtefact )
 	{
 		strcat_s( tmp256, " RT [" );
-		strcat_s( tmp256, itoa( g_sv_ah_iReinforcementTime, tmp, 10 ) );
+		strcat_s( tmp256, _itoa( g_sv_ah_iReinforcementTime, tmp, 10 ) );
 		strcat_s( tmp256, "]" );
 	}
 	si->AddItem( "Game type", tmp256, RGB(128,255,255) );
@@ -1192,7 +1192,7 @@ void xrServer::GetServerInfo( CServerInfo* si )
 		if ( g_sv_mp_iDumpStatsPeriod > 0 )
 		{
 			strcat_s( tmp256, " statistic [" );
-			strcat_s( tmp256, itoa( g_sv_mp_iDumpStatsPeriod, tmp, 10 ) );
+			strcat_s( tmp256, _itoa( g_sv_mp_iDumpStatsPeriod, tmp, 10 ) );
 			strcat_s( tmp256, "]" );
 			if ( g_bCollectStatisticData )
 			{

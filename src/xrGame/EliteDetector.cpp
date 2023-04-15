@@ -159,9 +159,9 @@ void CUIArtefactDetectorElite::Draw()
 	xr_vector<Fvector>::const_iterator it_e  = m_af_to_draw.end();
 	for(;it!=it_e;++it)
 	{
-		Fvector					p = (*it);
+		Fvector					p_ = (*it);
 		Fvector					pt3d;
-		M.transform_tiny		(pt3d,p);
+		M.transform_tiny		(pt3d,p_);
 //		float kx				= m_wrk_area->GetWndSize().x / m_parent->m_fAfDetectRadius;
 		float kz				= m_wrk_area->GetWndSize().y / m_parent->m_fAfDetectRadius;
 		pt3d.x					*= kz;

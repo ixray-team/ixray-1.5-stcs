@@ -153,9 +153,9 @@ void CUIMotionIcon::SetActorVisibility		(u16 who_id, float value)
 	if(it==m_npc_visibility.end() && value!=0)
 	{
 		m_npc_visibility.resize	(m_npc_visibility.size()+1);
-		_npc_visibility& v		= m_npc_visibility.back();
-		v.id					= who_id;
-		v.value					= value;
+		_npc_visibility& v_		= m_npc_visibility.back();
+		v_.id					= who_id;
+		v_.value					= value;
 	}
 	else if( fis_zero(value) )
 	{

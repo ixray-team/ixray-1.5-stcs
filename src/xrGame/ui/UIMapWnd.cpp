@@ -233,11 +233,11 @@ void CUIMapWnd::Show(bool status)
 	{
 		m_GlobalMap->Show			(true);
 		m_GlobalMap->SetClipRect	(ActiveMapRect());
-		GameMaps::iterator	it		= m_GameMaps.begin();
-		for(;it!=m_GameMaps.end();++it){
-			m_GlobalMap->AttachChild(it->second);
-			it->second->Show		(true);
-			it->second->SetClipRect	(ActiveMapRect());
+		GameMaps::iterator	it_		= m_GameMaps.begin();
+		for(;it_!=m_GameMaps.end();++it_){
+			m_GlobalMap->AttachChild(it_->second);
+			it_->second->Show		(true);
+			it_->second->SetClipRect	(ActiveMapRect());
 		}
 
 		if(	m_view_actor )

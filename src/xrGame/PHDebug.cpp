@@ -487,11 +487,11 @@ void DBG_PHAbstructRender()
 	}
 	if(dbg_ph_draw_mode!=dmCashed)
 	{
-		PHABS_DBG_I i,e;
-		i=dbg_draw_cashed.begin();e=dbg_draw_cashed.end();
-		for(;e!=i;++i)
+		PHABS_DBG_I i_,e_;
+		i_=dbg_draw_cashed.begin();e_=dbg_draw_cashed.end();
+		for(;e_!=i_;++i_)
 		{
-			(*i)->render();
+			(*i_)->render();
 		}
 		if(cash_draw_remove_time<Device.dwTimeGlobal)
 		{
@@ -499,11 +499,11 @@ void DBG_PHAbstructRender()
 		}
 	}
 	{
-		PHABS_DBG_I i,e;
-		i=dbg_draw_simple.begin();e=dbg_draw_simple.end();
-		for(;e!=i;++i)
+		PHABS_DBG_I i_,e_;
+		i_=dbg_draw_simple.begin();e_=dbg_draw_simple.end();
+		for(;e_!=i_;++i_)
 		{
-			(*i)->render();
+			(*i_)->render();
 		}
 		//clear_vector(dbg_draw_simple);
 	}
@@ -1052,7 +1052,7 @@ std::string dump_string( LPCSTR name, const Fmatrix &form )
 
 void dump( LPCSTR name, const Fmatrix &form )
 {
-	Msg( "%s", dump_string( name, form ) );
+	Msg( "%s", dump_string( name, form ).c_str() );
 	//Msg( "%s, _14_=%f ", dump_string( make_string( "%s.i, ", name ).c_str(), form.i ).c_str( ) , form._14_ );  
 	//Msg( "%s, _24_=%f ", dump_string( make_string( "%s.j, ", name ).c_str(), form.j ).c_str( ) , form._24_ );  
 	//Msg( "%s, _34_=%f ", dump_string( make_string( "%s.k, ", name ).c_str(), form.k ).c_str( ) , form._34_  );  

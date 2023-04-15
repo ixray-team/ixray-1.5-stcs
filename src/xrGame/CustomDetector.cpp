@@ -227,11 +227,11 @@ void CCustomDetector::UpdateVisibility()
 	}else
 	if(m_bNeedActivation)
 	{
-		attachable_hud_item* i0		= g_player_hud->attached_item(0);
+		attachable_hud_item* i0_		= g_player_hud->attached_item(0);
 		bool bClimb					= ( (Actor()->MovingState()&mcClimb) != 0 );
 		if(!bClimb)
 		{
-			CWeapon* wpn			= (i0)?smart_cast<CWeapon*>(i0->m_parent_hud_item) : NULL;
+			CWeapon* wpn			= (i0_)?smart_cast<CWeapon*>(i0_->m_parent_hud_item) : NULL;
 			if(	!wpn || 
 				(	!wpn->IsZoomed() && 
 					wpn->GetState()!=CWeapon::eReload && 

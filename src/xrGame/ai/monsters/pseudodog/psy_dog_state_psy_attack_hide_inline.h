@@ -54,10 +54,10 @@ void CStatePsyDogHideAbstract::select_target_point()
 		target.node					= point->level_vertex_id	();
 		target.position				= point->position			();
 	} else {
-		const CCoverPoint	*point = object->CoverMan->find_cover(object->Position(),10.f,30.f);
-		if (point && (object->Position().distance_to(point->position()) > 2.f)) {
-			target.node					= point->level_vertex_id	();
-			target.position				= point->position			();
+		const CCoverPoint	*point_ = object->CoverMan->find_cover(object->Position(),10.f,30.f);
+		if (point_ && (object->Position().distance_to(point_->position()) > 2.f)) {
+			target.node					= point_->level_vertex_id	();
+			target.position				= point_->position			();
 		} else {
 			target.node					= 0;
 			target.position				= ai().level_graph().vertex_position(target.node);

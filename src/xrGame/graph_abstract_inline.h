@@ -44,11 +44,11 @@ IC	void CAbstractGraph::add_vertex			(const _data_type &data, const _vertex_id_t
 TEMPLATE_SPECIALIZATION
 IC	void CAbstractGraph::remove_vertex		(const _vertex_id_type &vertex_id)
 {
-	vertex_iterator				I = m_vertices.find(vertex_id);
-	VERIFY						(m_vertices.end() != I);
-	VERTICES::value_type		v = *I;
+	vertex_iterator				I_ = m_vertices.find(vertex_id);
+	VERIFY						(m_vertices.end() != I_);
+	VERTICES::value_type		v = *I_;
 	delete_data					(v);
-	m_vertices.erase			(I);
+	m_vertices.erase			(I_);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -115,10 +115,10 @@ IC	const typename CAbstractGraph::CVertex *CAbstractGraph::vertex	(const _vertex
 TEMPLATE_SPECIALIZATION
 IC	typename CAbstractGraph::CVertex *CAbstractGraph::vertex		(const _vertex_id_type &vertex_id)
 {
-	vertex_iterator				I = m_vertices.find(vertex_id);
-	if (m_vertices.end() ==	I)
+	vertex_iterator				I_ = m_vertices.find(vertex_id);
+	if (m_vertices.end() ==	I_)
 		return					(0);
-	return						((*I).second);
+	return						((*I_).second);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -225,17 +225,17 @@ IC	void CAbstractGraph::save			(IWriter &stream)
 	stream.close_chunk			();
 	
 	stream.open_chunk			(1);
-	const_vertex_iterator		I = vertices().begin();
-	const_vertex_iterator		E = vertices().end();
-	for (int i=0; I != E; ++I, ++i) {
+	const_vertex_iterator		I_ = vertices().begin();
+	const_vertex_iterator		E_ = vertices().end();
+	for (int i=0; I_ != E_; ++I_, ++i) {
 		stream.open_chunk		(i);
 		{
 			stream.open_chunk	(0);
-			save_data			((*I).second->vertex_id(),stream);
+			save_data			((*I_).second->vertex_id(),stream);
 			stream.close_chunk	();
 
 			stream.open_chunk	(1);
-			save_data			((*I).second->data(),stream);
+			save_data			((*I_).second->data(),stream);
 			stream.close_chunk	();
 		}
 		stream.close_chunk		();
@@ -244,17 +244,17 @@ IC	void CAbstractGraph::save			(IWriter &stream)
 
 	stream.open_chunk			(2);
 	{
-		const_vertex_iterator	I = vertices().begin();
-		const_vertex_iterator	E = vertices().end();
-		for ( ; I != E; ++I) {
-			if ((*I).second->edges().empty())
+		const_vertex_iterator	I__ = vertices().begin();
+		const_vertex_iterator	E__ = vertices().end();
+		for ( ; I__ != E__; ++I__) {
+			if ((*I__).second->edges().empty())
 				continue;
 
-			save_data			((*I).second->vertex_id(),stream);
+			save_data			((*I__).second->vertex_id(),stream);
 
-			stream.w_u32		((u32)(*I).second->edges().size());
-			const_iterator		i = (*I).second->edges().begin();
-			const_iterator		e = (*I).second->edges().end();
+			stream.w_u32		((u32)(*I__).second->edges().size());
+			const_iterator		i = (*I__).second->edges().begin();
+			const_iterator		e = (*I__).second->edges().end();
 			for ( ; i != e; ++i) {
 				save_data		((*i).vertex_id(),stream);
 				save_data		((*i).weight(),stream);

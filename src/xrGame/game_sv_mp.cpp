@@ -1501,11 +1501,11 @@ void	game_sv_mp::OnPlayerChangeName		(NET_Packet& P, ClientID sender)
 	{
 		Msg( "Player \"%s\" try to change name on \"%s\" at protected server.", ps->getName(), NewName );
 
-		NET_Packet			P;
-		GenerateGameMessage (P);
-		P.w_u32				(GAME_EVENT_SERVER_STRING_MESSAGE);
-		P.w_stringZ			("Server is protected. Can\'t change player name!");
-		m_server->SendTo	( sender, P );
+		NET_Packet			P_;
+		GenerateGameMessage (P_);
+		P_.w_u32				(GAME_EVENT_SERVER_STRING_MESSAGE);
+		P_.w_stringZ			("Server is protected. Can\'t change player name!");
+		m_server->SendTo	( sender, P_ );
 		return;
 	}
 
@@ -1516,15 +1516,15 @@ void	game_sv_mp::OnPlayerChangeName		(NET_Packet& P, ClientID sender)
 
 	if (pClient->owner)
 	{
-		NET_Packet			P;
-		GenerateGameMessage(P);
-		P.w_u32(GAME_EVENT_PLAYER_NAME);
-		P.w_u16(pClient->owner->ID);
-		P.w_s16(ps->team);
-		P.w_stringZ(ps->getName());
-		P.w_stringZ(NewName);
+		NET_Packet			P_;
+		GenerateGameMessage(P_);
+		P_.w_u32(GAME_EVENT_PLAYER_NAME);
+		P_.w_u16(pClient->owner->ID);
+		P_.w_s16(ps->team);
+		P_.w_stringZ(ps->getName());
+		P_.w_stringZ(NewName);
 		//---------------------------------------------------
-		real_sender tmp_functor(m_server, &P);
+		real_sender tmp_functor(m_server, &P_);
 		m_server->ForEachClientDoSender(tmp_functor);
 		//---------------------------------------------------
 		pClient->owner->set_name_replace(NewName);
