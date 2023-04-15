@@ -333,8 +333,8 @@ bool CUIWindow::OnMouse(float x, float y, EUIMessages mouse_action)
 	for(; it!=m_ChildWndList.rend(); ++it)
 	{
 		CUIWindow* w	= (*it);
-		Frect wndRect	= w->GetWndRect();
-		if (wndRect.in(cursor_pos) )
+		Frect wndRect_	= w->GetWndRect();
+		if (wndRect_.in(cursor_pos) )
 		{
 			if(w->IsEnabled())
 			{
@@ -632,20 +632,20 @@ bool CUIWindow::is_in( Frect const& a, Frect const& b ) //b in a
 bool CUIWindow::AlignHintWndPos( Frect const& vis_rect, float border, float dx16pos ) //this = hint wnd
 {
 	float const cursor_height = 43.0f;
-	Fvector2 cursor_pos	= GetUICursor()->GetCursorPosition();
+	Fvector2 cursor_pos_	= GetUICursor()->GetCursorPosition();
 	if ( UI()->is_16_9_mode() )
 	{
-		cursor_pos.x -= dx16pos;
+		cursor_pos_.x -= dx16pos;
 	}
 
-	if ( !vis_rect.in(cursor_pos) )
+	if ( !vis_rect.in(cursor_pos_) )
 	{
 		return false;
 	}
 
 	Frect	rect;
 	rect.set( -border, -border, GetWidth() - 2.0f*border, GetHeight() - 2.0f*border );
-	rect.add( cursor_pos.x, cursor_pos.y );
+	rect.add( cursor_pos_.x, cursor_pos_.y );
 
 	rect.sub( 0.0f, rect.height() - border );
 	if ( !is_in( vis_rect, rect ) ) {	rect.sub( rect.width() - border, 0.0f                   );	}

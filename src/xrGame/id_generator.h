@@ -90,9 +90,9 @@ public:
 			return				(tfGetFromBlock(m_tppBlocks[tfGetBlockByValue(tValueID)],tValueID));
 
 		R_ASSERT2				(m_available_count,"Not enough IDs");
-		SID_Block*				I = std::min_element(m_tppBlocks,m_tppBlocks + m_tBlockCount);
-		VERIFY					(I != m_tppBlocks + m_tBlockCount);
-		return					(tfGetFromBlock(*I,tValueID));
+		SID_Block*				I_ = std::min_element(m_tppBlocks,m_tppBlocks + m_tBlockCount);
+		VERIFY					(I_ != m_tppBlocks + m_tBlockCount);
+		return					(tfGetFromBlock(*I_,tValueID));
 	}
 
 	IC		void				vfFreeID		(VALUE_ID tValueID, TIME_ID tTimeID)

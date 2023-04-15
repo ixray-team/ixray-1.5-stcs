@@ -719,13 +719,13 @@ void CUIActorMenu::ActivatePropertiesBox()
 		m_UIPropertiesBox->AutoUpdateSize();
 		m_UIPropertiesBox->BringAllToTop();
 
-		Fvector2 cursor_pos;
+		Fvector2 cursor_pos_;
 		Frect    vis_rect;
 		GetAbsoluteRect				( vis_rect );
 
-		cursor_pos					= GetUICursor()->GetCursorPosition();
-		cursor_pos.sub				( vis_rect.lt );
-		m_UIPropertiesBox->Show		( vis_rect, cursor_pos );
+		cursor_pos_					= GetUICursor()->GetCursorPosition();
+		cursor_pos_.sub				( vis_rect.lt );
+		m_UIPropertiesBox->Show		( vis_rect, cursor_pos_ );
 		PlaySnd						( eProperties );
 	}
 }
@@ -947,8 +947,8 @@ void CUIActorMenu::ProcessPropertiesBoxClicked( CUIWindow* w, void* d )
 	case INVENTORY_EAT_ACTION:		TryUseItem( cell_item );		break;
 	case INVENTORY_DROP_ACTION:
 		{
-			void* d = m_UIPropertiesBox->GetClickedItem()->GetData();
-			if ( d == (void*)33 )
+			void* d_ = m_UIPropertiesBox->GetClickedItem()->GetData();
+			if ( d_ == (void*)33 )
 			{
 				DropAllCurrentItem();
 			}

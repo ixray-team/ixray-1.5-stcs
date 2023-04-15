@@ -173,15 +173,15 @@ stalker_movement_manager_smart_cover::transition_action const &stalker_movement_
 	
 	edge_type const			*edge = cover.description()->transitions().edge(loophole_id0, loophole_id1);
 	VERIFY					(edge);
-	ActionsList const		&actions = edge->data();
+	ActionsList const		&actions_ = edge->data();
 	
 	transition_action const*result = 0;
 	float min_distance_sqr	= flt_max;
 
 	EBodyState				result_body_state = eBodyStateDummy;
 	Fmatrix const&			transform = cover.object().XFORM();
-	ActionsList::const_iterator	i = actions.begin();
-	ActionsList::const_iterator	e = actions.end();
+	ActionsList::const_iterator	i = actions_.begin();
+	ActionsList::const_iterator	e = actions_.end();
 	for ( ; i != e; ++i) {
 		if (!(*i)->applicable())
 			continue;
@@ -248,7 +248,7 @@ stalker_movement_manager_smart_cover::transition_action const &stalker_movement_
 	
 	edge_type const			*edge = cover.description()->transitions().edge(loophole_id0, loophole_id1);
 	VERIFY					(edge);
-	ActionsList const		&actions = edge->data();
+	ActionsList const		&actions_ = edge->data();
 
 	struct applicable {
 		IC	static bool predicate	(action const * const &action)
@@ -257,8 +257,8 @@ stalker_movement_manager_smart_cover::transition_action const &stalker_movement_
 		}
 	};
 
-	ActionsList::const_iterator	i = std::find_if(actions.begin(), actions.end(), &applicable::predicate);
-	VERIFY					(i != actions.end());
+	ActionsList::const_iterator	i = std::find_if(actions_.begin(), actions_.end(), &applicable::predicate);
+	VERIFY					(i != actions_.end());
 	return					(**i);
 }
 
