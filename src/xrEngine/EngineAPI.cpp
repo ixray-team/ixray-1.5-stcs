@@ -211,12 +211,12 @@ void CEngineAPI::CreateRendererList()
 #ifdef DEBUG
 	Msg("Available render modes[%d]:",_tmp.size());
 #endif // DEBUG
-	for(u32 i=0; i<_tmp.size();++i)
+	for(u32 i_=0; i_<_tmp.size();++i_)
 	{
-		vid_quality_token[i].id				= i;
-		vid_quality_token[i].name			= _tmp[i];
+		vid_quality_token[i_].id				= i_;
+		vid_quality_token[i_].name			= _tmp[i_];
 #ifdef DEBUG
-		Msg							("[%s]",_tmp[i]);
+		Msg							("[%s]",_tmp[i_]);
 #endif // DEBUG
 	}
 
