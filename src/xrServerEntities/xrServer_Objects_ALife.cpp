@@ -94,12 +94,12 @@ bool SortStringsByAlphabetPred (const shared_str& s1, const shared_str& s2)
 };
 
 struct story_name_predicate {
-	IC	bool	operator()	(const xr_rtoken &_1, const xr_rtoken &_2) const
+	IC	bool	operator()	(const xr_rtoken &token1, const xr_rtoken &token2) const
 	{
-		VERIFY	(_1.name.size());
-		VERIFY	(_2.name.size());
+		VERIFY	(token1.name.size());
+		VERIFY	(token2.name.size());
 
-		return	(xr_strcmp(_1.name,_2.name) < 0);
+		return	(xr_strcmp(token1.name, token2.name) < 0);
 	}
 };
 
@@ -769,10 +769,10 @@ void CSE_SmartCover::load_draw_data () {
 
 		luabind::object	transitions;
 		parse_table		(table, "transitions", transitions);
-		luabind::object::iterator I = transitions.begin();
-		luabind::object::iterator E = transitions.end();
-		for ( ; I != E; ++I) {
-			luabind::object transition = *I;
+		luabind::object::iterator I_ = transitions.begin();
+		luabind::object::iterator E_ = transitions.end();
+		for ( ; I_ != E_; ++I) {
+			luabind::object transition = *I_;
 			VERIFY2				(transition.type() == LUA_TTABLE, "invalid loophole description passed");
 			shared_str			action_from = smart_cover::parse_vertex(transition, "action_from", true);
 			if (action_from != "idle")
@@ -781,10 +781,10 @@ void CSE_SmartCover::load_draw_data () {
 			if (action_to != "fire")
 				continue;
 			
-			luabind::object		result;
-			parse_table			(transition, "animations", result);
+			luabind::object		result_;
+			parse_table			(transition, "animations", result_);
 
-			H.animation_id		= animation_id(result);
+			H.animation_id		= animation_id(result_);
 			break;
 		}
 	}
@@ -793,9 +793,9 @@ void CSE_SmartCover::load_draw_data () {
 	fill_visuals				();
 }
 
-void CSE_SmartCover::on_render	(CDUInterface* du, ISE_AbstractLEOwner* owner, bool bSelected, const Fmatrix& parent,int priority, bool strictB2F)
+void CSE_SmartCover::on_render	(CDUInterface* du, ISE_AbstractLEOwner* owner_, bool bSelected, const Fmatrix& parent,int priority, bool strictB2F)
 {
-	inherited1::on_render	(du, owner, bSelected, parent, priority, strictB2F);
+	inherited1::on_render	(du, owner_, bSelected, parent, priority, strictB2F);
 	if ( !((1==priority)&&(false==strictB2F)) )	
 		return;
 
@@ -1983,16 +1983,16 @@ void CSE_ALifeObjectHangingLamp::FillProps	(LPCSTR pref, PropItemVec& values)
 }
 
 #define VIS_RADIUS 		0.25f
-void CSE_ALifeObjectHangingLamp::on_render(CDUInterface* du, ISE_AbstractLEOwner* owner, bool bSelected, const Fmatrix& parent,int priority, bool strictB2F)
+void CSE_ALifeObjectHangingLamp::on_render(CDUInterface* du, ISE_AbstractLEOwner* owner_, bool bSelected, const Fmatrix& parent,int priority, bool strictB2F)
 {
-	inherited1::on_render		(du,owner,bSelected,parent,priority,strictB2F);
+	inherited1::on_render		(du,owner_,bSelected,parent,priority,strictB2F);
 	if ((1==priority)&&(false==strictB2F)){
 		u32 clr					= bSelected?0x00FFFFFF:0x00FFFF00;
 		Fmatrix main_xform, ambient_xform;
-		owner->get_bone_xform		(*light_main_bone,main_xform);
+		owner_->get_bone_xform		(*light_main_bone,main_xform);
 		main_xform.mulA_43			(parent);
 		if(flags.is(flPointAmbient) ){
-			owner->get_bone_xform	(*light_ambient_bone,ambient_xform);
+			owner_->get_bone_xform	(*light_ambient_bone,ambient_xform);
 			ambient_xform.mulA_43	(parent);
 		}
 		if (bSelected){
