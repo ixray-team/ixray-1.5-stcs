@@ -42,10 +42,6 @@ p_bumped	main	( v_static I )
 	O.M2 			= xform[1]; 
 	O.M3 			= xform[2]; 
 
-#if defined(USE_PARALLAX) || defined(USE_STEEPPARALLAX)
-	O.eye 			= mul		(float3x3(T,B,N),-(w_pos - eye_position));
-#endif
-
 #ifdef 	USE_TDETAIL
 	O.tcdbump		= O.tcdh * dt_params;		// dt tc
 #endif

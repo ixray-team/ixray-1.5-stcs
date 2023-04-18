@@ -46,11 +46,17 @@ void UpdateTC( inout p_bumped I)
 		const float minSamples = 5;
 		const float fParallaxOffset = -0.013;
 
+		float3	 eye = mul (float3x3(I.M1.x, I.M2.x, I.M3.x,
+									 I.M1.y, I.M2.y, I.M3.y,
+									 I.M1.z, I.M2.z, I.M3.z), -I.position.xyz);
+
+		eye = normalize(eye);
+		
 		//	Calculate number of steps
-		float nNumSteps = lerp( maxSamples, minSamples, normalize(I.eye).z );
+		float nNumSteps = lerp( maxSamples, minSamples, eye.z );
 
 		float	fStepSize			= 1.0 / nNumSteps;
-		float2	vDelta				= normalize(I.eye).xy * fParallaxOffset*1.2;
+		float2	vDelta				= eye.xy * fParallaxOffset*1.2;
 		float2	vTexOffsetPerStep	= fStepSize * vDelta;
 
 		//	Prepare start data for cycle
@@ -102,14 +108,18 @@ void UpdateTC( inout p_bumped I)
 
 void UpdateTC( inout p_bumped I)
 {
+	float3	 eye = mul (float3x3(I.M1.x, I.M2.x, I.M3.x,
+								 I.M1.y, I.M2.y, I.M3.y,
+								 I.M1.z, I.M2.z, I.M3.z), -I.position.xyz);
+								 
 	float	height	= s_bumpX.Sample( smp_base, I.tcdh).w;	//
 			//height  /= 2;
 			//height  *= 0.8;
 			height	= height*(parallax.x) + (parallax.y);	//
-	float2	new_tc  = I.tcdh + height * normalize(I.eye);	//
+	float2	new_tc  = I.tcdh + height * normalize(eye);	//
 
 	//	Output the result
-	I.tcdh	= new_tc;
+	I.tcdh.xy	= new_tc;
 }
 
 #else	//	USE_PARALLAX
@@ -131,7 +141,7 @@ surface_bumped sload_i( p_bumped I)
 	float4 	NuE	= s_bumpX.Sample( smp_base, I.tcdh);	// IN:	normal_error.height
 
 	S.base		= tbase(I.tcdh);				//	IN:  rgb.a
-	S.normal	= Nu.wzyx + (NuE.xyz - 1.0h);	//	(Nu.wzyx - .5h) + (E-.5)
+	S.normal	= Nu.wzy + (NuE.xyz - 1.0h);	//	(Nu.wzyx - .5h) + (E-.5)
 	S.gloss		= Nu.x*Nu.x;					//	S.gloss = Nu.x*Nu.x;
 	S.height	= NuE.z;
 	//S.height	= 0;
