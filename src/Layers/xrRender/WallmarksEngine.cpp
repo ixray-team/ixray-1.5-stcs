@@ -196,11 +196,14 @@ void CWallmarksEngine::AddWallmark_internal	(CDB::TRI* pTri, const Fvector* pVer
 		xrc.box_options		(CDB::OPT_FULL_TEST);
 		xrc.box_query		(g_pGameLevel->ObjectSpace.GetStaticModel(),bbc,bbd);
 		u32	triCount		= xrc.r_count	();
-		if (0==triCount)	return;
+		if (0==triCount) {	
+			return;
+		}
+		
 		CDB::TRI* tris		= g_pGameLevel->ObjectSpace.GetStaticTris();
 		sml_collector.clear	();
 		sml_collector.add_face_packed_D	(pVerts[pTri->verts[0]],pVerts[pTri->verts[1]],pVerts[pTri->verts[2]],0);
-		for (u32 t=0; t<triCount; t++)	{
+		for (u32 t = 0; t < triCount; t++) {
 			CDB::TRI*	T	= tris+xrc.r_begin()[t].id;
 			if (T==pTri)	continue;
 			sml_collector.add_face_packed_D		(pVerts[T->verts[0]],pVerts[T->verts[1]],pVerts[T->verts[2]],0);
@@ -225,8 +228,10 @@ void CWallmarksEngine::AddWallmark_internal	(CDB::TRI* pTri, const Fvector* pVer
 	RecurseTri			(0,mView,*W);
 
 	// calc sphere
-	if (W->verts.size()<3) { static_wm_destroy(W); return; }
-	else {
+	if (W->verts.size() < 3) { 
+		static_wm_destroy(W); 
+		return; 
+	}else {
 		Fbox bb;	bb.invalidate();
 
 		FVF::LIT* I=&*W->verts.begin	();
@@ -235,16 +240,19 @@ void CWallmarksEngine::AddWallmark_internal	(CDB::TRI* pTri, const Fvector* pVer
 		bb.getsphere					(W->bounds.P,W->bounds.R);
 	}
 
-	if (W->bounds.R < 1.f)	
+//	if (W->bounds.R < 1.f)	
 	{
 		// search if similar wallmark exists
 		wm_slot* slot			= FindSlot	(hShader);
-		if (slot){
+		if (slot)
+		{
 			StaticWMVecIt it	=	slot->static_items.begin	();
 			StaticWMVecIt end	=	slot->static_items.end	();
-			for (; it!=end; it++)	{
+			for (; it!=end; it++)	
+			{
 				static_wallmark* wm		=	*it;
-				if (wm->bounds.P.similar(W->bounds.P,0.02f)){ // replace
+				if (wm->bounds.P.similar(W->bounds.P,0.02f))
+				{ // replace
 					static_wm_destroy	(wm);
 					*it					=	W;
 					return;
@@ -257,16 +265,17 @@ void CWallmarksEngine::AddWallmark_internal	(CDB::TRI* pTri, const Fvector* pVer
 		// no similar - register _new_
 		slot->static_items.push_back(W);
 	}
-	else
-	{
-		static_wm_destroy(W);
-	}
+	//else
+	//{
+	//	static_wm_destroy(W);
+	//}
 }
 
 void CWallmarksEngine::AddStaticWallmark	(CDB::TRI* pTri, const Fvector* pVerts, const Fvector &contact_point, ref_shader hShader, float sz)
 {
-	// optimization cheat: don't allow wallmarks more than 50 m from viewer/actor
-	if (contact_point.distance_to_sqr(Device.vCameraPosition) > _sqr(100.f))	return;
+	// optimization cheat: don't allow wallmarks more than 100 m from viewer/actor
+	if (contact_point.distance_to_sqr(Device.vCameraPosition) > _sqr(100.f))	
+		return;
 
 	// Physics may add wallmarks in parallel with rendering
 	lock.Enter				();
