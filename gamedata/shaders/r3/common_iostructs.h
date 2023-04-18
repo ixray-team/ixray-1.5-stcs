@@ -342,29 +342,11 @@ struct v2p_bumped
 	float3	M1		: TEXCOORD2;	// nmap 2 eye - 1
 	float3	M2		: TEXCOORD3;	// nmap 2 eye - 2
 	float3	M3		: TEXCOORD4;	// nmap 2 eye - 3
-#if defined(USE_PARALLAX) || defined(USE_STEEPPARALLAX)
-	float3	eye		: TEXCOORD5;	// vector to point in tangent space
-  #ifdef USE_TDETAIL
-	float2	tcdbump	: TEXCOORD6;	// d-bump
-    #ifdef USE_LM_HEMI
-		float2	lmh	: TEXCOORD7;	// lm-hemi
-    #endif
-  #else
-    #ifdef USE_LM_HEMI
-		float2	lmh	: TEXCOORD6;	// lm-hemi
-    #endif
-  #endif
-#else
   #ifdef USE_TDETAIL
 	float2	tcdbump	: TEXCOORD5;	// d-bump
+    #endif
     #ifdef USE_LM_HEMI
 		float2	lmh	: TEXCOORD6;	// lm-hemi
-    #endif
-  #else
-    #ifdef USE_LM_HEMI
-		float2	lmh	: TEXCOORD5;	// lm-hemi
-    #endif
-  #endif
 #endif
 	float4	hpos	: SV_Position;
 };
@@ -380,29 +362,11 @@ struct p_bumped
 	float3	M1		: TEXCOORD2;	// nmap 2 eye - 1
 	float3	M2		: TEXCOORD3;	// nmap 2 eye - 2
 	float3	M3		: TEXCOORD4;	// nmap 2 eye - 3
-#if defined(USE_PARALLAX) || defined(USE_STEEPPARALLAX)
-	float3	eye		: TEXCOORD5;	// vector to point in tangent space
-  #ifdef USE_TDETAIL
-	float2	tcdbump	: TEXCOORD6;	// d-bump
-    #ifdef USE_LM_HEMI
-		float2	lmh	: TEXCOORD7;	// lm-hemi
-    #endif
-  #else
-    #ifdef USE_LM_HEMI
-		float2	lmh	: TEXCOORD6;	// lm-hemi
-    #endif
-  #endif
-#else
   #ifdef USE_TDETAIL
 	float2	tcdbump	: TEXCOORD5;	// d-bump
+    #endif
     #ifdef USE_LM_HEMI
 		float2	lmh	: TEXCOORD6;	// lm-hemi
-    #endif
-  #else
-    #ifdef USE_LM_HEMI
-		float2	lmh	: TEXCOORD5;	// lm-hemi
-    #endif
-  #endif
 #endif
 };
 ////////////////////////////////////////////////////////////////
@@ -418,13 +382,9 @@ struct	v2p_flat
 	float3	N		: TEXCOORD2;	// Eye-space normal        (for lighting)
   #ifdef USE_TDETAIL
 	float2	tcdbump	: TEXCOORD3;	// d-bump
-    #ifdef USE_LM_HEMI
-		float2	lmh	: TEXCOORD4;	// lm-hemi
     #endif
-  #else
     #ifdef USE_LM_HEMI
-		float2	lmh	: TEXCOORD3;	// lm-hemi
-    #endif
+	float2	lmh		: TEXCOORD4;	// lm-hemi
   #endif
 	float4	hpos	: SV_Position;
 };
@@ -440,13 +400,9 @@ struct	p_flat
 	float3	N		: TEXCOORD2;	// Eye-space normal        (for lighting)
   #ifdef USE_TDETAIL
 	float2	tcdbump	: TEXCOORD3;	// d-bump
-    #ifdef USE_LM_HEMI
-		float2	lmh	: TEXCOORD4;	// lm-hemi
     #endif
-  #else
     #ifdef USE_LM_HEMI
-		float2	lmh	: TEXCOORD3;	// lm-hemi
-    #endif
+	float2	lmh		: TEXCOORD4;	// lm-hemi
   #endif
 };
 

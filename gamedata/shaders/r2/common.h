@@ -143,19 +143,6 @@ struct         p_bumped        {
         half3       M1                : TEXCOORD2;        // nmap 2 eye - 1
         half3       M2                : TEXCOORD3;        // nmap 2 eye - 2
         half3       M3                : TEXCOORD4;        // nmap 2 eye - 3
-#if defined(USE_PARALLAX) || defined(USE_STEEPPARALLAX)
-        half3       eye                : TEXCOORD5;        // vector to point in tangent space
-  #ifdef USE_TDETAIL
-        float2      tcdbump     : TEXCOORD6;        // d-bump
-    #ifdef USE_LM_HEMI
-        float2      lmh                    : TEXCOORD7;        // lm-hemi
-    #endif
-  #else
-    #ifdef USE_LM_HEMI
-        float2      lmh                   : TEXCOORD6;        // lm-hemi
-    #endif
-  #endif
-#else
   #ifdef USE_TDETAIL
         float2      tcdbump          : TEXCOORD5;        // d-bump
     #ifdef USE_LM_HEMI
@@ -165,7 +152,6 @@ struct         p_bumped        {
     #ifdef USE_LM_HEMI
         float2      lmh                   : TEXCOORD5;        // lm-hemi
     #endif
-  #endif
 #endif
 };
 //////////////////////////////////////////////////////////////////////////////////////////

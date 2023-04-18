@@ -55,12 +55,6 @@ v2p_bumped _main( v_model I )
 	O.M2 			= xform	[1]; 
 	O.M3 			= xform	[2]; 
 
-#if defined(USE_PARALLAX) || defined(USE_STEEPPARALLAX)
-	float3  WrldEye	= -(mul(m_W,w_pos) - eye_position);
-	float3	ObjEye	= mul( m_invW,  WrldEye);
-	O.eye 			= mul( float3x3(T,B,N),  ObjEye);	//	Local eye
-#endif
-
 #ifdef 	USE_TDETAIL
 	O.tcdbump		= O.tcdh * dt_params;		// dt tc
 #endif
