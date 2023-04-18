@@ -477,7 +477,11 @@ void CRender::add_leafs_Static(dxRender_Visual *pVisual)
 				N->val.ssa			=	ssa;
 				N->val.pVisual		=	pVisual;
 			}
+#if RENDER!=R_R1
+			if (ssa>r_ssaLOD_B || phase==PHASE_SMAP)
+#else
 			if (ssa>r_ssaLOD_B)
+#endif
 			{
 				// Add all children, doesn't perform any tests
 				I = pV->children.begin	();
@@ -605,8 +609,11 @@ void CRender::add_Static(dxRender_Visual *pVisual, u32 planes)
 	EFC_Visible	VIS;
 	vis_data&	vis			= pVisual->vis;
 	VIS = View->testSAABB	(vis.sphere.P,vis.sphere.R,vis.box.data(),planes);
-	if (fcvNone==VIS)		return;
-	if (!HOM.visible(vis))	return;
+	if (fcvNone==VIS)		
+		return;
+
+	if (!HOM.visible(vis))	
+		return;
 
 	// If we get here visual is visible or partially visible
 	xr_vector<dxRender_Visual*>::iterator I,E;	// it may be usefull for 'hierrarhy' visuals
@@ -671,7 +678,11 @@ void CRender::add_Static(dxRender_Visual *pVisual, u32 planes)
 				N->val.ssa				= ssa;
 				N->val.pVisual			= pVisual;
 			}
+#if RENDER!=R_R1
+			if (ssa>r_ssaLOD_B || phase==PHASE_SMAP)
+#else
 			if (ssa>r_ssaLOD_B)
+#endif
 			{
 				// Add all children, perform tests
 				I = pV->children.begin	();
