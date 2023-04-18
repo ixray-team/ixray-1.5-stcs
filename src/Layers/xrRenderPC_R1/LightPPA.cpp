@@ -165,7 +165,8 @@ void CLightR_Manager::render_point	()
 		L_right.crossproduct		(L_up,L_dir);			L_right.normalize	();
 		L_up.crossproduct			(L_dir,L_right);		L_up.normalize		();
 		float	_camrange			= 300.f;
-		L_pos.set					(L->position);			L_pos.y	+=	_camrange;
+		L_pos.set					(L->position);			
+		//L_pos.y	+=	_camrange;
 		L_view.build_camera_dir		(L_pos,L_dir,L_up);
 		L_project.build_projection	(deg2rad(2.f),1.f,_camrange-L->range,_camrange+L->range);
 		L_combine.mul				(L_project,L_view);
@@ -195,7 +196,8 @@ void CLightR_Manager::render_point	()
 			L->spatial.sector,
 			L_combine,
 			L_pos,
-			TRUE
+			true,
+			true
 			);
 
 		//		4. Analyze if HUD intersects light volume

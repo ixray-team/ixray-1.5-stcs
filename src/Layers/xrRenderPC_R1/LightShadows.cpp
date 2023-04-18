@@ -132,53 +132,6 @@ void CLightShadows::add_element	(NODE& N)
 	casters.back()->nodes.push_back		(N);
 }
 
-IC float PLC_energy	(Fvector& P, Fvector& N, light* L, float E)
-{
-	Fvector Ldir;
-	if (L->flags.type==IRender_Light::DIRECT)
-	{
-		// Cos
-		Ldir.invert	(L->direction);
-		float D		= Ldir.dotproduct( N );
-		if( D <=0 )						return 0;
-		
-		// Trace Light
-		//float A		= D*E;
-		//	Disable angle usage
-		float A		= E;
-		return A;
-	} else {
-		// Distance
-		float sqD	= P.distance_to_sqr(L->position);
-		if (sqD > (L->range*L->range))	return 0;
-		
-		// Dir
-		Ldir.sub	(L->position,P);
-		Ldir.normalize_safe();
-		float D		= Ldir.dotproduct( N );
-		if( D <=0 )						return 0;
-
-		D = 1.0f;
-		
-		// Trace Light
-		float R		= _sqrt		(sqD);
-		float att	= 1-(1/(1+R));
-		//float A		= D * E * att;
-		//	Disable angle usage
-		float A		= E * att;
-		return A;
-	}
-}
-
-IC int PLC_calc	(Fvector& P, Fvector& N, light* L, float energy, Fvector& O)
-{
-	float	E		= PLC_energy(P,N,L,energy);
-	float	C1		= clampr(Device.vCameraPosition.distance_to_sqr(P)/S_distance2,	0.f,1.f);
-	float	C2		= clampr(O.distance_to_sqr(P)/S_fade2,							0.f,1.f);
-	float	A		= 1.f-1.5f*E*(1.f-C1)*(1.f-C2);
-	return			iCeil(255.f*A);
-}
-
 //
 void CLightShadows::calculate	()
 {
@@ -364,6 +317,43 @@ IC	bool		cache_search(const CLightShadows::cache_item& A, const CLightShadows::c
 	if (A.L < B.L)	return true;
 	if (A.L > B.L)	return false;
 	return			false;	// eq
+}
+
+IC float PLC_energy	(Fvector& P, Fvector& N, light* L, float E)
+{
+	Fvector Ldir;
+	if (L->flags.type==IRender_Light::DIRECT)
+	{
+		// Cos
+		Ldir.invert	(L->direction);
+		float D		= Ldir.dotproduct( N );
+		if( D <=0 )						return 0;
+		return E;
+	} else {
+		// Distance
+		float sqD	= P.distance_to_sqr(L->position);
+		if (sqD > (L->range*L->range))	return 0;
+		
+		// Dir
+		Ldir.sub	(L->position,P);
+		Ldir.normalize_safe();
+		float D		= Ldir.dotproduct( N );
+		if( D <=0 )						return 0;
+
+		// Trace Light
+		float R		= _sqrt		(sqD);
+		float att	= 1-(1/(1+R));
+		return (E * att);
+	}
+}
+
+IC int PLC_calc	(Fvector& P, Fvector& N, light* L, float energy, Fvector& O)
+{
+	float	E		= PLC_energy(P,N,L,energy);
+	float	C1		= clampr(Device.vCameraPosition.distance_to_sqr(P)/S_distance2,	0.f,1.f);
+	float	C2		= clampr(O.distance_to_sqr(P)/S_fade2,							0.f,1.f);
+	float	A		= 1.f-1.5f*E*(1.f-C1)*(1.f-C2);
+	return			iCeil(255.f*A);
 }
 
 void CLightShadows::render	()
