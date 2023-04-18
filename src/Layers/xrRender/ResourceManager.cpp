@@ -90,7 +90,9 @@ void	CResourceManager::ED_UpdateBlender	(LPCSTR Name, IBlender* data)
 //////////////////////////////////////////////////////////////////////
 void	CResourceManager::_ParseList(sh_list& dest, LPCSTR names)
 {
-	if (0==names) 		names 	= "$null";
+	if (0 == names || 0 == names[0]) {
+		names = "$null";
+	}
 
 	ZeroMemory			(&dest, sizeof(dest));
 	char*	P			= (char*) names;
