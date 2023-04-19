@@ -494,9 +494,9 @@ void CUITaskItem::OnMouseScroll( float iDirection )
 	}*/
 }
 
-bool CUITaskItem::OnMouse( float x, float y, EUIMessages mouse_action )
+bool CUITaskItem::OnMouseAction( float x, float y, EUIMessages mouse_action )
 {
-	if ( inherited::OnMouse( x, y, mouse_action ) )
+	if ( inherited::OnMouseAction( x, y, mouse_action ) )
 	{
 		//return true;
 	}

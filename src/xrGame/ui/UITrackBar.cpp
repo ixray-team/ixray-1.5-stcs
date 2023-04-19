@@ -35,9 +35,9 @@ CUITrackBar::CUITrackBar()
 	m_b_mouse_capturer				= false;
 }
 
-bool CUITrackBar::OnMouse(float x, float y, EUIMessages mouse_action)
+bool CUITrackBar::OnMouseAction(float x, float y, EUIMessages mouse_action)
 {
-	CUIWindow::OnMouse(x, y, mouse_action);
+	CUIWindow::OnMouseAction(x, y, mouse_action);
 
 	switch (mouse_action)
 	{

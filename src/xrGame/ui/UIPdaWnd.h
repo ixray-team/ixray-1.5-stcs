@@ -37,7 +37,7 @@ protected:
 	shared_str				m_caption_const;
 	CUIAnimatedStatic*		m_anim_static;
 
-	// Текущий активный диалог
+	// РўРµРєСѓС‰РёР№ Р°РєС‚РёРІРЅС‹Р№ РґРёР°Р»РѕРі
 	CUIWindow*				m_pActiveDialog;
 	shared_str				m_sActiveSection;
 
@@ -63,7 +63,7 @@ public:
 	virtual void 			Update				();
 	virtual void 			Show				();
 	virtual void 			Hide				();
-	virtual bool			OnMouse				(float x, float y, EUIMessages mouse_action) {CUIDialogWnd::OnMouse(x,y,mouse_action);return true;} //always true because StopAnyMove() == false
+	virtual bool			OnMouseAction		(float x, float y, EUIMessages mouse_action) {CUIDialogWnd::OnMouseAction(x,y,mouse_action);return true;} //always true because StopAnyMove() == false
 		
 			UIHint*			get_hint_wnd		() const { return m_hint_wnd; }
 			void			DrawHint			();

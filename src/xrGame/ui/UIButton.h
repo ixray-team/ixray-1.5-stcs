@@ -12,50 +12,50 @@ public:
 					CUIButton				();
 	virtual			~CUIButton				();
 
-	virtual bool	OnMouse					(float x, float y, EUIMessages mouse_action);
+	virtual bool	OnMouseAction			(float x, float y, EUIMessages mouse_action);
 	virtual void	OnClick					();
 
-	//ïðîðèñîâêà îêíà
+	//Ð¿Ñ€Ð¾Ñ€Ð¸ÑÐ¾Ð²ÐºÐ° Ð¾ÐºÐ½Ð°
 	virtual void	DrawTexture				();
 	virtual void	DrawText				();
 	virtual void	DrawHighlightedText		();
 
 	virtual void	Update					();
 	virtual void	Enable					(bool status);
-	virtual bool	OnKeyboard				(int dik, EUIMessages keyboard_action);
+	virtual bool	OnKeyboardAction		(int dik, EUIMessages keyboard_action);
 	virtual void	OnFocusLost				();
 
-	//ðåæèìû â êîòîðûõ ìîæíî íàæèìàòü êíîïêó
-	typedef enum{NORMAL_PRESS, //êíîïêà íàæèìàåòñÿ ïðè 
-							   //íàæàòèè è îòïóñêàíèè íà íåé ìûøè
-				 DOWN_PRESS    //ñðàçó ïðè íàæàòèè
+	//Ñ€ÐµÐ¶Ð¸Ð¼Ñ‹ Ð² ÐºÐ¾Ñ‚Ð¾Ñ€Ñ‹Ñ… Ð¼Ð¾Ð¶Ð½Ð¾ Ð½Ð°Ð¶Ð¸Ð¼Ð°Ñ‚ÑŒ ÐºÐ½Ð¾Ð¿ÐºÑƒ
+	typedef enum{NORMAL_PRESS, //ÐºÐ½Ð¾Ð¿ÐºÐ° Ð½Ð°Ð¶Ð¸Ð¼Ð°ÐµÑ‚ÑÑ Ð¿Ñ€Ð¸ 
+							   //Ð½Ð°Ð¶Ð°Ñ‚Ð¸Ð¸ Ð¸ Ð¾Ñ‚Ð¿ÑƒÑÐºÐ°Ð½Ð¸Ð¸ Ð½Ð° Ð½ÐµÐ¹ Ð¼Ñ‹ÑˆÐ¸
+				 DOWN_PRESS    //ÑÑ€Ð°Ð·Ñƒ Ð¿Ñ€Ð¸ Ð½Ð°Ð¶Ð°Ñ‚Ð¸Ð¸
 			} E_PRESS_MODE;
 
 
-	//çàíîâî ïîäãîòîâèòü ñîñòîÿíèå
+	//Ð·Ð°Ð½Ð¾Ð²Ð¾ Ð¿Ð¾Ð´Ð³Ð¾Ñ‚Ð¾Ð²Ð¸Ñ‚ÑŒ ÑÐ¾ÑÑ‚Ð¾ÑÐ½Ð¸Ðµ
     virtual void	Reset					();
 
 
-	//ïîäñâå÷åí ëè òåêñò íà êíîïêå
-	// ïðèíóäèòåëüíàÿ ïîäñâåòêà
+	//Ð¿Ð¾Ð´ÑÐ²ÐµÑ‡ÐµÐ½ Ð»Ð¸ Ñ‚ÐµÐºÑÑ‚ Ð½Ð° ÐºÐ½Ð¾Ð¿ÐºÐµ
+	// Ð¿Ñ€Ð¸Ð½ÑƒÐ´Ð¸Ñ‚ÐµÐ»ÑŒÐ½Ð°Ñ Ð¿Ð¾Ð´ÑÐ²ÐµÑ‚ÐºÐ°
 	virtual void	HighlightItem			(bool bHighlight)			{m_bCursorOverWindow = bHighlight; }
 
-	//ñîñòîÿíèÿ â êîòîðûõ íàõîäèòñÿ êíîïêà
-	typedef enum{BUTTON_NORMAL, //êíîïêà íèêàê íå çàòðàãèâàåòñÿ
-		BUTTON_PUSHED, //â íàæàòîì ñîòîÿíèè
-		BUTTON_UP      //ïðè óäåðæèâàåìîé êíîïêè ìûøè 
+	//ÑÐ¾ÑÑ‚Ð¾ÑÐ½Ð¸Ñ Ð² ÐºÐ¾Ñ‚Ð¾Ñ€Ñ‹Ñ… Ð½Ð°Ñ…Ð¾Ð´Ð¸Ñ‚ÑÑ ÐºÐ½Ð¾Ð¿ÐºÐ°
+	typedef enum{BUTTON_NORMAL, //ÐºÐ½Ð¾Ð¿ÐºÐ° Ð½Ð¸ÐºÐ°Ðº Ð½Ðµ Ð·Ð°Ñ‚Ñ€Ð°Ð³Ð¸Ð²Ð°ÐµÑ‚ÑÑ
+		BUTTON_PUSHED, //Ð² Ð½Ð°Ð¶Ð°Ñ‚Ð¾Ð¼ ÑÐ¾Ñ‚Ð¾ÑÐ½Ð¸Ð¸
+		BUTTON_UP      //Ð¿Ñ€Ð¸ ÑƒÐ´ÐµÑ€Ð¶Ð¸Ð²Ð°ÐµÐ¼Ð¾Ð¹ ÐºÐ½Ð¾Ð¿ÐºÐ¸ Ð¼Ñ‹ÑˆÐ¸ 
 	} E_BUTTON_STATE;
 
-	// Óñòàíîâêà ñîñòîÿíèÿ êíîïêè: óòîïëåíà, íå óòîïëåíà
+	// Ð£ÑÑ‚Ð°Ð½Ð¾Ð²ÐºÐ° ÑÐ¾ÑÑ‚Ð¾ÑÐ½Ð¸Ñ ÐºÐ½Ð¾Ð¿ÐºÐ¸: ÑƒÑ‚Ð¾Ð¿Ð»ÐµÐ½Ð°, Ð½Ðµ ÑƒÑ‚Ð¾Ð¿Ð»ÐµÐ½Ð°
 	void				SetButtonMode			(E_BUTTON_STATE eBtnState)	{ m_eButtonState = eBtnState; }
 	E_BUTTON_STATE		GetButtonsState			()							{ return m_eButtonState;}
 
-	// Ïîâåäåíèå êíîïêè êàê ïåðåêëþ÷àòåëÿ ðåàëèçîâàíî ïîêà òîëüêî â ðåæèìå NORMAL_PRESS
+	// ÐŸÐ¾Ð²ÐµÐ´ÐµÐ½Ð¸Ðµ ÐºÐ½Ð¾Ð¿ÐºÐ¸ ÐºÐ°Ðº Ð¿ÐµÑ€ÐµÐºÐ»ÑŽÑ‡Ð°Ñ‚ÐµÐ»Ñ Ñ€ÐµÐ°Ð»Ð¸Ð·Ð¾Ð²Ð°Ð½Ð¾ Ð¿Ð¾ÐºÐ° Ñ‚Ð¾Ð»ÑŒÐºÐ¾ Ð² Ñ€ÐµÐ¶Ð¸Ð¼Ðµ NORMAL_PRESS
 	void				SetButtonAsSwitch		(bool bAsSwitch)			{ m_bIsSwitch = bAsSwitch; }
 
-	// Ðàáîòà ñ àêñåëåðàòîðîì
-	// Êîä àêñåëåðàòîðà áåðåòñÿ èç ôàéëà dinput.h, èç DirectX SDK.
-	// Íàïðèìåð: êíîïêà A - êîä 0x1E(DIK_A)
+	// Ð Ð°Ð±Ð¾Ñ‚Ð° Ñ Ð°ÐºÑÐµÐ»ÐµÑ€Ð°Ñ‚Ð¾Ñ€Ð¾Ð¼
+	// ÐšÐ¾Ð´ Ð°ÐºÑÐµÐ»ÐµÑ€Ð°Ñ‚Ð¾Ñ€Ð° Ð±ÐµÑ€ÐµÑ‚ÑÑ Ð¸Ð· Ñ„Ð°Ð¹Ð»Ð° dinput.h, Ð¸Ð· DirectX SDK.
+	// ÐÐ°Ð¿Ñ€Ð¸Ð¼ÐµÑ€: ÐºÐ½Ð¾Ð¿ÐºÐ° A - ÐºÐ¾Ð´ 0x1E(DIK_A)
 	void				SetAccelerator			(int iAccel, int idx)	{VERIFY(idx>=0 && idx<4); m_uAccelerator[idx] = iAccel; }
 	const int			GetAccelerator			(int idx) const			{VERIFY(idx>=0 && idx<4); return m_uAccelerator[idx]; }
 	IC bool				IsAccelerator			(int iAccel) const		{return (m_uAccelerator[0]==iAccel)||(m_uAccelerator[1]==iAccel) ;}

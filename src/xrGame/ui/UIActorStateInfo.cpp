@@ -127,7 +127,7 @@ void ui_actor_state_wnd::update_round_states( CActor* actor, ALife::EHitType hit
 
 void ui_actor_state_wnd::UpdateHitZone()
 {
-	CUIHudStatesWnd* wnd = HUD().GetUI()->UIMainIngameWnd->get_hud_states(); //некрасиво слишком
+	CUIHudStatesWnd* wnd = HUD().GetUI()->UIMainIngameWnd->get_hud_states(); //РЅРµРєСЂР°СЃРёРІРѕ СЃР»РёС€РєРѕРј
 	VERIFY( wnd );
 	if ( !wnd )
 	{
@@ -220,9 +220,9 @@ void ui_actor_state_item::init_from_xml( CUIXml& xml, LPCSTR path )
 	xml.SetLocalRoot( stored_root );
 }
 
-bool ui_actor_state_item::OnMouse( float x, float y, EUIMessages mouse_action )
+bool ui_actor_state_item::OnMouseAction( float x, float y, EUIMessages mouse_action )
 {
-	if( CUIWindow::OnMouse( x, y, mouse_action ) )
+	if( CUIWindow::OnMouseAction( x, y, mouse_action ) )
 	{
 		return true;
 	}

@@ -207,10 +207,10 @@ void UIUpgrade::update_mask()
 	m_prev_state = m_state;
 }
 
-bool UIUpgrade::OnMouse( float x, float y, EUIMessages mouse_action )
+bool UIUpgrade::OnMouseAction( float x, float y, EUIMessages mouse_action )
 {
 //	m_bButtonClicked = false;
-	if( CUIWindow::OnMouse( x, y, mouse_action ) )
+	if( CUIWindow::OnMouseAction( x, y, mouse_action ) )
 	{
 		return true;
 	}
