@@ -125,7 +125,7 @@ void CUICellItem::SetOriginalRect(const Frect& r)
 	inherited::SetOriginalRect(r);
 }
 
-bool CUICellItem::OnMouse(float x, float y, EUIMessages mouse_action)
+bool CUICellItem::OnMouseAction(float x, float y, EUIMessages mouse_action)
 {
 	if ( mouse_action == WINDOW_LBUTTON_DOWN )
 	{
@@ -157,7 +157,7 @@ bool CUICellItem::OnMouse(float x, float y, EUIMessages mouse_action)
 	return false;
 };
 
-bool CUICellItem::OnKeyboard(int dik, EUIMessages keyboard_action)
+bool CUICellItem::OnKeyboardAction(int dik, EUIMessages keyboard_action)
 {
 	if (WINDOW_KEY_PRESSED == keyboard_action)
 	{
@@ -167,7 +167,7 @@ bool CUICellItem::OnKeyboard(int dik, EUIMessages keyboard_action)
 			return		true;
 		}
 	}
-	return inherited::OnKeyboard(dik, keyboard_action);
+	return inherited::OnKeyboardAction(dik, keyboard_action);
 }
 
 CUIDragItem* CUICellItem::CreateDragItem()
@@ -341,7 +341,7 @@ void CUIDragItem::Init(const ui_shader& sh, const Frect& rect, const Frect& text
 	m_pos_offset.sub				(rect.lt, GetUICursor()->GetCursorPosition());
 }
 
-bool CUIDragItem::OnMouse(float x, float y, EUIMessages mouse_action)
+bool CUIDragItem::OnMouseAction(float x, float y, EUIMessages mouse_action)
 {
 	if(mouse_action == WINDOW_LBUTTON_UP)
 	{

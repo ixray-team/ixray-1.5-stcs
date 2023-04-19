@@ -283,18 +283,14 @@ bool CUIActorMenu::OnItemFocusedUpdate(CUICellItem* itm)
 	return true;
 }
 
-bool CUIActorMenu::OnMouse( float x, float y, EUIMessages mouse_action )
+bool CUIActorMenu::OnMouseAction( float x, float y, EUIMessages mouse_action )
 {
-	inherited::OnMouse( x, y, mouse_action );
+	inherited::OnMouseAction( x, y, mouse_action );
 	return true; // no click`s
 }
 
-bool CUIActorMenu::OnKeyboard(int dik, EUIMessages keyboard_action)
+bool CUIActorMenu::OnKeyboardAction(int dik, EUIMessages keyboard_action)
 {
-/*
-	if (UIPropertiesBox.GetVisible())
-	{	UIPropertiesBox.OnKeyboard(dik, keyboard_action); }
-*/
 	InfoCurItem( NULL );
 	if ( is_binded(kDROP, dik) )
 	{
@@ -344,7 +340,7 @@ bool CUIActorMenu::OnKeyboard(int dik, EUIMessages keyboard_action)
 		}
 	}
 #endif
-	if( inherited::OnKeyboard(dik,keyboard_action) )return true;
+	if( inherited::OnKeyboardAction(dik,keyboard_action) )return true;
 
 	return false;
 }

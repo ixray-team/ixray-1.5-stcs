@@ -41,7 +41,7 @@ bool CUITabControl::IsChanged()
 	return GetActiveId() != v;
 }
 
-// добавление кнопки-закладки в список закладок контрола
+// РґРѕР±Р°РІР»РµРЅРёРµ РєРЅРѕРїРєРё-Р·Р°РєР»Р°РґРєРё РІ СЃРїРёСЃРѕРє Р·Р°РєР»Р°РґРѕРє РєРѕРЅС‚СЂРѕР»Р°
 bool CUITabControl::AddItem(LPCSTR pItemName, LPCSTR pTexName, Fvector2 pos, Fvector2 size)
 {
 	CUITabButton *pNewButton = xr_new<CUITabButton>();
@@ -150,7 +150,7 @@ void CUITabControl::SetActiveTab(const shared_str& sNewTab)
 	m_sPrevPushedId		= m_sPushedId;
 }
 
-bool CUITabControl::OnKeyboard(int dik, EUIMessages keyboard_action)
+bool CUITabControl::OnKeyboardAction(int dik, EUIMessages keyboard_action)
 {
 
 	if (GetAcceleratorsMode() && WINDOW_KEY_PRESSED == keyboard_action)
