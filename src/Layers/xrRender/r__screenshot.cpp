@@ -502,7 +502,7 @@ void CRender::ScreenshotAsyncEnd(CMemoryWriter &memory_writer)
 		static const int iMaxPixelsInARow = 1024;
 		auto pPixelElement16 = (float*)pPixel;
 
-		HALF tmpArray[4*iMaxPixelsInARow];
+		HALF tmpArray[4 * iMaxPixelsInARow]{};
 		while(pPixel!=pEnd)
 		{
 			const int iProcessPixels = _min(iMaxPixelsInARow, (s32)(pEnd-pPixel));

@@ -376,7 +376,7 @@ void dx103DFluidRenderer::CreateHHGGTexture()
 //	static const int iNumSamples = 1;
 	float data[4*iNumSamples];
 
-	HALF converted[4 * iNumSamples];
+	HALF converted[4 * iNumSamples]{};
 
 //	Fvector4 mmin;
 //	Fvector4 mmax;

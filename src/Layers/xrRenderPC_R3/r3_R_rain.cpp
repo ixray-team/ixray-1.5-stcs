@@ -49,8 +49,8 @@ void CRender::render_rain()
 	float	fBoundingSphereRadius = 0;
 
 	// calculate view-frustum bounds in world space
-	Fmatrix	ex_project, ex_full;
-	Fmatrix ex_full_inverse;
+	Fmatrix	ex_project{}, ex_full{};
+	Fmatrix ex_full_inverse{};
 	{
 		//	
 		const float fRainFar = ps_r3_dyn_wet_surf_far;
@@ -191,7 +191,7 @@ void CRender::render_rain()
 			0.0f,			0.0f,				1.0f,		0.0f,
 			view_dim/2.f+fTexelOffs,	view_dim/2.f+fTexelOffs,		0.0f,		1.0f
 		};
-		Fmatrix m_viewport_inv;
+		Fmatrix m_viewport_inv{};
 		XMStoreFloat4x4(reinterpret_cast<XMFLOAT4X4*>(&m_viewport_inv),
 			XMMatrixInverse(nullptr, XMLoadFloat4x4(reinterpret_cast<XMFLOAT4X4*>(&m_viewport))));
 
