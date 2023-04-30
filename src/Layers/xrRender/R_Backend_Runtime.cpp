@@ -146,8 +146,8 @@ void	CBackend::set_ClipPlanes	(u32 _enable, Fplane*	_planes /*=NULL */, u32 coun
 
 	auto worldToClipMatrixIT = XMMatrixInverse(nullptr, XMLoadFloat4x4(reinterpret_cast<XMFLOAT4X4*>(&Device.mFullTransform)));
 	worldToClipMatrixIT = XMMatrixTranspose(worldToClipMatrixIT);
-	XMFLOAT4 planeClip;
-	XMVECTOR planeWorld;
+	XMFLOAT4 planeClip{};
+	XMVECTOR planeWorld{};
 
 	for (u32 it = 0; it < count; it++) {
 		Fplane& P = _planes[it];

@@ -196,7 +196,7 @@ void CRender::render_sun_cascade ( u32 cascade_ind )
 			0.0f,			0.0f,				1.0f,		0.0f,
 			view_dim/2.f,	view_dim/2.f,		0.0f,		1.0f
 		};
-		Fmatrix m_viewport_inv;
+		Fmatrix m_viewport_inv{};
 		XMStoreFloat4x4(reinterpret_cast<XMFLOAT4X4*>(&m_viewport_inv),
 			XMMatrixInverse(nullptr, XMLoadFloat4x4(reinterpret_cast<XMFLOAT4X4*>(&m_viewport))));
 
