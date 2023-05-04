@@ -100,6 +100,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Reference Include="ImeSense.Controls.WinForms.PropertyGrid">
+      <HintPath>..\..\packages\ImeSense.Controls.WinForms.PropertyGrid.0.1.0\lib\net472\ImeSense.Controls.WinForms.PropertyGrid.dll</HintPath>
+    </Reference>
     <Reference Include="System">
       <CopyLocalSatelliteAssemblies>true</CopyLocalSatelliteAssemblies>
       <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
@@ -138,9 +141,7 @@
     <ClInclude Include="property_value.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Flobbster.Windows.Forms\Flobbster.Windows.Forms.csproj">
-      <Project>{75061919-dc91-4085-afea-a66c5218c8d9}</Project>
-    </ProjectReference>
+    <None Include="Packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
