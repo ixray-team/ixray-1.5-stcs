@@ -26,9 +26,6 @@ UpgradeLog*.XML
 UpgradeLog*.htm
 
 # Dependencies
-sdk/dxsdk_mar2009/
-sdk/3d_sdk/
-dep/
 packages/
 
 # C++ Builder backups
