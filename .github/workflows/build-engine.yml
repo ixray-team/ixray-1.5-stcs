@@ -61,9 +61,26 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Get dependencies
+      - name: Setup NuGet
+        uses: nuget/setup-nuget@v1
+        with:
+          nuget-version: '>=5'
+
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        id: cache
+        with:
+          path: |
+            ${{ github.workspace }}/packages
+          key: |
+            ${{ runner.os }}-nuget-${{ hashFiles('**/*.nupkg') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Restore dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
         run: |
-          ${{ github.workspace }}/get-dependencies.bat
+          nuget restore $env:solution_name
 
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1.1
