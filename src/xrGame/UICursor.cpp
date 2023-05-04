@@ -6,8 +6,7 @@
 #include "HUDManager.h"
 #include "ui/UIStatic.h"
 
-
-#define C_DEFAULT	D3DCOLOR_XRGB(0xff,0xff,0xff)
+constexpr auto C_DEFAULT = color_xrgb(0xff, 0xff, 0xff);
 
 CUICursor::CUICursor()
 :m_static(NULL)

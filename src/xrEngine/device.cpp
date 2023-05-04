@@ -101,7 +101,7 @@ void CRenderDevice::Clear	()
 		D3DCLEAR_ZBUFFER|
 		(psDeviceFlags.test(rsClearBB)?D3DCLEAR_TARGET:0)|
 		(HW.Caps.bStencil?D3DCLEAR_STENCIL:0),
-		D3DCOLOR_XRGB(0,0,0),1,0
+		color_xrgb(0, 0, 0), 1, 0
 		));
 		*/
 }
@@ -395,7 +395,7 @@ void CRenderDevice::Run			()
 	// Message cycle
 	seqAppStart.Process			(rp_AppStart);
 
-	//CHK_DX(HW.pDevice->Clear(0,0,D3DCLEAR_TARGET,D3DCOLOR_XRGB(0,0,0),1,0));
+	//CHK_DX(HW.pDevice->Clear(0, 0, D3DCLEAR_TARGET, color_xrgb(0, 0, 0), 1, 0));
 	m_pRender->ClearTarget		();
 
 	message_loop				();

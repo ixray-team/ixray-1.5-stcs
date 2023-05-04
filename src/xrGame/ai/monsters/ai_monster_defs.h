@@ -5,14 +5,13 @@
 
 typedef u32 TTime;
 
-#define COLOR		D3DCOLOR_XRGB
-#define COLOR_RED	COLOR(255,0,0)	
-#define COLOR_GREEN	COLOR(0,255,0)	
-#define COLOR_BLUE	COLOR(0,0,255)	
+constexpr auto COLOR_RED = color_xrgb(255, 0, 0);
+constexpr auto COLOR_GREEN = color_xrgb(0, 255, 0);
+constexpr auto COLOR_BLUE = color_xrgb(0, 0, 255);
 
 class CBlend;
 
-// специальные параметры анимаций (animation spec params)
+// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (animation spec params)
 #define ASP_MOVE_BKWD			(1 << 0) 
 #define ASP_DRAG_CORPSE			(1 << 1) 
 #define ASP_CHECK_CORPSE		(1 << 2)
@@ -29,8 +28,8 @@ class CBlend;
 #define ASP_UPPER_STATE			(1 << 13)
 #define ASP_MOVE_SMELLING		(1 << 14)
 
-#define AA_FLAG_ATTACK_RAT		(1 << 0)			// аттака крыс?
-#define AA_FLAG_FIRE_ANYWAY		(1 << 1)			// трассировка не нужна
+#define AA_FLAG_ATTACK_RAT		(1 << 0)			// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ?
+#define AA_FLAG_FIRE_ANYWAY		(1 << 1)			// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 
 #define CRITICAL_STAND_TIME		1400
 #define TIME_STAND_RECHECK		2000
@@ -249,12 +248,12 @@ enum EPState {
 typedef		shared_str			anim_string;
 #define		DEFAULT_ANIM		eAnimStandIdle
 
-// элемент анимации
+// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 struct SAnimItem {
 
 	anim_string		target_name;	// "stand_idle_"
-	int				spec_id;		// (-1) - any,  (0 - ...) - идентификатор 3
-	u8				count;			// количество анимаций : "idle_0", "idle_1", "idle_2" 
+	int				spec_id;		// (-1) - any,  (0 - ...) - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 3
+	u8				count;			// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ : "idle_0", "idle_1", "idle_2" 
 	
 	SVelocityParam	velocity;
 
@@ -270,7 +269,7 @@ struct SAnimItem {
 
 #define SKIP_IF_AGGRESSIVE	true
 
-// описание перехода
+// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 struct STransition {
 
 	struct {
@@ -284,7 +283,7 @@ struct STransition {
 	bool			skip_if_aggressive;
 };
 
-// элемент движения
+// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 struct SMotionItem {
 	EMotionAnim		anim;
 	bool			is_turn_params;
@@ -296,28 +295,28 @@ struct SMotionItem {
 	} turn;
 };
 
-// подмена анимаций (если *flag == true, то необходимо заменить анимацию)
+// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅ *flag == true, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
 struct SReplacedAnim {
 	EMotionAnim cur_anim;
 	EMotionAnim new_anim;
 	bool		*flag;
 };
 
-// Определение времени аттаки по анимации
+// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 typedef struct {
-	EMotionAnim	anim;				// параметры конкретной анимации 
+	EMotionAnim	anim;				// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 
 	u32			anim_i3;
 
-	TTime		time_from;			// диапазон времени когда можно наносить hit (от)
-	TTime		time_to;		    // диапазон времени когда можно наносить hit (до)
+	TTime		time_from;			// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ hit (пїЅпїЅ)
+	TTime		time_to;		    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ hit (пїЅпїЅ)
 
-	Fvector		trace_from;			// направление трассировки (относительно центра)
+	Fvector		trace_from;			// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ)
 	Fvector		trace_to;
 
-	u32			flags;				// специальные флаги
+	u32			flags;				// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 
-	float		damage;				// урон при данной атаке
-	Fvector		hit_dir;			// угол направления приложения силы к объекту
+	float		damage;				// пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+	Fvector		hit_dir;			// пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 
 	//-----------------------------------------
 	// temp 
@@ -458,7 +457,7 @@ enum EAccelValue {
 #define PATH_NEED_REBUILD() m_object->IsPathEnd(2,0.5f)
 
 
-// тип монстра (по количеству ног)
+// пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ)
 #define QUADRUPEDAL		4
 #define BIPEDAL			2
 

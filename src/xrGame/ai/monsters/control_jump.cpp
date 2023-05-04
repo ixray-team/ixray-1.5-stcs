@@ -119,7 +119,7 @@ void CControlJump::start_jump(const Fvector &point)
 			Fvector target_point;
 			target_point.mad(m_object->Position(), m_object->Direction(), dist);
 			if (m_man->path_builder().accessible(target_point)) {
-				// нода в прямой видимости?
+				// пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ?
 				m_man->path_builder().restrictions().add_border(m_object->Position(), target_point);
 				u32 node = ai().level_graph().check_position_in_direction(m_object->ai_location().level_vertex_id(),m_object->Position(),target_point);
 				m_man->path_builder().restrictions().remove_border();
@@ -336,9 +336,9 @@ void CControlJump::on_event(ControlCom::EEventType type, ControlCom::IEventData 
 			//---------------------------------------------------------------------------------
 			// start jump here
 			//---------------------------------------------------------------------------------
-			// получить время физ.прыжка
+			// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅпїЅ
 			float ph_time = m_object->character_physics_support()->movement()->JumpMinVelTime(m_target_position);
-			// выполнить прыжок в соответствии с делителем времени
+			// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 			float cur_factor	= ((m_data.force_factor > 0) ? m_data.force_factor : m_jump_factor);
 			m_jump_time			= ph_time/cur_factor;
 			m_object->character_physics_support()->movement()->Jump(m_target_position,m_jump_time);
@@ -371,7 +371,7 @@ void CControlJump::hit_test()
 	if (m_object_hitted)	return;
 	if (!m_data.target_object)	return;
 
-	// Проверить на нанесение хита во время прыжка
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 	Fvector trace_from;
 	m_object->Center(trace_from);
 
@@ -386,12 +386,12 @@ void CControlJump::hit_test()
 	if (!m_object_hitted && m_data.target_object) {
 		
 		m_object_hitted = true;
-		// определить дистанцию до врага
+		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 		Fvector d;
 		d.sub(m_data.target_object->Position(),m_object->Position());
 		if (d.magnitude() > m_hit_trace_range) m_object_hitted = false;
 
-		// проверка на  Field-Of-Hit
+		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ  Field-Of-Hit
 		float my_h,my_p;
 		float h,p;
 
@@ -431,18 +431,18 @@ bool CControlJump::can_jump(CObject *target)
 	Fvector target_position;
 	target->Center				(target_position);
 
-	// проверка на dist
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ dist
 	float dist = source_position.distance_to(target_position);
 
 	// in aggressive mode we can jump from distance >= 1
 	const float test_min_distance = aggressive_jump ? _min(1.f, m_min_distance) : m_min_distance;
 	if ( (dist < test_min_distance) || (dist > m_max_distance) ) return false;
 
-	// получить вектор направления и его мир угол
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 	float		dir_yaw = Fvector().sub(target_position, source_position).getH();
 	dir_yaw		= angle_normalize(-dir_yaw);
 
-	// проверка на angle
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ angle
 	float yaw_current, yaw_target;
 	m_object->control().direction().get_heading(yaw_current, yaw_target);
 
@@ -451,7 +451,7 @@ bool CControlJump::can_jump(CObject *target)
 	// check if target on the same floor etc
 	if (_abs(target_position.y-source_position.y) > m_max_height) return false;
 
-	// проверка prepare
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ prepare
 	if (!is_flag(SControlJumpData::ePrepareSkip) && !is_flag(SControlJumpData::eGlideOnPrepareFailed)) {
 		if (!is_flag(SControlJumpData::ePrepareInMove)) {
 			VERIFY(m_data.state_prepare.motion.valid());
@@ -473,7 +473,7 @@ bool CControlJump::can_jump(CObject *target)
 			target_point.mad(m_object->Position(), m_object->Direction(), dist_);
 
 			if (m_man->path_builder().accessible(target_point)) {
-				// нода в прямой видимости?
+				// пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ?
 				m_man->path_builder().restrictions().add_border(m_object->Position(), target_point);
 				u32 node = ai().level_graph().check_position_in_direction(m_object->ai_location().level_vertex_id(),m_object->Position(),target_point);
 				m_man->path_builder().restrictions().remove_border();
@@ -514,25 +514,25 @@ Fvector CControlJump::predict_position(CObject *obj, const Fvector &pos)
 	////prediction_pos.mad		(pos, dir, prediction_dist);
 	//prediction_pos.mad		(pos, dir, speed * jump_time / 2);
 
-	//// проверить prediction_pos на дистанцию и угол
+	//// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ prediction_pos пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ
 	//float dist = m_object->Position().distance_to(prediction_pos);
 	//if ((dist < m_min_distance) || (dist > m_max_distance)) return pos;
 
-	//// получить вектор направления и его мир угол
+	//// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 	//float		dir_yaw, dir_pitch;
 
 	//dir.sub		(prediction_pos, m_object->Position());
 	//dir.getHP	(dir_yaw, dir_pitch);
 
-	//// проверка на angle и на dist
+	//// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ angle пїЅ пїЅпїЅ dist
 	//float yaw_current, yaw_target;
 	//m_object->control().direction().get_heading(yaw_current, yaw_target);
 	//if (angle_difference(yaw_current, -dir_yaw) > m_max_angle) return pos;
 	
 //#ifdef DEBUG
 //	DBG().level_info(this).clear	();
-//	DBG().level_info(this).add_item	(pos, 0.35f, D3DCOLOR_XRGB(0,0,255));
-//	DBG().level_info(this).add_item	(prediction_pos, 0.35f, D3DCOLOR_XRGB(255,0,0));
+//	DBG().level_info(this).add_item(pos, 0.35f, color_xrgb(0, 0, 255));
+//	DBG().level_info(this).add_item(prediction_pos, 0.35f, color_xrgb(255, 0, 0));
 //#endif
 //
 //	return prediction_pos;
