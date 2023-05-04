@@ -17,7 +17,7 @@
 #include "../xrRenderDX10/dx10BufferUtils.h"
 #include "../xrRenderDX10/dx10ConstantBuffer.h"
 
-#include <Utilities\FlexibleVertexFormat.h>
+#include <FlexibleVertexFormat.h>
 using namespace FVF;
 
 void fix_texture_name(LPSTR fn);

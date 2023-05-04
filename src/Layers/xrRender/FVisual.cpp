@@ -10,7 +10,7 @@
 
 #include "../xrRenderDX10/dx10BufferUtils.h"
 
-#include <Utilities\FlexibleVertexFormat.h>
+#include <FlexibleVertexFormat.h>
 using namespace FVF;
 
 //////////////////////////////////////////////////////////////////////
