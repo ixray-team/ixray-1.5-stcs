@@ -13,7 +13,7 @@
 
 #include "dxRenderDeviceRender.h"
 
-#include <Utilities/FlexibleVertexFormat.h>
+#include <FlexibleVertexFormat.h>
 
 CDrawUtilities DUImpl;
 

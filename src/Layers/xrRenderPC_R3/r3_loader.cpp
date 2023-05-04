@@ -20,7 +20,7 @@
 #include <malloc.h>
 #pragma warning(pop)
 
-#include <Utilities/FlexibleVertexFormat.h>
+#include <FlexibleVertexFormat.h>
 using namespace FVF;
 
 void CRender::level_Load(IReader* fs)
