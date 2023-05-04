@@ -91,4 +91,7 @@
       <Filter>Kernel\Resources</Filter>
     </ResourceCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Packages.config" />
+  </ItemGroup>
 </Project>

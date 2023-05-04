@@ -109,40 +109,40 @@
     <IntDir>$(SolutionDir)obj\$(ProjectName)\$(Configuration)\</IntDir>
     <IgnoreImportLibrary>true</IgnoreImportLibrary>
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)sdk\include;$(SolutionDir)sdk\dxsdk_mar2009\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)sdk\libraries;$(SolutionDir)lib;$(SolutionDir)lib\Debug;$(SolutionDir)sdk\dxsdk_mar2009\Lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)sdk\include;$(SolutionDir)packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)sdk\libraries;$(SolutionDir)lib;$(SolutionDir)lib\Debug;$(SolutionDir)packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\release\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">
     <OutDir>$(SolutionDir)bin\</OutDir>
     <IntDir>$(SolutionDir)obj\$(ProjectName)\$(Configuration)\</IntDir>
-    <IncludePath>$(SolutionDir)sdk\include;$(SolutionDir)sdk\dxsdk_mar2009\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)sdk\libraries;$(SolutionDir)lib;$(SolutionDir)lib\Release;$(SolutionDir)sdk\dxsdk_mar2009\Lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)sdk\include;$(SolutionDir)packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)sdk\libraries;$(SolutionDir)lib;$(SolutionDir)lib\Release;$(SolutionDir)packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\release\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)bin\</OutDir>
     <IntDir>$(SolutionDir)obj\$(ProjectName)\$(Configuration)\</IntDir>
-    <IncludePath>$(SolutionDir)sdk\include;$(SolutionDir)sdk\dxsdk_mar2009\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)sdk\libraries;$(SolutionDir)lib;$(SolutionDir)lib\Release;$(SolutionDir)sdk\dxsdk_mar2009\Lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)sdk\include;$(SolutionDir)packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)sdk\libraries;$(SolutionDir)lib;$(SolutionDir)lib\Release;$(SolutionDir)packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\release\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_Dedicated|Win32'">
     <OutDir>$(SolutionDir)bin\dedicated\</OutDir>
     <IntDir>$(SolutionDir)obj\$(ProjectName)\$(Configuration)\</IntDir>
     <IgnoreImportLibrary>true</IgnoreImportLibrary>
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)sdk\include;$(SolutionDir)sdk\dxsdk_mar2009\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)sdk\libraries;$(SolutionDir)lib;$(SolutionDir)lib\Debug;$(SolutionDir)sdk\dxsdk_mar2009\Lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)sdk\include;$(SolutionDir)packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)sdk\libraries;$(SolutionDir)lib;$(SolutionDir)lib\Debug;$(SolutionDir)packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\release\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Mixed_Dedicated|Win32'">
     <OutDir>$(SolutionDir)bin\dedicated\</OutDir>
     <IntDir>$(SolutionDir)obj\$(ProjectName)\$(Configuration)\</IntDir>
-    <IncludePath>$(SolutionDir)sdk\include;$(SolutionDir)sdk\dxsdk_mar2009\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)sdk\libraries;$(SolutionDir)lib;$(SolutionDir)lib\Release;$(SolutionDir)sdk\dxsdk_mar2009\Lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)sdk\include;$(SolutionDir)packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)sdk\libraries;$(SolutionDir)lib;$(SolutionDir)lib\Release;$(SolutionDir)packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\release\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_Dedicated|Win32'">
     <OutDir>$(SolutionDir)bin\dedicated\</OutDir>
     <IntDir>$(SolutionDir)obj\$(ProjectName)\$(Configuration)\</IntDir>
-    <IncludePath>$(SolutionDir)sdk\include;$(SolutionDir)sdk\dxsdk_mar2009\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)sdk\libraries;$(SolutionDir)lib;$(SolutionDir)lib\Release;$(SolutionDir)sdk\dxsdk_mar2009\Lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)sdk\include;$(SolutionDir)packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)sdk\libraries;$(SolutionDir)lib;$(SolutionDir)lib\Release;$(SolutionDir)packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\release\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -710,6 +710,9 @@
       <Project>{ccca7859-eb86-493e-9b53-c4235f45b3c5}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

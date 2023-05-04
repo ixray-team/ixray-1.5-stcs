@@ -1012,4 +1012,7 @@
     <Text Include="features.txt" />
     <Text Include="TODO.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Packages.config" />
+  </ItemGroup>
 </Project>
