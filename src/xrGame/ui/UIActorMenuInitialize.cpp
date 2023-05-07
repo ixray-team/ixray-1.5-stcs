@@ -113,25 +113,36 @@ void CUIActorMenu::Construct()
 	m_pTradePartnerBagList		= UIHelper::CreateDragDropListEx(uiXml, "dragdrop_partner_bag", this);
 	m_pTradePartnerList			= UIHelper::CreateDragDropListEx(uiXml, "dragdrop_partner_trade", this);
 
-	m_belt_list_over[0] = UIHelper::CreateStatic(uiXml, "belt_list_over", this);
-	Fvector2 pos;
-	float dy = 0.f;
-	/*pos								= m_ArtefactSlotsHighlight[0]->GetWndPos();
-	dy								= uiXml.ReadAttribFlt("artefact_slot_highlight", 0, "dy", 24.0f);
-	for(u8 i=1;i<e_af_count;i++)
+	Fvector2 pos{};
+	float dx{}, dy{};
+	int cols = m_pInventoryBeltList->CellsCapacity().x;
+	int rows = m_pInventoryBeltList->CellsCapacity().y;
+	int counter = 1;
+
+	for (u8 i = 0; i < rows; ++i)
 	{
-		pos.y						+= dy;
-		m_ArtefactSlotsHighlight[i]	= UIHelper::CreateStatic(uiXml, "artefact_slot_highlight", this);
-		m_ArtefactSlotsHighlight[i]	->SetWndPos(pos);
-		m_ArtefactSlotsHighlight[i]	->Show(false);
-	}*/
-	pos = m_belt_list_over[0]->GetWndPos();
-	dy = uiXml.ReadAttribFlt("belt_list_over", 0, "dy", 10.0f);
-	for ( u8 i = 1; i < e_af_count; ++i )
-	{
+		for (u8 j = 0; j < cols; ++j)
+		{
+			if (i == 0 && j == 0)
+			{
+				m_belt_list_over[0] = UIHelper::CreateStatic(uiXml, "belt_list_over", this);
+				pos = m_belt_list_over[0]->GetWndPos();
+				dx = uiXml.ReadAttribFlt("belt_list_over", 0, "dx", 10.0f);
+				dy = uiXml.ReadAttribFlt("belt_list_over", 0, "dy", 10.0f);
+			}
+			else
+			{
+				if (j != 0)
+					pos.x += dx;
+
+				m_belt_list_over[counter] = UIHelper::CreateStatic(uiXml, "belt_list_over", this);
+				m_belt_list_over[counter]->SetWndPos(pos);
+				counter++;
+			}
+		}
+
+		pos.x = m_belt_list_over[0]->GetWndPos().x;
 		pos.y += dy;
-		m_belt_list_over[i] = UIHelper::CreateStatic(uiXml, "belt_list_over", this);
-		m_belt_list_over[i]->SetWndPos( pos );
 	}
 
 	m_ActorMoney	= UIHelper::CreateStatic(uiXml, "actor_money_static", this);
