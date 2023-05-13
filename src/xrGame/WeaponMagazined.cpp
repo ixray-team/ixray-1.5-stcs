@@ -49,6 +49,7 @@ CWeaponMagazined::CWeaponMagazined(ESoundTypes eSoundType) : CWeapon()
 	m_iShotNum					= 0;
 	m_iQueueSize				= WEAPON_ININITE_QUEUE;
 	m_bLockType					= false;
+	bMisfireReload				= false;
 }
 
 CWeaponMagazined::~CWeaponMagazined()
@@ -77,6 +78,9 @@ void CWeaponMagazined::Load	(LPCSTR section)
 	if (isHUDAnimationExist("anm_reload_empty"))
 		m_sounds.LoadSound(section, "snd_reload_empty", "sndReloadEmpty", m_eSoundReload);
 	
+	if (isHUDAnimationExist("anm_reload_misfire"))
+		m_sounds.LoadSound(section, "snd_reload_misfire", "sndReloadMis", m_eSoundReload);
+
 	m_sSndShotCurrent = "sndShot";
 		
 	//звуки и партиклы глушителя, еслит такой есть
@@ -466,6 +470,7 @@ void CWeaponMagazined::UpdateSounds	()
 	m_sounds.SetPosition("sndHide", P);
 	m_sounds.SetPosition("sndReload", P);
 	m_sounds.SetPosition("sndReloadEmpty", P);
+	m_sounds.SetPosition("sndReloadMis", P);
 }
 
 void CWeaponMagazined::state_Fire(float dt)
@@ -623,7 +628,13 @@ void CWeaponMagazined::OnAnimationEnd(u32 state)
 			bReloadKeyPressed = false;
 			bAmmotypeKeyPressed = false;
 
-			ReloadMagazine();
+			if (bMisfireReload)
+			{
+				bMisfire = false;
+				bMisfireReload = false;
+			}
+			else
+				ReloadMagazine();
 			SwitchState(eIdle);
 		}break;	// End of reload animation
 		case eHiding:	SwitchState(eHidden);   break;	// End of Hide
@@ -706,7 +717,9 @@ void CWeaponMagazined::switch2_Empty()
 
 void CWeaponMagazined::PlayReloadSound()
 {
-	if (isHUDAnimationExist("anm_reload_empty") && iAmmoElapsed == 0)
+	if (isHUDAnimationExist("anm_reload_misfire") && IsMisfire() && bMisfireReload)
+		PlaySound("sndReloadMis", get_LastFP());
+	else if (isHUDAnimationExist("anm_reload_empty") && iAmmoElapsed == 0)
 		PlaySound("sndReloadEmpty", get_LastFP());
 	else
 		PlaySound("sndReload",get_LastFP());
@@ -1043,7 +1056,12 @@ void CWeaponMagazined::PlayAnimReload()
 {
 	VERIFY(GetState() == eReload);
 
-	if (isHUDAnimationExist("anm_reload_empty") && iAmmoElapsed == 0)
+	if (isHUDAnimationExist("anm_reload_misfire") && IsMisfire())
+	{
+		PlayHUDMotion("anm_reload_misfire", TRUE, this, GetState());
+		bMisfireReload = true;
+	}
+	else if (isHUDAnimationExist("anm_reload_empty") && iAmmoElapsed == 0)
 		PlayHUDMotion("anm_reload_empty", TRUE, this, GetState());
 	else
 		PlayHUDMotion("anm_reload", TRUE, this, GetState());
