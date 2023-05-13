@@ -20,7 +20,7 @@
 #include "ui/UIStatic.h"
 #include "player_hud.h"
 #include "CustomDetector.h"
-
+#include "Actor_Flags.h"
 ENGINE_API	bool	g_dedicated_server;
 
 CUIXml*				pWpnScopeXml = NULL;
@@ -156,9 +156,12 @@ void CWeaponMagazined::FireEnd()
 {
 	inherited::FireEnd();
 
-	CActor	*actor = smart_cast<CActor*>(H_Parent());
-	if(!iAmmoElapsed && actor && GetState()!=eReload) 
-		Reload();
+	if (psActorFlags.test(AF_AUTORELOAD))
+	{
+		CActor	*actor = smart_cast<CActor*>(H_Parent());
+		if(!iAmmoElapsed && actor && GetState()!=eReload) 
+			Reload();
+	}
 }
 
 void CWeaponMagazined::Reload() 
@@ -685,15 +688,17 @@ void CWeaponMagazined::switch2_Empty()
 {
 	OnZoomOut();
 	
-	if(!TryReload())
+	if (psActorFlags.test(AF_AUTORELOAD))
 	{
-		OnEmptyClick();
+		if (!TryReload())
+			OnEmptyClick();
+		else
+			inherited::FireEnd();
 	}
 	else
-	{
-		inherited::FireEnd();
-	}
+		OnEmptyClick();
 }
+
 void CWeaponMagazined::PlayReloadSound()
 {
 	PlaySound	("sndReload",get_LastFP());

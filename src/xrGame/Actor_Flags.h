@@ -10,6 +10,7 @@ enum{
 		AF_PSP				=(1<<6),
 		AF_DYNAMIC_MUSIC	=(1<<7),
 		AF_GODMODE_RT		=(1<<8),
+		AF_AUTORELOAD		=(1<<9),
 };
 
 extern Flags32 psActorFlags;
