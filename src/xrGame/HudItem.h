@@ -139,7 +139,10 @@ public:
 	virtual bool				render_item_3d_ui_query	()					{return false;}
 
 	virtual bool				CheckCompatibility		(CHudItem*)			{return true;}
+
 	float						GetHudFov();
+
+	bool						isHUDAnimationExist		(LPCSTR anim_name);
 protected:
 
 	IC		void				SetPending			(BOOL H)			{ m_huditem_flags.set(fl_pending, H);}
