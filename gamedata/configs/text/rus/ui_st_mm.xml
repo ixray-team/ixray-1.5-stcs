@@ -390,6 +390,9 @@
 	<string id="ui_mm_crosshair_distance">
 		<text>Дистанция до цели</text>
 	</string>
+	<string id="ui_mm_autoreload">
+		<text>Автоперезарядка</text>
+	</string>
 	<string id="ui_mm_default">
 		<text>По умолчанию</text>
 	</string>
