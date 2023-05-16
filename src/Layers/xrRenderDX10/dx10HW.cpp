@@ -86,8 +86,8 @@ void CHW::CreateD3D()
 	pFactory->Release();
 	*/
 
-	IDXGIFactory * pFactory;
-	R_CHK( CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)(&pFactory)) );
+	IDXGIFactory* pFactory = nullptr;
+	R_CHK(CreateDXGIFactory(IID_PPV_ARGS(&pFactory)));
 
 	m_pAdapter = 0;
 	m_bUsePerfhud = false;
