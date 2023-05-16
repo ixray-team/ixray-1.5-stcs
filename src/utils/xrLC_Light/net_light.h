@@ -2,7 +2,7 @@
 //#include "hxgrid/Interface/IGenericStream.h"
 #include "hxgrid/Interface/IAgent.h"
 //interface IGenericStream;
-__interface net_task_interface
+class net_task_interface
 {
 public:
 	virtual bool RunTask(IAgent* agent,
