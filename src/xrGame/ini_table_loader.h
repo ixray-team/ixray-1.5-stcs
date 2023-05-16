@@ -47,7 +47,7 @@ private:
 	template <typename T_CONVERT_ITEM>
         T_ITEM				convert			(LPCSTR)
 	{
-		STATIC_CHECK(false, Specialization_for_convert_in_CIni_Table_not_found);
+		static_assert(false, "Specialization for convert in CIni Table not found");
 		NODEFAULT;
 	}
 
