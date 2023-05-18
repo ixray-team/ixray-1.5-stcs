@@ -110,19 +110,19 @@
     <IgnoreImportLibrary>true</IgnoreImportLibrary>
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(SolutionDir)sdk\include;$(SolutionDir)packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\include;$(SolutionDir)packages\directxmath.2022.12.12.1\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)sdk\libraries;$(SolutionDir)lib;$(SolutionDir)lib\Debug;$(SolutionDir)packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\release\lib\x86;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)sdk\libraries;$(SolutionDir)lib;$(SolutionDir)packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\release\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">
     <OutDir>$(SolutionDir)bin\</OutDir>
     <IntDir>$(SolutionDir)obj\$(ProjectName)\$(Configuration)\</IntDir>
     <IncludePath>$(SolutionDir)sdk\include;$(SolutionDir)packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\include;$(SolutionDir)packages\directxmath.2022.12.12.1\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)sdk\libraries;$(SolutionDir)lib;$(SolutionDir)lib\Release;$(SolutionDir)packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\release\lib\x86;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)sdk\libraries;$(SolutionDir)lib;$(SolutionDir)packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\release\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)bin\</OutDir>
     <IntDir>$(SolutionDir)obj\$(ProjectName)\$(Configuration)\</IntDir>
     <IncludePath>$(SolutionDir)sdk\include;$(SolutionDir)packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\include;$(SolutionDir)packages\directxmath.2022.12.12.1\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)sdk\libraries;$(SolutionDir)lib;$(SolutionDir)lib\Release;$(SolutionDir)packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\release\lib\x86;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)sdk\libraries;$(SolutionDir)lib;$(SolutionDir)packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\release\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_Dedicated|Win32'">
     <OutDir>$(SolutionDir)bin\dedicated\</OutDir>
@@ -130,19 +130,19 @@
     <IgnoreImportLibrary>true</IgnoreImportLibrary>
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(SolutionDir)sdk\include;$(SolutionDir)packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\include;$(SolutionDir)packages\directxmath.2022.12.12.1\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)sdk\libraries;$(SolutionDir)lib;$(SolutionDir)lib\Debug;$(SolutionDir)packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\release\lib\x86;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)sdk\libraries;$(SolutionDir)lib;$(SolutionDir)packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\release\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Mixed_Dedicated|Win32'">
     <OutDir>$(SolutionDir)bin\dedicated\</OutDir>
     <IntDir>$(SolutionDir)obj\$(ProjectName)\$(Configuration)\</IntDir>
     <IncludePath>$(SolutionDir)sdk\include;$(SolutionDir)packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\include;$(SolutionDir)packages\directxmath.2022.12.12.1\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)sdk\libraries;$(SolutionDir)lib;$(SolutionDir)lib\Release;$(SolutionDir)packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\release\lib\x86;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)sdk\libraries;$(SolutionDir)lib;$(SolutionDir)packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\release\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_Dedicated|Win32'">
     <OutDir>$(SolutionDir)bin\dedicated\</OutDir>
     <IntDir>$(SolutionDir)obj\$(ProjectName)\$(Configuration)\</IntDir>
     <IncludePath>$(SolutionDir)sdk\include;$(SolutionDir)packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\include;$(SolutionDir)packages\directxmath.2022.12.12.1\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)sdk\libraries;$(SolutionDir)lib;$(SolutionDir)lib\Release;$(SolutionDir)packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\release\lib\x86;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)sdk\libraries;$(SolutionDir)lib;$(SolutionDir)packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\release\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -172,7 +172,7 @@
       <Culture>0x0422</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>msacm32.lib;vfw32.lib;ogg_static_d.lib;theora_static_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>msacm32.lib;vfw32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>libcmtd;libc;libcd;MSVCRTD;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <MapFileName />
@@ -208,7 +208,7 @@
       <Culture>0x0422</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>msacm32.lib;vfw32.lib;ogg_static.lib;theora_static.lib;openAL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>msacm32.lib;vfw32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>libcmt;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -248,7 +248,7 @@
       <Culture>0x0422</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>msacm32.lib;vfw32.lib;ogg_static.lib;theora_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>msacm32.lib;vfw32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>libcmt;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <MapFileName />
@@ -289,7 +289,7 @@
       <Culture>0x0422</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>msacm32.lib;vfw32.lib;ogg_static_d.lib;theora_static_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>msacm32.lib;vfw32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>libcmtd;libcd;MSVCRTD;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <MapFileName />
@@ -327,7 +327,7 @@
       <Culture>0x0422</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>msacm32.lib;vfw32.lib;ogg_static.lib;theora_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>msacm32.lib;vfw32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>libcmt;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <MapFileName />
@@ -366,7 +366,7 @@
       <Culture>0x0422</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>msacm32.lib;vfw32.lib;ogg_static.lib;theora_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>msacm32.lib;vfw32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>libcmt;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <MapFileName />
@@ -722,4 +722,6 @@
       <UserProperties DevPartner_IsInstrumented="1" />
     </VisualStudio>
   </ProjectExtensions>
+  <Import Project="../LibOgg.targets" />
+  <Import Project="../LibTheora.targets" />
 </Project>
