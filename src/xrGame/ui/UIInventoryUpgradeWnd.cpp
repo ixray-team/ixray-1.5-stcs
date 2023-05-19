@@ -100,7 +100,7 @@ void CUIInventoryUpgradeWnd::InitInventory( CInventoryItem* item, bool can_upgra
 {
 	m_inv_item = item;
 	m_item_info->InitItemUpgradeIcon( item );
-	
+
 	m_scheme_wnd->DetachAll();
 	m_scheme_wnd->Show( false );
 	m_btn_repair->Enable( false );

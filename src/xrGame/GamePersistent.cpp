@@ -14,6 +14,7 @@
 #include "game_base_space.h"
 #include "stalker_animation_data_storage.h"
 #include "stalker_velocity_holder.h"
+#include "IXRayGameConstants.h"
 
 #include "ActorEffector.h"
 #include "actor.h"
@@ -175,6 +176,7 @@ void CGamePersistent::OnGameStart()
 	__super::OnGameStart		();
 	
 	UpdateGameType				();
+	GameConstants::LoadConstants();
 
 }
 

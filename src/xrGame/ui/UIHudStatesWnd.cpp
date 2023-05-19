@@ -15,6 +15,7 @@
 #include "ui_arrow.h"
 #include "UIInventoryUtilities.h"
 #include "../HUDManager.h"
+#include "IXRayGameConstants.h"
 
 static const u32 c_white = color_rgba(255, 255, 255, 255);
 static const u32 c_green = color_rgba(0, 255, 0, 255);
@@ -315,20 +316,29 @@ void CUIHudStatesWnd::SetAmmoIcon( const shared_str& sect_name )
 		float yPos = pSettings->r_float(sect_name, "inv_grid_y");
 
 		m_ui_weapon_icon->GetUIStaticItem().SetOriginalRect(
-			( xPos      * INV_GRID_WIDTH ), ( yPos       * INV_GRID_HEIGHT ),
-			( gridWidth * INV_GRID_WIDTH ), ( gridHeight * INV_GRID_HEIGHT ) );
+			( xPos      * INV_GRID_WIDTH(GameConstants::GetUseHQ_Icons())), ( yPos       * INV_GRID_HEIGHT(GameConstants::GetUseHQ_Icons())),
+			( gridWidth * INV_GRID_WIDTH(GameConstants::GetUseHQ_Icons())), ( gridHeight * INV_GRID_HEIGHT(GameConstants::GetUseHQ_Icons())) );
 		m_ui_weapon_icon->SetStretchTexture( true );
 
 		// now perform only width scale for ammo, which (W)size >2
 		// all others ammo (1x1, 1x2) will be not scaled (original picture)
-		float h = gridHeight * INV_GRID_HEIGHT * 0.65f;
-		float w = gridWidth  * INV_GRID_WIDTH  * 0.65f;
+		float h = gridHeight * INV_GRID_HEIGHT(GameConstants::GetUseHQ_Icons()) * 0.65f;
+		float w = gridWidth  * INV_GRID_WIDTH(GameConstants::GetUseHQ_Icons()) * 0.65f;
 		float posx_16 = 8.33f;
 		float posx = 10.0f;
 
-		if ( gridWidth > 2.01f )
+		if (GameConstants::GetUseHQ_Icons())
 		{
-			w = INV_GRID_WIDTH * 1.5f;
+			h = gridHeight * INV_GRID_HEIGHT(GameConstants::GetUseHQ_Icons()) / 2 * 0.65f;
+			w = gridWidth * INV_GRID_WIDTH(GameConstants::GetUseHQ_Icons()) / 2 * 0.65f;
+		}
+
+		if (gridWidth > 2.01f)
+		{
+			if (GameConstants::GetUseHQ_Icons())
+				w = INV_GRID_WIDTH(GameConstants::GetUseHQ_Icons()) / 2 * 1.5f;
+			else
+				w = INV_GRID_WIDTH(GameConstants::GetUseHQ_Icons()) * 1.5f;
 		}
 
 		bool is_16x10 = UI()->is_16_9_mode();
@@ -341,14 +351,9 @@ void CUIHudStatesWnd::SetAmmoIcon( const shared_str& sect_name )
 			m_ui_weapon_icon->SetTextureOffset( 0.0f, 2.0f );
 		}
 
-
-#ifdef USE_100X100_ICONS
-		m_ui_weapon_icon->SetWidth( (is_16x10)? w*0.833f * m_ui_weapon_icon_scale / 2 : w * m_ui_weapon_icon_scale / 2);
-		m_ui_weapon_icon->SetHeight( h * m_ui_weapon_icon_scale / 2);
-#else
-		m_ui_weapon_icon->SetWidth( (is_16x10)? w*0.833f * m_ui_weapon_icon_scale : w * m_ui_weapon_icon_scale);
-		m_ui_weapon_icon->SetHeight( h * m_ui_weapon_icon_scale);
-#endif // USE_100X100_ICONS
+		m_ui_weapon_icon->SetWidth((is_16x10) ? w * 0.833f * m_ui_weapon_icon_scale : w * m_ui_weapon_icon_scale);
+		m_ui_weapon_icon->SetHeight(h * m_ui_weapon_icon_scale);
+		
 	}
 
 }

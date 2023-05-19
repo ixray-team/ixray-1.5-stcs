@@ -1088,6 +1088,7 @@
     <ClInclude Include="inventory_upgrade_root_inline.h" />
     <ClInclude Include="item_manager.h" />
     <ClInclude Include="item_manager_inline.h" />
+    <ClInclude Include="IXRayGameConstants.h" />
     <ClInclude Include="key_binding_registrator.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="Level_Bullet_Manager.h" />
@@ -3502,6 +3503,7 @@
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)$(ProjectName)_script.pch</PrecompiledHeaderOutputFile>
     </ClCompile>
     <ClCompile Include="item_manager.cpp" />
+    <ClCompile Include="IXRayGameConstants.cpp" />
     <ClCompile Include="key_binding_registrator_script.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">pch_script.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)$(ProjectName)_script.pch</PrecompiledHeaderOutputFile>
