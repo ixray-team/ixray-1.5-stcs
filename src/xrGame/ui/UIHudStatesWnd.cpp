@@ -342,8 +342,13 @@ void CUIHudStatesWnd::SetAmmoIcon( const shared_str& sect_name )
 		}
 
 
+#ifdef USE_100X100_ICONS
+		m_ui_weapon_icon->SetWidth( (is_16x10)? w*0.833f * m_ui_weapon_icon_scale / 2 : w * m_ui_weapon_icon_scale / 2);
+		m_ui_weapon_icon->SetHeight( h * m_ui_weapon_icon_scale / 2);
+#else
 		m_ui_weapon_icon->SetWidth( (is_16x10)? w*0.833f * m_ui_weapon_icon_scale : w * m_ui_weapon_icon_scale);
 		m_ui_weapon_icon->SetHeight( h * m_ui_weapon_icon_scale);
+#endif // USE_100X100_ICONS
 	}
 
 }

@@ -389,25 +389,38 @@ void CWeapon::Load		(LPCSTR section)
 
 	if ( m_eScopeStatus == ALife::eAddonAttachable )
 	{
-		m_sScopeName = pSettings->r_string(section,"scope_name");
-		m_iScopeX = pSettings->r_s32(section,"scope_x");
-		m_iScopeY = pSettings->r_s32(section,"scope_y");
+		m_sScopeName = pSettings->r_string(section, "scope_name");
+#ifdef USE_100X100_ICONS
+		m_iScopeX = pSettings->r_s32(section,"scope_x") * 2;
+		m_iScopeY = pSettings->r_s32(section,"scope_y") * 2;
+#else
+		m_iScopeX = pSettings->r_s32(section, "scope_x");
+		m_iScopeY = pSettings->r_s32(section, "scope_y");
+#endif // USE_100X100_ICONS
 	}
 
-    
 	if ( m_eSilencerStatus == ALife::eAddonAttachable )
 	{
 		m_sSilencerName = pSettings->r_string(section,"silencer_name");
+#ifdef USE_100X100_ICONS
+		m_iSilencerX = pSettings->r_s32(section,"silencer_x") * 2;
+		m_iSilencerY = pSettings->r_s32(section,"silencer_y") * 2;
+#else
 		m_iSilencerX = pSettings->r_s32(section,"silencer_x");
 		m_iSilencerY = pSettings->r_s32(section,"silencer_y");
+#endif // USE_100X100_ICONS
 	}
 
-    
 	if ( m_eGrenadeLauncherStatus == ALife::eAddonAttachable )
 	{
 		m_sGrenadeLauncherName = pSettings->r_string(section,"grenade_launcher_name");
+#ifdef USE_100X100_ICONS
+		m_iGrenadeLauncherX = pSettings->r_s32(section,"grenade_launcher_x") * 2;
+		m_iGrenadeLauncherY = pSettings->r_s32(section,"grenade_launcher_y") * 2;
+#else
 		m_iGrenadeLauncherX = pSettings->r_s32(section,"grenade_launcher_x");
 		m_iGrenadeLauncherY = pSettings->r_s32(section,"grenade_launcher_y");
+#endif // USE_100X100_ICONS
 	}
 
 	InitAddons();

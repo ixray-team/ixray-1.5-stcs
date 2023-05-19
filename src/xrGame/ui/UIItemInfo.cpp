@@ -28,8 +28,13 @@
 
 extern const LPCSTR g_inventory_upgrade_xml;
 
-#define  INV_GRID_WIDTH2  40
-#define  INV_GRID_HEIGHT2 40
+#ifdef USE_100X100_ICONS
+#define  INV_GRID_WIDTH2  80.0f
+#define  INV_GRID_HEIGHT2 80.0f
+#else
+#define  INV_GRID_WIDTH2  40.0f
+#define  INV_GRID_HEIGHT2 40.0f
+#endif // USE_100X100_ICONS
 
 CUIItemInfo::CUIItemInfo()
 {
@@ -338,10 +343,17 @@ void CUIItemInfo::InitItem(CUICellItem* pCellItem, CInventoryItem* pCompareItem,
 		UIItemImage->TextureOn				();
 		UIItemImage->ClipperOn				();
 		UIItemImage->SetStretchTexture		(true);
+#ifdef USE_100X100_ICONS
+		Frect v_r							= {	0.0f, 
+												0.0f, 
+												float(item_grid_rect.x2*INV_GRID_WIDTH2 / 2),	
+												float(item_grid_rect.y2*INV_GRID_HEIGHT2 / 2)};
+#else
 		Frect v_r							= {	0.0f, 
 												0.0f, 
 												float(item_grid_rect.x2*INV_GRID_WIDTH2),	
 												float(item_grid_rect.y2*INV_GRID_HEIGHT2)};
+#endif // USE_100X100_ICONS
 		if(UI()->is_16_9_mode())
 			v_r.x2 /= 1.2f;
 
@@ -433,10 +445,17 @@ void CUIItemInfo::InitItemUpgradeIcon(CInventoryItem* pInvItem)
 		UIItemImage->TextureOn				();
 		UIItemImage->ClipperOn				();
 		UIItemImage->SetStretchTexture		(true);
+#ifdef USE_100X100_ICONS
+		Frect v_r							= {	0.0f, 
+												0.0f, 
+												float(item_grid_rect.x2*INV_GRID_WIDTH2 / 2),	
+												float(item_grid_rect.y2*INV_GRID_HEIGHT2 / 2)};
+#else
 		Frect v_r							= {	0.0f, 
 												0.0f, 
 												float(item_grid_rect.x2*INV_GRID_WIDTH2),	
 												float(item_grid_rect.y2*INV_GRID_HEIGHT2)};
+#endif // USE_100X100_ICONS
 		if(UI()->is_16_9_mode())
 			v_r.x2 /= 1.2f;
 

@@ -208,8 +208,13 @@ bool CWeapon::install_upgrade_addon( LPCSTR section, bool test )
 			result |= process_if_exists( section, "holder_fov_modifier",   &CInifile::r_float, m_addon_holder_fov_modifier,   test );
 
 			m_sScopeName	= pSettings->r_string( section, "scope_name" );
+#ifdef USE_100X100_ICONS
+			m_iScopeX		= pSettings->r_s32(section,"scope_x") * 2;
+			m_iScopeY		= pSettings->r_s32(section,"scope_y") * 2;
+#else;
 			m_iScopeX		= pSettings->r_s32( section, "scope_x" );
 			m_iScopeY		= pSettings->r_s32( section, "scope_y" );
+#endif // USE_100X100_ICONS
 		}
 
 	}
@@ -223,8 +228,13 @@ bool CWeapon::install_upgrade_addon( LPCSTR section, bool test )
 		if ( m_eSilencerStatus == ALife::eAddonAttachable || m_eSilencerStatus == ALife::eAddonPermanent )
 		{
 			m_sSilencerName	= pSettings->r_string( section, "silencer_name" );
+#ifdef USE_100X100_ICONS
+			m_iSilencerX	= pSettings->r_s32( section, "silencer_x" ) * 2;
+			m_iSilencerY	= pSettings->r_s32( section, "silencer_y" ) * 2;
+#else
 			m_iSilencerX	= pSettings->r_s32( section, "silencer_x" );
 			m_iSilencerY	= pSettings->r_s32( section, "silencer_y" );
+#endif // USE_100X100_ICONS
 		}
 	}
 	result |= result2;
@@ -237,8 +247,13 @@ bool CWeapon::install_upgrade_addon( LPCSTR section, bool test )
 		if ( m_eGrenadeLauncherStatus == ALife::eAddonAttachable || m_eGrenadeLauncherStatus == ALife::eAddonPermanent )
 		{
 			m_sGrenadeLauncherName	= pSettings->r_string( section, "grenade_launcher_name" );
+#ifdef USE_100X100_ICONS
+			m_iGrenadeLauncherX		= pSettings->r_s32( section, "grenade_launcher_x" ) * 2;
+			m_iGrenadeLauncherY		= pSettings->r_s32( section, "grenade_launcher_y" ) * 2;
+#else
 			m_iGrenadeLauncherX		= pSettings->r_s32( section, "grenade_launcher_x" );
 			m_iGrenadeLauncherY		= pSettings->r_s32( section, "grenade_launcher_y" );
+#endif // USE_100X100_ICONS
 		}
 	}
 	result |= result2;
