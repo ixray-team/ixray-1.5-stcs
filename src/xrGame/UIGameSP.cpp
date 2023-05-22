@@ -130,7 +130,7 @@ bool CUIGameSP::IR_OnKeyboardRelease(int dik)
 
 void  CUIGameSP::StartTrade(CInventoryOwner* pActorInv, CInventoryOwner* pOtherOwner)
 {
-	if( MainInputReceiver() )	return;
+//	if( MainInputReceiver() )	return;
 
 	m_ActorMenu->SetActor		(pActorInv);
 	m_ActorMenu->SetPartner		(pOtherOwner);
@@ -141,7 +141,7 @@ void  CUIGameSP::StartTrade(CInventoryOwner* pActorInv, CInventoryOwner* pOtherO
 
 void  CUIGameSP::StartUpgrade(CInventoryOwner* pActorInv, CInventoryOwner* pMech)
 {
-	if( MainInputReceiver() )	return;
+//	if( MainInputReceiver() )	return;
 
 	m_ActorMenu->SetActor		(pActorInv);
 	m_ActorMenu->SetPartner		(pMech);
