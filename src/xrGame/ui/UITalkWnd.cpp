@@ -211,6 +211,13 @@ void CUITalkWnd::Update()
 			Game().StartStopMenu(this,true);
 	}
 
+	CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+    if (pGameSP)
+    {
+        if (pGameSP->MainInputReceiver() == this && !UITalkDialogWnd->IsShown())
+            UITalkDialogWnd->Show();
+    }
+
 	if(m_bNeedToUpdateQuestions)
 	{
 		UpdateQuestions			();
@@ -332,11 +339,9 @@ void CUITalkWnd::SwitchToTrade()
 		CUIGameSP* pGameSP = smart_cast<CUIGameSP*>( HUD().GetUI()->UIGame() );
 		if ( pGameSP )
 		{
-			if ( pGameSP->MainInputReceiver() )
-			{
-				Game().StartStopMenu( pGameSP->MainInputReceiver(), true );
-			}
-			pGameSP->StartTrade	(m_pOurInvOwner, m_pOthersInvOwner);
+			UITalkDialogWnd->Show	(false);
+			StopSnd					();
+			pGameSP->StartTrade		(m_pOurInvOwner, m_pOthersInvOwner);
 		} // pGameSP
 	}
 }
@@ -348,11 +353,9 @@ void CUITalkWnd::SwitchToUpgrade()
 		CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 		if ( pGameSP )
 		{
-			if ( pGameSP->MainInputReceiver() )
-			{
-				Game().StartStopMenu(pGameSP->MainInputReceiver(),true);
-			}
-			pGameSP->StartUpgrade(m_pOurInvOwner, m_pOthersInvOwner);
+			UITalkDialogWnd->Show	(false);
+			StopSnd					();
+			pGameSP->StartUpgrade	(m_pOurInvOwner, m_pOthersInvOwner);
 		}
 	}
 }
