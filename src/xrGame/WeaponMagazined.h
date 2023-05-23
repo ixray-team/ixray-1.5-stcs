@@ -157,5 +157,5 @@ protected:
 
 	virtual	int		ShotsFired			() { return m_iShotNum; }
 	virtual float	GetWeaponDeterioration	();
-
+	virtual bool	WeaponSoundExist	(LPCSTR section, LPCSTR sound_name);
 };
