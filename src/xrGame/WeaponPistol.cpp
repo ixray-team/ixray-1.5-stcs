@@ -92,14 +92,8 @@ void CWeaponPistol::PlayAnimAim()
 }
 
 void CWeaponPistol::PlayAnimReload()
-{	
-	VERIFY(GetState()==eReload);
-	if(iAmmoElapsed==0)
-	{
-		PlayHUDMotion("anm_reload_empty", TRUE, this, GetState());
-	}else{
-		PlayHUDMotion("anm_reload", TRUE, this, GetState());
-	}
+{
+	inherited::PlayAnimReload();
 }
 
 
