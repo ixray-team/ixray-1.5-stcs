@@ -11,6 +11,8 @@
 #include "player_hud.h"
 #include "../xrEngine/SkeletonMotions.h"
 
+ENGINE_API extern float psHUD_FOV_def;
+
 CHudItem::CHudItem()
 {
 	RenderHud					(TRUE);
@@ -39,6 +41,8 @@ void CHudItem::Load(LPCSTR section)
 {
 	hud_sect				= pSettings->r_string		(section,"hud");
 	m_animation_slot		= pSettings->r_u32			(section,"animation_slot");
+
+	m_fHudFov = READ_IF_EXISTS(pSettings, r_float, hud_sect, "hud_fov", 0.f);
 
 	m_current_inertion.PitchOffsetR = READ_IF_EXISTS(pSettings, r_float, hud_sect, "inertion_pitch_offset_r", PITCH_OFFSET_R);
 	m_current_inertion.PitchOffsetD = READ_IF_EXISTS(pSettings, r_float, hud_sect, "inertion_pitch_offset_d", PITCH_OFFSET_D);
@@ -420,4 +424,12 @@ attachable_hud_item* CHudItem::HudItemData()
 		return hi;
 
 	return NULL;
+}
+
+float CHudItem::GetHudFov()
+{
+	auto base = m_fHudFov ? m_fHudFov : psHUD_FOV_def;
+	clamp(base, 0.1f, 1.0f);
+
+	return base;
 }

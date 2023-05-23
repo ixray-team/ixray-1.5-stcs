@@ -139,6 +139,7 @@ public:
 	virtual bool				render_item_3d_ui_query	()					{return false;}
 
 	virtual bool				CheckCompatibility		(CHudItem*)			{return true;}
+	float						GetHudFov();
 protected:
 
 	IC		void				SetPending			(BOOL H)			{ m_huditem_flags.set(fl_pending, H);}
@@ -152,6 +153,7 @@ protected:
 
 	HUD_SOUND_COLLECTION		m_sounds;
 	InertionData				m_current_inertion;
+	float						m_fHudFov;
 
 private:
 	CPhysicItem					*m_object;
