@@ -156,6 +156,9 @@ public:
 	virtual bool	CheckCompatibility	(CHudItem*);
 
 	virtual u32		ef_detector_type	() const	{return 1;};
+
+	virtual bool	NeedActivation		() const	{return m_bNeedActivation;};
+
 protected:
 			bool	CheckCompatibilityInt		(CHudItem*);
 			void 	TurnDetectorInternal		(bool b);
