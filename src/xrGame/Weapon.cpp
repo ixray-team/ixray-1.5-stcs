@@ -954,6 +954,14 @@ bool CWeapon::SwitchAmmoType( u32 flags )
 		return false;
 	}
 
+	auto i1 = g_player_hud->attached_item(1);
+	if (i1 && HudItemData())
+	{
+		auto det = smart_cast<CCustomDetector*>(i1->m_parent_hud_item);
+		if (det && (det->GetState() != CCustomDetector::eIdle || det->NeedActivation()))
+			return false;
+	}
+
 	u32 l_newType = m_ammoType;
 	bool b1, b2;
 	do 
