@@ -1558,7 +1558,13 @@ void CActor::OnItemDrop(CInventoryItem *inventory_item)
 		outfit->ApplySkinModel	(this, false, false);
 	}
 
-	
+	auto wpn = smart_cast<CWeapon*>(inventory_item);
+
+	if (wpn)
+	{
+		wpn->bReloadKeyPressed = false;
+		wpn->bAmmotypeKeyPressed = false;
+	}
 }
 
 
