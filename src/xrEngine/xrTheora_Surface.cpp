@@ -1,9 +1,6 @@
 #include "stdafx.h"
 #include "xrtheora_surface.h"
 #include "xrtheora_stream.h"
-#ifndef _EDITOR
-#	include "xrTheora_Surface_mmx.h"
-#endif
 
 CTheoraSurface::CTheoraSurface()
 {
