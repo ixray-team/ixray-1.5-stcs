@@ -142,7 +142,7 @@ INetQueue::~INetQueue()
 	cs.Leave		();
 }
 
-static u32 LastTimeCreate = 0;
+static ULONGLONG LastTimeCreate = 0;
 NET_Packet*		INetQueue::Create	()
 {
 	NET_Packet*	P			= 0;
@@ -155,7 +155,7 @@ NET_Packet*		INetQueue::Create	()
 		ready.push_back		(xr_new<NET_Packet> ());
 		P					= ready.back	();
 		//---------------------------------------------
-		LastTimeCreate = GetTickCount();
+		LastTimeCreate = GetTickCount64();
 		//---------------------------------------------
 	} else {
 		ready.push_back		(unused.back());
@@ -177,7 +177,7 @@ NET_Packet*		INetQueue::Create	(const NET_Packet& _other)
 		ready.push_back		(xr_new<NET_Packet> ());
 		P					= ready.back	();
 		//---------------------------------------------
-		LastTimeCreate = GetTickCount();
+		LastTimeCreate = GetTickCount64();
 		//---------------------------------------------
 	} else {
 		ready.push_back		(unused.back());
@@ -199,7 +199,7 @@ NET_Packet*		INetQueue::Retreive	()
 	//---------------------------------------------	
 	else
 	{
-		u32 tmp_time = GetTickCount()-60000;
+		auto tmp_time = GetTickCount64() - 60000;
 		u32 size = unused.size();
 		if ((LastTimeCreate < tmp_time) &&  (size > 32))
 		{
@@ -219,7 +219,7 @@ void			INetQueue::Release	()
 //#endif
 	VERIFY			(!ready.empty());
 	//---------------------------------------------
-	u32 tmp_time = GetTickCount()-60000;
+	auto tmp_time = GetTickCount64() - 60000;
 	u32 size = unused.size();
 	ready.front()->B.count = 0;
 	if ((LastTimeCreate < tmp_time) &&  (size > 32))

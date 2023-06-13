@@ -151,12 +151,12 @@ typedef struct GHIConnection
 	GHTTPBool connectionClosed;   // If true, the connection has been closed (orderly or abortive)
 
 	GHTTPBool throttle;           // If true, throttle this connection.
-	gsi_time lastThrottleRecv;  // The last time we received on a throttled connection.
+	ULONGLONG lastThrottleRecv;  // The last time we received on a throttled connection.
 
 	GHTTPPost post;               // If not NULL, a reference to a post object to upload with the request.
 	GHIPostingState postingState; // If posting, the state of the upload.
 	
-	gsi_time maxRecvTime;         // Max time spent receiving per call to "Think" - Prevents blocking on ultrafast connections
+	ULONGLONG maxRecvTime;         // Max time spent receiving per call to "Think" - Prevents blocking on ultrafast connections
 	char * proxyOverrideServer;	  // Allows use of a different proxy than the global proxy
 	unsigned short proxyOverridePort;
 

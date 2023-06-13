@@ -70,7 +70,7 @@ public:
 	static bool yield();
 	static void sleep(unsigned msec);
 //	static pid_t getId();
-	static unsigned getTickCount(); // msec
+	static auto getTickCount(); // msec
 
 private:
 	HANDLE		m_thread;

@@ -73,7 +73,7 @@ typedef struct gsclient_s
 	char hkey[33];
 	int sesskey;
 	int ip;
-	unsigned long sttime;
+	ULONGLONG sttime;
 	int ntries;
 	gsclientstate_t state;
 	void *instance;
@@ -90,7 +90,7 @@ typedef struct gsreauth_s
 	int sesskey;
 	char challenge[33];
 	struct sockaddr_in fromaddr;
-	gsi_time starttime;
+	ULONGLONG starttime;
 } gsreauth_t;
 
 typedef struct gsproduct_s
@@ -502,7 +502,7 @@ void gcd_think(void)
 					while(authnode->next != NULL)
 					{
 						gsreauth_t* authdata = (gsreauth_t*)authnode->next->object;
-						gsi_time now = current_time();
+						ULONGLONG now = current_time();
 						if ((now - authdata->starttime)  > REAUTH_LIFESPAN)
 						{
 							gsDebugFormat(GSIDebugCat_CDKey, GSIDebugType_Misc, GSIDebugLevel_Notice,
@@ -834,7 +834,7 @@ static void resend_auth_req(gsclient_t *client)
 
 static void send_keep_alive()
 {
-	static gsi_time lastKeepAliveSent = 0;
+	static ULONGLONG lastKeepAliveSent = 0;
 	static const char *keepAlive = "\\ka\\\0";
 	char buf[BUFSIZE];
 	if (lastKeepAliveSent == 0)

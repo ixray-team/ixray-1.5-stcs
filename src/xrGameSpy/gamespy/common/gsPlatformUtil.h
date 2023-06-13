@@ -65,7 +65,7 @@ int isgraph(int c);
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 // Cross platform random number generator
-void Util_RandSeed(unsigned long seed); // to seed it
+void Util_RandSeed(ULONGLONG seed); // to seed it
 int  Util_RandInt(int low, int high);   // retrieve a random int
 
 
@@ -111,7 +111,7 @@ gsi_i8 * gsXxteaDecrypt(const gsi_i8 * iStr, gsi_i32 iLength, gsi_i8 key[XXTEA_K
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
-gsi_time current_time();         // milliseconds
+ULONGLONG current_time();         // milliseconds
 gsi_time current_time_hires();   // microseconds
 void msleep(gsi_time msec);      // milliseconds
 

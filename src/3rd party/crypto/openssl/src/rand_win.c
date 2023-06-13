@@ -119,7 +119,7 @@
 #if defined(OPENSSL_SYS_WINDOWS) || defined(OPENSSL_SYS_WIN32)
 #include <windows.h>
 #ifndef _WIN32_WINNT
-# define _WIN32_WINNT 0x0400
+# define _WIN32_WINNT 0x0601
 #endif
 #include <wincrypt.h>
 #include <tlhelp32.h>
@@ -466,7 +466,7 @@ int RAND_poll(void)
 		PROCESSENTRY32 p;
 		THREADENTRY32 t;
 		MODULEENTRY32 m_;
-		DWORD stoptime = 0;
+		ULONGLONG stoptime = 0;
 
 		snap = (CREATETOOLHELP32SNAPSHOT)
 			GetProcAddress(kernel, "CreateToolhelp32Snapshot");
@@ -498,7 +498,8 @@ int RAND_poll(void)
                          * of entropy.
                          */
 			hlist.dwSize = sizeof(HEAPLIST32);		
-			if (good) stoptime = GetTickCount() + MAXDELAY;
+			if (good) 
+				stoptime = GetTickCount64() + MAXDELAY;
 			if (heaplist_first(handle, &hlist))
 				do
 					{
@@ -516,7 +517,7 @@ int RAND_poll(void)
 							&& --entrycnt > 0);
 						}
 					} while (heaplist_next(handle,
-						&hlist) && GetTickCount() < stoptime);
+						&hlist) && GetTickCount64() < stoptime);
 
 			/* process walking */
                         /* PROCESSENTRY32 contains 9 fields that will change
@@ -525,11 +526,11 @@ int RAND_poll(void)
                          */
 			p.dwSize = sizeof(PROCESSENTRY32);
 		
-			if (good) stoptime = GetTickCount() + MAXDELAY;
+			if (good) stoptime = GetTickCount64() + MAXDELAY;
 			if (process_first(handle, &p))
 				do
 					RAND_add(&p, p.dwSize, 9);
-				while (process_next(handle, &p) && GetTickCount() < stoptime);
+				while (process_next(handle, &p) && GetTickCount64() < stoptime);
 
 			/* thread walking */
                         /* THREADENTRY32 contains 6 fields that will change
@@ -537,11 +538,11 @@ int RAND_poll(void)
                          * 1 byte of entropy.
                          */
 			t.dwSize = sizeof(THREADENTRY32);
-			if (good) stoptime = GetTickCount() + MAXDELAY;
+			if (good) stoptime = GetTickCount64() + MAXDELAY;
 			if (thread_first(handle, &t))
 				do
 					RAND_add(&t, t.dwSize, 6);
-				while (thread_next(handle, &t) && GetTickCount() < stoptime);
+				while (thread_next(handle, &t) && GetTickCount64() < stoptime);
 
 			/* module walking */
                         /* MODULEENTRY32 contains 9 fields that will change
@@ -549,12 +550,12 @@ int RAND_poll(void)
                          * 1 byte of entropy.
                          */
 			m_.dwSize = sizeof(MODULEENTRY32);
-			if (good) stoptime = GetTickCount() + MAXDELAY;
+			if (good) stoptime = GetTickCount64() + MAXDELAY;
 			if (module_first(handle, &m_))
 				do
 					RAND_add(&m_, m_.dwSize, 9);
 				while (module_next(handle, &m_)
-					       	&& (GetTickCount() < stoptime));
+					       	&& (GetTickCount64() < stoptime));
 			if (close_snap)
 				close_snap(handle);
 			else
@@ -635,7 +636,6 @@ void RAND_screen(void) /* function available for backward compatibility */
 /* feed timing information to the PRNG */
 static void readtimer(void)
 {
-	DWORD w;
 	LARGE_INTEGER l;
 	static int have_perfc = 1;
 #if defined(_MSC_VER) && defined(_M_X86)
@@ -666,7 +666,7 @@ static void readtimer(void)
 	}
 
 	if (!have_tsc && !have_perfc) {
-	  w = GetTickCount();
+	  ULONGLONG w = GetTickCount64();
 	  RAND_add(&w, sizeof(w), 0);
 	}
 }

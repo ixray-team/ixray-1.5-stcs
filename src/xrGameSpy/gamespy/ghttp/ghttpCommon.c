@@ -282,11 +282,9 @@ GHIRecvResult ghiDoReceive
 	////////////////////
 	if(connection->throttle)
 	{
-		unsigned long now;
-
 		// Don't receive too often.
 		///////////////////////////
-		now = current_time();
+		ULONGLONG now = current_time();
 		if(now < (connection->lastThrottleRecv + ghiThrottleTimeDelay))
 			return GHINoData;
 

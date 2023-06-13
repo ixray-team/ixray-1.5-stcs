@@ -375,7 +375,7 @@ struct qr2_ipverify_info_s
 {
 	struct sockaddr_in addr;      // addr = 0 when not in use
 	gsi_u32            challenge;
-	gsi_time           createtime; 
+	ULONGLONG           createtime;
 };
 
 struct qr2_implementation_s
@@ -397,8 +397,8 @@ struct qr2_implementation_s
 	qr2_denyqr2responsetoipcallback_t denyresp2_ip_callback;
 //#endif //#if defined(QR2_IP_FILTER)
 
-	gsi_time lastheartbeat;
-	gsi_time lastka;
+	ULONGLONG lastheartbeat;
+	ULONGLONG lastka;
 	int userstatechangerequested;
 	int listed_state;
 	int ispublic;	 

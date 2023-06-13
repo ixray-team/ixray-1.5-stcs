@@ -547,10 +547,10 @@ int isspace(int c)
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
-gsi_time current_time()  //returns current time in milliseconds
+ULONGLONG current_time()  //returns current time in milliseconds
 { 
 #if defined(_WIN32)
-	return (GetTickCount()); 
+	return GetTickCount64();
 
 #elif defined(_PS2)
 	unsigned int ticks;
@@ -756,7 +756,7 @@ void msleep(gsi_time msec)
 #define RANa 16807                 // multiplier
 #define LONGRAND_MAX 2147483647L   // 2**31 - 1
 
-static long randomnum = 1;
+static ULONGLONG randomnum = 1;
 
 static long nextlongrand(long seed)
 {
@@ -791,7 +791,7 @@ static long longrand(void)
 }
 
 // to seed it
-void Util_RandSeed(unsigned long seed)
+void Util_RandSeed(ULONGLONG seed)
 {
 	// nonzero seed
 	randomnum = seed ? (long)(seed & LONGRAND_MAX) : 1;
@@ -1473,7 +1473,7 @@ static void GenerateID(char *keyval)
 		seed = (l1.LowPart ^ l1.HighPart);
 	else
 		seed = 0;
-	Util_RandSeed(seed ^ GetTickCount() ^ time(NULL) ^ clock());
+	Util_RandSeed(seed ^ GetTickCount64() ^ time(NULL) ^ clock());
 #else
 	Util_RandSeed(time(NULL) ^ clock());
 #endif

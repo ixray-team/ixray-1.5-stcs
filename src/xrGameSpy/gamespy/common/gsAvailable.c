@@ -23,7 +23,7 @@ static struct
 	SOCKADDR_IN address;
 	char packet[64];
 	int packetLen;
-	gsi_time sendTime;
+	ULONGLONG sendTime;
 	int retryCount;
 } AC;
 

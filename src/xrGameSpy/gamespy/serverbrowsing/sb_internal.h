@@ -239,7 +239,7 @@ struct _SBServerList
 #endif
 
 	SOCKET slsocket;
-	gsi_time lanstarttime;
+	ULONGLONG lanstarttime;
 	int fromgamever;
 	GOACryptState cryptkey;
 	int queryoptions;
@@ -273,7 +273,7 @@ struct _SBServer
 	unsigned char state;
 	unsigned char flags;
 	HashTable keyvals;
-	gsi_time updatetime;
+	ULONGLONG updatetime;
 	gsi_u32 querychallenge;
 	struct _SBServer *next;
 	gsi_u8 splitResponseBitmap;

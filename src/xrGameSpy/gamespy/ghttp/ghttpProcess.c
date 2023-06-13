@@ -1591,8 +1591,8 @@ void ghiDoReceivingFile
 	char buffer[8192];
 	int bufferLen;
 	GHIRecvResult result;
-	gsi_time start_time   = current_time();
-	gsi_time running_time = 0;
+	ULONGLONG start_time   = current_time();
+	ULONGLONG running_time = 0;
 
 	gsDebugFormat(GSIDebugCat_HTTP, GSIDebugType_State, GSIDebugLevel_Comment, "Receiving File\n");
 

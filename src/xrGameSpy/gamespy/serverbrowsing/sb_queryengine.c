@@ -638,7 +638,7 @@ static void ProcessIncomingReplies(SBQueryEngine *engine, SBBool icmpSocket)
 
 static void TimeoutOldQueries(SBQueryEngine *engine)
 {
-	gsi_time ctime = current_time();
+	ULONGLONG ctime = current_time();
 	while (engine->querylist.first != NULL)
 	{
 		if (ctime > engine->querylist.first->updatetime + MAX_QUERY_MSEC)

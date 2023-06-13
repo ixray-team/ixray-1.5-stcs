@@ -477,7 +477,7 @@ void qr2_check_queries(qr2_t qrec)
 heartbeats */
 void qr2_check_send_heartbeat(qr2_t qrec)
 {
-	gsi_time tc = current_time();
+	ULONGLONG tc = current_time();
 
 	if (INVALID_SOCKET == qrec->hbsock)
 	{
@@ -1237,7 +1237,7 @@ static int qr_got_recent_message(qr2_t qrec, int msgkey)
 static gsi_bool qr2_process_ip_verify(qr2_t qrec, struct qr2_buffer_s* buf, struct sockaddr_in* sender)
 {
 	int i=0;
-	gsi_time now = current_time();
+	ULONGLONG now = current_time();
 
 	// if the query challenge is disabled, return 0 as the challenge
 	if ((qrec->backendoptions & QR2_OPTION_USE_QUERY_CHALLENGE) == 0)
@@ -1294,7 +1294,7 @@ static gsi_bool qr2_check_ip_verify(qr2_t qrec, struct sockaddr_in* sender, gsi_
 static void qr2_expire_ip_verify(qr2_t qrec)
 {
 	int i=0;
-	gsi_time now = current_time();
+	ULONGLONG now = current_time();
 
 	for (; i < QR2_IPVERIFY_ARRAY_SIZE; i++)
 	{
