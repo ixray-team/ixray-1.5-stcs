@@ -153,7 +153,7 @@ SVS*	CResourceManager::_CreateVS		(LPCSTR _name)
 		ID3DBlob*					pShaderBuf	= NULL;
 		ID3DBlob*					pErrorBuf	= NULL;
 		//LPD3DXSHADER_CONSTANTTABLE	pConstants	= NULL;
-		HRESULT						_hr			= S_OK;
+		
 		string_path					cname;
 		strconcat					(sizeof(cname),cname,::Render->getShaderPath(),_name,".vs");
 		FS.update_path				(cname,	"$game_shaders$", cname);
@@ -190,26 +190,26 @@ SVS*	CResourceManager::_CreateVS		(LPCSTR _name)
 
 		// vertex
 		R_ASSERT2					(fs,cname);
-		//_hr = ::Render->shader_compile(name,LPCSTR(fs->pointer()),fs->length(), NULL, &Includer, c_entry, c_target, D3DXSHADER_DEBUG | D3DXSHADER_PACKMATRIX_ROWMAJOR /*| D3DXSHADER_PREFER_FLOW_CONTROL*/, &pShaderBuf, &pErrorBuf, NULL);
-//		_hr = ::Render->shader_compile(name,LPCSTR(fs->pointer()),fs->length(), NULL, &Includer, c_entry, c_target, D3D10_SHADER_DEBUG | D3D10_SHADER_PACK_MATRIX_ROW_MAJOR /*| D3DXSHADER_PREFER_FLOW_CONTROL*/, &pShaderBuf, &pErrorBuf, NULL);
-		_hr = ::Render->shader_compile(name,LPCSTR(fs->pointer()),fs->length(), NULL, &Includer, c_entry, c_target, D3D10_SHADER_PACK_MATRIX_ROW_MAJOR /*| D3DXSHADER_PREFER_FLOW_CONTROL*/, &pShaderBuf, &pErrorBuf, NULL);
-		//_hr = ::Render->shader_compile(name,LPCSTR(fs->pointer()),fs->length(), NULL, &Includer, c_entry, c_target, D3D10_SHADER_PACK_MATRIX_ROW_MAJOR | D3D10_SHADER_AVOID_FLOW_CONTROL /*| D3DXSHADER_PREFER_FLOW_CONTROL*/, &pShaderBuf, &pErrorBuf, NULL);
+		//hr = ::Render->shader_compile(name,LPCSTR(fs->pointer()),fs->length(), NULL, &Includer, c_entry, c_target, D3DXSHADER_DEBUG | D3DXSHADER_PACKMATRIX_ROWMAJOR /*| D3DXSHADER_PREFER_FLOW_CONTROL*/, &pShaderBuf, &pErrorBuf, NULL);
+//		hr = ::Render->shader_compile(name,LPCSTR(fs->pointer()),fs->length(), NULL, &Includer, c_entry, c_target, D3D10_SHADER_DEBUG | D3D10_SHADER_PACK_MATRIX_ROW_MAJOR /*| D3DXSHADER_PREFER_FLOW_CONTROL*/, &pShaderBuf, &pErrorBuf, NULL);
+		auto hr = ::Render->shader_compile(name,LPCSTR(fs->pointer()),fs->length(), NULL, &Includer, c_entry, c_target, D3D10_SHADER_PACK_MATRIX_ROW_MAJOR /*| D3DXSHADER_PREFER_FLOW_CONTROL*/, &pShaderBuf, &pErrorBuf, NULL);
+		//hr = ::Render->shader_compile(name,LPCSTR(fs->pointer()),fs->length(), NULL, &Includer, c_entry, c_target, D3D10_SHADER_PACK_MATRIX_ROW_MAJOR | D3D10_SHADER_AVOID_FLOW_CONTROL /*| D3DXSHADER_PREFER_FLOW_CONTROL*/, &pShaderBuf, &pErrorBuf, NULL);
 		FS.r_close					(fs);
 
-		if (SUCCEEDED(_hr))
+		if (SUCCEEDED(hr))
 		{
 			if (pShaderBuf)
 			{
-				_hr = HW.pDevice->CreateVertexShader(pShaderBuf->GetBufferPointer(), pShaderBuf->GetBufferSize(), &_vs->vs);
-				if (SUCCEEDED(_hr))	
+				hr = HW.pDevice->CreateVertexShader(pShaderBuf->GetBufferPointer(), pShaderBuf->GetBufferSize(), &_vs->vs);
+				if (SUCCEEDED(hr))	
 				{
 					ID3D10ShaderReflection *pReflection = 0;
 
-					_hr = D3D10ReflectShader( pShaderBuf->GetBufferPointer(), pShaderBuf->GetBufferSize(), &pReflection);
+					hr = D3D10ReflectShader( pShaderBuf->GetBufferPointer(), pShaderBuf->GetBufferSize(), &pReflection);
 					
 					//	Parse constant, texture, sampler binding
 					//	Store input signature blob
-					if (SUCCEEDED(_hr) && pReflection)
+					if (SUCCEEDED(hr) && pReflection)
 					{
 						//	TODO: DX10: share the same input signatures
 
@@ -231,7 +231,8 @@ SVS*	CResourceManager::_CreateVS		(LPCSTR _name)
 				}
 				_RELEASE(pShaderBuf);
 			}
-			else	_hr = E_FAIL;
+			else
+				hr = E_FAIL;
 		} 
 		else 
 		{
@@ -242,7 +243,7 @@ SVS*	CResourceManager::_CreateVS		(LPCSTR _name)
 		_RELEASE	(pShaderBuf);
 		_RELEASE	(pErrorBuf);
 //		pConstants	= NULL;
-		R_CHK		(_hr);
+		R_CHK(hr);
 		return		_vs;
 	}
 }

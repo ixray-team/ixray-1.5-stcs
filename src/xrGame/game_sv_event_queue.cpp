@@ -95,7 +95,7 @@ GameEvent*		GameEventQueue::Retreive	()
 	//---------------------------------------------	
 	else
 	{
-		u32 tmp_time = GetTickCount64() - 60000;
+		auto tmp_time = GetTickCount64() - 60000;
 		u32 size = unused.size();
 		if ((LastTimeCreate < tmp_time) &&  (size > 32))
 		{

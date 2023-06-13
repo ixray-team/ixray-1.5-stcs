@@ -149,8 +149,8 @@ void CHWCaps::Update()
 	// *******1********** Vertex cache
 	ID3DQuery*	q_vc;
 	D3DDEVINFO_VCACHE	vc;
-	HRESULT _hr			= HW.pDevice->CreateQuery(D3DQUERYTYPE_VCACHE,&q_vc);
-	if (FAILED(_hr))
+	HRESULT hr = HW.pDevice->CreateQuery(D3DQUERYTYPE_VCACHE, &q_vc);
+	if (FAILED(hr))
 	{
 		vc.OptMethod			= 0;
 		vc.CacheSize			= 16;
@@ -232,7 +232,7 @@ void CHWCaps::Update()
 	// ***************** PIXEL processing
 	raster_major				= 4;
 	raster_minor				= 0;
-	raster.dwStages				= 16;
+	raster.dwStages = 15; //unused
 	raster.bNonPow2				= TRUE;
 	raster.bCubemap				= TRUE;
 	raster.dwMRT_count			= 4;

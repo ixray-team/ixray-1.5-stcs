@@ -84,7 +84,7 @@ void CUIBoosterInfo::SetInfo( CInventoryItem& pInvItem )
 	AttachChild( m_Prop_line );
 	
 	const shared_str& section = pInvItem.object().cNameSect();
-	CEatableItem* eatable = pInvItem.cast_eatable_item();
+	//CEatableItem* eatable = pInvItem.cast_eatable_item();
 	CActor* actor = smart_cast<CActor*>( Level().CurrentViewEntity() );
 	if ( !actor )
 	{
@@ -181,6 +181,7 @@ void UIBoosterInfoItem::SetValue(float value)
 		sprintf(buf, "%+.0f", value);
 	else
 		sprintf(buf, "%.0f", value);
+
 	u32 red = color_rgba(255, 0, 0, 255);
 	u32 green = color_rgba(0, 255, 0, 255);
 	
@@ -191,6 +192,7 @@ void UIBoosterInfoItem::SetValue(float value)
 	else
 		xr_sprintf(str,"%s", buf);
 
+	bool positive = (value >= 0.0f);
 	m_value->SetText(buf);
 
 	if (m_color_mode == 2)

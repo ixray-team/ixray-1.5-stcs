@@ -196,7 +196,7 @@ SVS*	CResourceManager::_CreateVS		(LPCSTR _name)
 		LPD3DXBUFFER				pShaderBuf	= NULL;
 		LPD3DXBUFFER				pErrorBuf	= NULL;
 		LPD3DXSHADER_CONSTANTTABLE	pConstants	= NULL;
-		HRESULT						_hr			= S_OK;
+		HRESULT						hr			= S_OK;
 		string_path					cname;
 		strconcat					(sizeof(cname),cname,::Render->getShaderPath(),_name,".vs");
 		FS.update_path				(cname,	"$game_shaders$", cname);
@@ -223,20 +223,20 @@ SVS*	CResourceManager::_CreateVS		(LPCSTR _name)
 
 		// vertex
 		R_ASSERT2					(fs,cname);
-		_hr = ::Render->shader_compile(name,LPCSTR(fs->pointer()),fs->length(), NULL, &Includer, c_entry, c_target, D3DXSHADER_DEBUG | D3DXSHADER_PACKMATRIX_ROWMAJOR /*| D3DXSHADER_PREFER_FLOW_CONTROL*/, &pShaderBuf, &pErrorBuf, NULL);
-//		_hr = D3DXCompileShader		(LPCSTR(fs->pointer()),fs->length(), NULL, &Includer, "main", target, D3DXSHADER_DEBUG | D3DXSHADER_PACKMATRIX_ROWMAJOR, &pShaderBuf, &pErrorBuf, NULL);
+		hr = ::Render->shader_compile(name,LPCSTR(fs->pointer()),fs->length(), NULL, &Includer, c_entry, c_target, D3DXSHADER_DEBUG | D3DXSHADER_PACKMATRIX_ROWMAJOR /*| D3DXSHADER_PREFER_FLOW_CONTROL*/, &pShaderBuf, &pErrorBuf, NULL);
+//		hr = D3DXCompileShader		(LPCSTR(fs->pointer()),fs->length(), NULL, &Includer, "main", target, D3DXSHADER_DEBUG | D3DXSHADER_PACKMATRIX_ROWMAJOR, &pShaderBuf, &pErrorBuf, NULL);
 		FS.r_close					(fs);
 
-		if (SUCCEEDED(_hr))
+		if (SUCCEEDED(hr))
 		{
 			if (pShaderBuf)
 			{
-				_hr = HW.pDevice->CreateVertexShader	((DWORD*)pShaderBuf->GetBufferPointer(), &_vs->vs);
-				if (SUCCEEDED(_hr))	
+				hr = HW.pDevice->CreateVertexShader	((DWORD*)pShaderBuf->GetBufferPointer(), &_vs->vs);
+				if (SUCCEEDED(hr))	
 				{
 					LPCVOID			data		= NULL;
-					_hr	= D3DXFindShaderComment	((DWORD*)pShaderBuf->GetBufferPointer(),MAKEFOURCC('C','T','A','B'),&data,NULL);
-					if (SUCCEEDED(_hr) && data)
+					hr	= D3DXFindShaderComment	((DWORD*)pShaderBuf->GetBufferPointer(),MAKEFOURCC('C','T','A','B'),&data,NULL);
+					if (SUCCEEDED(hr) && data)
 					{
 						pConstants				= LPD3DXSHADER_CONSTANTTABLE(data);
 						_vs->constants.parse	(pConstants,0x2);
@@ -244,21 +244,21 @@ SVS*	CResourceManager::_CreateVS		(LPCSTR _name)
 					else
 					{
 						Log	("! VS: ", _name);
-						Log	("! D3DXFindShaderComment hr == %08x", (int)_hr);
-						_hr = E_FAIL;
+						Log	("! D3DXFindShaderComment hr == %08x", (int)hr);
+						hr = E_FAIL;
 					}
 				}
 				else
 				{
 					Log	("! VS: ", _name);
-					Log	("! CreateVertexShader hr == %08x", (int)_hr);
+					Log	("! CreateVertexShader hr == %08x", (int)hr);
 				}
 			}
 			else
 			{
 				Log	("! VS: ", _name);
 				Log	("! pShaderBuf == NULL");
-				_hr = E_FAIL;
+				hr = E_FAIL;
 			}
 		} else {
 			VERIFY	(pErrorBuf);
@@ -268,7 +268,7 @@ SVS*	CResourceManager::_CreateVS		(LPCSTR _name)
 		_RELEASE	(pShaderBuf);
 		_RELEASE	(pErrorBuf);
 		pConstants	= NULL;
-		R_CHK		(_hr);
+		R_CHK		(hr);
 		return		_vs;
 	}
 }
@@ -329,27 +329,27 @@ SPS*	CResourceManager::_CreatePS			(LPCSTR name)
 		LPD3DXBUFFER				pShaderBuf	= NULL;
 		LPD3DXBUFFER				pErrorBuf	= NULL;
 		LPD3DXSHADER_CONSTANTTABLE	pConstants	= NULL;
-		HRESULT						_hr			= S_OK;
-		_hr = ::Render->shader_compile	(name,data,size, NULL, &Includer, c_entry, c_target, D3DXSHADER_DEBUG | D3DXSHADER_PACKMATRIX_ROWMAJOR, &pShaderBuf, &pErrorBuf, NULL);
-		//_hr = D3DXCompileShader		(text,text_size, NULL, &Includer, c_entry, c_target, D3DXSHADER_DEBUG | D3DXSHADER_PACKMATRIX_ROWMAJOR, &pShaderBuf, &pErrorBuf, NULL);
+		HRESULT						hr			= S_OK;
+		hr = ::Render->shader_compile	(name,data,size, NULL, &Includer, c_entry, c_target, D3DXSHADER_DEBUG | D3DXSHADER_PACKMATRIX_ROWMAJOR, &pShaderBuf, &pErrorBuf, NULL);
+		//hr = D3DXCompileShader		(text,text_size, NULL, &Includer, c_entry, c_target, D3DXSHADER_DEBUG | D3DXSHADER_PACKMATRIX_ROWMAJOR, &pShaderBuf, &pErrorBuf, NULL);
 		xr_free						(data);
 
-		if (SUCCEEDED(_hr))
+		if (SUCCEEDED(hr))
 		{
 			if (pShaderBuf)
 			{
-				_hr = HW.pDevice->CreatePixelShader	((DWORD*)pShaderBuf->GetBufferPointer(), &_ps->ps);
-				if (SUCCEEDED(_hr))	{
+				hr = HW.pDevice->CreatePixelShader	((DWORD*)pShaderBuf->GetBufferPointer(), &_ps->ps);
+				if (SUCCEEDED(hr))	{
 					LPCVOID			data_		= NULL;
-					_hr	= D3DXFindShaderComment	((DWORD*)pShaderBuf->GetBufferPointer(),MAKEFOURCC('C','T','A','B'),&data_,NULL);
-					if (SUCCEEDED(_hr) && data_)
+					hr	= D3DXFindShaderComment	((DWORD*)pShaderBuf->GetBufferPointer(),MAKEFOURCC('C','T','A','B'),&data_,NULL);
+					if (SUCCEEDED(hr) && data_)
 					{
 						pConstants				= LPD3DXSHADER_CONSTANTTABLE(data_);
 						_ps->constants.parse	(pConstants,0x1);
-					} else	_hr = E_FAIL;
+					} else	hr = E_FAIL;
 				}
 			}
-			else	_hr = E_FAIL;
+			else	hr = E_FAIL;
 		}else
 		{
 			Msg("error is %s", (LPCSTR)pErrorBuf->GetBufferPointer());
@@ -358,11 +358,11 @@ SPS*	CResourceManager::_CreatePS			(LPCSTR name)
 		_RELEASE		(pErrorBuf);
 		pConstants		= NULL;
 
-		if (FAILED(_hr))
+		if (FAILED(hr))
 			Msg			("Can't compile shader %s",name);
 
 		CHECK_OR_EXIT		(
-			!FAILED(_hr),
+			!FAILED(hr),
 			make_string("Your video card doesn't meet game requirements\n\nPixel Shaders v1.1 or higher required")
 		);
 		return			_ps;

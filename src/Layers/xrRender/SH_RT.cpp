@@ -28,8 +28,6 @@ void CRT::create	(LPCSTR Name, u32 w, u32 h,	D3DFORMAT f, u32 SampleCount )
 	R_ASSERT	(HW.pDevice && Name && Name[0] && w && h);
 	_order		= CPU::GetCLK()	;	//Device.GetTimerGlobal()->GetElapsed_clk();
 
-	HRESULT		_hr;
-
 	dwWidth		= w;
 	dwHeight	= h;
 	fmt			= f;
@@ -59,7 +57,7 @@ void CRT::create	(LPCSTR Name, u32 w, u32 h,	D3DFORMAT f, u32 SampleCount )
 	else													usage = D3DUSAGE_RENDERTARGET;
 
 	// Validate render-target usage
-	_hr = HW.pD3D->CheckDeviceFormat(
+	auto hr = HW.pD3D->CheckDeviceFormat(
 		HW.DevAdapter,
 		HW.DevT,
 		HW.Caps.fTarget,
@@ -67,12 +65,12 @@ void CRT::create	(LPCSTR Name, u32 w, u32 h,	D3DFORMAT f, u32 SampleCount )
 		D3DRTYPE_TEXTURE,
 		f
 		);
-	if (FAILED(_hr))					return;
+	if (FAILED(hr))					return;
 
 	// Try to create texture/surface
 	DEV->Evict				();
-	_hr = HW.pDevice->CreateTexture		(w, h, 1, usage, f, D3DPOOL_DEFAULT, &pSurface,NULL);
-	if (FAILED(_hr) || (0==pSurface))	return;
+	hr = HW.pDevice->CreateTexture		(w, h, 1, usage, f, D3DPOOL_DEFAULT, &pSurface,NULL);
+	if (FAILED(hr) || (0==pSurface))	return;
 
 	// OK
 #ifdef DEBUG
