@@ -619,7 +619,6 @@ void	CRender::Statistics	(CGameFont* _F)
 #endif
 }
 
-#pragma comment(lib,"d3dx9.lib")
 HRESULT	CRender::shader_compile			(
 		LPCSTR							name,
 		LPCSTR                          pSrcData,
