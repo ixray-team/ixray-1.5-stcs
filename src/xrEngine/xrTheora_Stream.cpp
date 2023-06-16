@@ -158,11 +158,11 @@ BOOL CTheoraStream::ParseHeaders		()
 	return TRUE;
 }
 
-BOOL CTheoraStream::Decode(u32 tm_play)
+BOOL CTheoraStream::Decode(u32 in_tm_play)
 {
-	VERIFY				(tm_play<tm_total);
+	VERIFY				(in_tm_play<tm_total);
 	ogg_int64_t			t_frame;
-	t_frame				= iFloor(tm_play*fpms);
+	t_frame				= iFloor(in_tm_play*fpms);
 	ogg_int64_t	k_frame	= t_frame-t_frame%key_rate;
 
 	if (d_frame<t_frame){

@@ -96,29 +96,16 @@ BOOL CRenderDevice::Begin	()
 void CRenderDevice::Clear	()
 {
 	m_pRender->Clear();
-	/*
-	CHK_DX(HW.pDevice->Clear(0,0,
-		D3DCLEAR_ZBUFFER|
-		(psDeviceFlags.test(rsClearBB)?D3DCLEAR_TARGET:0)|
-		(HW.Caps.bStencil?D3DCLEAR_STENCIL:0),
-		color_xrgb(0, 0, 0), 1, 0
-		));
-		*/
 }
 
 extern void CheckPrivilegySlowdown();
-//#include "resourcemanager.h"
+
 
 void CRenderDevice::End		(void)
 {
 #ifndef DEDICATED_SERVER
 
-	//	Moved to m_pRenderEnd()
-	//VERIFY	(HW.pDevice);
 
-	//if (HW.Caps.SceneMode)	overdrawEnd		();
-
-	// 
 #ifdef INGAME_EDITOR
 	bool							load_finished = false;
 #endif // #ifdef INGAME_EDITOR
@@ -211,7 +198,6 @@ void 			mt_Thread	(void *ptr)	{
 #include "igame_level.h"
 void CRenderDevice::PreCache	(u32 amount)
 {
-	//if (HW.Caps.bForceGPU_REF)	amount=0;
 	if (m_pRender->GetForceGPU_REF()) amount=0;
 #ifdef DEDICATED_SERVER
 	amount = 0;

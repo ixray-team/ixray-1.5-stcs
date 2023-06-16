@@ -11,6 +11,7 @@
 
 #ifdef INGAME_EDITOR
 
+
 namespace editor {
 
 class property_holder;
@@ -25,7 +26,6 @@ class gradient {
 public:
 	gradient(const gradient& other) = delete;
 	gradient& operator =(const gradient& other) = delete;
-
 					gradient	();
 			void	load		(CInifile& config, shared_str const& section);
 			void	save		(CInifile& config, shared_str const& section);

@@ -140,7 +140,6 @@ private:
 		MIN_BUF_SIZE = 8, 
 		MAX_BUF_SIZE = 4096
 	};
-
 	int m_buffer_size;
 
 	int				m_cur_pos;

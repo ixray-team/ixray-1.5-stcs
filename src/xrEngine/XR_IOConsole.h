@@ -114,7 +114,6 @@ public:
 	void			Show				();
 	void			Hide				();
 
-//	void			Save				();
 	void			Execute				( LPCSTR cmd );
 	void			ExecuteScript		( LPCSTR str );
 	void			ExecuteCommand		( LPCSTR cmd, bool record_cmd = true );

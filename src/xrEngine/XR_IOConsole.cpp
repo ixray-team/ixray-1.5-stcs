@@ -170,7 +170,7 @@ void CConsole::OutFont( LPCSTR text, float& pos_y )
 		int ln	= 0;
 		PSTR one_line = (PSTR)_alloca( (CONSOLE_BUF_SIZE + 1) * sizeof(char) );
 		
-		while( text[sz] && (ln + sz < CONSOLE_BUF_SIZE-5) )// ������� �����
+		while( text[sz] && (ln + sz < CONSOLE_BUF_SIZE-5) )// перенос строк
 		{
 			one_line[ln+sz]   = text[sz];
 			one_line[ln+sz+1] = 0;
@@ -292,7 +292,7 @@ void CConsole::OnRender()
 		vecTipsEx::iterator ite = m_tips.end();
 		for (u32 i = 0; itb != ite ; ++itb, ++i) { // tips
 			pFont->OutI(-1.0f + shift_x, fMaxY + i * LDIST, "%s", (*itb).text.c_str());
-			if (i >= VIEW_TIPS_COUNT-1) {
+			if (i >= VIEW_TIPS_COUNT - 1) {
 				break; //for
 			}
 		}	
@@ -331,7 +331,6 @@ void CConsole::OnRender()
 		}
 		Console_mark cm = (Console_mark)ls[0];
 		pFont->SetColor( get_mark_color( cm ) );
-		
 		OutFont(ls, ypos);
 	}
 	

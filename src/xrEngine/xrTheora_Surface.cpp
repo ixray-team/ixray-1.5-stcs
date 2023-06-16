@@ -154,13 +154,6 @@ u32	CTheoraSurface::Height(bool bRealSize)
 
 }
 
-#ifndef _EDITOR
-	#define MMX_TV_YUV2ARGB
-#endif
-
-#undef MMX_TV_YUV2ARGB
-
-// #define MMX_TV_YUV2ARGB
 void CTheoraSurface::DecompressFrame(u32* data, u32 _width, int& _pos)
 {
 	VERIFY		(m_rgb);

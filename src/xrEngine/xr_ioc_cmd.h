@@ -196,7 +196,6 @@ public		:
 		if (!res) {
 			tips.push_back("---  (current)");
 		}
-		
 		tok = GetToken();
 		while (tok->name) {
 			tips.push_back(tok->name);
@@ -347,9 +346,9 @@ public:
 		R_ASSERT(size>1);
 	};
 
-	virtual void	Execute	(LPCSTR args)
+	virtual void Execute(LPCSTR args)
 	{
-		strncpy	(value,args,size-1);
+		strncpy_s(value, size, args, size-1);
 	}
 	virtual void	Status	(TStatus& S)
 	{	

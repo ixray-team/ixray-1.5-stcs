@@ -297,7 +297,6 @@ void CInput::KeyUpdate	( )
 //xinput
 #endif
 */
-
 }
 bool CInput::get_dik_name(int dik, LPSTR dest_str, int dest_sz)
 {

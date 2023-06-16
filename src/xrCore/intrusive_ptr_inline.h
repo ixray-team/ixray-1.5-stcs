@@ -34,7 +34,7 @@ IC	_intrusive_ptr::intrusive_ptr	(self_type const &rhs)
 TEMPLATE_SPECIALIZATION
 IC	_intrusive_ptr::~intrusive_ptr	()
 {
-	static_assert(result, "Class MUST Be Derived From The Base");
+	static_assert(result, "Class MUST be derived from the base");
 	dec				();
 }
 

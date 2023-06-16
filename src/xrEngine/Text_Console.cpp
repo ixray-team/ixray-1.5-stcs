@@ -187,7 +187,7 @@ void CTextConsole::Destroy()
 	DestroyWindow( m_hConsoleWnd );
 }
 
-void CTextConsole::OnRender() {} //disable �Console::OnRender()
+void CTextConsole::OnRender() {} //disable CConsole::OnRender()
 
 void CTextConsole::OnPaint()
 {

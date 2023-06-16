@@ -85,7 +85,6 @@ void type_pair::on_key_press( line_edit_control* const control )
 	{
 		c				= m_char;
 		char c_shift	= m_char_shift;
-
 		unsigned char buff[128] {};
 		buff[0]			= 0;
 

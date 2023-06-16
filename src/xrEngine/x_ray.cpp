@@ -497,7 +497,7 @@ BOOL IsOutOfVirtualMemory()
 	dwPageFileInMB = ( DWORD ) ( statex.ullTotalPageFile / ( 1024 * 1024 ) ) ;
 	dwPhysMemInMB = ( DWORD ) ( statex.ullTotalPhys / ( 1024 * 1024 ) ) ;
 
-	// �������� ���������� �������
+	// Довольно отфонарное условие
 	if ( ( dwPhysMemInMB > 500 ) && ( ( dwPageFileInMB + dwPhysMemInMB ) > 2500  ) )
 		return 0;
 
@@ -976,11 +976,6 @@ void CApplication::LoadBegin	()
 		_InitializeFont		(pFontSystem,"ui_font_graffiti19_russian",0);
 
 		m_pRender->LoadBegin();
-		/*
-		ll_hGeom.create		(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
-		sh_progress.create	("hud\\default","ui\\ui_load");
-		ll_hGeom2.create		(FVF::F_TL, RCache.Vertex.Buffer(),NULL);
-		*/
 #endif
 		phase_timer.Start	();
 		load_stage			= 0;
@@ -1058,7 +1053,9 @@ void CApplication::OnFrame	( )
 	Engine.Event.OnFrame			();
 	g_SpatialSpace->update			();
 	g_SpatialSpacePhysic->update	();
-	if (g_pGameLevel)				g_pGameLevel->SoundEvent_Dispatch	( );
+	if (g_pGameLevel) {				
+		g_pGameLevel->SoundEvent_Dispatch();
+	}
 }
 
 void CApplication::Level_Append		(LPCSTR folder)

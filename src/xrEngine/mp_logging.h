@@ -3,7 +3,6 @@
 
 //#define MP_LOGGING
 
-//to change result of FS.auth_get()
 #define MP_DEBUG_AUTH 0x7ebf746e
 
 #ifdef DEBUG
