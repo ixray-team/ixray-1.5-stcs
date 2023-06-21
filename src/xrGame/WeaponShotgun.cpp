@@ -46,6 +46,13 @@ void CWeaponShotgun::switch2_Fire	()
 	bWorking = false;
 }
 
+bool CWeaponShotgun::SwitchAmmoType(u32 flags)
+{
+	if (IsTriStateReload() && iAmmoElapsed == iMagazineSize)
+		return false;
+
+	return inherited::SwitchAmmoType(flags);
+}
 
 bool CWeaponShotgun::Action(s32 cmd, u32 flags) 
 {
