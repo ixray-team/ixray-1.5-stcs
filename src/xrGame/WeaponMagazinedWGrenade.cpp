@@ -155,28 +155,31 @@ void CWeaponMagazinedWGrenade::OnShot		()
 
 bool CWeaponMagazinedWGrenade::SwitchMode() 
 {
-	bool bUsefulStateToSwitch = ((eIdle==GetState())||(eHidden==GetState())||(eMisfire==GetState())||(eMagEmpty==GetState())) && (!IsPending());
-
-	if(!bUsefulStateToSwitch)
+	if (!IsGrenadeLauncherAttached())
 		return false;
 
-	if(!IsGrenadeLauncherAttached()) 
+	auto bUsefulStateToSwitch = (!IsPending() && !IsZoomed() && (GetState() == eIdle || GetState() == eMisfire));
+
+	if (!bUsefulStateToSwitch)
 		return false;
 
-	SetPending				(TRUE);
+	SwitchState(eSwitch);
 
-	PerformSwitchGL			();
-	
-	PlaySound				("sndSwitch", get_LastFP());
-
-	PlayAnimModeSwitch		();
+	PerformSwitchGL();
 
 	m_dwAmmoCurrentCalcFrame = 0;
 
-	return					true;
+	return true;
 }
 
-void  CWeaponMagazinedWGrenade::PerformSwitchGL()
+void CWeaponMagazinedWGrenade::switch2_SwitchMode()
+{
+	SetPending(TRUE);
+	PlaySound("sndSwitch", get_LastFP());
+	PlayAnimModeSwitch();
+}
+
+void CWeaponMagazinedWGrenade::PerformSwitchGL()
 {
 	m_bGrenadeMode		= !m_bGrenadeMode;
 
@@ -225,9 +228,10 @@ bool CWeaponMagazinedWGrenade::Action(s32 cmd, u32 flags)
 	{
 	case kWPN_FUNC: 
 		{
-            if(flags&CMD_START && !IsPending()) 
-				SwitchState(eSwitch);
-			return true;
+            if (flags&CMD_START) 
+				return SwitchMode();
+			else
+				return false;
 		}
 	}
 	return false;
@@ -429,38 +433,29 @@ void CWeaponMagazinedWGrenade::ReloadMagazine()
 	}
 }
 
-
 void CWeaponMagazinedWGrenade::OnStateSwitch(u32 S) 
 {
-
 	switch (S)
 	{
-	case eSwitch:
-		{
-			if( !SwitchMode() ){
-				SwitchState(eIdle);
-				return;
-			}
-		}break;
+		case eSwitch:
+			switch2_SwitchMode();
+		break;
 	}
 	
 	inherited::OnStateSwitch(S);
 	UpdateGrenadeVisibility(!!iAmmoElapsed || S == eReload);
 }
 
-
 void CWeaponMagazinedWGrenade::OnAnimationEnd(u32 state)
 {
 	switch (state)
 	{
-	case eSwitch:
-		{
+		case eSwitch:
 			SwitchState(eIdle);
 		}break;
 	}
 	inherited::OnAnimationEnd(state);
 }
-
 
 void CWeaponMagazinedWGrenade::OnH_B_Independent(bool just_before_destroy)
 {
@@ -550,9 +545,6 @@ bool CWeaponMagazinedWGrenade::Detach(LPCSTR item_section_name, bool b_spawn_ite
 	else
 		return inherited::Detach(item_section_name, b_spawn_item);
 }
-
-
-
 
 void CWeaponMagazinedWGrenade::InitAddons()
 {	
