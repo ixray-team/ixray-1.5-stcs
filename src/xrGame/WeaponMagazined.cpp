@@ -152,17 +152,19 @@ void CWeaponMagazined::FireStart		()
 
 				inherited::FireStart();
 				
-				if (iAmmoElapsed == 0) 
-					OnMagazineEmpty();
-				else{
+				if (iAmmoElapsed == 0)
+					switch2_Empty();
+				else
+				{
 					R_ASSERT(H_Parent());
 					SwitchState(eFire);
 				}
 			}
-		}else 
+		}
+		else 
 		{
-			if(eReload!=GetState()) 
-				OnMagazineEmpty();
+			if (GetState() == eIdle)
+				switch2_Empty();
 		}
 	}else
 	{//misfire
@@ -260,23 +262,6 @@ bool CWeaponMagazined::IsAmmoAvailable()
 			if (smart_cast<CWeaponAmmo*>(m_pInventory->GetAny(*m_ammoTypes[i])))
 				return	(true);
 	return		(false);
-}
-
-void CWeaponMagazined::OnMagazineEmpty() 
-{
-
-	if(GetState() == eIdle) 
-	{
-		OnEmptyClick			();
-		return;
-	}
-
-	if( GetNextState() != eMagEmpty && GetNextState() != eReload)
-	{
-		SwitchState(eMagEmpty);
-	}
-
-	inherited::OnMagazineEmpty();
 }
 
 void CWeaponMagazined::UnloadMagazine(bool spawn_ammo)
@@ -419,9 +404,6 @@ void CWeaponMagazined::OnStateSwitch	(u32 S)
 		if(smart_cast<CActor*>(this->H_Parent()) && (Level().CurrentViewEntity()==H_Parent()) )
 			HUD().GetUI()->AddInfoMessage("gun_jammed");
 		break;
-	case eMagEmpty:
-		switch2_Empty	();
-		break;
 	case eReload:
 		switch2_Reload	();
 		break;
@@ -464,7 +446,6 @@ void CWeaponMagazined::UpdateCL			()
 				state_Fire		(dt);
 			}break;
 		case eMisfire:		state_Misfire	(dt);	break;
-		case eMagEmpty:		state_MagEmpty	(dt);	break;
 		case eHidden:		break;
 		}
 	}
@@ -593,10 +574,6 @@ void CWeaponMagazined::state_Misfire	(float dt)
 	bMisfire				= true;
 
 	UpdateSounds			();
-}
-
-void CWeaponMagazined::state_MagEmpty	(float dt)
-{
 }
 
 void CWeaponMagazined::SetDefaults	()

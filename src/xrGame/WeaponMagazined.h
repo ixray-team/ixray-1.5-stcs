@@ -32,8 +32,6 @@ protected:
 	//кадр момента пересчета UpdateSounds
 	u32				dwUpdateSounds_Frame;
 protected:
-	virtual void	OnMagazineEmpty	();
-
 	virtual void	switch2_Idle	();
 	virtual void	switch2_Fire	();
 	virtual void	switch2_Empty	();
@@ -59,7 +57,6 @@ protected:
 			void	ResetSilencerKoeffs();
 
 	virtual void	state_Fire		(float dt);
-	virtual void	state_MagEmpty	(float dt);
 	virtual void	state_Misfire	(float dt);
 public:
 					CWeaponMagazined	(ESoundTypes eSoundType=SOUND_TYPE_WEAPON_SUBMACHINEGUN);
