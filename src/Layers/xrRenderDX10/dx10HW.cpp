@@ -986,15 +986,13 @@ void CHW::UpdateViews()
 	R_CHK(R);
 
 	//	Create Depth/stencil buffer
-	//	HACK: DX10: hard depth buffer format
-	//R_CHK	(pDevice->GetDepthStencilSurface	(&pBaseZB));
-	ID3D10Texture2D* pDepthStencil = NULL;
-	D3D10_TEXTURE2D_DESC descDepth;
+	ID3DTexture2D* pDepthStencil = nullptr;
+	D3D_TEXTURE2D_DESC descDepth = {};
 	descDepth.Width = sd.BufferDesc.Width;
 	descDepth.Height = sd.BufferDesc.Height;
 	descDepth.MipLevels = 1;
 	descDepth.ArraySize = 1;
-	descDepth.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	descDepth.Format = DXGI_FORMAT_D24_UNORM_S8_UINT; // DXGI_FORMAT_D32_FLOAT_S8X24_UINT
 	descDepth.SampleDesc.Count = 1;
 	descDepth.SampleDesc.Quality = 0;
 	descDepth.Usage = D3D10_USAGE_DEFAULT;
@@ -1007,7 +1005,11 @@ void CHW::UpdateViews()
 	R_CHK(R);
 
 	//	Create Depth/stencil view
-	R = pDevice->CreateDepthStencilView( pDepthStencil, NULL, &pBaseZB );
+	D3D10_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc = {};
+	depthStencilViewDesc.Format = descDepth.Format;
+	depthStencilViewDesc.ViewDimension = D3D10_DSV_DIMENSION_TEXTURE2D;
+	depthStencilViewDesc.Texture2D.MipSlice = 0;
+	R = pDevice->CreateDepthStencilView(pDepthStencil, &depthStencilViewDesc, &pBaseZB);
 	R_CHK(R);
 
 	pDepthStencil->Release();
