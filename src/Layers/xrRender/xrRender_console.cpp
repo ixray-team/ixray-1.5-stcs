@@ -68,9 +68,9 @@ xr_token							qminmax_sm_token					[ ]={
 	{ 0,							0												}
 };
 
-//	�Off�
-//	�DX10.0 style [Standard]�
-//	�DX10.1 style [Higher quality]�
+//	Off
+//	DX10.0 style [Standard]
+//	DX10.1 style [Higher quality]
 
 // Common
 extern int			psSkeletonUpdate;
@@ -132,6 +132,7 @@ Flags32		ps_r2_ls_flags				= { R2FLAG_SUN
 	//| R3FLAG_MSAA 
 	//| R3FLAG_MSAA_OPT
 	| R3FLAG_GBUFFER_OPT
+	| R2FLAG_USE_BUMP
 	};	// r2-only
 
 Flags32		ps_r2_ls_flags_ext			= {
