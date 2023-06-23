@@ -132,14 +132,13 @@ Flags32		ps_r2_ls_flags				= { R2FLAG_SUN
 	//| R3FLAG_MSAA 
 	//| R3FLAG_MSAA_OPT
 	| R3FLAG_GBUFFER_OPT
-	| R2FLAG_USE_BUMP
 	};	// r2-only
 
 Flags32		ps_r2_ls_flags_ext			= {
 		/*R2FLAGEXT_SSAO_OPT_DATA |*/ R2FLAGEXT_SSAO_HALF_DATA
 	};
 
-Flags32 ps_r__common_flags = {};
+Flags32 ps_r__common_flags = { R2FLAG_USE_BUMP };
 
 float		ps_r2_df_parallax_h			= 0.02f;
 float		ps_r2_df_parallax_range		= 75.f;
