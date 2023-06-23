@@ -124,7 +124,7 @@ void	CEffect_Rain::OnFrame	()
 {
 #ifndef _EDITOR
 	if (!g_pGameLevel)			return;
-#endif
+#else
 	// Parse states
 	float	factor				= g_pGamePersistent->Environment().CurrentEnv->rain_density;
 	float	hemi_factor			= 1.f;
@@ -158,6 +158,7 @@ void	CEffect_Rain::OnFrame	()
 		snd_Ambient.set_position(sndP);
 		snd_Ambient.set_volume	(1.1f*factor*hemi_factor);
 	}
+#endif
 }
 
 //#include "xr_input.h"
