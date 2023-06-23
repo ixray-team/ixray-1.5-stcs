@@ -874,7 +874,7 @@ void fill_vid_mode_list(CHW* _hw)
 
 	UINT num = 0;
 	DXGI_FORMAT format = DXGI_FORMAT_R8G8B8A8_UNORM;
-	UINT flags         = 0;
+	UINT flags = DXGI_ENUM_MODES_INTERLACED;
 
 	// Get the number of display modes available
 	pOutput->GetDisplayModeList( format, flags, &num, 0);
