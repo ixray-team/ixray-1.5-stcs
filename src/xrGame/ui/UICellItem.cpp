@@ -152,6 +152,11 @@ bool CUICellItem::OnMouseAction(float x, float y, EUIMessages mouse_action)
 		GetMessageTarget()->SendMessage( this, DRAG_DROP_ITEM_RBUTTON_CLICK, NULL );
 		return true;
 	}
+	else if ( mouse_action == WINDOW_CBUTTON_DOWN )
+	{
+		GetMessageTarget()->SendMessage( this, DRAG_DROP_ITEM_MBUTTON_CLICK, NULL );
+		return true;
+	}
 	
 	m_mouse_selected_item = NULL;
 	return false;
