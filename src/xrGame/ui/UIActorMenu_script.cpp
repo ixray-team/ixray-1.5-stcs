@@ -7,10 +7,12 @@
 
 #include "pch_script.h"
 #include "UIActorMenu.h"
+#include "UICellItem.h"
 
 #include "../actor.h"
 #include "../inventory_item.h"
 #include "../ai_space.h"
+#include "../script_game_object.h"
 #include "../../xrServerEntities/script_engine.h"
 
 using namespace luabind;
@@ -91,4 +93,15 @@ void CUIActorMenu::CurModeToScript()
 	luabind::functor<void>	funct;
 	R_ASSERT( ai().script_engine().functor( "actor_menu.actor_menu_mode", funct ) );
 	funct( mode );
+}
+
+bool CUIActorMenu::OnItemMButtonClick(CUICellItem* itm)
+{
+	/*PIItem current_item = (PIItem)itm->m_pData;
+	Msg("sect_id %s", current_item->m_section_id.c_str());
+	luabind::functor<void> funct;
+
+	R_ASSERT(ai().script_engine().functor("pda.actor_menu_mmb_click", funct));
+	funct(current_item->object().lua_game_object());*/
+	return false;
 }

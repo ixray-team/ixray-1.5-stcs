@@ -38,6 +38,7 @@ CUIDragDropListEx::CUIDragDropListEx()
 	AddCallback					("cell_item",	DRAG_DROP_ITEM_DROP,			CUIWndCallback::void_function		(this, &CUIDragDropListEx::OnItemDrop)			);
 	AddCallback					("cell_item",	DRAG_DROP_ITEM_SELECTED,		CUIWndCallback::void_function		(this, &CUIDragDropListEx::OnItemSelected)			);
 	AddCallback					("cell_item",	DRAG_DROP_ITEM_LBUTTON_CLICK,	CUIWndCallback::void_function		(this, &CUIDragDropListEx::OnItemLButtonClick)			);
+	AddCallback					("cell_item",	DRAG_DROP_ITEM_MBUTTON_CLICK,	CUIWndCallback::void_function		(this, &CUIDragDropListEx::OnItemMButtonClick)			);
 	AddCallback					("cell_item",	DRAG_DROP_ITEM_RBUTTON_CLICK,	CUIWndCallback::void_function		(this, &CUIDragDropListEx::OnItemRButtonClick)			);
 	AddCallback					("cell_item",	DRAG_DROP_ITEM_DB_CLICK,		CUIWndCallback::void_function		(this, &CUIDragDropListEx::OnItemDBClick)			);
 	AddCallback					("cell_item",	DRAG_DROP_ITEM_FOCUSED_UPDATE,	CUIWndCallback::void_function		(this, &CUIDragDropListEx::OnItemFocusedUpdate)			);
@@ -267,6 +268,13 @@ void CUIDragDropListEx::OnItemRButtonClick(CUIWindow* w, void* pData)
 	CUICellItem*		itm				= smart_cast<CUICellItem*>(w);
 	if(m_f_item_rbutton_click) 
 		m_f_item_rbutton_click(itm);
+}
+
+void CUIDragDropListEx::OnItemMButtonClick(CUIWindow* w, void* pData)
+{
+	CUICellItem*		itm				= smart_cast<CUICellItem*>(w);
+	if(m_f_item_mbutton_click) 
+		m_f_item_mbutton_click(itm);
 }
 
 void CUIDragDropListEx::OnItemLButtonClick(CUIWindow* w, void* pData)
