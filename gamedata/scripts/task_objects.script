@@ -55,10 +55,11 @@ function CGeneralTask:__init(task_ini, id, type)
 	self.base_id		= id
 	self.id				= id
 	self.name			= utils.cfg_get_string(task_ini, id, "name", nil, false, "", tostring(id))
-	if (self.name == utils.cfg_get_string(task_ini, id, "icon", nil, false, "", tostring(id))) then
-		self.icon		= "ui_pda2_mtask_overlay"
-	else
+	local suffix = "_icon"
+	if string.sub(utils.cfg_get_string(task_ini, id, "icon", nil, false, "", tostring(id)), -#suffix) == suffix then
 		self.icon		= utils.cfg_get_string(task_ini, id, "icon", nil, false, "", tostring(id))
+	else
+		self.icon		= "ui_pda2_mtask_overlay"
 	end
 
 	self.spot			= utils.cfg_get_string(task_ini, id, "spot", nil, false, "", nil)
