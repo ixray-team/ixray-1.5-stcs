@@ -135,6 +135,7 @@ public:
 			void		RemoveCustomMessage		(LPCSTR id);
 
 			SDrawStaticStruct*	AddCustomStatic		(LPCSTR id, bool bSingleInstance);
+			SDrawStaticStruct*	AddHudMessage		(LPCSTR text, LPCSTR text2 = nullptr, LPCSTR id = nullptr, bool trnslate_second_text = false, float time = 3.f, bool bSingleInstance = true);
 			SDrawStaticStruct*	GetCustomStatic		(LPCSTR id);
 			void				RemoveCustomStatic	(LPCSTR id);
 
