@@ -444,7 +444,7 @@ void CWeaponMagazinedWGrenade::OnAnimationEnd(u32 state)
 	{
 		case eSwitch:
 			SwitchState(eIdle);
-		}break;
+			break;
 	}
 	inherited::OnAnimationEnd(state);
 }
