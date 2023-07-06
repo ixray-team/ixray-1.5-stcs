@@ -470,17 +470,11 @@ struct damn_keys_filter {
 #undef dwFilterKeysStructSize
 #undef dwToggleKeysStructSize
 
-// ���������� ��� SecuROM-�
-#include "securom_api.h"
-
-// ������ ��� ����� ���������� THQ � ����� ������������ �������������
+// Фунция для тупых требований THQ и тупых американских пользователей
 BOOL IsOutOfVirtualMemory()
 {
 #define VIRT_ERROR_SIZE 256
 #define VIRT_MESSAGE_SIZE 512
-
-	SECUROM_MARKER_HIGH_SECURITY_ON(1)
-
 	MEMORYSTATUSEX statex;
 	DWORD dwPageFileInMB = 0;
 	DWORD dwPhysMemInMB = 0;
@@ -510,8 +504,6 @@ BOOL IsOutOfVirtualMemory()
 		return 0;
 
 	MessageBox( NULL , pszMessage , pszError , MB_OK | MB_ICONHAND );
-
-	SECUROM_MARKER_HIGH_SECURITY_OFF(1)
 
 	return 1;
 }
