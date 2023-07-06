@@ -414,6 +414,7 @@ _DDS_2D:
 			//	Inited to default by provided default constructor
 			D3DX10_IMAGE_LOAD_INFO LoadInfo;
 			//LoadInfo.FirstMipLevel = img_loaded_lod;
+			LoadInfo.MipLevels = IMG.MipLevels;
 			LoadInfo.Width	= IMG.Width;
 			LoadInfo.Height	= IMG.Height;
 
