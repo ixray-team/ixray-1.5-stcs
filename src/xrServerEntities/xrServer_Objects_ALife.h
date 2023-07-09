@@ -117,6 +117,7 @@ public:
 			bool					move_offline		() const;
 			void					can_switch_online	(bool value);
 			void					can_switch_offline	(bool value);
+			void use_ai_locations(bool value);
 			void					interactive			(bool value);
 			void					move_offline		(bool value);
 			bool					visible_for_map		() const;

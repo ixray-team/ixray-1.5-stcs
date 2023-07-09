@@ -1053,6 +1053,10 @@ bool CSE_ALifeObject::interactive			() const
 	);
 }
 
+void CSE_ALifeObject::use_ai_locations(bool value) {
+	m_flags.set(flUsedAI_Locations, BOOL(value));
+}
+
 void CSE_ALifeObject::can_switch_online		(bool value)
 {
 	m_flags.set					(flSwitchOnline,BOOL(value));
