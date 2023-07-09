@@ -1707,12 +1707,30 @@ public:
 	}
 };
 
+class CCC_ReceiveInfo : public IConsole_Command {
+public:
+	CCC_ReceiveInfo(LPCSTR N) : IConsole_Command(N) {
+	}
+
+	virtual void Execute(LPCSTR info_id) override {
+		if (g_pGameLevel == nullptr) {
+			return;
+		}
+
+		auto actor = smart_cast<CActor*>(Level().CurrentEntity());
+		if (actor != nullptr) {
+			actor->OnReceiveInfo(info_id);
+		}
+	}
+};
+
 void CCC_RegisterCommands()
 {
 	// options
 	g_OptConCom.Init();
 
 	CMD1(CCC_SetWeather, "set_weather");
+	CMD1(CCC_ReceiveInfo, "g_info");
 
 	CMD1(CCC_MemStats,			"stat_memory"			);
 	// game
