@@ -1724,6 +1724,23 @@ public:
 	}
 };
 
+class CCC_DisableInfo : public IConsole_Command {
+public:
+	CCC_DisableInfo(LPCSTR N) : IConsole_Command(N) {
+	}
+
+	virtual void Execute(LPCSTR info_id) override {
+		if (g_pGameLevel == nullptr) {
+			return;
+		}
+
+		auto actor = smart_cast<CActor*>(Level().CurrentEntity());
+		if (actor != nullptr) {
+			actor->OnDisableInfo(info_id);
+		}
+	}
+};
+
 void CCC_RegisterCommands()
 {
 	// options
@@ -1731,6 +1748,7 @@ void CCC_RegisterCommands()
 
 	CMD1(CCC_SetWeather, "set_weather");
 	CMD1(CCC_ReceiveInfo, "g_info");
+	CMD1(CCC_DisableInfo, "d_info");
 
 	CMD1(CCC_MemStats,			"stat_memory"			);
 	// game
