@@ -98,7 +98,6 @@ protected:
 	//параметры и количество осколков
 	float 						m_fFragsRadius; 
 	float 						m_fFragHit;
-	float 						m_fFragHitCritical;
 	float 						m_fFragHitImpulse;
 	int	  						m_iFragsNum;
 

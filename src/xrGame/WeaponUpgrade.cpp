@@ -148,21 +148,6 @@ bool CWeapon::install_upgrade_hit( LPCSTR section, bool test )
 	}
 	result |= result2;
 
-	shared_str	s_sHitPowerCritical;
-	result2 = process_if_exists_set( section, "hit_power_critical", &CInifile::r_string_wb, s_sHitPower, test );
-	if ( result2 && !test )
-	{
-		string32 buffer;
-		fvHitPowerCritical[egdMaster] = (float)atof(_GetItem(*s_sHitPowerCritical,0,buffer));
-		fvHitPowerCritical[egdNovice] = fvHitPowerCritical[egdStalker] = fvHitPowerCritical[egdVeteran] = fvHitPowerCritical[egdMaster];
-
-		int num_game_diff_param = _GetItemCount(*s_sHitPowerCritical);
-		if ( num_game_diff_param > 1 ) { fvHitPowerCritical[egdVeteran]	= (float)atof(_GetItem(*s_sHitPowerCritical,1,buffer)); }
-		if ( num_game_diff_param > 2 ) { fvHitPowerCritical[egdStalker]	= (float)atof(_GetItem(*s_sHitPowerCritical,2,buffer)); }
-		if ( num_game_diff_param > 3 ) { fvHitPowerCritical[egdNovice]	= (float)atof(_GetItem(*s_sHitPowerCritical,3,buffer)); }
-	}
-	result |= result2;
-
 	result |= process_if_exists( section, "hit_impulse",  &CInifile::r_float, fHitImpulse,         test );
 	result |= process_if_exists( section, "bullet_speed", &CInifile::r_float, m_fStartBulletSpeed, test );
 

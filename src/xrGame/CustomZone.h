@@ -266,7 +266,6 @@ protected:
 															u16 id_from, 
 															const Fvector& hit_dir, 
 															float hit_power, 
-															float hit_power_critical, 
 															s16 bone_id, 
 															const Fvector& pos_in_bone, 
 															float hit_impulse, 

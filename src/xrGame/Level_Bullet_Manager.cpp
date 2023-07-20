@@ -43,7 +43,6 @@ void SBullet::Init(const Fvector& position,
 				   const Fvector& direction,
 				   float starting_speed,
 				   float power,
-				   float power_critical,
 				   float impulse,
 				   u16	sender_id,
 				   u16 sendersweapon_id,
@@ -66,7 +65,6 @@ void SBullet::Init(const Fvector& position,
 	dir.normalize			(direction);
 
 	hit_param.power			= power          * cartridge.param_s.kHit;
-	hit_param.power_critical= power_critical * cartridge.param_s.kCritical;
 	hit_param.impulse		= impulse        * cartridge.param_s.kImpulse;
 
 	max_dist				= maximum_distance * cartridge.param_s.kDist;
@@ -182,7 +180,6 @@ void CBulletManager::AddBullet(const Fvector& position,
 							   const Fvector& direction,
 							   float starting_speed,
 							   float power,
-							   float power_critical,
 							   float impulse,
 							   u16	sender_id,
 							   u16 sendersweapon_id,
@@ -200,7 +197,7 @@ void CBulletManager::AddBullet(const Fvector& position,
 //	u32 OwnerID					= sender_id;
 	m_Bullets.push_back			(SBullet());
 	SBullet& bullet				= m_Bullets.back();
-	bullet.Init					(position, direction, starting_speed, power, power_critical, impulse, sender_id, sendersweapon_id, e_hit_type, maximum_distance, cartridge, SendHit);
+	bullet.Init					(position, direction, starting_speed, power, impulse, sender_id, sendersweapon_id, e_hit_type, maximum_distance, cartridge, SendHit);
 //	bullet.frame_num			= Device.dwFrame;
 	bullet.flags.aim_bullet		= AimBullet;
 	if (SendHit && !IsGameTypeSingle())

@@ -310,7 +310,7 @@ void CActorCondition::AffectDamage_InjuriousMaterial()
 	{
 		m_f_time_affected += one;
 
-		SHit HDS = SHit( damage, 0.0f, Fvector().set(0,1,0), NULL, BI_NONE, Fvector().set(0,0,0), 0.0f, ALife::eHitTypeRadiation );
+		SHit HDS = SHit( damage, Fvector().set(0,1,0), NULL, BI_NONE, Fvector().set(0,0,0), 0.0f, ALife::eHitTypeRadiation );
 ///		Msg( "_____ damage = %.4f     frame=%d", damage, Device.dwFrame );
 
 		HDS.GenHeader(GE_HIT, m_object->ID());

@@ -65,18 +65,15 @@ void CWeaponKnife::OnStateSwitch	(u32 S)
 				if (GameID() == eGameIDSingle)
 				{
 					fCurrentHit			= fvHitPower_1[g_SingleGameDifficulty];
-					fCurrentHitCritical	= fvHitPowerCritical_1[g_SingleGameDifficulty];
 				}
 				else
 				{
 					fCurrentHit			= fvHitPower_1[egdMaster];
-					fCurrentHitCritical	= fvHitPowerCritical_1[egdMaster];
 				}
 			}
 			else
 			{
 				fCurrentHit			= fvHitPower_1[egdMaster];
-				fCurrentHitCritical	= fvHitPowerCritical_1[egdMaster];
 			}
 			fHitImpulse_cur	= fHitImpulse_1;
 			//-------------------------------------------
@@ -92,18 +89,15 @@ void CWeaponKnife::OnStateSwitch	(u32 S)
 				if (GameID() == eGameIDSingle)
 				{
 					fCurrentHit			= fvHitPower_2[g_SingleGameDifficulty];
-					fCurrentHitCritical	= fvHitPowerCritical_2[g_SingleGameDifficulty];
 				}
 				else
 				{
 					fCurrentHit			= fvHitPower_2[egdMaster];
-					fCurrentHitCritical	= fvHitPowerCritical_2[egdMaster];
 				}
 			}
 			else
 			{
 				fCurrentHit			= fvHitPower_2[egdMaster];
-				fCurrentHitCritical	= fvHitPowerCritical_2[egdMaster];
 			}
 			fHitImpulse_cur	= fHitImpulse_2;
 			//-------------------------------------------
@@ -120,7 +114,6 @@ void CWeaponKnife::KnifeStrike(const Fvector& pos, const Fvector& dir)
 	cartridge.param_s.impair		= 1.0f;
 	cartridge.param_s.kDisp			= 1.0f;
 	cartridge.param_s.kHit			= 1.0f;
-	cartridge.param_s.kCritical		= 1.0f;
 	cartridge.param_s.kImpulse		= 1.0f;
 	cartridge.param_s.kAP			= 1.0f;
 	cartridge.m_flags.set			(CCartridge::cfTracer, FALSE);
@@ -138,7 +131,6 @@ void CWeaponKnife::KnifeStrike(const Fvector& pos, const Fvector& dir)
 										dir, 
 										m_fStartBulletSpeed, 
 										fCurrentHit, 
-										fCurrentHitCritical, 
 										fHitImpulse_cur, 
 										H_Parent()->ID(), 
 										ID(), 
@@ -258,22 +250,17 @@ void CWeaponKnife::LoadFireParams(LPCSTR section)
 
 	string32			buffer;
 	shared_str			s_sHitPower_2;
-	shared_str			s_sHitPowerCritical_2;
 
 	fvHitPower_1		= fvHitPower;
-	fvHitPowerCritical_1= fvHitPowerCritical;
 	fHitImpulse_1		= fHitImpulse;
 	m_eHitType_1		= ALife::g_tfString2HitType(pSettings->r_string(section, "hit_type"));
 
 	//fHitPower_2			= pSettings->r_float	(section,strconcat(full_name, prefix, "hit_power_2"));
 	s_sHitPower_2			= pSettings->r_string_wb	(section, "hit_power_2" );
-	s_sHitPowerCritical_2	= pSettings->r_string_wb	(section, "hit_power_critical_2" );
 	
 	fvHitPower_2[egdMaster]			= (float)atof(_GetItem(*s_sHitPower_2,0,buffer));//первый параметр - это хит для уровня игры мастер
-	fvHitPowerCritical_2[egdMaster]	= (float)atof(_GetItem(*s_sHitPowerCritical_2,0,buffer));//первый параметр - это хит для уровня игры мастер
 
 	fvHitPower_2[egdNovice] = fvHitPower_2[egdStalker] = fvHitPower_2[egdVeteran] = fvHitPower_2[egdMaster];//изначально параметры для других уровней сложности такие же
-	fvHitPowerCritical_2[egdNovice] = fvHitPowerCritical_2[egdStalker] = fvHitPowerCritical_2[egdVeteran] = fvHitPowerCritical_2[egdMaster];//изначально параметры для других уровней сложности такие же
 
 	int num_game_diff_param=_GetItemCount(*s_sHitPower_2);//узнаём колличество параметров для хитов
 	if (num_game_diff_param>1)//если задан второй параметр хита
@@ -287,20 +274,6 @@ void CWeaponKnife::LoadFireParams(LPCSTR section)
 	if (num_game_diff_param>3)//если задан четвёртый параметр хита
 	{
 		fvHitPower_2[egdNovice]  = (float)atof(_GetItem(*s_sHitPower_2,3,buffer));//то вычитываем его для уровня новичка
-	}
-
-	num_game_diff_param=_GetItemCount(*s_sHitPowerCritical_2);//узнаём колличество параметров
-	if (num_game_diff_param>1)//если задан второй параметр хита
-	{
-		fvHitPowerCritical_2[egdVeteran] = (float)atof(_GetItem(*s_sHitPowerCritical_2,1,buffer));//то вычитываем его для уровня ветерана
-	}
-	if (num_game_diff_param>2)//если задан третий параметр хита
-	{
-		fvHitPowerCritical_2[egdStalker] = (float)atof(_GetItem(*s_sHitPowerCritical_2,2,buffer));//то вычитываем его для уровня сталкера
-	}
-	if (num_game_diff_param>3)//если задан четвёртый параметр хита
-	{
-		fvHitPowerCritical_2[egdNovice]  = (float)atof(_GetItem(*s_sHitPowerCritical_2,3,buffer));//то вычитываем его для уровня новичка
 	}
 
 	fHitImpulse_2		= pSettings->r_float	(section, "hit_impulse_2" );

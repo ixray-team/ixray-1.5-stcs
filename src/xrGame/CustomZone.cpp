@@ -1222,7 +1222,6 @@ void CCustomZone::CreateHit	(	u16 id_to,
 								u16 id_from, 
 								const Fvector& hit_dir, 
 								float hit_power, 
-								float hit_power_critical, 
 								s16 bone_id, 
 								const Fvector& pos_in_bone, 
 								float hit_impulse, 
@@ -1235,7 +1234,7 @@ void CCustomZone::CreateHit	(	u16 id_to,
 
 		NET_Packet			l_P;
 		Fvector hdir		= hit_dir;
-		SHit Hit			= SHit(hit_power, hit_power_critical, hdir, this, bone_id, pos_in_bone, hit_impulse, hit_type);		
+		SHit Hit			= SHit(hit_power, hdir, this, bone_id, pos_in_bone, hit_impulse, hit_type);		
 		Hit.GenHeader		(GE_HIT, id_to);
 		Hit.whoID			= id_from;
 		Hit.weaponID		= this->ID();

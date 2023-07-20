@@ -317,7 +317,6 @@ void CBulletManager::DynamicObjectHit	(CBulletManager::_event& E)
 		};
 
 		SHit	Hit = SHit(	hit_param.power,
-							hit_param.power_critical,
 							original_dir,
 							NULL,
 							u16(E.R.element),
@@ -405,7 +404,6 @@ bool CBulletManager::ObjectHit( SBullet_Hit* hit_res, SBullet* bullet, const Fve
 	*hit_res = bullet->hit_param; //default param
 	
 	hit_res->power = bullet->hit_param.power*speed_factor;
-	hit_res->power_critical = bullet->hit_param.power_critical*speed_factor;
 	
 	//(Если = 0, то пуля либо рикошетит(если контакт идёт по касательной), либо застряёт в текущем 
 	//объекте, если больше 0, то пуля прошивает объект)
