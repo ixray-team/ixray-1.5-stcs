@@ -656,7 +656,7 @@
 			<text font="letterica16" color="ui_6">ui_mm_crosshair_distance</text>
 		</check_dist>
 
-		<check_autoreload x="20" y="180" width="30" height="21">
+		<check_autoreload x="20" y="205" width="30" height="21">
 			<options_item entry="g_autoreload" group="mm_opt_gameplay"/>
 			<text font="letterica16" color="ui_6">ui_mm_autoreload</text>
 		</check_autoreload>
