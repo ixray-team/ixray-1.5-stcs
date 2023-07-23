@@ -224,8 +224,11 @@ protected:
 		Fvector			m_ZoomDof;
 		Fvector4		m_ReloadDof;
 
+		BOOL			m_bUseDynamicZoom;
+
 	} m_zoom_params;
 	
+	float					m_fRTZoomFactor; //run-time zoom factor
 	CUIWindow*				m_UIScope;
 
 	InertionData	m_base_inertion;
@@ -234,8 +237,8 @@ protected:
 public:
 
 	IC bool					IsZoomEnabled		()	const		{return m_zoom_params.m_bZoomEnabled;}
-	virtual	void			ZoomInc				(){};
-	virtual	void			ZoomDec				(){};
+	virtual	void			ZoomInc				();
+	virtual	void			ZoomDec				();
 	virtual void			OnZoomIn			();
 	virtual void			OnZoomOut			();
 	IC		bool			IsZoomed			()	const		{return m_zoom_params.m_bIsZoomModeNow;};
