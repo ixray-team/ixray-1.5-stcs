@@ -13,6 +13,7 @@
 #include "first_bullet_controller.h"
 
 #include "CameraRecoil.h"
+#include "IXRayGameConstants.h"
 
 class CEntity;
 class ENGINE_API CMotionDef;
@@ -151,15 +152,29 @@ public:
 	virtual void InitAddons();
 
 	//для отоброажения иконок апгрейдов в интерфейсе
-	int	GetScopeX() {return m_iScopeX;}
-	int	GetScopeY() {return m_iScopeY;}
+	int	GetScopeX()
+	{
+		if (GameConstants::GetUseHQ_Icons())
+			return pSettings->r_s32(m_scopes[m_cur_scope], "scope_x") * 2;
+		else
+			return pSettings->r_s32(m_scopes[m_cur_scope], "scope_x");
+	}
+
+	int	GetScopeY()
+	{
+		if (GameConstants::GetUseHQ_Icons())
+			return pSettings->r_s32(m_scopes[m_cur_scope], "scope_y") * 2;
+		else
+			return pSettings->r_s32(m_scopes[m_cur_scope], "scope_y");
+	}
+
 	int	GetSilencerX() {return m_iSilencerX;}
 	int	GetSilencerY() {return m_iSilencerY;}
 	int	GetGrenadeLauncherX() {return m_iGrenadeLauncherX;}
 	int	GetGrenadeLauncherY() {return m_iGrenadeLauncherY;}
 
 	const shared_str& GetGrenadeLauncherName	()		const {return m_sGrenadeLauncherName;}
-	const shared_str& GetScopeName				()		const {return m_sScopeName;}
+	const shared_str GetScopeName				()		const {return pSettings->r_string(m_scopes[m_cur_scope], "scope_name");}
 	const shared_str& GetSilencerName			()		const {return m_sSilencerName;}
 
 	IC void	ForceUpdateAmmo						()		{ m_dwAmmoCurrentCalcFrame = 0; }
@@ -406,6 +421,12 @@ protected:
 
 public:
 	xr_vector<shared_str>	m_ammoTypes;
+
+	using SCOPES_VECTOR = xr_vector<shared_str>;
+	using SCOPES_VECTOR_IT = SCOPES_VECTOR::iterator;
+
+	SCOPES_VECTOR			m_scopes;
+	u8						m_cur_scope;
 
 	CWeaponAmmo*			m_pAmmo;
 	u32						m_ammoType;
