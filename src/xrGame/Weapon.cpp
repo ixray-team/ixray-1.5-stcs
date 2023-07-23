@@ -21,6 +21,7 @@
 #include "debug_renderer.h"
 #include "static_cast_checked.hpp"
 #include "clsid_game.h"
+#include "WeaponBinocularsVision.h"
 #include "ui/UIWindow.h"
 #include "ui/UIXmlInit.h"
 #include "IXRayGameConstants.h"
@@ -54,6 +55,7 @@ CWeapon::CWeapon()
 
 	m_zoom_params.m_fCurrentZoomFactor			= g_fov;
 	m_zoom_params.m_fZoomRotationFactor			= 0.f;
+	m_zoom_params.m_pVision						= NULL;
 
 	m_pAmmo					= NULL;
 
@@ -495,6 +497,7 @@ void CWeapon::Load		(LPCSTR section)
 	}
 
 	m_zoom_params.m_bUseDynamicZoom = READ_IF_EXISTS(pSettings, r_bool, section, "scope_dynamic_zoom", FALSE);
+	m_zoom_params.m_sUseBinocularVision = 0;
 
 	// Added by Axel, to enable optional condition use on any item
 	m_flags.set(FUsingCondition, READ_IF_EXISTS(pSettings, r_bool, section, "use_condition", true));
@@ -868,6 +871,9 @@ void CWeapon::UpdateCL		()
 	if (!!GetHUDmode()) {
 		m_current_inertion.lerp(m_base_inertion, m_zoom_inertion, m_zoom_params.m_fZoomRotationFactor);
 	}
+
+	if (m_zoom_params.m_pVision)
+		m_zoom_params.m_pVision->Update();
 }
 
 bool  CWeapon::need_renderable()
@@ -1398,6 +1404,9 @@ void CWeapon::OnZoomIn()
 	
 	if(m_zoom_params.m_bZoomDofEnabled && !IsScopeAttached())
 		GamePersistent().SetEffectorDOF	(m_zoom_params.m_ZoomDof);
+
+	if (m_zoom_params.m_sUseBinocularVision.size() && IsScopeAttached() && NULL == m_zoom_params.m_pVision)
+		m_zoom_params.m_pVision = xr_new<CBinocularsVision>(m_zoom_params.m_sUseBinocularVision);
 }
 
 void CWeapon::OnZoomOut()
@@ -1408,6 +1417,8 @@ void CWeapon::OnZoomOut()
 
  	GamePersistent().RestoreEffectorDOF	();
 	ResetSubStateTime					();
+
+	xr_delete(m_zoom_params.m_pVision);
 }
 
 CUIWindow* CWeapon::ZoomTexture()
@@ -1713,6 +1724,9 @@ bool CWeapon::render_item_ui_query()
 
 void CWeapon::render_item_ui()
 {
+	if (m_zoom_params.m_pVision)
+		m_zoom_params.m_pVision->Draw();
+
 	ZoomTexture()->Update	();
 	ZoomTexture()->Draw		();
 }
