@@ -132,6 +132,10 @@ void CUIActorMenu::DeInitDeadBodySearchMode()
 
 bool CUIActorMenu::ToDeadBodyBag(CUICellItem* itm, bool b_use_cursor_pos)
 {
+	PIItem quest_item					= (PIItem)itm->m_pData;
+	if(quest_item->IsQuestItem())
+		return false;
+
 	CUIDragDropListEx*	old_owner		= itm->OwnerList();
 	CUIDragDropListEx*	new_owner		= NULL;
 
