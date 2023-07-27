@@ -892,7 +892,7 @@ void CApplication::OnEvent(EVENT E, u64 P1, u64 P2)
 			g_pGamePersistent->PreStart		(op_server);
 			//-----------------------------------------------------------
 			g_pGameLevel					= (IGame_Level*)NEW_INSTANCE(CLSID_GAME_LEVEL);
-			pApp->LoadBegin					(); 
+			pApp->LoadBegin					(g_pGamePersistent->ps_curlang);
 			g_pGamePersistent->Start		(op_server);
 			g_pGameLevel->net_Start			(op_server,op_client);
 			pApp->LoadEnd					(); 
@@ -929,7 +929,7 @@ void CApplication::OnEvent(EVENT E, u64 P1, u64 P2)
 static	CTimer	phase_timer		;
 extern	ENGINE_API BOOL			g_appLoaded = FALSE;
 
-void CApplication::LoadBegin	()
+void CApplication::LoadBegin	(shared_str lang)
 {
 	ll_dwReference++;
 	if (1==ll_dwReference)	{
@@ -939,7 +939,7 @@ void CApplication::LoadBegin	()
 #ifndef DEDICATED_SERVER
 		_InitializeFont		(pFontSystem,"ui_font_letterica18_russian",0);
 
-		m_pRender->LoadBegin();
+		m_pRender->LoadBegin(lang);
 #endif
 		phase_timer.Start	();
 		load_stage			= 0;

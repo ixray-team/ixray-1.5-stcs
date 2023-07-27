@@ -53,6 +53,8 @@ public:
 	xr_set<CPS_Instance*>			ps_active;
 	xr_vector<CPS_Instance*>		ps_destroy;
 	xr_vector<CPS_Instance*>		ps_needtoplay;
+	shared_str						ps_curlang;
+	bool							ps_UseLangForScreen;
 
 public:
 			void					destroy_particles	(const bool &all_particles);

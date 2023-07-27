@@ -9,7 +9,7 @@ class dxApplicationRender : public IApplicationRender
 public:
 	virtual void Copy(IApplicationRender &_in);
 
-	virtual void LoadBegin();
+	virtual void LoadBegin(shared_str lang);
 	virtual void destroy_loading_shaders();
 	virtual void setLevelLogo(LPCSTR pszLogoName);
 	virtual void load_draw_internal(CApplication &owner);
