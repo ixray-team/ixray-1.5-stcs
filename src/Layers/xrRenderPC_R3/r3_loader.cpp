@@ -29,7 +29,7 @@ void CRender::level_Load(IReader* fs)
 	R_ASSERT						(!b_loaded);
 
 	// Begin
-	pApp->LoadBegin					();
+	pApp->LoadBegin					(g_pGamePersistent->ps_curlang);
 	dxRenderDeviceRender::Instance().Resources->DeferredLoad	(TRUE);
 	IReader*						chunk;
 

@@ -3,6 +3,8 @@
 
 #include "ui/xrUIXmlParser.h"
 #include "xr_level_controller.h"
+#include "GamePersistent.h"
+#include "IXRayGameConstants.h"
 
 STRING_TABLE_DATA* CStringTable::pData = NULL;
 BOOL CStringTable::m_bWriteErrorsToLog = FALSE;
@@ -49,6 +51,8 @@ void CStringTable::Init		()
 
 		Load			(fn);
 	}
+	g_pGamePersistent->ps_curlang = pData->m_sLanguage;
+	g_pGamePersistent->ps_UseLangForScreen = GameConstants::GetUseLoadScreenByLang();
 #ifdef DEBUG
 	Msg("StringTable: loaded %d files", fset.size());
 #endif // #ifdef DEBUG

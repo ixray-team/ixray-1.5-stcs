@@ -21,7 +21,7 @@ BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 {
 	net_start_result_total				= TRUE;
 
-	pApp->LoadBegin				();
+	pApp->LoadBegin				(g_pGamePersistent->ps_curlang);
 
 	string64	player_name;
 	GetPlayerName_FromRegistry( player_name, sizeof(player_name) );

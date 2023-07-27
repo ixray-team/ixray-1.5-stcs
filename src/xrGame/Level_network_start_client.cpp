@@ -22,7 +22,7 @@ BOOL CLevel::net_Start_client	( LPCSTR options )
 #include "string_table.h"
 bool	CLevel::net_start_client1				()
 {
-	pApp->LoadBegin	();
+	pApp->LoadBegin	(g_pGamePersistent->ps_curlang);
 	// name_of_server
 	string64					name_of_server = "";
 //	xr_strcpy						(name_of_server,*m_caClientOptions);

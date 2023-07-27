@@ -9,10 +9,22 @@ void dxApplicationRender::Copy(IApplicationRender &_in)
 	*this = *(dxApplicationRender*)&_in;
 }
 
-void dxApplicationRender::LoadBegin()
+void dxApplicationRender::LoadBegin(shared_str lang)
 {
+	Msg("load lang name %s", lang.c_str());
+	LPCSTR tex_name = "ui\\ui_load";
+	if (g_pGamePersistent->ps_UseLangForScreen)
+	{
+		if (0 == xr_strcmp(lang, "rus"))
+			tex_name = "ui\\ui_load_ru";
+		else if (0 == xr_strcmp(lang, "eng"))
+			tex_name = "ui\\ui_load_en";
+		else
+			tex_name = "ui\\ui_load";
+	}
+
 	ll_hGeom.create		(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
-	sh_progress.create	("hud\\default","ui\\ui_load");
+	sh_progress.create	("hud\\default", tex_name);
 	hLevelLogo_Add.create	("hud\\default","ui\\ui_ingame2_back_add2_w.tga");
 
 	ll_hGeom2.create		(FVF::F_TL, RCache.Vertex.Buffer(),NULL);

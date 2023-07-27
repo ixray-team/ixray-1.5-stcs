@@ -50,7 +50,7 @@ public:
 	CInifile*				GetArchiveHeader	(LPCSTR name, LPCSTR ver);
 
 	// Loading
-	void					LoadBegin			();
+	void					LoadBegin			(shared_str lang);
 	void					LoadEnd				();
 	void					LoadTitleInt		(LPCSTR str);
 	void					LoadSwitch			();

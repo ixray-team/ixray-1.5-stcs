@@ -10,7 +10,7 @@ public:
 	virtual ~IApplicationRender() {;}
 	virtual void Copy(IApplicationRender &_in) = 0;
 
-	virtual void LoadBegin() = 0;
+	virtual void LoadBegin(shared_str lang) = 0;
 	virtual void destroy_loading_shaders() = 0;
 	virtual void setLevelLogo(LPCSTR pszLogoName) = 0;
 	virtual void load_draw_internal(CApplication &owner) = 0;
