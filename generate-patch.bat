@@ -1,9 +1,11 @@
 :: Get assets
-git clone ./.git ./temp
-cd temp
-git checkout f23bc66ed4a4a6e75d8c9000bf8731d3adc062d7
-cd ..
-move temp/gamedata gamedata_origin
+if not exist gamedata_origin (
+    git clone ./.git ./temp
+    cd temp
+    git checkout 13cb8f33f0121cadfd2e3be7d0e522d0bdb1fef0
+    cd ..
+    move temp/gamedata gamedata_origin
+)
 
 :: Generate patch
 bin\xrCompress.exe -diff gamedata gamedata_origin -out patch
