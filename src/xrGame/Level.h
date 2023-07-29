@@ -383,6 +383,13 @@ public:
 			
 			file_transfer::client_site*					m_file_transfer;
 
+private:
+	int blocked_bings[bindings_count]{ 0 };
+public:
+	void block_action(int cmd);
+	void unblock_action(int cmd);
+	bool is_block_action(int cmd);
+
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CLevel)
