@@ -180,7 +180,7 @@
     <ClCompile Include="xrMemory_subst_msvc.cpp">
       <Filter>Memory manager</Filter>
     </ClCompile>
-    <ClCompile Include="xrDebugNew.cpp">
+    <ClCompile Include="xrDebug.cpp">
       <Filter>Debug core</Filter>
     </ClCompile>
     <ClCompile Include="blackbox\BlackBoxUI.cpp">
