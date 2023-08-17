@@ -177,34 +177,37 @@ void xrDebug::backend	(const char *expression, const char *description, const ch
 	MessageBox			(NULL,assertion_info,"X-Ray error",MB_OK|MB_ICONERROR|MB_SYSTEMMODAL);
 #else
 
-	HWND hWnd = GetForegroundWindow();
+	HWND hWnd = GetActiveWindow();
+	if (hWnd == nullptr)
+		hWnd = GetForegroundWindow();
+	ShowWindow(hWnd, SW_MINIMIZE);
 
-	if (hWnd != nullptr) {
-		ShowWindow(hWnd, SW_HIDE);
-	}
+	int result = MessageBox(
+		NULL, assertion_info, "Fatal Error",
+		MB_CANCELTRYCONTINUE | MB_ICONERROR | MB_DEFBUTTON3 | MB_SYSTEMMODAL | MB_DEFAULT_DESKTOP_ONLY);
 
-		int result = MessageBox(
-			NULL, assertion_info, "Fatal Error",
-			MB_CANCELTRYCONTINUE | MB_ICONERROR | MB_SYSTEMMODAL | MB_DEFAULT_DESKTOP_ONLY);
-
-		switch (result) {
-			case IDCANCEL : {
-				DEBUG_INVOKE;
-				// TODO: Maybe not correct
-				exit(-1);
-				break;
-			}
-			case IDTRYAGAIN : {
-				error_after_dialog	= false;
-				break;
-			}
-			case IDCONTINUE : {
-				error_after_dialog	= false;
-				ignore_always	= true;
-				break;
-			}
-			default : NODEFAULT;
+	switch (result) {
+		case IDCANCEL: {
+			DEBUG_INVOKE;
+			// TODO: Maybe not correct
+			exit(-1);
+			break;
 		}
+		case IDTRYAGAIN: {
+			error_after_dialog = false;
+			break;
+		}
+		case IDCONTINUE: {
+			error_after_dialog = false;
+			ignore_always = true;
+			ShowWindow(hWnd, SW_SHOWNORMAL);
+			break;
+		}
+		default: {
+			Msg("! xrDebug::backend default reached");
+			break;
+		}
+	}
 #endif
 
 	if (get_on_dialog())
