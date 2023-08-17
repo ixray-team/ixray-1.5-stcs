@@ -25,15 +25,15 @@ half 	sample_sw	(float2 tc, float2 shift, float depth_cmp)
 		depth_cmp-tex2D	(s_smap, Tex01).x,
 		depth_cmp-tex2D	(s_smap, Tex10).x,
 		depth_cmp-tex2D	(s_smap, Tex11).x);
-	half4 	compare = step	(depth,0);
+	float4 	compare = step	(depth,0);
 	float2 	fr 		= frac	(Tex00*texsize);
 	half2 	ifr 	= half2	(1,1) - fr;
-	half4 	fr4 	= half4	(ifr.x*ifr.y, ifr.x*fr.y, fr.x*ifr.y,  fr.x*fr.y);
+	float4 	fr4 	= float4	(ifr.x*ifr.y, ifr.x*fr.y, fr.x*ifr.y,  fr.x*fr.y);
 	return	dot		(compare, fr4);
 }
 half 	shadow_sw	(float4 tc)	{ 
 	float2	tc_dw	= tc.xy / tc.w;
-	half4	s;
+	float4	s;
 	s.x	= sample_sw	(tc_dw,float2(-1,-1),tc.z); 
 	s.y	= sample_sw	(tc_dw,float2(+1,-1),tc.z); 
 	s.z	= sample_sw	(tc_dw,float2(-1,+1),tc.z); 
@@ -88,8 +88,8 @@ half  	sample_hw_f4	(float4 tc,float4 shift){
 	float  	texsize 		= 	SMAP_size	;
 	float2 	fr 				= 	frac		(T4.xy * texsize);
 	half2 	ifr 			= 	half2		(1,1) - fr;
-	half4 	fr4 			= 	half4		(ifr.x*ifr.y, ifr.x*fr.y, fr.x*ifr.y,  fr.x*fr.y);
-	half4 	fr4s		 	= 	fr4.zywx	;
+	float4 	fr4 			= 	float4		(ifr.x*ifr.y, ifr.x*fr.y, fr.x*ifr.y,  fr.x*fr.y);
+	float4 	fr4s		 	= 	fr4.zywx	;
 
 	return	dot	(compare, fr4s)	;
 	// return 	dot	(compare, 1.h/4.h)	;
@@ -113,19 +113,19 @@ uniform sampler2D	jitter0;
 uniform sampler2D	jitter1;
 uniform sampler2D	jitter2;
 uniform sampler2D	jitter3;
-uniform half4 		jitterS;
-half4 	test 		(float4 tc, half2 offset)
+uniform float4 		jitterS;
+float4 	test 		(float4 tc, half2 offset)
 {
 	float4	tcx	= float4 (tc.xy + tc.w*offset, tc.zw);
 	return 	tex2Dproj (s_smap,tcx);
 }
 half 	shadowtest 	(float4 tc, float4 tcJ)				// jittered sampling
 {
-	half4	r;
+	float4	r;
 
 	const 	float 	scale 	= (2.7f/float(SMAP_size));
-	half4	J0 	= tex2Dproj	(jitter0,tcJ)*scale;
-	half4	J1 	= tex2Dproj	(jitter1,tcJ)*scale;
+	float4	J0 	= tex2Dproj	(jitter0,tcJ)*scale;
+	float4	J1 	= tex2Dproj	(jitter1,tcJ)*scale;
 
 		r.x 	= test 	(tc,J0.xy).x;
 		r.y 	= test 	(tc,J0.wz).y;
@@ -136,15 +136,15 @@ half 	shadowtest 	(float4 tc, float4 tcJ)				// jittered sampling
 }
 half 	shadowtest_sun 	(float4 tc, float4 tcJ)			// jittered sampling
 {
-	half4	r;
+	float4	r;
 
 //	const 	float 	scale 	= (2.0f/float(SMAP_size));
 	const 	float 	scale 	= (0.7f/float(SMAP_size));
 
 
 	float2 	tc_J	= frac(tc.xy/tc.w*SMAP_size/4.0f )*.5f;
-	half4	J0 	= tex2D	(jitter0,tc_J)*scale;
-	//half4	J1 	= tex2D	(jitter1,tc_J)*scale;
+	float4	J0 	= tex2D	(jitter0,tc_J)*scale;
+	//float4	J1 	= tex2D	(jitter1,tc_J)*scale;
 
 	const float k = .5f/float(SMAP_size);
 	r.x 	= test 	(tc, J0.xy+half2(-k,-k)).x;

@@ -646,7 +646,7 @@ float4 test(float4 tc, float2 offset)
 
 half 	shadowtest_sun 	(float4 tc, float4 tcJ)			// jittered sampling
 {
-	half4	r;
+	float4	r;
 
 	//	const 	float 	scale 	= (2.0f/float(SMAP_size));
 	const 	float 	scale 	= (0.7f/float(SMAP_size));
@@ -654,7 +654,7 @@ half 	shadowtest_sun 	(float4 tc, float4 tcJ)			// jittered sampling
 
 	float2 	tc_J	= frac(tc.xy/tc.w*SMAP_size/4.0f )*.5f;
 	float4	J0		= jitter0.Sample(smp_jitter,tc_J)*scale;
-	//half4	J1 	= tex2D	(jitter1,tc_J)*scale;
+	//float4	J1 	= tex2D	(jitter1,tc_J)*scale;
 
 	const float k = .5f/float(SMAP_size);
 	r.x 	= test 	(tc, J0.xy+half2(-k,-k)).x;
