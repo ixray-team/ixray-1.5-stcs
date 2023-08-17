@@ -657,10 +657,10 @@ half 	shadowtest_sun 	(float4 tc, float4 tcJ)			// jittered sampling
 	//float4	J1 	= tex2D	(jitter1,tc_J)*scale;
 
 	const float k = .5f/float(SMAP_size);
-	r.x 	= test 	(tc, J0.xy+half2(-k,-k)).x;
-	r.y 	= test 	(tc, J0.wz+half2( k,-k)).y;
-	r.z		= test	(tc,-J0.xy+half2(-k, k)).z;
-	r.w		= test	(tc,-J0.wz+half2( k, k)).x;
+	r.x 	= test 	(tc, J0.xy+float2(-k,-k)).x;
+	r.y 	= test 	(tc, J0.wz+float2( k,-k)).y;
+	r.z		= test	(tc,-J0.xy+float2(-k, k)).z;
+	r.w		= test	(tc,-J0.wz+float2( k, k)).x;
 
 	return	dot(r,1.h/4.h);
 }
