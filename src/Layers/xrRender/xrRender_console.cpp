@@ -68,9 +68,12 @@ xr_token							qminmax_sm_token					[ ]={
 	{ 0,							0												}
 };
 
-//	Off
-//	DX10.0 style [Standard]
-//	DX10.1 style [Higher quality]
+u32 ps_r2_aa_type = 0;
+xr_token aa_type_token[] = {
+	{ "off", 0 },
+	{ "fxaa", 1 },
+	{ 0, 0 }
+};
 
 // Common
 extern int			psSkeletonUpdate;
@@ -723,6 +726,7 @@ void		xrRender_initconsole	()
 	CMD3(CCC_Token,		"r3_msaa_alphatest",			&ps_r3_msaa_atest,			qmsaa__atest_token);
 	CMD3(CCC_Token,		"r3_minmax_sm",					&ps_r3_minmax_sm,			qminmax_sm_token);
 
+	CMD3(CCC_Token, "r2_type_aa", &ps_r2_aa_type, aa_type_token);
 
 
 	//	Allow real-time fog config reload
