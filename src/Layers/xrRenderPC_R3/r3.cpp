@@ -892,12 +892,19 @@ HRESULT	CRender::shader_compile			(
 		def_it						++;
 	}
 
-	if (RImplementation.o.advancedpp && ps_r_sun_quality)
+	if (xr_strcmp(name, "accum_sun_near_nomsaa_minmax") == 0)
 	{
-		sprintf_s					(c_sun_quality,"%d",ps_r_sun_quality);
-		defines[def_it].Name		=	"SUN_QUALITY";
-		defines[def_it].Definition	=	c_sun_quality;
-		def_it						++;
+		xr_sprintf(c_sun_quality, "%d", ps_r_sun_quality);
+		defines[def_it].Name = "SUN_QUALITY";
+		defines[def_it].Definition = c_sun_quality;
+		def_it++;
+	}
+	else if (ps_r_sun_quality > 0)
+	{
+		xr_sprintf(c_sun_quality, "%d", ps_r_sun_quality);
+		defines[def_it].Name = "SUN_QUALITY";
+		defines[def_it].Definition = c_sun_quality;
+		def_it++;
 	}
 
 	if (RImplementation.o.advancedpp && ps_r2_ls_flags.test(R2FLAG_STEEP_PARALLAX))
