@@ -5,10 +5,10 @@
 float Contrast(float Input, float ContrastPower)
 {
      //piecewise contrast function
-     bool IsAboveHalf = Input > 0.5 ;
-     float ToRaise = saturate(2*(IsAboveHalf ? 1-Input : Input));
+     bool IsAbovefloat = Input > 0.5 ;
+     float ToRaise = saturate(2*(IsAbovefloat ? 1-Input : Input));
      float Output = 0.5*pow(ToRaise, ContrastPower); 
-     Output = IsAboveHalf ? 1-Output : Output;
+     Output = IsAbovefloat ? 1-Output : Output;
      return Output;
 }
 

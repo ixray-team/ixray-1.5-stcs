@@ -239,9 +239,9 @@ float	calc_hdao( float3 P, float3 N, float2 tc, float2 tcJ, uint iSample)
 		#endif	
 		
 #ifdef GBUFFER_OPTIMIZATION
-		f4PosZ		  = GatherZSamples( s_half_depth, f2TexCoord, tc, pos2d );
+		f4PosZ		  = GatherZSamples( s_float_depth, f2TexCoord, tc, pos2d );
 #else
-		f4PosZ		  = GatherZSamples( s_half_depth, f2TexCoord, tc );
+		f4PosZ		  = GatherZSamples( s_float_depth, f2TexCoord, tc );
 #endif
 		f4Diff		  = ZDisp.xxxx - f4PosZ;
 		f4Compare[0]  = ( f4Diff < g_fSSAORejectRadius.xxxx ) ? ( 1.0f ) : ( 0.0f );
@@ -251,9 +251,9 @@ float	calc_hdao( float3 P, float3 N, float2 tc, float2 tcJ, uint iSample)
 		f3D0.xyz /= length( f3D0.xyz );
 		
 #ifdef GBUFFER_OPTIMIZATION
-		f4PosZ		  = GatherZSamples( s_half_depth, f2MirrorTexCoord, tc, pos2d );
+		f4PosZ		  = GatherZSamples( s_float_depth, f2MirrorTexCoord, tc, pos2d );
 #else
-		f4PosZ		  = GatherZSamples( s_half_depth, f2MirrorTexCoord, tc );
+		f4PosZ		  = GatherZSamples( s_float_depth, f2MirrorTexCoord, tc );
 #endif
 		f4Diff		  = ZDisp.xxxx - f4PosZ;
 		f4Compare[1]  = ( f4Diff < g_fSSAORejectRadius.xxxx ) ? ( 1.0f ) : ( 0.0f );

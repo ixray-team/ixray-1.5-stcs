@@ -644,7 +644,7 @@ float4 test(float4 tc, float2 offset)
 	return s_smap.SampleCmpLevelZero( smp_smap, tc.xy, tc.z).x;
 }
 
-half 	shadowtest_sun 	(float4 tc, float4 tcJ)			// jittered sampling
+float 	shadowtest_sun 	(float4 tc, float4 tcJ)			// jittered sampling
 {
 	float4	r;
 

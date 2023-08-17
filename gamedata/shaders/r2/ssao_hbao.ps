@@ -45,7 +45,7 @@ float tangent(float3 P, float3 S)
 float3 fetch_eye_pos(float2 uv)
 {
 #ifdef SSAO_OPT_DATA
-    float z = tex2Dlod(s_half_depth, float4(uv, 0, 0)).x;
+    float z = tex2Dlod(s_float_depth, float4(uv, 0, 0)).x;
     return uv_to_eye(uv, z);
 #else // SSAO_OPT_DATA 
     return tex2Dlod	(s_position, float4(uv, 0, 0));

@@ -609,7 +609,7 @@ float2 SMAAAreaDiag(SMAATexture2D(areaTex), float2 dist, float2 e, float offset)
     // We do a scale and bias for mapping to texel space:
     texcoord = mad(SMAA_AREATEX_PIXEL_SIZE, texcoord, 0.5 * SMAA_AREATEX_PIXEL_SIZE);
 
-    // Diagonal areas are on the second half of the texture:
+    // Diagonal areas are on the second float of the texture:
     texcoord.x += 0.5;
 
     // Move to proper place, according to the subpixel offset:
@@ -701,7 +701,7 @@ float2 SMAACalculateDiagWeights(SMAATexture2D(edgesTex), SMAATexture2D(areaTex),
  * crossing edges are active.
  */
 float SMAASearchLength(SMAATexture2D(searchTex), float2 e, float offset) {
-    // The texture is flipped vertically, with left and right cases taking half
+    // The texture is flipped vertically, with left and right cases taking float
     // of the space horizontally:
     float2 scale = SMAA_SEARCHTEX_SIZE * float2(0.5, -1.0);
     float2 bias = SMAA_SEARCHTEX_SIZE * float2(offset, 1.0);

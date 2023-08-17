@@ -91,7 +91,7 @@ float3 fetch_eye_pos(float2 uv)
 		//float3	tap_pos	= s_position.Sample(smp_nofilter,tap);
 		float3	tap_pos	= gbd.P;
 #else // SSAO_OPT_DATA
-    float z = s_half_depth.SampleLevel( smp_nofilter, uv, 0 );
+    float z = s_float_depth.SampleLevel( smp_nofilter, uv, 0 );
     return uv_to_eye(uv, z);
 #endif // SSAO_OPT_DATA
 }

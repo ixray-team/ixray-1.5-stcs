@@ -9,7 +9,7 @@ uniform	sampler	s_smap	: register(ps,s0);	// 2D/cube shadowmap
 //////////////////////////////////////////////////////////////////////////////////////////
 // software
 //////////////////////////////////////////////////////////////////////////////////////////
-half 	sample_sw	(float2 tc, float2 shift, float depth_cmp)
+float 	sample_sw	(float2 tc, float2 shift, float depth_cmp)
 {
 	static const float 	ts = KERNEL / float(SMAP_size);
 	tc 		+= 		shift*ts;
@@ -31,7 +31,7 @@ half 	sample_sw	(float2 tc, float2 shift, float depth_cmp)
 	float4 	fr4 	= float4	(ifr.x*ifr.y, ifr.x*fr.y, fr.x*ifr.y,  fr.x*fr.y);
 	return	dot		(compare, fr4);
 }
-half 	shadow_sw	(float4 tc)	{ 
+float 	shadow_sw	(float4 tc)	{ 
 	float2	tc_dw	= tc.xy / tc.w;
 	float4	s;
 	s.x	= sample_sw	(tc_dw,float2(-1,-1),tc.z); 
@@ -44,7 +44,7 @@ half 	shadow_sw	(float4 tc)	{
 //////////////////////////////////////////////////////////////////////////////////////////
 // hardware + PCF
 //////////////////////////////////////////////////////////////////////////////////////////
-half  	sample_hw_pcf	(float4 tc,float4 shift){
+float  	sample_hw_pcf	(float4 tc,float4 shift){
 	static const float 	ts = KERNEL / float(SMAP_size);
 #ifndef SUNSHAFTS_DYNAMIC
 	return tex2Dproj	(s_smap,tc + tc.w*shift*ts).x;
@@ -54,11 +54,11 @@ half  	sample_hw_pcf	(float4 tc,float4 shift){
 	return tex2Dlod(s_smap, tc2);
 #endif	//	SUNSHAFTS_DYNAMIC
 }
-half 	shadow_hw	(float4 tc)		{
-  half  s0		= sample_hw_pcf	(tc,float4(-1,-1,0,0)); 
-  half  s1		= sample_hw_pcf	(tc,float4(+1,-1,0,0)); 
-  half  s2		= sample_hw_pcf	(tc,float4(-1,+1,0,0)); 
-  half  s3		= sample_hw_pcf	(tc,float4(+1,+1,0,0));
+float 	shadow_hw	(float4 tc)		{
+  float  s0		= sample_hw_pcf	(tc,float4(-1,-1,0,0)); 
+  float  s1		= sample_hw_pcf	(tc,float4(+1,-1,0,0)); 
+  float  s2		= sample_hw_pcf	(tc,float4(-1,+1,0,0)); 
+  float  s3		= sample_hw_pcf	(tc,float4(+1,+1,0,0));
 
   return	(s0+s1+s2+s3)/(4.h);
 }
@@ -68,7 +68,7 @@ half 	shadow_hw	(float4 tc)		{
 //////////////////////////////////////////////////////////////////////////////////////////
 
 /*
-half  	sample_hw_f4	(float4 tc,float4 shift){
+float  	sample_hw_f4	(float4 tc,float4 shift){
 	static const float 	ts 	= KERNEL / 	float(SMAP_size);
 	float4	D4				= tex2Dproj	(s_smap,tc + tc.w*shift*ts);
 	float4 	dcmp			= tc.z/tc.w	;
@@ -77,7 +77,7 @@ half  	sample_hw_f4	(float4 tc,float4 shift){
 }
 */
 
-half  	sample_hw_f4	(float4 tc,float4 shift){
+float  	sample_hw_f4	(float4 tc,float4 shift){
 	static const float 	ts 	= 	KERNEL / 	float(SMAP_size);
 	float4 	T4				= 	tc/tc.w		;
 			T4.xy			+=	shift.xy*ts	;
@@ -96,11 +96,11 @@ half  	sample_hw_f4	(float4 tc,float4 shift){
 }
 
 
-half 	shadow_hw_f4	(float4 tc)		{
-  half  s0	= sample_hw_f4	(tc,float4(-1,-1,0,0)); 
-  half  s1	= sample_hw_f4	(tc,float4(+1,-1,0,0)); 
-  half  s2	= sample_hw_f4	(tc,float4(-1,+1,0,0)); 
-  half  s3	= sample_hw_f4	(tc,float4(+1,+1,0,0));
+float 	shadow_hw_f4	(float4 tc)		{
+  float  s0	= sample_hw_f4	(tc,float4(-1,-1,0,0)); 
+  float  s1	= sample_hw_f4	(tc,float4(+1,-1,0,0)); 
+  float  s2	= sample_hw_f4	(tc,float4(-1,+1,0,0)); 
+  float  s3	= sample_hw_f4	(tc,float4(+1,+1,0,0));
 	return	(s0+s1+s2+s3)/4.h;
 }
 
@@ -119,7 +119,7 @@ float4 	test 		(float4 tc, float2 offset)
 	float4	tcx	= float4 (tc.xy + tc.w*offset, tc.zw);
 	return 	tex2Dproj (s_smap,tcx);
 }
-half 	shadowtest 	(float4 tc, float4 tcJ)				// jittered sampling
+float 	shadowtest 	(float4 tc, float4 tcJ)				// jittered sampling
 {
 	float4	r;
 
@@ -134,7 +134,7 @@ half 	shadowtest 	(float4 tc, float4 tcJ)				// jittered sampling
 
 	return	dot(r,1.h/4.h);
 }
-half 	shadowtest_sun 	(float4 tc, float4 tcJ)			// jittered sampling
+float 	shadowtest_sun 	(float4 tc, float4 tcJ)			// jittered sampling
 {
 	float4	r;
 
@@ -186,41 +186,41 @@ float shadow_high(float4 tc) {
 //////////////////////////////////////////////////////////////////////////////////////////
 #ifdef	USE_HWSMAP_PCF
 // D24X8+PCF
-	half 	shadow		(float4	tc)		{ return shadow_hw	(tc);	}
+	float 	shadow		(float4	tc)		{ return shadow_hw	(tc);	}
 #else
 	#ifdef USE_FETCH4
 		// DF24+Fetch4
-		half 	shadow 		(float4 tc)		{ return shadow_hw_f4(tc);	}
+		float 	shadow 		(float4 tc)		{ return shadow_hw_f4(tc);	}
 	#else
 		// FP32
-		half 	shadow		(float4 tc) 	{ return shadow_sw	(tc);	}
+		float 	shadow		(float4 tc) 	{ return shadow_sw	(tc);	}
 	#endif
 #endif
 
 
 #ifdef	USE_HWSMAP_PCF
 	// D24X8+PCF
-	half 	shadow_volumetric		(float4	tc)		{ return sample_hw_pcf	( tc, float4(0,0,0,0) ); }
+	float 	shadow_volumetric		(float4	tc)		{ return sample_hw_pcf	( tc, float4(0,0,0,0) ); }
 #else
 	#ifdef USE_FETCH4
 		// DF24+Fetch4
-		half 	shadow_volumetric 		(float4 tc)		{ return sample_hw_f4	(tc, float4(0,0,0,0)); }
+		float 	shadow_volumetric 		(float4 tc)		{ return sample_hw_f4	(tc, float4(0,0,0,0)); }
 	#else
 		// FP32
-		half 	shadow_volumetric 		(float4 tc) 	{ return sample_sw	(tc.xy / tc.w,float2(0,0),tc.z); }
+		float 	shadow_volumetric 		(float4 tc) 	{ return sample_sw	(tc.xy / tc.w,float2(0,0),tc.z); }
 	#endif
 #endif
 
 //////////////////////////////////////////////////////////////////////////////////////////
 #ifdef  USE_SUNMASK	
 uniform float3x4	m_sunmask	;				// ortho-projection
-half 	sunmask		(float4 P)	{				// 
+float 	sunmask		(float4 P)	{				// 
 	float2 		tc	= mul	(m_sunmask, P);		//
 	return 		tex2D 		(s_lmap,tc).w;		// A8 
 	
 }
 #else
-half 	sunmask		(float4 P)	{ return 1.h; }	// 
+float 	sunmask		(float4 P)	{ return 1.h; }	// 
 #endif
 
 //////////////////////////////////////////////////////////////////////////////////////////
