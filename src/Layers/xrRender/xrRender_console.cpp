@@ -72,6 +72,7 @@ u32 ps_r2_aa_type = 0;
 xr_token aa_type_token[] = {
 	{ "off", 0 },
 	{ "fxaa", 1 },
+	{ "smaa", 2 },
 	{ 0, 0 }
 };
 

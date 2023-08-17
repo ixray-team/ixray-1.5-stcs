@@ -235,6 +235,7 @@
     <ClInclude Include="..\xrRender\Blender_Model_EbB.h" />
     <ClInclude Include="..\xrRender\Blender_Particle.h" />
     <ClInclude Include="..\xrRender\Blender_Screen_SET.h" />
+    <ClInclude Include="..\xrRender\blender_smaa.h" />
     <ClInclude Include="..\xrRender\Blender_tree.h" />
     <ClInclude Include="..\xrRender\D3DUtils.h" />
     <ClInclude Include="..\xrRender\Debug\dxPixEventWrapper.h" />
@@ -525,6 +526,7 @@
     <ClCompile Include="blender_light_reflected.cpp" />
     <ClCompile Include="blender_light_spot.cpp" />
     <ClCompile Include="blender_luminance.cpp" />
+    <ClCompile Include="blender_smaa.cpp" />
     <ClCompile Include="blender_ssao.cpp" />
     <ClCompile Include="dx10MinMaxSMBlender.cpp" />
     <ClCompile Include="light_GI.cpp" />
@@ -561,6 +563,7 @@
     <ClCompile Include="r3_rendertarget_phase_PP.cpp" />
     <ClCompile Include="r3_rendertarget_phase_rain.cpp" />
     <ClCompile Include="r3_rendertarget_phase_scene.cpp" />
+    <ClCompile Include="r3_rendertarget_phase_smaa.cpp" />
     <ClCompile Include="r3_rendertarget_phase_smap_D.cpp" />
     <ClCompile Include="r3_rendertarget_phase_smap_S.cpp" />
     <ClCompile Include="r3_rendertarget_phase_ssao.cpp" />

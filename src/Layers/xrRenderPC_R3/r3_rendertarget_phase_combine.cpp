@@ -4,8 +4,6 @@
 
 #include "../xrRender/dxEnvironmentRender.h"
 
-#define STENCIL_CULL 0
-
 void CRenderTarget::DoAsyncScreenshot()
 {
 	//	Igor: screenshot will not have postprocess applied.
@@ -408,6 +406,12 @@ void	CRenderTarget::phase_combine	()
 	{
 		PIX_EVENT(phase_fxaa);
 		phase_fxaa();
+		RCache.set_Stencil(FALSE);
+	}
+	else if (ps_r2_aa_type == 2)
+	{
+		PIX_EVENT(phase_smaa);
+		phase_smaa();
 		RCache.set_Stencil(FALSE);
 	}
 

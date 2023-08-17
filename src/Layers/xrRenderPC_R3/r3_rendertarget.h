@@ -48,6 +48,7 @@ public:
 	IBlender*					b_ssao_msaa[8];
 
 	IBlender* b_fxaa;
+	IBlender* b_smaa;
 
 #ifdef DEBUG
 	struct		dbg_line_t		{
@@ -108,9 +109,14 @@ public:
 	ref_texture					t_noise				[TEX_jitter_count];
 private:
 	ref_shader s_fxaa;
+	ref_shader s_smaa;
 
 	// OCCq
 	ref_shader					s_occq;
+
+	// SMAA
+	ref_rt rt_smaa_edgetex;
+	ref_rt rt_smaa_blendtex;
 
 	// SSAO
 	ref_rt						rt_ssao_temp;
@@ -237,6 +243,7 @@ public:
 	void						u_DBT_disable			();
 
 	void phase_fxaa();
+	void phase_smaa();
 	void						phase_scene_prepare		();
 	void						phase_scene_begin		();
 	void						phase_scene_end			();
