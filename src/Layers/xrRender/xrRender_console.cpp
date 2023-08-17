@@ -116,7 +116,7 @@ float		ps_r1_pps_v					= 0.f	;
 
 // R1-specific
 int			ps_r1_GlowsPerFrame			= 16	;					// r1-only
-float		ps_r1_fog_luminance			= 1.f	;					// r1-only
+float		ps_r1_fog_luminance			= 1.1f	;					// r1-only
 int ps_r1_use_terrain_mask = 0;
 
 // R2
