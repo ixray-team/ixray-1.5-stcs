@@ -253,5 +253,6 @@ u32	CTrade::GetItemPrice(PIItem pItem, bool b_buying)
 	//if(result>500)
 	//	result		= iFloor(result/10+0.5f)*10;
 
+	clamp<u32>				(result, 1, 1000000);
 	return					(result);
 }
