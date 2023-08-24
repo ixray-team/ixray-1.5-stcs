@@ -143,9 +143,6 @@
     <ClInclude Include="src\lgc.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\sdk\include\lua\library_linkage.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="src\ljit.h">
       <Filter>src</Filter>
     </ClInclude>

@@ -50,8 +50,6 @@
 
 BOOL g_draw_downloads = TRUE;
 
-#pragma comment(lib, "crypto.lib")
-
 game_cl_mp::game_cl_mp()
 {
 	m_bVotingActive = false;

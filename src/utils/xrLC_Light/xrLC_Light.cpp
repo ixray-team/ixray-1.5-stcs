@@ -2,8 +2,6 @@
 //
 #include "stdafx.h"
 #include "xrLc_globaldata.h"
-#pragma comment(lib,"xrCore.lib")
-#pragma comment(lib,"xrCDB.lib")
 
 #ifdef _MANAGED
 #pragma managed(push, off)

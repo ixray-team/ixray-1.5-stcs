@@ -177,7 +177,6 @@
     <ClCompile Include="luabind\examples\regexp\regex_wrap.cpp">
       <Filter>examples\regexp</Filter>
     </ClCompile>
-    <ClCompile Include="library_linkage.cpp" />
     <ClCompile Include="luabind_memory.cpp" />
     <ClCompile Include="pch.cpp" />
   </ItemGroup>
@@ -228,9 +227,6 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\luabind\iterator_policy.hpp">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\include\luabind\library_linkage.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\luabind\lua_include.hpp">

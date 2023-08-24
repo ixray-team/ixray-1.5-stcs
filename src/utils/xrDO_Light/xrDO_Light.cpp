@@ -9,8 +9,6 @@
 #pragma comment(lib,"comctl32.lib")
 //#pragma comment(lib,"IMAGEHLP.LIB")
 #pragma comment(lib,"winmm.LIB")
-#pragma comment(lib,"xrCDB.lib")
-#pragma comment(lib,"xrCore.lib")
 #pragma comment(lib,"FreeImage.lib")
 
 extern void	xrCompiler			();

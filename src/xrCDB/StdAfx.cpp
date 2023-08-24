@@ -7,8 +7,6 @@
 
 #ifdef __BORLANDC__
 	#pragma comment(lib,"xrCoreB.lib")
-#else
-	#pragma comment(lib,"xrCore.lib")
 #endif
 
 #pragma comment(lib,"winmm.lib")
