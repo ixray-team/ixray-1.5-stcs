@@ -1,6 +1,3 @@
-#ifndef _INCDEF_XRMESSAGES_H_
-#define _INCDEF_XRMESSAGES_H_
-
 #pragma once
 
 // CL	== client 2 server message
@@ -153,6 +150,8 @@ enum {
 	GE_FREEZE_OBJECT,
 	GE_LAUNCH_ROCKET,
 
+	GE_CLEAR_SAVED_BONES,
+
 	GE_FORCEDWORD				= u32(-1)
 };
 
@@ -235,5 +234,3 @@ enum
 
 	M_SPAWN_OBJECT_FORCEDWORD	= u32(-1)
 };
-
-#endif /*_INCDEF_XRMESSAGES_H_*/
