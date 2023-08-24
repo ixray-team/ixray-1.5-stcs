@@ -23,8 +23,6 @@ CEngine::~CEngine()
 	
 }
 
-extern	void msCreate		(LPCSTR name);
-
 PROTECT_API void CEngine::Initialize	(void)
 {
 	// Bind PSGP
@@ -35,10 +33,6 @@ PROTECT_API void CEngine::Initialize	(void)
 
 	// Other stuff
 	Engine.Sheduler.Initialize			( );
-	// 
-#ifdef DEBUG
-	msCreate							("game");
-#endif
 }
 
 void CEngine::Destroy	()
