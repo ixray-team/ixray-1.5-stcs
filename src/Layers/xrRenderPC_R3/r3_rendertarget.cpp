@@ -386,12 +386,12 @@ CRenderTarget::CRenderTarget		()
 		}
 
 		// generic(LDR) RTs
-		rt_Generic_0.create(r2_RT_generic0, s_dwWidth, s_dwHeight, D3DFMT_A8R8G8B8, 1);
-		rt_Generic_1.create(r2_RT_generic1, s_dwWidth, s_dwHeight, D3DFMT_A8R8G8B8, 1);
+		rt_Generic_0.create(r2_RT_generic0, s_dwWidth, s_dwHeight, D3DFMT_A8R8G8B8, SampleCount);
+		rt_Generic_1.create(r2_RT_generic1, s_dwWidth, s_dwHeight, D3DFMT_A8R8G8B8, SampleCount);
 		if (RImplementation.o.dx10_msaa)
 		{
-			rt_Generic_0_r.create(r2_RT_generic0_r, s_dwWidth, s_dwHeight, D3DFMT_A8R8G8B8, SampleCount);
-			rt_Generic_1_r.create(r2_RT_generic1_r, s_dwWidth, s_dwHeight, D3DFMT_A8R8G8B8, SampleCount);
+			rt_Generic_0_r.create(r2_RT_generic0_r, s_dwWidth, s_dwHeight, D3DFMT_A8R8G8B8, 1);
+			rt_Generic_1_r.create(r2_RT_generic1_r, s_dwWidth, s_dwHeight, D3DFMT_A8R8G8B8, 1);
 			rt_Generic.create(r2_RT_generic, s_dwWidth, s_dwHeight, D3DFMT_A8R8G8B8, 1);
 		}
 
