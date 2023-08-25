@@ -235,7 +235,6 @@ void					CRender::create					()
 	//.	o.sunstatic			= (strstr(Core.Params,"-sunstatic"))?	TRUE	:FALSE	;
 	o.sunstatic = !r2_sun_static ? (!ps_r2_ls_flags.test(R2FLAG_SUN) ? TRUE : FALSE) : TRUE;
 	o.advancedpp		= r2_advanced_pp;
-	o.sjitter			= (strstr(Core.Params,"-sjitter"))?		TRUE	:FALSE	;
 	o.depth16			= (strstr(Core.Params,"-depth16"))?		TRUE	:FALSE	;
 	o.noshadows			= (strstr(Core.Params,"-noshadows"))?	TRUE	:FALSE	;
 	o.Tshadows			= (strstr(Core.Params,"-tsh"))?			TRUE	:FALSE	;
@@ -607,11 +606,6 @@ HRESULT	CRender::shader_compile			(
 	}
 	if (o.HW_smap_FETCH4)			{
 		defines[def_it].Name		=	"USE_FETCH4";
-		defines[def_it].Definition	=	"1";
-		def_it						++	;
-	}
-	if (o.sjitter)			{
-		defines[def_it].Name		=	"USE_SJITTER";
 		defines[def_it].Definition	=	"1";
 		def_it						++	;
 	}
