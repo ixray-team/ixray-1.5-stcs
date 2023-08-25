@@ -59,7 +59,6 @@ public:
 		u32		ssao_hdao			: 1;
 
 		u32		smapsize			: 16;
-		u32		depth16				: 1;
 		u32		mrt					: 1;
 		u32		mrtmixdepth			: 1;
 		u32		fp16_filter			: 1;
