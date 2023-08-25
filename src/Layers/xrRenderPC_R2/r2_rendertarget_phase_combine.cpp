@@ -74,13 +74,12 @@ void	CRenderTarget::phase_combine	()
 	}
 
 	// 
-	//if (RImplementation.o.bug)	{
-		RCache.set_Stencil					(TRUE,D3DCMP_LESSEQUAL,0x01,0xff,0x00);	// stencil should be >= 1
-		if (RImplementation.o.nvstencil)	{
-			u_stencil_optimize				(FALSE);
-			RCache.set_ColorWriteEnable		();
-		}
-	//}
+
+	RCache.set_Stencil(TRUE, D3DCMP_LESSEQUAL, 0x01, 0xff, 0x00);	// stencil should be >= 1
+	if (RImplementation.o.nvstencil) {
+		u_stencil_optimize(FALSE);
+		RCache.set_ColorWriteEnable();
+	}
 
 	// calc m-blur matrices
 	Fmatrix		m_previous, m_current;
