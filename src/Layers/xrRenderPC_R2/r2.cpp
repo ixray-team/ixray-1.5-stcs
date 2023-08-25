@@ -233,7 +233,6 @@ void					CRender::create					()
 
 	// options
 	o.bug				= (strstr(Core.Params,"-bug"))?			TRUE	:FALSE	;
-	o.sunfilter			= (strstr(Core.Params,"-sunfilter"))?	TRUE	:FALSE	;
 	//.	o.sunstatic			= (strstr(Core.Params,"-sunstatic"))?	TRUE	:FALSE	;
 	o.sunstatic = !r2_sun_static ? (!ps_r2_ls_flags.test(R2FLAG_SUN) ? TRUE : FALSE) : TRUE;
 	o.advancedpp		= r2_advanced_pp;
@@ -634,11 +633,6 @@ HRESULT	CRender::shader_compile			(
 	}
 	if (o.mblur)			{
 		defines[def_it].Name		=	"USE_MBLUR";
-		defines[def_it].Definition	=	"1";
-		def_it						++	;
-	}
-	if (o.sunfilter)		{
-		defines[def_it].Name		=	"USE_SUNFILTER";
 		defines[def_it].Definition	=	"1";
 		def_it						++	;
 	}
