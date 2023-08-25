@@ -9,8 +9,6 @@
 #include "igame_level.h"
 #include "igame_persistent.h"
 
-#include "dedicated_server_only.h"
-
 #include "xr_input.h"
 #include "xr_ioconsole.h"
 #include "x_ray.h"
@@ -116,7 +114,7 @@ void InitEngine		()
 	CheckCopyProtection			( );
 }
 
-PROTECT_API void InitSettings	()
+void InitSettings	()
 {
 	string_path					fname; 
 	FS.update_path				(fname,"$game_config$","system.ltx");
@@ -130,7 +128,7 @@ PROTECT_API void InitSettings	()
 	pGameIni					= xr_new<CInifile>	(fname,TRUE);
 	CHECK_OR_EXIT				(!pGameIni->sections().empty(),make_string("Cannot find file %s.\nReinstalling application may fix this problem.",fname));
 }
-PROTECT_API void InitConsole	()
+void InitConsole	()
 {
 #ifdef DEDICATED_SERVER
 	{
@@ -152,7 +150,7 @@ PROTECT_API void InitConsole	()
 	}
 }
 
-PROTECT_API void InitInput		()
+void InitInput		()
 {
 	BOOL bCaptureInput			= !strstr(Core.Params,"-i");
 
@@ -163,12 +161,12 @@ void destroyInput	()
 	xr_delete					( pInput		);
 }
 
-PROTECT_API void InitSound1		()
+void InitSound1		()
 {
 	CSound_manager_interface::_create				(0);
 }
 
-PROTECT_API void InitSound2		()
+void InitSound2		()
 {
 	CSound_manager_interface::_create				(1);
 }
@@ -976,7 +974,7 @@ void CApplication::destroy_loading_shaders()
 
 //u32 calc_progress_color(u32, u32, int, int);
 
-PROTECT_API void CApplication::LoadDraw		()
+void CApplication::LoadDraw		()
 {
 	if(g_appLoaded)				return;
 	Device.dwFrame				+= 1;

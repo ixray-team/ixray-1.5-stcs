@@ -20,8 +20,6 @@
 #include "alife_simulator.h"
 #include "moving_objects.h"
 
-#include "../xrEngine/dedicated_server_only.h"
-
 ENGINE_API	bool g_dedicated_server;
 
 CAI_Space *g_ai_space = 0;

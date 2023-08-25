@@ -4,7 +4,6 @@
 #include "../Include/xrRender/DrawUtils.h"
 //#include "xr_effgamma.h"
 #include "render.h"
-#include "dedicated_server_only.h"
 
 void	SetupGPU(IRenderDeviceRender *pRender)
 {
@@ -155,7 +154,7 @@ void CRenderDevice::ConnectToRender()
 		m_pRender			= RenderFactory->CreateRenderDeviceRender();
 }
 
-PROTECT_API void CRenderDevice::Create	() 
+void CRenderDevice::Create	() 
 {
 	if (b_is_Ready)		return;		// prevent double call
 	Statistic			= xr_new<CStats>();
