@@ -17,7 +17,7 @@
 #include "smart_cover.h"
 #include "smart_cover_description.h"
 #include "smart_cover_loophole.h"
-
+#include "../xrengine/xr_collide_form.h"
 using smart_cover::object;
 
 void object::Load			(LPCSTR section)

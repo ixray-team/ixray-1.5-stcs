@@ -12,7 +12,7 @@
     #include "ui_toolscustom.h"
 #else
 	#include "igame_level.h"
-	#include "xr_area.h"
+	#include "../xrcdb/xr_area.h"
 	#include "xr_object.h"
 #endif
 

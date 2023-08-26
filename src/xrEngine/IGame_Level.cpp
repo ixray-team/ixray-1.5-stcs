@@ -10,8 +10,10 @@
 #include "xrLevel.h"
 #include "CameraManager.h"
 #include "xr_object.h"
+#include "feel_sound.h"
 
 ENGINE_API	IGame_Level*	g_pGameLevel	= NULL;
+extern	BOOL g_bLoaded;
 
 IGame_Level::IGame_Level	()
 {
@@ -31,7 +33,6 @@ IGame_Level::~IGame_Level	()
 	if(strstr(Core.Params,"-nes_texture_storing") )
 		//Device.Resources->StoreNecessaryTextures();
 		Device.m_pRender->ResourcesStoreNecessaryTextures();
-//.	DEL_INSTANCE				( pHUD			);
 	xr_delete					( pLevel		);
 
 	// Render-level unload
@@ -41,6 +42,17 @@ IGame_Level::~IGame_Level	()
 	Device.seqRender.Remove		(this);
 	Device.seqFrame.Remove		(this);
 	CCameraManager::ResetPP		();
+///////////////////////////////////////////
+	Sound->set_geometry_occ		(NULL);
+	Sound->set_handler			(NULL);
+	Device.DumpResourcesMemoryUsage();
+
+	u32		m_base=0,c_base=0,m_lmaps=0,c_lmaps=0;
+	if (Device.m_pRender) 
+		Device.m_pRender->ResourcesGetMemoryUsage(m_base,c_base,m_lmaps,c_lmaps);
+
+	Msg		("* [ D3D ]: textures[%d K]", (m_base+m_lmaps)/1024);
+
 }
 
 void IGame_Level::net_Stop			()
@@ -56,6 +68,14 @@ void IGame_Level::net_Stop			()
 
 //-------------------------------------------------------------------------------------------
 //extern CStatTimer				tscreate;
+void __stdcall _sound_event		(ref_sound_data_ptr S, float range)
+{
+	if ( g_pGameLevel && S && S->feedback )	g_pGameLevel->SoundEvent_Register	(S,range);
+}
+static void __stdcall	build_callback	(Fvector* V, int Vcnt, CDB::TRI* T, int Tcnt, void* params)
+{
+	g_pGameLevel->Load_GameSpecific_CFORM( T, Tcnt );
+}
 
 BOOL IGame_Level::Load			(u32 dwNum) 
 {
@@ -78,7 +98,10 @@ BOOL IGame_Level::Load			(u32 dwNum)
 
 	// CForms
 	g_pGamePersistent->LoadTitle	("st_loading_cform");
-	ObjectSpace.Load			();
+	ObjectSpace.Load			( build_callback );
+	//Sound->set_geometry_occ		( &Static );
+	Sound->set_geometry_occ		(ObjectSpace.GetStaticModel	());
+	Sound->set_handler			( _sound_event );
 	pApp->LoadSwitch			();
 
 
@@ -203,3 +226,100 @@ void IGame_Level::SetViewEntity( CObject* O  )
 
 	pCurrentViewEntity=O;
 }
+
+void	IGame_Level::SoundEvent_Register	( ref_sound_data_ptr S, float range )
+{
+	if (!g_bLoaded)									return;
+	if (!S)											return;
+	if (S->g_object && S->g_object->getDestroy())	{S->g_object=0; return;}
+	if (0==S->feedback)								return;
+
+	clamp					(range,0.1f,500.f);
+
+	const CSound_params* p	= S->feedback->get_params();
+	Fvector snd_position	= p->position;
+	if(S->feedback->is_2D()){
+		snd_position.add	(Sound->listener_position());
+	}
+
+	VERIFY					(p && _valid(range) );
+	range					= _min(range,p->max_ai_distance);
+	VERIFY					(_valid(snd_position));
+	VERIFY					(_valid(p->max_ai_distance));
+	VERIFY					(_valid(p->volume));
+
+	// Query objects
+	Fvector					bb_size	=	{range,range,range};
+	g_SpatialSpace->q_box	(snd_ER,0,STYPE_REACTTOSOUND,snd_position,bb_size);
+
+	// Iterate
+	xr_vector<ISpatial*>::iterator	it	= snd_ER.begin	();
+	xr_vector<ISpatial*>::iterator	end	= snd_ER.end	();
+	for (; it!=end; it++)	{
+		Feel::Sound* L		= (*it)->dcast_FeelSound	();
+		if (0==L)			continue;
+		CObject* CO = (*it)->dcast_CObject();	VERIFY(CO);
+		if (CO->getDestroy()) continue;
+
+		// Energy and signal
+		VERIFY				(_valid((*it)->spatial.sphere.P));
+		float dist			= snd_position.distance_to((*it)->spatial.sphere.P);
+		if (dist>p->max_ai_distance) continue;
+		VERIFY				(_valid(dist));
+		VERIFY2				(!fis_zero(p->max_ai_distance), S->handle->file_name());
+		float Power			= (1.f-dist/p->max_ai_distance)*p->volume;
+		VERIFY				(_valid(Power));
+		if (Power>EPS_S)	{
+			float occ		= Sound->get_occlusion_to((*it)->spatial.sphere.P,snd_position);
+			VERIFY			(_valid(occ))	;
+			Power			*= occ;
+			if (Power>EPS_S)	{
+				_esound_delegate	D	=	{ L, S, Power };
+				snd_Events.push_back	(D)	;
+			}
+		}
+	}
+	snd_ER.clear();
+}
+
+void	IGame_Level::SoundEvent_Dispatch	( )
+{
+	while	(!snd_Events.empty())	{
+		_esound_delegate&	D	= snd_Events.back	();
+		VERIFY				(D.dest && D.source);
+		if (D.source->feedback)	{
+			D.dest->feel_sound_new	(
+				D.source->g_object,
+				D.source->g_type,
+				D.source->g_userdata,
+
+				D.source->feedback->is_2D() ? Device.vCameraPosition : 
+					D.source->feedback->get_params()->position,
+				D.power
+				);
+		}
+		snd_Events.pop_back		();
+	}
+}
+
+// Lain: added
+void   IGame_Level::SoundEvent_OnDestDestroy (Feel::Sound* obj)
+{
+	struct rem_pred
+	{
+		rem_pred(Feel::Sound* obj) : m_obj(obj) {}
+
+		bool operator () (const _esound_delegate& d)
+		{
+			return d.dest == m_obj;
+		}
+
+	private:
+		Feel::Sound* m_obj;
+	};
+
+	snd_Events.erase( std::remove_if(snd_Events.begin(), snd_Events.end(), rem_pred(obj)),
+	                  snd_Events.end() );
+}
+
+

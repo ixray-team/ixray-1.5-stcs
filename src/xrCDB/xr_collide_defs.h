@@ -1,8 +1,10 @@
 #ifndef xr_collide_defsH
 #define xr_collide_defsH
-#pragma once
+//#pragma once
 
-class ENGINE_API CObject;
+#include "xrcdb.h"
+
+class CObject;
 namespace collide 
 {
 	struct			tri {

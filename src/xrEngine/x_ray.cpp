@@ -16,7 +16,7 @@
 #include "GameFont.h"
 #include "resource.h"
 #include "LightAnimLibrary.h"
-#include "ispatial.h"
+#include "../xrcdb/ispatial.h"
 #include "CopyProtection.h"
 #include "Text_Console.h"
 #include <process.h>

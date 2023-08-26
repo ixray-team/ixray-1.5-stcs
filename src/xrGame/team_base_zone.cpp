@@ -18,7 +18,7 @@
 #include "map_manager.h"
 #include "map_location.h"
 #include "../xrEngine/IGame_Persistent.h"
-
+#include "../xrengine/xr_collide_form.h"
 #ifdef DEBUG
 #	include "debug_renderer.h"
 #endif

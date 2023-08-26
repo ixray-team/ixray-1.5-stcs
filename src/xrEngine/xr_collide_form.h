@@ -1,7 +1,7 @@
 #ifndef __XR_COLLIDE_FORM_H__
 #define __XR_COLLIDE_FORM_H__
 
-#include "xr_collide_defs.h"
+#include "../xrcdb/xr_collide_defs.h"
 
 // refs
 class ENGINE_API	CObject;
@@ -108,7 +108,7 @@ public:
 class ENGINE_API	CCF_Skeleton : public ICollisionForm
 {
 public:
-	struct SElement{
+	struct ENGINE_API SElement {
 		union{
 			struct{
 				Fmatrix	b_IM;		// world 2 bone xform

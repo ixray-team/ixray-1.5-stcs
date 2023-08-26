@@ -217,6 +217,11 @@
     <ClCompile Include="Frustum.cpp">
       <MinimalRebuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</MinimalRebuild>
     </ClCompile>
+    <ClCompile Include="ISpatial.cpp" />
+    <ClCompile Include="ISpatial_q_box.cpp" />
+    <ClCompile Include="ISpatial_q_frustum.cpp" />
+    <ClCompile Include="ISpatial_q_ray.cpp" />
+    <ClCompile Include="ISpatial_verify.cpp" />
     <ClCompile Include="Opcode.cpp">
       <MinimalRebuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</MinimalRebuild>
     </ClCompile>
@@ -311,9 +316,14 @@
       <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">AssemblyAndSourceCode</AssemblerOutput>
       <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AssemblyAndSourceCode</AssemblerOutput>
     </ClCompile>
+    <ClCompile Include="xrXRC.cpp" />
+    <ClCompile Include="xr_area.cpp" />
+    <ClCompile Include="xr_area_query.cpp" />
+    <ClCompile Include="xr_area_raypick.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Frustum.h" />
+    <ClInclude Include="ISpatial.h" />
     <ClInclude Include="Opcode.h" />
     <ClInclude Include="OPC_AABB.h" />
     <ClInclude Include="OPC_AABBCollider.h" />
@@ -355,11 +365,17 @@
     <ClInclude Include="OPC_VolumeCollider.h" />
     <ClInclude Include="StdAfx.h" />
     <ClInclude Include="xrCDB.h" />
+    <ClInclude Include="xrXRC.h" />
+    <ClInclude Include="xr_area.h" />
+    <ClInclude Include="xr_collide_defs.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Layers\xrAPI\xrAPI.vcxproj">
+      <Project>{1daec516-e52c-4a3c-a4da-ae3553e6e0f8}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\xrCore\xrCore.vcxproj">
       <Project>{a0f7d1fb-59a7-4717-a7e4-96f37e91998e}</Project>
     </ProjectReference>

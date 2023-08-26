@@ -4,7 +4,7 @@
 
 #include "stdafx.h"
 #include "EngineAPI.h"
-#include "xrXRC.h"
+#include "../xrcdb/xrXRC.h"
 
 extern xr_token* vid_quality_token;
 

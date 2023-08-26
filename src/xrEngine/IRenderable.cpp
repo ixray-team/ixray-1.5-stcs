@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "ispatial.h"
+#include "../xrcdb/ispatial.h"
 #include "irenderable.h"
 
 IRenderable::IRenderable()

@@ -4,6 +4,9 @@
 #include "../Include/xrRender/DrawUtils.h"
 //#include "xr_effgamma.h"
 #include "render.h"
+#include "../xrcdb/xrxrc.h"
+
+extern XRCDB_API BOOL *cdb_bDebug;
 
 void	SetupGPU(IRenderDeviceRender *pRender)
 {
@@ -158,6 +161,14 @@ void CRenderDevice::Create	()
 {
 	if (b_is_Ready)		return;		// prevent double call
 	Statistic			= xr_new<CStats>();
+
+#ifdef	DEBUG
+	cdb_clRAY		= &Statistic->clRAY;				// total: ray-testing
+	cdb_clBOX		= &Statistic->clBOX;				// total: box query
+	cdb_clFRUSTUM	= &Statistic->clFRUSTUM;			// total: frustum query
+	cdb_bDebug		= &bDebug;
+#endif
+
 	if (!m_pRender)
 		m_pRender			= RenderFactory->CreateRenderDeviceRender();
 	SetupGPU(m_pRender);

@@ -1,11 +1,17 @@
-#include "stdafx.h"
-#include "ispatial.h"
-#include "render.h"
-#include "xr_object.h"
-#include "PS_Instance.h"
 
-ENGINE_API ISpatial_DB*		g_SpatialSpace			= NULL;
-ENGINE_API ISpatial_DB*		g_SpatialSpacePhysic	= NULL;
+#include "stdafx.h"
+
+#include "ispatial.h"
+#include "../xrengine/render.h"
+
+#ifdef DEBUG
+#include "../xrengine/xr_object.h"
+#include "../xrengine/PS_Instance.h"
+#endif
+
+
+ISpatial_DB*		g_SpatialSpace			= NULL;
+ISpatial_DB*		g_SpatialSpacePhysic	= NULL;
 
 Fvector	c_spatial_offset	[8]	= 
 {

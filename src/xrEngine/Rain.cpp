@@ -10,7 +10,7 @@
 #else
     #include "render.h"
 	#include "igame_level.h"
-	#include "xr_area.h"
+	#include "../xrcdb/xr_area.h"
 	#include "xr_object.h"
 #endif
 
@@ -124,6 +124,10 @@ void	CEffect_Rain::OnFrame	()
 {
 #ifndef _EDITOR
 	if (!g_pGameLevel)			return;
+#endif
+
+#ifdef DEDICATED_SERVER
+	return;
 #else
 	// Parse states
 	float	factor				= g_pGamePersistent->Environment().CurrentEnv->rain_density;

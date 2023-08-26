@@ -2,7 +2,7 @@
 #include "igame_level.h"
 
 #include "xr_object.h"
-#include "xr_area.h"
+#include "../xrcdb/xr_area.h"
 #include "render.h"
 #include "xrLevel.h"
 //#include "fbasicvisual.h"
@@ -13,6 +13,7 @@
 #include "GameFont.h"
 
 #include "mp_logging.h"
+#include "xr_collide_form.h"
 
 #pragma warning(push)
 #pragma warning(disable:4995)
@@ -185,7 +186,7 @@ void CObject::Load				(LPCSTR section )
 	// Visual and light-track
 	if (pSettings->line_exist(section,"visual")){
 		string_path					tmp;
-		strcpy_s					(tmp, pSettings->r_string(section,"visual"));
+		xr_strcpy					(tmp, pSettings->r_string(section,"visual"));
 		if(strext(tmp)) 
 			*strext(tmp)			=0;
 		xr_strlwr					(tmp);
@@ -307,9 +308,19 @@ void CObject::UpdateCL			()
 	spatial_update				(base_spu_epsP*5,base_spu_epsR*5);
 
 	// crow
-	if (Parent == g_pGameLevel->CurrentViewEntity())										MakeMeCrow	();
-	else if (AlwaysTheCrow())																MakeMeCrow	();
-	else if (Device.vCameraPosition.distance_to_sqr(Position()) < CROW_RADIUS*CROW_RADIUS)	MakeMeCrow	();
+	if (Parent == g_pGameLevel->CurrentViewEntity())										
+		MakeMeCrow	();
+	else if (AlwaysTheCrow())																
+		MakeMeCrow	();
+	else
+	{
+		float dist = Device.vCameraPosition.distance_to_sqr(Position());
+		if (dist < CROW_RADIUS*CROW_RADIUS)	
+			MakeMeCrow	();
+		else 
+		if( (Visual() && Visual()->getVisData().hom_frame+2 > Device.dwFrame) && (dist < CROW_RADIUS2*CROW_RADIUS2) )
+			MakeMeCrow	();
+	}
 }
 
 void CObject::shedule_Update	( u32 T )
@@ -414,4 +425,34 @@ void CObject::setDestroy			(BOOL _destroy)
 #endif //#ifdef MP_LOGGING
 	}else
 		VERIFY		(!g_pGameLevel->Objects.registered_object_to_destroy(this));
+}
+
+Fvector CObject::get_new_local_point_on_mesh	( u16& bone_id ) const
+{
+	bone_id				= u16(-1);
+	return				Fvector().random_dir().mul(.7f);
+}
+
+Fvector CObject::get_last_local_point_on_mesh	( Fvector const& local_point, u16 const bone_id ) const
+{
+	VERIFY				( bone_id == u16(-1) );
+
+	Fvector				result;
+	// Fetch data
+	Fmatrix				mE;
+	const Fmatrix&		M = XFORM();
+	const Fbox&			B = CFORM()->getBBox();
+
+	// Build OBB + Ellipse and X-form point
+	Fvector				c,r;
+	Fmatrix				T,mR,mS;
+	B.getcenter			(c);
+	B.getradius			(r);
+	T.translate			(c);
+	mR.mul_43			(M,T);
+	mS.scale			(r);
+	mE.mul_43			(mR,mS); 
+	mE.transform_tiny	(result,local_point);
+
+	return				result;
 }

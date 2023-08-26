@@ -13,7 +13,8 @@
 struct	_MM_ALIGN16		vec_t	: public Fvector3	{ 
 	float		pad; 
 };
-vec_t	vec_c	( float _x, float _y, float _z)	{ vec_t v; v.x=_x;v.y=_y;v.z=_z;v.pad=0; return v; }
+//static vec_t	vec_c	( float _x, float _y, float _z)	{ vec_t v; v.x=_x;v.y=_y;v.z=_z;v.pad=0; return v; }
+
 struct _MM_ALIGN16		aabb_t	{ 
 	vec_t		min;
 	vec_t		max;
@@ -208,9 +209,20 @@ public:
 	ICF BOOL		_box_sse	(const Fvector& n_C, const float n_R, float&  dist )
 	{
 		aabb_t		box;
+	/*
 		float		n_vR	=		2*n_R;
 		box.min.set	(n_C.x-n_vR, n_C.y-n_vR, n_C.z-n_vR);	box.min.pad = 0;
 		box.max.set	(n_C.x+n_vR, n_C.y+n_vR, n_C.z+n_vR);	box.max.pad = 0;
+	*/
+		__m128 NR = _mm_load_ss( (float*) &n_R );
+		__m128 NC = _mm_unpacklo_ps( _mm_load_ss( (float*) &n_C.x ) , _mm_load_ss( (float*) &n_C.y ) );
+		NR = _mm_add_ss( NR , NR );
+		NC = _mm_movelh_ps( NC , _mm_load_ss( (float*) &n_C.z ) );
+		NR = _mm_shuffle_ps( NR , NR , _MM_SHUFFLE(1,0,0,0) );
+
+		_mm_store_ps( (float*) &box.min , _mm_sub_ps( NC , NR ) );
+		_mm_store_ps( (float*) &box.max , _mm_add_ps( NC , NR ) );
+
 		return 		isect_sse		(box,ray,dist);
 	}
 	void			walk		(ISpatial_NODE* N, Fvector& n_C, float n_R)

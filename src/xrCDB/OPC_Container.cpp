@@ -93,7 +93,7 @@ bool Container::Resize(udword needed)
 	if(mMaxNbEntries<mCurNbEntries + needed)	mMaxNbEntries = mCurNbEntries + needed;
 
 	// Get some bytes for _new_ entries
-	udword*	NewEntries = xr_alloc<udword>(mMaxNbEntries);
+	udword*	NewEntries = CALLOC(udword,mMaxNbEntries);
 	CHECKALLOC(NewEntries);
 
 #ifdef CONTAINER_STATS
@@ -105,7 +105,7 @@ bool Container::Resize(udword needed)
 	if(mCurNbEntries)	CopyMemory(NewEntries, mEntries, mCurNbEntries*sizeof(udword));
 
 	// Delete old data
-	xr_free(mEntries);
+	CFREE(mEntries);
 
 	// Assign _new_ pointer
 	mEntries = NewEntries;
@@ -132,7 +132,7 @@ bool Container::SetSize(udword nb)
 	mMaxNbEntries = nb;
 
 	// Get some bytes for _new_ entries
-	mEntries = xr_alloc<udword>(mMaxNbEntries);
+	mEntries = CALLOC(udword,mMaxNbEntries);
 	CHECKALLOC(mEntries);
 
 #ifdef CONTAINER_STATS
@@ -160,7 +160,7 @@ bool Container::Refit()
 	if(!mMaxNbEntries)	return false;
 
 	// Get just enough bytes
-	udword*	NewEntries = xr_alloc<udword>(mMaxNbEntries);
+	udword*	NewEntries = CALLOC(udword,mMaxNbEntries);
 	CHECKALLOC(NewEntries);
 
 #ifdef CONTAINER_STATS
@@ -172,7 +172,7 @@ bool Container::Refit()
 	CopyMemory(NewEntries, mEntries, mCurNbEntries*sizeof(udword));
 
 	// Delete old data
-	xr_free(mEntries);
+	CFREE(mEntries);
 
 	// Assign _new_ pointer
 	mEntries = NewEntries;

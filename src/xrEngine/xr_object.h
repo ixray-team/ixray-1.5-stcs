@@ -1,12 +1,13 @@
 #ifndef __XR_OBJECT_H__
 #define __XR_OBJECT_H__
 
-#include "ispatial.h"
+#include "../xrcdb/ispatial.h"
 #include "isheduled.h"
 //#include "iinputreceiver.h"
 #include "irenderable.h"
 #include "icollidable.h"
-
+#include "engineapi.h"
+#include "device.h"
 // refs
 //class	ENGINE_API	IRender_Visual;
 class	ENGINE_API	IRender_Sector;
@@ -16,7 +17,8 @@ class	NET_Packet	;
 class	CSE_Abstract;
 
 //-----------------------------------------------------------------------------------------------------------
-#define CROW_RADIUS	(30.f)
+#define CROW_RADIUS (30.f)
+#define CROW_RADIUS2 (60.f)
 //-----------------------------------------------------------------------------------------------------------
 //	CObject
 //-----------------------------------------------------------------------------------------------------------
@@ -201,6 +203,10 @@ virtual	const IObjectPhysicsCollision	*physics_collision	()					{ return  0; }
 
 public:
 	virtual bool						register_schedule	() const {return true;}
+
+public:
+	virtual	Fvector				get_new_local_point_on_mesh	( u16& bone_id ) const;
+	virtual	Fvector				get_last_local_point_on_mesh( Fvector const& last_point, u16 bone_id ) const;
 };
 
 #pragma pack(pop)

@@ -1,13 +1,20 @@
 #include "stdafx.h"
 #include "xr_area.h"
-#include "xr_collide_form.h"
-#include "xr_object.h"
-#include "cl_intersect.h"
-
-#include "igame_level.h"
-#include "x_ray.h"
-#include "GameFont.h"
-
+#include "ispatial.h"
+#include "../xrengine/xr_collide_form.h"
+#include "../xrengine/xr_object.h"
+#include "../xrengine/cl_intersect.h"
+//#include "igame_level.h"
+//#include "x_ray.h"
+//#include "GameFont.h"
+#ifdef	DEBUG
+static BOOL _cdb_bDebug = false;
+extern XRCDB_API BOOL *cdb_bDebug = &_cdb_bDebug;
+bool bDebug()
+{
+	return !!(*cdb_bDebug);
+}
+#endif
 using namespace	collide;
 
 //--------------------------------------------------------------------------------
@@ -129,9 +136,9 @@ BOOL CObjectSpace::_RayPick	( const Fvector &start, const Fvector &dir, float ra
 					R.set_if_less	(r_temp.r_begin());
 				}
 #ifdef DEBUG
-				if (bDebug){
+				if (bDebug()){
 					Fsphere	S;		S.P = spatial->spatial.sphere.P; S.R = spatial->spatial.sphere.R;
-					m_pRender->dbgAddSphere(S,C);
+					(*m_pRender)->dbgAddSphere(S,C);
 					//dbg_S.push_back	(std::make_pair(S,C));
 				}
 #endif

@@ -44,6 +44,7 @@ void			CFrustum::_add			(Fvector& P1, Fvector& P2, Fvector&P3)
 #define			Mx			3
 #define			My			4
 #define			Mz			5
+
 u32				frustum_aabb_remap [8][6]	=
 {
 	{ Mx,My,Mz,mx,my,mz}, 

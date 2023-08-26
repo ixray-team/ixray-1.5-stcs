@@ -6,6 +6,16 @@
 
 #include "xrCDB.h"
 
+#ifdef USE_ARENA_ALLOCATOR
+static const u32	s_arena_size = (128+16)*1024*1024;
+static char			s_fake_array[s_arena_size];
+doug_lea_allocator	g_collision_allocator( s_fake_array, s_arena_size, "collision" );
+#endif // #ifdef USE_ARENA_ALLOCATOR
+
+namespace Opcode {
+#	include "OPC_TreeBuilders.h"
+} // namespace Opcode
+
 using namespace CDB;
 using namespace Opcode;
 
@@ -42,9 +52,9 @@ MODEL::~MODEL()
 {
 	syncronize	();		// maybe model still in building
 	status		= S_INIT;
-	xr_delete	(tree);
-	xr_free		(tris);		tris_count = 0;
-	xr_free		(verts);	verts_count= 0;
+	CDELETE		(tree);
+	CFREE		(tris);		tris_count = 0;
+	CFREE		(verts);	verts_count= 0;
 }
 
 struct	BTHREAD_params
@@ -96,12 +106,12 @@ void	MODEL::build_internal	(Fvector* V, int Vcnt, TRI* T, int Tcnt, build_callba
 {
 	// verts
 	verts_count	= Vcnt;
-	verts		= xr_alloc<Fvector>	(verts_count);
+	verts		= CALLOC(Fvector,verts_count);
 	CopyMemory	(verts,V,verts_count*sizeof(Fvector));
 	
 	// tris
 	tris_count	= Tcnt;
-	tris		= xr_alloc<TRI>		(tris_count);
+	tris		= CALLOC(TRI,tris_count);
 	CopyMemory	(tris,T,tris_count*sizeof(TRI));
 
 	// callback
@@ -111,10 +121,10 @@ void	MODEL::build_internal	(Fvector* V, int Vcnt, TRI* T, int Tcnt, build_callba
 	status		= S_BUILD;
 	
 	// Allocate temporary "OPCODE" tris + convert tris to 'pointer' form
-	u32*		temp_tris	= xr_alloc<u32>	(tris_count*3);
+	u32*		temp_tris	= CALLOC(u32,tris_count*3);
 	if (0==temp_tris)	{
-		xr_free		(verts);
-		xr_free		(tris);
+		CFREE		(verts);
+		CFREE		(tris);
 		return;
 	}
 	u32*		temp_ptr	= temp_tris;
@@ -136,16 +146,16 @@ void	MODEL::build_internal	(Fvector* V, int Vcnt, TRI* T, int Tcnt, build_callba
 	OPCC.Quantized	= false;
 	// if (Memory.debug_mode) OPCC.KeepOriginal = true;
 
-	tree			= xr_new<OPCODE_Model> ();
+	tree			= CNEW(OPCODE_Model) ();
 	if (!tree->Build(OPCC)) {
-		xr_free		(verts);
-		xr_free		(tris);
-		xr_free		(temp_tris);
+		CFREE		(verts);
+		CFREE		(tris);
+		CFREE		(temp_tris);
 		return;
 	};
 
 	// Free temporary tris
-	xr_free			(temp_tris);
+	CFREE			(temp_tris);
 	return;
 }
 

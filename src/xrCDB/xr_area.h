@@ -1,22 +1,25 @@
 #ifndef __XR_AREA_H__
 #define __XR_AREA_H__
 
-#include "xr_collide_form.h"
+//#include "xr_collide_form.h"
 #include "xr_collide_defs.h"
 
 // refs
-class ENGINE_API	ISpatial;
-class ENGINE_API	ICollisionForm;
-class ENGINE_API	CObject;
+class 	ISpatial;
+class 	ICollisionForm;
+class 	CObject;
 
 #include "../Include/xrRender/FactoryPtr.h"
 #include "../Include/xrRender/ObjectSpaceRender.h"
 #include "xrXRC.h"
 
+#include "xrcdb.h"
+
 //-----------------------------------------------------------------------------------------------------------
 //Space Area
 //-----------------------------------------------------------------------------------------------------------
-class	ENGINE_API						CObjectSpace
+struct hdrCFORM;
+class	XRCDB_API						CObjectSpace
 {
 private:
 	// Debug
@@ -29,7 +32,7 @@ private:
 public:
 
 #ifdef DEBUG
-	FactoryPtr<IObjectSpaceRender>		m_pRender;
+	FactoryPtr<IObjectSpaceRender>		*m_pRender;
 	//ref_shader							sh_debug;
 	//clQueryCollision					q_debug;			// MT: dangerous
 	//xr_vector<std::pair<Fsphere,u32> >	dbg_S;				// MT: dangerous
@@ -45,8 +48,10 @@ public:
 										CObjectSpace		( );
 										~CObjectSpace		( );
 
-	void								Load				( );
-
+	void								Load				(  CDB::build_callback build_callback  );
+	void								Load				(   LPCSTR path, LPCSTR fname, CDB::build_callback build_callback  );
+	void								Load				(  IReader* R, CDB::build_callback build_callback  );
+	void								Create				(  Fvector*	verts, CDB::TRI* tris, const hdrCFORM &H, CDB::build_callback build_callback  );
 	// Occluded/No
 	BOOL								RayTest				( const Fvector &start, const Fvector &dir, float range, collide::rq_target tgt, collide::ray_cache* cache, CObject* ignore_object);
 
@@ -56,7 +61,12 @@ public:
 	// General collision query
 	BOOL								RayQuery			( collide::rq_results& dest, const collide::ray_defs& rq, collide::rq_callback* cb, LPVOID user_data, collide::test_callback* tb, CObject* ignore_object);
 	BOOL								RayQuery			( collide::rq_results& dest, ICollisionForm* target, const collide::ray_defs& rq);
-	// void								BoxQuery			( collide::rq_results& dest, const Fbox& B, const Fmatrix& M, u32 flags=clGET_TRIS|clGET_BOXES|clQUERY_STATIC|clQUERY_DYNAMIC);
+
+	bool								BoxQuery			( Fvector const & 		box_center, 
+															  Fvector const & 		box_z_axis,
+															  Fvector const & 		box_y_axis,
+															  Fvector const	& 		box_sizes,
+															  xr_vector<Fvector> *	out_tris );
 
 	int									GetNearest			( xr_vector<CObject*>&	q_nearest, ICollisionForm *obj, float range );
 	int									GetNearest			( xr_vector<CObject*>&	q_nearest, const Fvector &point, float range, CObject* ignore_object );
@@ -74,5 +84,8 @@ public:
 	//ref_shader							dbgGetShader		()	{ return sh_debug;	}
 #endif
 };
+
+
+
 
 #endif //__XR_AREA_H__

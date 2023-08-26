@@ -243,7 +243,6 @@
     <ClInclude Include="Feel_Touch.h" />
     <ClInclude Include="Feel_Vision.h" />
     <ClInclude Include="Fmesh.h" />
-    <ClInclude Include="Frustum.h" />
     <ClInclude Include="GameFont.h" />
     <ClInclude Include="GameMtlLib.h" />
     <ClInclude Include="ICollidable.h" />
@@ -258,7 +257,6 @@
     <ClInclude Include="IPhysicsShell.h" />
     <ClInclude Include="IRenderable.h" />
     <ClInclude Include="ISheduled.h" />
-    <ClInclude Include="ISpatial.h" />
     <ClInclude Include="LightAnimLibrary.h" />
     <ClInclude Include="line_editor.h" />
     <ClInclude Include="line_edit_control.h" />
@@ -297,9 +295,6 @@
     <ClInclude Include="xrSheduler.h" />
     <ClInclude Include="xrTheora_Stream.h" />
     <ClInclude Include="xrTheora_Surface.h" />
-    <ClInclude Include="xrXRC.h" />
-    <ClInclude Include="xr_area.h" />
-    <ClInclude Include="xr_collide_defs.h" />
     <ClInclude Include="xr_collide_form.h" />
     <ClInclude Include="xr_efflensflare.h" />
     <ClInclude Include="xr_input.h" />
@@ -385,7 +380,6 @@
     <ClCompile Include="Feel_Touch.cpp" />
     <ClCompile Include="Feel_Vision.cpp" />
     <ClCompile Include="fmesh.cpp" />
-    <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="GameFont.cpp" />
     <ClCompile Include="GameMtlLib.cpp" />
     <ClCompile Include="GameMtlLib_Engine.cpp" />
@@ -398,11 +392,6 @@
     <ClCompile Include="interp.cpp" />
     <ClCompile Include="IRenderable.cpp" />
     <ClCompile Include="ISheduled.cpp" />
-    <ClCompile Include="ISpatial.cpp" />
-    <ClCompile Include="ISpatial_q_box.cpp" />
-    <ClCompile Include="ISpatial_q_frustum.cpp" />
-    <ClCompile Include="ISpatial_q_ray.cpp" />
-    <ClCompile Include="ISpatial_verify.cpp" />
     <ClCompile Include="LightAnimLibrary.cpp" />
     <ClCompile Include="line_editor.cpp" />
     <ClCompile Include="line_edit_control.cpp" />
@@ -433,10 +422,6 @@
     <ClCompile Include="xrSheduler.cpp" />
     <ClCompile Include="xrTheora_Stream.cpp" />
     <ClCompile Include="xrTheora_Surface.cpp" />
-    <ClCompile Include="xrXRC.cpp" />
-    <ClCompile Include="xr_area.cpp" />
-    <ClCompile Include="xr_area_query.cpp" />
-    <ClCompile Include="xr_area_raypick.cpp" />
     <ClCompile Include="xr_collide_form.cpp" />
     <ClCompile Include="xr_efflensflare.cpp" />
     <ClCompile Include="Xr_input.cpp" />

@@ -11,6 +11,7 @@
 #include "level.h"
 #include "../Include/xrRender/Kinematics.h"
 #include "../xrEngine/camerabase.h"
+#include "../xrengine/xr_collide_form.h"
 #include "inventory.h"
 #include "game_base_space.h"
 

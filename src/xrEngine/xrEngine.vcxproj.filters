@@ -294,9 +294,6 @@
     <ClInclude Include="Render.h">
       <Filter>Interfaces\Render</Filter>
     </ClInclude>
-    <ClInclude Include="ISpatial.h">
-      <Filter>Interfaces\SPATIAL</Filter>
-    </ClInclude>
     <ClInclude Include="ICollidable.h">
       <Filter>Interfaces\Collidable</Filter>
     </ClInclude>
@@ -315,13 +312,13 @@
     <ClInclude Include="IGame_Level.h">
       <Filter>Game API</Filter>
     </ClInclude>
-    <ClInclude Include="IGame_Persistent.h">
-      <Filter>Game API</Filter>
-    </ClInclude>
     <ClInclude Include="xrLevel.h">
       <Filter>Game API</Filter>
     </ClInclude>
     <ClInclude Include="IGame_ObjectPool.h">
+      <Filter>Game API\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="IGame_Persistent.h">
       <Filter>Game API\Objects</Filter>
     </ClInclude>
     <ClInclude Include="pure_relcase.h">
@@ -369,12 +366,6 @@
     <ClInclude Include="cf_dynamic_mesh.h">
       <Filter>Game API\Collision</Filter>
     </ClInclude>
-    <ClInclude Include="xr_area.h">
-      <Filter>Game API\Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="xr_collide_defs.h">
-      <Filter>Game API\Collision</Filter>
-    </ClInclude>
     <ClInclude Include="xr_collide_form.h">
       <Filter>Game API\Collision</Filter>
     </ClInclude>
@@ -413,9 +404,6 @@
     </ClInclude>
     <ClInclude Include="vis_common.h">
       <Filter>Render\Visibility</Filter>
-    </ClInclude>
-    <ClInclude Include="Frustum.h">
-      <Filter>Render\Visibility\Frustum</Filter>
     </ClInclude>
     <ClInclude Include="PS_instance.h">
       <Filter>Render\Particle system</Filter>
@@ -460,9 +448,6 @@
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="cl_intersect.h">
-      <Filter>Engine\Collision Core</Filter>
-    </ClInclude>
-    <ClInclude Include="xrXRC.h">
       <Filter>Engine\Collision Core</Filter>
     </ClInclude>
     <ClInclude Include="XR_IOConsole.h">
@@ -647,21 +632,6 @@
     <ClCompile Include="Render.cpp">
       <Filter>Interfaces\Render</Filter>
     </ClCompile>
-    <ClCompile Include="ISpatial.cpp">
-      <Filter>Interfaces\SPATIAL</Filter>
-    </ClCompile>
-    <ClCompile Include="ISpatial_q_box.cpp">
-      <Filter>Interfaces\SPATIAL</Filter>
-    </ClCompile>
-    <ClCompile Include="ISpatial_q_frustum.cpp">
-      <Filter>Interfaces\SPATIAL</Filter>
-    </ClCompile>
-    <ClCompile Include="ISpatial_q_ray.cpp">
-      <Filter>Interfaces\SPATIAL</Filter>
-    </ClCompile>
-    <ClCompile Include="ISpatial_verify.cpp">
-      <Filter>Interfaces\SPATIAL</Filter>
-    </ClCompile>
     <ClCompile Include="ICollidable.cpp">
       <Filter>Interfaces\Collidable</Filter>
     </ClCompile>
@@ -728,15 +698,6 @@
     <ClCompile Include="cf_dynamic_mesh.cpp">
       <Filter>Game API\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="xr_area.cpp">
-      <Filter>Game API\Collision</Filter>
-    </ClCompile>
-    <ClCompile Include="xr_area_query.cpp">
-      <Filter>Game API\Collision</Filter>
-    </ClCompile>
-    <ClCompile Include="xr_area_raypick.cpp">
-      <Filter>Game API\Collision</Filter>
-    </ClCompile>
     <ClCompile Include="xr_collide_form.cpp">
       <Filter>Game API\Collision</Filter>
     </ClCompile>
@@ -773,9 +734,6 @@
     <ClCompile Include="GameMtlLib_Engine.cpp">
       <Filter>Game API\GameMaterials</Filter>
     </ClCompile>
-    <ClCompile Include="Frustum.cpp">
-      <Filter>Render\Visibility\Frustum</Filter>
-    </ClCompile>
     <ClCompile Include="PS_instance.cpp">
       <Filter>Render\Particle system</Filter>
     </ClCompile>
@@ -809,13 +767,13 @@
     <ClCompile Include="pure.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="xrXRC.cpp">
-      <Filter>Engine\Collision Core</Filter>
-    </ClCompile>
     <ClCompile Include="XR_IOConsole.cpp">
       <Filter>Engine\Console</Filter>
     </ClCompile>
     <ClCompile Include="XR_IOConsole_callback.cpp">
+      <Filter>Engine\Console</Filter>
+    </ClCompile>
+    <ClCompile Include="XR_IOConsole_control.cpp">
       <Filter>Engine\Console</Filter>
     </ClCompile>
     <ClCompile Include="XR_IOConsole_get.cpp">
@@ -973,9 +931,6 @@
     </ClCompile>
     <ClCompile Include="editor_environment_detail.cpp">
       <Filter>editor\environment\detail</Filter>
-    </ClCompile>
-    <ClCompile Include="XR_IOConsole_control.cpp">
-      <Filter>Engine\Console</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
