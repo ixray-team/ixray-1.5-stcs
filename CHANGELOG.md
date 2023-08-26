@@ -117,6 +117,7 @@ Full changelog of _IX-Ray_ 1.5 project
 - Fixed flickering after game item usage
 - Fixed loading ammo in grenade mode
 - Fixed flight grenade
+- Fixed zero buck cost in trade with Sakharov
 - Enabled inertia control from HUD section
 - Implemented 100x100 icons support
 - Implemented delay before reloading on active detector
@@ -134,6 +135,7 @@ Full changelog of _IX-Ray_ 1.5 project
 - Backported properties box behaviour with checks from X-Ray 1.6
 - Backported centering cursor fix on `CUIMessageBoxEx` drawing from X-Ray 1.6
 - Backported `use_ai_locations` method from X-Ray 1.6
+- Backported discounts feature for trade from X-Ray 1.6
 - Decomposed `CUIActorMenu` class
 - Unified `OnMouse` and `OnKeyboard` methods with X-Ray 1.6
 - Refactored some weapons and detectors methods
@@ -146,6 +148,8 @@ Full changelog of _IX-Ray_ 1.5 project
 - Fixed text line alignment in talk window
 - Fixed availability of traders money
 - Fixed displaying `check_autoreload` parameter in gameplay options
+- Fixed using quest icons without `_icon` suffix
+- Fixed non-tradable items
 - Applied `virtual_cells` for slots
 - Refactored parallax bump shaders
 - Implemented __SMAA__ support in assets
