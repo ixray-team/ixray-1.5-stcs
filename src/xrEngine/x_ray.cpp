@@ -17,7 +17,6 @@
 #include "resource.h"
 #include "LightAnimLibrary.h"
 #include "../xrcdb/ispatial.h"
-#include "CopyProtection.h"
 #include "Text_Console.h"
 #include <process.h>
 #include <locale.h>
@@ -61,7 +60,7 @@ void compute_build_id	()
 	string16			month;
 	string256			buffer;
 	xr_strcpy				(buffer,__DATE__);
-	sscanf				(buffer,"%s %d %d",month,&days,&years);
+	sscanf(buffer, "%s %d %d", month, &days, &years);
 
 	for (int i=0; i<12; i++) {
 		if (_stricmp(month_id[i],month))
@@ -111,7 +110,6 @@ void InitEngine		()
 	Engine.Initialize			( );
 	while (!g_bIntroFinished)	Sleep	(100);
 	Device.Initialize			( );
-	CheckCopyProtection			( );
 }
 
 void InitSettings	()
@@ -256,8 +254,7 @@ void Startup()
 	logoWindow					= NULL;
 
 	// Main cycle
-	CheckCopyProtection			( );
-Memory.mem_usage();
+	Memory.mem_usage();
 	Device.Run					( );
 
 	// Destroy APP
@@ -947,8 +944,6 @@ void CApplication::LoadBegin	()
 #endif
 		phase_timer.Start	();
 		load_stage			= 0;
-
-		CheckCopyProtection	();
 	}
 }
 
@@ -988,7 +983,6 @@ void CApplication::LoadDraw		()
 		load_draw_internal			();
 
 	Device.End					();
-	CheckCopyProtection			();
 }
 
 void CApplication::LoadTitleInt(LPCSTR str)
@@ -1083,9 +1077,6 @@ void CApplication::Level_Set(u32 L)
 	else
 		//hLevelLogo.create	("font", "intro\\intro_no_start_picture");
 		m_pRender->setLevelLogo("intro\\intro_no_start_picture");
-		
-
-	CheckCopyProtection		();
 }
 
 int CApplication::Level_ID(LPCSTR name, LPCSTR ver, bool bSet)
