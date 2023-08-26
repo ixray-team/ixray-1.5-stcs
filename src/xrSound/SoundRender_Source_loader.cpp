@@ -101,7 +101,7 @@ void CSoundRender_Source::LoadWave	(LPCSTR pName)
 void CSoundRender_Source::load(LPCSTR name)
 {
 	string_path			fn,N;
-	strcpy_s				(N,name);
+	xr_strcpy				(N,name);
 	_strlwr				(N);
 	if (strext(N))		*strext(N) = 0;
 

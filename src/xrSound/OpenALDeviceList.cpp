@@ -30,11 +30,21 @@
 #include <objbase.h>
 #pragma warning(pop)
 
-/* 
- * Init call
- */
+#ifdef _EDITOR
+	log_fn_ptr_type*	pLog = NULL;
+
+void __cdecl al_log(char* msg)
+{
+	Log(msg);
+}
+#endif
+
 ALDeviceList::ALDeviceList()
 {
+#ifdef _EDITOR
+	pLog					= al_log;
+#endif
+
 	snd_device_id			= u32(-1);
 	Enumerate();
 }
@@ -72,8 +82,8 @@ void ALDeviceList::Enumerate()
 
 		devices = (char*)alcGetString(nullptr, ALC_DEVICE_SPECIFIER);
 		Msg					("devices %s",devices);
-		m_defaultDeviceName	= (char *)alcGetString(nullptr, ALC_DEFAULT_DEVICE_SPECIFIER);
-		Msg("SOUND: OpenAL: system  default SndDevice name is %s", m_defaultDeviceName.c_str());
+		xr_strcpy(m_defaultDeviceName, (char*)alcGetString(nullptr, ALC_DEFAULT_DEVICE_SPECIFIER));
+		Msg("SOUND: OpenAL: system  default SndDevice name is %s", m_defaultDeviceName);
 
 		index				= 0;
 		// go through device list (each device terminated with a single NULL, list terminated with double NULL)
@@ -103,10 +113,14 @@ void ALDeviceList::Enumerate()
 					}
 					alcDestroyContext(context);
 				}else
+				{
 					Msg("SOUND: OpenAL: cant create context for %s",device);
+				}
 				alcCloseDevice(device);
 			}else
+			{
 				Msg("SOUND: OpenAL: cant open device %s",devices);
+			}
 
 			devices		+= xr_strlen(devices) + 1;
 		}
@@ -163,7 +177,7 @@ void ALDeviceList::SelectBestDevice()
 		u32 new_device_id		= snd_device_id;
 		for (u32 i = 0; i < GetNumDevices(); ++i)
 		{
-			if(_stricmp(m_defaultDeviceName.c_str(),GetDeviceName(i))!=0)
+			if(_stricmp(m_defaultDeviceName,GetDeviceName(i))!=0)
 				continue;
 
 			GetDeviceVersion		(i, &ALmajorVersion, &ALminorVersion, &EFXmajorVersion, &EFXminorVersion);
@@ -188,9 +202,6 @@ void ALDeviceList::SelectBestDevice()
 		Msg("SOUND: Selected device is %s", GetDeviceName(snd_device_id));
 }
 
-/*
- * Returns the major and minor version numbers for a device at a specified index in the complete list
- */
 void ALDeviceList::GetDeviceVersion(u32 index, int* ALmajor, int* ALminor, int* EFXmajor, int* EFXminor)
 {
 	*ALmajor = m_devices[index].ALmajor_ver;

@@ -289,6 +289,7 @@ public:
     virtual void					set_environment_size	(CSound_environment* src_env, CSound_environment** dst_env)								= 0;
 #endif
 };
+
 extern XRSOUND_API CSound_manager_interface*		Sound;
 
 /// ********* Sound ********* (utils, accessors, helpers)
@@ -322,6 +323,5 @@ IC void	ref_sound::set_params					( CSound_params* p )
         _feedback()->set_volume   	(p->volume);
     }
 }
-
 
 #endif

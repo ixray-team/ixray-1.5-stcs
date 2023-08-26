@@ -43,7 +43,7 @@ class ALDeviceList
 {
 private:
 	xr_vector<ALDeviceDesc>	m_devices;
-	xr_string			m_defaultDeviceName;
+	string256			m_defaultDeviceName;
 	void				Enumerate				();
 public:
 						ALDeviceList			();
