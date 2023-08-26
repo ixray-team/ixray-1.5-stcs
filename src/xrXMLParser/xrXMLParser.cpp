@@ -44,7 +44,7 @@ void ParseFile(LPCSTR path, CMemoryWriter& W, IReader *F, CXml* xml )
 
 				if(!I){
 					string1024 str_;
-					sprintf(str_,"XML file[%s] parsing failed. Can't find include file:[%s]",path,inc_name);
+					xr_sprintf(str_,"XML file[%s] parsing failed. Can't find include file:[%s]",path,inc_name);
 					R_ASSERT2(false,str_);
 				}
 				ParseFile(path, W, I, xml);
@@ -61,14 +61,14 @@ void CXml::Load(LPCSTR path_alias, LPCSTR path, LPCSTR _xml_filename)
 	shared_str fn			= correct_file_name(path, _xml_filename);
 
 	string_path				str;
-	sprintf					(str,"%s\\%s", path, *fn);
+	xr_sprintf					(str,"%s\\%s", path, *fn);
 	return Load				(path_alias, str);
 }
 
 //инициализация и загрузка XML файла
 void CXml::Load(LPCSTR path, LPCSTR  xml_filename)
 {
-	strcpy_s					(m_xml_file_name, xml_filename);
+	xr_strcpy					(m_xml_file_name, xml_filename);
 	// Load and parse xml file
 
 	IReader *F				= FS.r_open(path, xml_filename);
@@ -79,11 +79,11 @@ void CXml::Load(LPCSTR path, LPCSTR  xml_filename)
 	W.w_stringZ				("");
 	FS.r_close				(F);
 
-	m_Doc.Parse				((LPCSTR )W.pointer());
+	m_Doc.Parse				(&m_Doc, (LPCSTR)W.pointer());
 	if (m_Doc.Error())
 	{
 		string1024			str;
-		sprintf				(str, "XML file:%s value:%s errDescr:%s",m_xml_file_name,m_Doc.Value(), m_Doc.ErrorDesc());
+		xr_sprintf				(str, "XML file:%s value:%s errDescr:%s",m_xml_file_name,m_Doc.Value(), m_Doc.ErrorDesc());
 		R_ASSERT2			(false, str);
 	} 
 
@@ -98,7 +98,7 @@ XML_NODE* CXml::NavigateToNode(XML_NODE* start_node, LPCSTR  path, int node_inde
 	string_path					buf_str;
 	VERIFY						(xr_strlen(path)<200);
 	buf_str[0]					= 0;
-	strcpy_s						(buf_str, path);
+	xr_strcpy						(buf_str, path);
 
 	char seps[]					= ":";
     char *token;

@@ -16,10 +16,7 @@
       <Filter>Kernel</Filter>
     </ClCompile>
     <ClCompile Include="xrXMLParser.cpp">
-      <Filter>Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="tinystr.cpp">
-      <Filter>Parser\TinyXML</Filter>
+      <Filter>Kernel</Filter>
     </ClCompile>
     <ClCompile Include="tinyxml.cpp">
       <Filter>Parser\TinyXML</Filter>
@@ -36,10 +33,7 @@
       <Filter>Kernel</Filter>
     </ClInclude>
     <ClInclude Include="xrXMLParser.h">
-      <Filter>Parser</Filter>
-    </ClInclude>
-    <ClInclude Include="tinystr.h">
-      <Filter>Parser\TinyXML</Filter>
+      <Filter>Kernel</Filter>
     </ClInclude>
     <ClInclude Include="tinyxml.h">
       <Filter>Parser\TinyXML</Filter>
