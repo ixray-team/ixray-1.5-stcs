@@ -92,8 +92,8 @@ void channel::save			(CInifile& config)
 			continue;
 		}
 
-		strcat_s		(temp, count, ", ");
-		strcat_s		(temp, count, (*i)->id());
+		xr_strcat		(temp, count, ", ");
+		xr_strcat		(temp, count, (*i)->id());
 	}
 
 	config.w_string		(m_load_section.c_str(),	"sounds", temp);

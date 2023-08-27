@@ -31,14 +31,14 @@ inline pstr sz_cpy								(char (&destination)[size], pcstr source)
 
 inline pstr sz_cat								(pstr destination, const u32 &size, pcstr source)
 {
-	strcat_s		(destination,size,source);
+	xr_strcat		(destination,size,source);
 	return			(destination);
 }
 
 template <int size>
 inline pstr sz_cat								(char (&destination)[size], pcstr source)
 {
-	strcat_s		(destination,size,source);
+	xr_strcat		(destination,size,source);
 	return			(destination);
 }
 

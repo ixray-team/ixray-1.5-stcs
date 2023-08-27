@@ -549,8 +549,8 @@ void				CLevel::net_OnChangeSelfName			(NET_Packet* P)
 	{
 		string1024 tmpstr;
 		strcpy_s(tmpstr, *m_caClientOptions);
-		strcat_s(tmpstr, "/name=");
-		strcat_s(tmpstr, NewName);
+		xr_strcat(tmpstr, "/name=");
+		xr_strcat(tmpstr, NewName);
 		m_caClientOptions = tmpstr;
 	}
 	else
@@ -558,10 +558,10 @@ void				CLevel::net_OnChangeSelfName			(NET_Packet* P)
 		string1024 tmpstr;
 		strcpy_s(tmpstr, *m_caClientOptions);
 		*(strstr(tmpstr, "name=")+5) = 0;
-		strcat_s(tmpstr, NewName);
+		xr_strcat(tmpstr, NewName);
 		const char* ptmp = strstr(strstr(*m_caClientOptions, "name="), "/");
 		if (ptmp)
-			strcat_s(tmpstr, ptmp);
+			xr_strcat(tmpstr, ptmp);
 		m_caClientOptions = tmpstr;
 	}
 }

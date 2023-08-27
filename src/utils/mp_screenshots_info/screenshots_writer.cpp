@@ -70,10 +70,10 @@ u32	const writer::write_info(sha_process_yielder* yielder)
 		(void*)(m_buffer + m_buffer_info_pos));
 	
 	info_start[0]					= 0;
-	strcat_s(info_start, info_max_size, m_info_data.r_string(ss_info_secion, ss_player_name_key));
-	strcat_s(info_start, info_max_size, m_info_data.r_string(ss_info_secion, ss_player_digest_key));
-	//strcat_s(info_start, info_max_size, m_info_data.r_string(ss_info_secion, ss_admin_name_key));
-	strcat_s(info_start, info_max_size, time_string);
+	xr_strcat(info_start, info_max_size, m_info_data.r_string(ss_info_secion, ss_player_name_key));
+	xr_strcat(info_start, info_max_size, m_info_data.r_string(ss_info_secion, ss_player_digest_key));
+	//xr_strcat(info_start, info_max_size, m_info_data.r_string(ss_info_secion, ss_admin_name_key));
+	xr_strcat(info_start, info_max_size, time_string);
 
 	u32		info_size				= xr_strlen(info_start) + 1;
 	u32		jpeg_data_size			= m_buffer_info_pos + info_size;

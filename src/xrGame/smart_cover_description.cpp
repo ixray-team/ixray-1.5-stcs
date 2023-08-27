@@ -107,8 +107,8 @@ void description::load_loopholes	(shared_str const &table_id)
 {
 	string256					temp;
 	strcpy_s					(temp, "smart_covers.descriptions.");
-	strcat_s					(temp, *table_id);
-	strcat_s					(temp, ".loopholes");
+	xr_strcat					(temp, *table_id);
+	xr_strcat					(temp, ".loopholes");
 	m_table_id					= table_id;
 
 	luabind::object				loopholes;
@@ -191,8 +191,8 @@ void description::load_transitions	(shared_str const &table_id)
 {
 	string256					temp;
 	strcpy_s					(temp, "smart_covers.descriptions.");
-	strcat_s					(temp, *table_id);
-	strcat_s					(temp, ".transitions");
+	xr_strcat					(temp, *table_id);
+	xr_strcat					(temp, ".transitions");
 
 	luabind::object				transitions;
 	bool						result = 

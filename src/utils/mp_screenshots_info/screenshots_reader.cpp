@@ -112,10 +112,10 @@ bool const reader::verify						()
 	char* jpeg_info_start			= static_cast<char*>((void*)(m_jpeg_data + m_info_pos));
 	jpeg_info_start[0]				= 0;
 		
-	strcat_s(jpeg_info_start, m_info_size, player_name().c_str());
-	strcat_s(jpeg_info_start, m_info_size, player_cdkey_digest().c_str());
-	//strcat_s(jpeg_info_start, m_info_size, admin_name().c_str());
-	strcat_s(jpeg_info_start, m_info_size, creation_date().c_str());
+	xr_strcat(jpeg_info_start, m_info_size, player_name().c_str());
+	xr_strcat(jpeg_info_start, m_info_size, player_cdkey_digest().c_str());
+	//xr_strcat(jpeg_info_start, m_info_size, admin_name().c_str());
+	xr_strcat(jpeg_info_start, m_info_size, creation_date().c_str());
 	
 	u32		jpeg_info_size		= xr_strlen(jpeg_info_start) + 1; //ending zero
 	u32		jpeg_full_size		= m_info_pos + jpeg_info_size;

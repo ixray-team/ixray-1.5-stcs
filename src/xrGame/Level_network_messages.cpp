@@ -30,7 +30,7 @@ LPSTR remove_version_option(LPCSTR opt_str, LPSTR new_opt_str, u32 new_opt_str_s
 	if (!temp_substr)
 		return new_opt_str;
 
-	strcat_s(new_opt_str, new_opt_str_size, temp_substr);
+	xr_strcat(new_opt_str, new_opt_str_size, temp_substr);
 	return new_opt_str;
 }
 
@@ -449,7 +449,7 @@ void CLevel::ClientReceive()
 					if (m_SO)
 					{
 						string4096 additional_options;
-						strcat_s(NewServerOptions, sizeof(NewServerOptions),
+						xr_strcat(NewServerOptions, sizeof(NewServerOptions),
 							remove_version_option(m_SO, additional_options, sizeof(additional_options))
 						);
 					}

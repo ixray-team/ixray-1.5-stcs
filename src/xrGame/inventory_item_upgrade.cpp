@@ -63,9 +63,9 @@ bool CInventoryItem::get_upgrades_str( string2048& res ) const
 		LPCSTR upgr_section = upgr->section();
 		if ( prop_count > 0 )
 		{
-			strcat_s( res, sizeof(res), ", " );
+			xr_strcat( res, sizeof(res), ", " );
 		}
-		strcat_s( res, sizeof(res), upgr_section );
+		xr_strcat( res, sizeof(res), upgr_section );
 		++prop_count;
 	}
 	if ( prop_count > 0 )

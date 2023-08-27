@@ -411,7 +411,7 @@ void CMapListHelper::Load()
 		FS.update_path				(map_cfg_fn, "$game_levels$", ln);
 
 		
-		strcat_s					(map_cfg_fn,"\\level.ltx");
+		xr_strcat					(map_cfg_fn,"\\level.ltx");
 		LoadMapInfo					(map_cfg_fn, ln, lv);
 		FS.unload_archive			(A);
 	}

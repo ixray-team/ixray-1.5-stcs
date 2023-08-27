@@ -195,8 +195,8 @@ void CServerInfo::AddItem( shared_str& name_, LPCSTR value_, u32 color_ )
 
 	//	strcpy_s( it.name, s_name.c_str() );
 	strcpy_s( it.name, name_.c_str() );
-	strcat_s( it.name, " = " );
-	strcat_s( it.name, value_ );
+	xr_strcat( it.name, " = " );
+	xr_strcat( it.name, value_ );
 	it.color = color_;
 
 	if ( data.size() < max_item )

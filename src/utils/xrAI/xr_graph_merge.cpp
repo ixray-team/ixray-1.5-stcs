@@ -504,7 +504,7 @@ LPCSTR generate_temp_file_name	(LPCSTR header0, LPCSTR header1, string_path& buf
 {
 	string_path			path;
 	FS.update_path		(path,"$app_data_root$","temp");
-	strcat_s			(path,sizeof(path),"\\");
+	xr_strcat			(path,sizeof(path),"\\");
 
 	_mkdir				(path);
 	

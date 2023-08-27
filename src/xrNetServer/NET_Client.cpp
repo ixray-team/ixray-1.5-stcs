@@ -496,9 +496,9 @@ if(!psNET_direct_connect)
 	
 	// Setup client info
 		/*strcpy_s( tmp, server_name );
-		strcat_s( tmp, "/name=" );
-		strcat_s( tmp, user_name_str );
-		strcat_s( tmp, "/" );*/
+		xr_strcat( tmp, "/name=" );
+		xr_strcat( tmp, user_name_str );
+		xr_strcat( tmp, "/" );*/
 		
 	WCHAR	ClientNameUNICODE	[256];
 		R_CHK(MultiByteToWideChar	(CP_ACP, 0, user_name_str, -1, ClientNameUNICODE, 256 ));

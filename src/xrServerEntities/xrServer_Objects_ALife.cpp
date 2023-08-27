@@ -335,7 +335,7 @@ BOOL is_combat_cover			(shared_str const &table_id)
 
 	string256					temp;
 	strcpy_s					(temp, "smart_covers.descriptions.");
-	strcat_s					(temp, *table_id);
+	xr_strcat					(temp, *table_id);
 
 	luabind::object				table, value;
 	bool						result = 
@@ -572,8 +572,8 @@ void CSE_SmartCover::check_enterable_loopholes(shared_str const &description)
 {
 	string256					temp;
 	strcpy_s					(temp, "smart_covers.descriptions.");
-	strcat_s					(temp, m_description.c_str());
-	strcat_s					(temp, ".transitions");
+	xr_strcat					(temp, m_description.c_str());
+	xr_strcat					(temp, ".transitions");
 
 	luabind::object				transitions;
 	bool						result = 
@@ -713,8 +713,8 @@ shared_str animation_id(luabind::object table)
 void CSE_SmartCover::load_draw_data () {
 	string256					temp;
 	strcpy_s					(temp, "smart_covers.descriptions.");
-	strcat_s					(temp, m_description.c_str());
-	strcat_s					(temp, ".loopholes");
+	xr_strcat					(temp, m_description.c_str());
+	xr_strcat					(temp, ".loopholes");
 	
 	m_draw_data.clear			();
 

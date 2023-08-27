@@ -646,7 +646,7 @@ void CConsole::ExecuteScript( LPCSTR str )
 	u32  str_size = xr_strlen( str );
 	PSTR buf = (PSTR)_alloca( (str_size + 10) * sizeof(char) );
 	strcpy_s( buf, str_size + 10, "cfg_load " );
-	strcat_s( buf, str_size + 10, str );
+	xr_strcat( buf, str_size + 10, str );
 	Execute( buf );
 }
 
@@ -669,7 +669,7 @@ IConsole_Command* CConsole::find_next_cmd(LPCSTR in_str, shared_str& out_str)
 		PSTR   new_str = (PSTR)_alloca((offset + name_cmd_size + 2) * sizeof(char));
 
 		strcpy_s(new_str, offset + name_cmd_size + 2, (b_ra) ? radmin_cmd_name : "");
-		strcat_s(new_str, offset + name_cmd_size + 2, name_cmd);
+		xr_strcat(new_str, offset + name_cmd_size + 2, name_cmd);
 
 		out_str._set((LPCSTR)new_str);
 		return cc;

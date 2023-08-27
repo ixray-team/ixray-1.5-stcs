@@ -62,7 +62,7 @@ void weather::load			()
 {
 	string_path			file_name;
 	FS.update_path		(file_name, "$game_weathers$", m_id.c_str());
-	strcat_s			(file_name, ".ltx");
+	xr_strcat			(file_name, ".ltx");
 	CInifile*			config = CInifile::Create(file_name);
 
 	m_manager.WeatherCycles[m_id].clear	();
@@ -87,7 +87,7 @@ void weather::save			()
 {
 	string_path			file_name;
 	FS.update_path		(file_name, "$game_weathers$", m_id.c_str());
-	strcat_s			(file_name, ".ltx");
+	xr_strcat			(file_name, ".ltx");
 	CInifile*			config = xr_new<CInifile>(file_name, FALSE, FALSE, TRUE);
 
 	container_type::iterator	i = m_times.begin();
@@ -362,7 +362,7 @@ void weather::reload_time_frame	(shared_str const& frame_id)
 {
 	string_path			file_name;
 	FS.update_path		(file_name, "$game_weathers$", m_id.c_str());
-	strcat_s			(file_name, ".ltx");
+	xr_strcat			(file_name, ".ltx");
 	CInifile*			config = CInifile::Create(file_name);
 
 	container_type::iterator	i = m_times.begin();

@@ -35,7 +35,7 @@ u32 const	generate_key	(s32 const seed, key_t& result_key)
 #ifdef DEBUG
 		string16 dst_num;
 		sprintf_s				(dst_num, "%08x", result_key.m_key[i]);
-		strcat_s				(tmp_str, dst_num);
+		xr_strcat				(tmp_str, dst_num);
 #endif
 	}
 #ifdef DEBUG

@@ -73,7 +73,7 @@ void CLevelSpawnConstructor::init								()
 	// loading level graph
 	string_path				file_name;
 	FS.update_path			(file_name,"$game_levels$",*m_level.name());
-	strcat_s				(file_name,"\\");
+	xr_strcat				(file_name,"\\");
 	m_level_graph			= xr_new<CLevelGraph>(file_name);
 	
 	// loading cross table
@@ -188,7 +188,7 @@ void CLevelSpawnConstructor::load_objects						()
 	// loading spawn points
 	string_path					file_name;
 	FS.update_path				(file_name,"$game_levels$",*m_level.name());
-	strcat_s					(file_name,"\\level.spawn");
+	xr_strcat					(file_name,"\\level.spawn");
 	IReader						*level_spawn = FS.r_open(file_name);
 	u32							id;
 	IReader						*chunk = level_spawn->open_chunk_iterator(id);

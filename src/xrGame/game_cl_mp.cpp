@@ -1725,7 +1725,7 @@ void game_cl_mp::decompress_and_save_screenshot	(LPCSTR file_name, u8* data, u32
 	}
 	string_path screen_shot_path;
 	FS.update_path(screen_shot_path, "$screenshots$", file_name);
-	strcat_s(screen_shot_path, ".jpg");
+	xr_strcat(screen_shot_path, ".jpg");
 	
 	IWriter* ftosave = FS.w_open(screen_shot_path);
 	if (!ftosave)
@@ -1762,7 +1762,7 @@ void game_cl_mp::decompress_and_process_config(LPCSTR file_name, u8* data, u32 d
 	}
 	string_path screen_shot_path;
 	FS.update_path(screen_shot_path, "$screenshots$", file_name);
-	strcat_s(screen_shot_path, ".ltx");
+	xr_strcat(screen_shot_path, ".ltx");
 	
 	IWriter* ftosave = FS.w_open(screen_shot_path);
 	if (!ftosave)

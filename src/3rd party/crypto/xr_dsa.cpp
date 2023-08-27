@@ -87,15 +87,15 @@ void print_big_number(BIGNUM* big_num, u32 max_columns = 8)
 	bin_size	= big_num->top * sizeof(unsigned long);
 
 	result_buffer[0] = 0;
-	strcat_s(result_buffer, "\t");
+	xr_strcat(result_buffer, "\t");
 	for (int i = 0; i < bin_size; ++i)
 	{
 		if (((i % max_columns) == 0) && (i > 0))
 		{
-			strcat_s(result_buffer, "\n\t");
+			xr_strcat(result_buffer, "\n\t");
 		}
 		sprintf(tmp_buff, "0x%02x, ", bin_buff[i]);
-		strcat_s(result_buffer, tmp_buff);
+		xr_strcat(result_buffer, tmp_buff);
 	}
 	Msg(result_buffer);
 };

@@ -618,7 +618,7 @@ void	CMainMenu::OnLoadError				(LPCSTR module)
 	LPCSTR str=CStringTable().translate("ui_st_error_loading").c_str();
 	string1024 Text;
 	strconcat(sizeof(Text),Text,str," ");
-	strcat_s(Text,sizeof(Text),module);
+	xr_strcat(Text,sizeof(Text),module);
 	m_pMB_ErrDlgs[LoadingError]->SetText(Text);
 	SetErrorDialog(CMainMenu::LoadingError);
 }

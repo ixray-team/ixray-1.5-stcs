@@ -42,7 +42,7 @@ void CUINewsItemWnd::Setup			(GAME_NEWS_DATA& news_data)
 	u32    sz  = (time_str.size() + 5) * sizeof(char);
 	PSTR   str = (PSTR)_alloca( sz );
 	strcpy_s( str, sz, time_str.c_str() );
-	strcat_s( str, sz, " -" );
+	xr_strcat( str, sz, " -" );
 	m_UIDate->SetText(str);
 	m_UIDate->AdjustWidthToText();
 

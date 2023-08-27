@@ -89,8 +89,8 @@ static char const * ModifyDownloadUrl(char* dest, u32 dest_size, char const * or
 
 	*suffix_ptr = 0;
 	string256 tmp_append_str;
-	strcat_s(dest, dest_size, QueryPatchVersionString(tmp_append_str, sizeof(tmp_append_str)));
-	strcat_s(dest, dest_size, PATCH_SUFFIX);
+	xr_strcat(dest, dest_size, QueryPatchVersionString(tmp_append_str, sizeof(tmp_append_str)));
+	xr_strcat(dest, dest_size, PATCH_SUFFIX);
 	return dest;
 };
 

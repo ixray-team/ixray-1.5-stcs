@@ -136,7 +136,7 @@ void xrLoad(LPCSTR name, bool draft_mode)
 						BT.bHasAlpha= TRUE;
 						BT.pSurface	= 0;
 					} else {
-						strcat_s		(N__,".thm");
+						xr_strcat		(N__,".thm");
 						IReader* THM	= FS.r_open("$game_textures$",N__);
 //						if (!THM)		continue;
 						

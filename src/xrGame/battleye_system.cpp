@@ -290,7 +290,7 @@ bool BattlEyeSystem::InitDir()
 {
 	string_path		dir_be;
 	FS.update_path( dir_be, "$app_data_root$", "" );
-	strcat_s( dir_be, sizeof(dir_be), BATTLEYE_DIR );
+	xr_strcat( dir_be, sizeof(dir_be), BATTLEYE_DIR );
 
 	if( FS.can_write_to_folder(dir_be) == NULL )
 	{
@@ -322,7 +322,7 @@ bool BattlEyeSystem::InitDLL( LPCSTR dll_name, string_path& out_file )
 {
 	FILE* ft;
 	FS.update_path( out_file, "$app_data_root$", "" );
-	strcat_s( out_file, sizeof(out_file), dll_name );
+	xr_strcat( out_file, sizeof(out_file), dll_name );
 
 	ft = fopen( out_file, "r" );
 	if( ft == NULL )

@@ -28,7 +28,7 @@ void CPartition::load(IKinematics* V, LPCSTR model_name)
 	strcpy_s(fn, sizeof(fn), model_name);
 	if(strext(fn))
 		*strext(fn) = 0;
-	strcat_s(fn, sizeof(fn), ".ltx");
+	xr_strcat(fn, sizeof(fn), ".ltx");
 	
 	FS.update_path(fn_full,"$game_meshes$", fn);
 

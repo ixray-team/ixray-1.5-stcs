@@ -134,8 +134,8 @@ void ambient::save			(CInifile& config)
 				continue;
 			}
 
-			strcat_s		(temp, count, ", ");
-			strcat_s		(temp, count, (*i)->id().c_str());
+			xr_strcat		(temp, count, ", ");
+			xr_strcat		(temp, count, (*i)->id().c_str());
 		}
 	}
 
@@ -158,8 +158,8 @@ void ambient::save			(CInifile& config)
 				continue;
 			}
 
-			strcat_s		(temp, count, ", ");
-			strcat_s		(temp, count, (*i)->id().c_str());
+			xr_strcat		(temp, count, ", ");
+			xr_strcat		(temp, count, (*i)->id().c_str());
 		}
 	}
 	config.w_string			(m_load_section.c_str(), "effects", temp);

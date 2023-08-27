@@ -47,7 +47,7 @@ void manager::fill_levels			(CInifile& config, LPCSTR prefix, LPCSTR category)
 {
 	string_path						section_id;
 	strcpy_s						(section_id, "level_maps_");
-	strcat_s						(section_id, prefix);
+	xr_strcat						(section_id, prefix);
 	CInifile::Items const&			section = config.r_section(section_id).Data;
 
 	CInifile::Items::const_iterator	i = section.begin();
@@ -140,7 +140,7 @@ void manager::fill					()
 	for ( ; i != e; ++i) {
 		string_path					description;
 		strcpy_s					(description, "weather for level ");
-		strcat_s					(description, (*i).first.c_str());
+		xr_strcat					(description, (*i).first.c_str());
 		m_property_holder->add_property	(
 			(*i).first.c_str(),
 			(*i).second.first,

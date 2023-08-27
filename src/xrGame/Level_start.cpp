@@ -38,8 +38,8 @@ BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 	{
 		string512 tmp;
 		strcpy_s(tmp, op_client);
-		strcat_s(tmp, "/name=");
-		strcat_s(tmp, player_name);
+		xr_strcat(tmp, "/name=");
+		xr_strcat(tmp, player_name);
 		m_caClientOptions			= tmp;
 	} else {
 		string1024	ret="";
@@ -50,10 +50,10 @@ BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 			string1024 tmpstr;
 			strcpy_s(tmpstr, op_client);
 			*(strstr(tmpstr, "name=")+5) = 0;
-			strcat_s(tmpstr, player_name);
+			xr_strcat(tmpstr, player_name);
 			const char* ptmp = strstr(strstr(op_client, "name="), "/");
 			if (ptmp)
-				strcat_s(tmpstr, ptmp);
+				xr_strcat(tmpstr, ptmp);
 			m_caClientOptions = tmpstr;
 		}
 		else
@@ -164,7 +164,7 @@ bool CLevel::net_start3				()
 
 		string4096	tmp;
 		strcpy_s(tmp, m_caClientOptions.c_str());
-		strcat_s(tmp, PortStr);
+		xr_strcat(tmp, PortStr);
 		
 		m_caClientOptions = tmp;
 	}

@@ -221,9 +221,9 @@ void xrServer::OnBuildVersionRespond				( IClient* CL, NET_Packet& P )
 		else
 		{
 			Msg( res_check );
-			strcat_s( res_check, "Invalid login/password. Client \"" );
-			strcat_s( res_check, CL->name.c_str() );
-			strcat_s( res_check, "\" disconnected." );
+			xr_strcat( res_check, "Invalid login/password. Client \"" );
+			xr_strcat( res_check, CL->name.c_str() );
+			xr_strcat( res_check, "\" disconnected." );
 
 			SendConnectResult( CL, 0, 2, res_check );
 		}

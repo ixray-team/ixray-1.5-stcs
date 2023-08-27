@@ -1921,8 +1921,8 @@ void game_sv_mp::DumpOnlineStatistic()
 
 	string_path					fn;
 	FS.update_path				(fn,"$logs$","mp_stats\\");
-	strcat_s					(fn, srv->HostName.c_str());
-	strcat_s					(fn, "\\online_dump.ltx" );
+	xr_strcat					(fn, srv->HostName.c_str());
+	xr_strcat					(fn, "\\online_dump.ltx" );
 
 	string64					t_stamp;
 	timestamp					(t_stamp);
@@ -2099,10 +2099,10 @@ void game_sv_mp::StartToDumpStatistics	()
 	FS.update_path				(round_statistics_dump_fn,"$logs$","mp_stats\\");
 	string64					t_stamp;
 	timestamp					(t_stamp);
-	strcat_s					(round_statistics_dump_fn, srv->HostName.c_str() );
-	strcat_s					(round_statistics_dump_fn, "\\games\\dmp" );
-	strcat_s					(round_statistics_dump_fn, t_stamp );
-	strcat_s					(round_statistics_dump_fn, ".ltx" );
+	xr_strcat					(round_statistics_dump_fn, srv->HostName.c_str() );
+	xr_strcat					(round_statistics_dump_fn, "\\games\\dmp" );
+	xr_strcat					(round_statistics_dump_fn, t_stamp );
+	xr_strcat					(round_statistics_dump_fn, ".ltx" );
 }
 
 void game_sv_mp::StopToDumpStatistics	()

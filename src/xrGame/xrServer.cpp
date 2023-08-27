@@ -1159,29 +1159,29 @@ void xrServer::GetServerInfo( CServerInfo* si )
 	strcpy_s( tmp256, GameTypeToString( game->Type(), true ) );
 	if ( game->Type() == eGameIDDeathmatch || game->Type() == eGameIDTeamDeathmatch )
 	{
-		strcat_s( tmp256, " [" );
-		strcat_s( tmp256, _itoa( g_sv_dm_dwFragLimit, tmp, 10 ) );
-		strcat_s( tmp256, "] " );
+		xr_strcat( tmp256, " [" );
+		xr_strcat( tmp256, _itoa( g_sv_dm_dwFragLimit, tmp, 10 ) );
+		xr_strcat( tmp256, "] " );
 	}
 	else if ( game->Type() == eGameIDArtefactHunt || game->Type() == eGameIDCaptureTheArtefact )
 	{
-		strcat_s( tmp256, " [" );
-		strcat_s( tmp256, _itoa( g_sv_ah_dwArtefactsNum, tmp, 10 ) );
-		strcat_s( tmp256, "] " );
+		xr_strcat( tmp256, " [" );
+		xr_strcat( tmp256, _itoa( g_sv_ah_dwArtefactsNum, tmp, 10 ) );
+		xr_strcat( tmp256, "] " );
 		g_sv_ah_iReinforcementTime;
 	}
 	
 	//if ( g_sv_dm_dwTimeLimit > 0 )
 	{
-		strcat_s( tmp256, " time limit [" );
-		strcat_s( tmp256, _itoa( g_sv_dm_dwTimeLimit, tmp, 10 ) );
-		strcat_s( tmp256, "] " );
+		xr_strcat( tmp256, " time limit [" );
+		xr_strcat( tmp256, _itoa( g_sv_dm_dwTimeLimit, tmp, 10 ) );
+		xr_strcat( tmp256, "] " );
 	}
 	if ( game->Type() == eGameIDArtefactHunt || game->Type() == eGameIDCaptureTheArtefact )
 	{
-		strcat_s( tmp256, " RT [" );
-		strcat_s( tmp256, _itoa( g_sv_ah_iReinforcementTime, tmp, 10 ) );
-		strcat_s( tmp256, "]" );
+		xr_strcat( tmp256, " RT [" );
+		xr_strcat( tmp256, _itoa( g_sv_ah_iReinforcementTime, tmp, 10 ) );
+		xr_strcat( tmp256, "]" );
 	}
 	si->AddItem( "Game type", tmp256, RGB(128,255,255) );
 
@@ -1192,12 +1192,12 @@ void xrServer::GetServerInfo( CServerInfo* si )
 		strcpy_s( tmp256, time );
 		if ( g_sv_mp_iDumpStatsPeriod > 0 )
 		{
-			strcat_s( tmp256, " statistic [" );
-			strcat_s( tmp256, _itoa( g_sv_mp_iDumpStatsPeriod, tmp, 10 ) );
-			strcat_s( tmp256, "]" );
+			xr_strcat( tmp256, " statistic [" );
+			xr_strcat( tmp256, _itoa( g_sv_mp_iDumpStatsPeriod, tmp, 10 ) );
+			xr_strcat( tmp256, "]" );
 			if ( g_bCollectStatisticData )
 			{
-				strcat_s( tmp256, "[weapons]" );
+				xr_strcat( tmp256, "[weapons]" );
 			}
 			
 		}

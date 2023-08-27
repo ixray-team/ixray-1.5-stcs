@@ -324,7 +324,7 @@ void CLocatorAPI::LoadArchive(archive& A, LPCSTR entrypoint)
 
 			strcpy_s			(fs_entry_point, sizeof(fs_entry_point), root->m_Path);
 
-			strcat_s			(fs_entry_point, sizeof(fs_entry_point), read_path.c_str()+xr_strlen(alias_name)+1);
+			xr_strcat			(fs_entry_point, sizeof(fs_entry_point), read_path.c_str()+xr_strlen(alias_name)+1);
 		}
 
 	}else
@@ -492,7 +492,7 @@ void CLocatorAPI::ProcessOne(LPCSTR path, void* _F)
 
 	string_path		N;
 	strcpy_s		(N,sizeof(N),path);
-	strcat_s		(N,F.name);
+	xr_strcat		(N,F.name);
 	xr_strlwr		(N);
 	
 	if (F.attrib&_A_HIDDEN)			return;

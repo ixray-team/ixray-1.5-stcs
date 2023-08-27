@@ -234,8 +234,8 @@ bool xrGameSpyServer::Check_ServerAccess( IClient* CL, string512& reason )
 		if( game->NewPlayerName_Exists( CL, CL->name.c_str() ) )
 		{
 			strcpy_s( reason, "! Access denied by server. Login \"" );
-			strcat_s( reason, CL->name.c_str() );
-			strcat_s( reason, "\" exist already. " );
+			xr_strcat( reason, CL->name.c_str() );
+			xr_strcat( reason, "\" exist already. " );
 			return false;
 		}
 
@@ -243,8 +243,8 @@ bool xrGameSpyServer::Check_ServerAccess( IClient* CL, string512& reason )
 		if( xr_strcmp( pass1, CL->pass ) == 0 )
 		{
 			strcpy_s( reason, "- User \"" );
-			strcat_s( reason, CL->name.c_str() );
-			strcat_s( reason, "\" access successful by server. " );
+			xr_strcat( reason, CL->name.c_str() );
+			xr_strcat( reason, "\" access successful by server. " );
 			return true;
 		}
 	}
@@ -291,8 +291,8 @@ void xrGameSpyServer::GetServerInfo( CServerInfo* si )
 	si->AddItem( "Map", MapName.c_str(), RGB(255,0,128) );
 	
 	strcpy_s( tmp, _itoa( GetPlayersCount(), tmp2, 10 ) );
-	strcat_s( tmp, " / ");
-	strcat_s( tmp, _itoa( m_iMaxPlayers, tmp2, 10 ) );
+	xr_strcat( tmp, " / ");
+	xr_strcat( tmp, _itoa( m_iMaxPlayers, tmp2, 10 ) );
 	si->AddItem( "Players", tmp, RGB(255,128,255) );
 
 	string256 res;
@@ -301,13 +301,13 @@ void xrGameSpyServer::GetServerInfo( CServerInfo* si )
 	strcpy_s( res, "" );
 	if ( HasProtected() || Password.size() > 0 || HasBattlEye() )
 	{
-		if ( HasProtected() )			strcat_s( res, "protected  " );
-		if ( Password.size() > 0 )		strcat_s( res, "password  " );
-		if ( HasBattlEye() )			strcat_s( res, "BattlEye  " );
+		if ( HasProtected() )			xr_strcat( res, "protected  " );
+		if ( Password.size() > 0 )		xr_strcat( res, "password  " );
+		if ( HasBattlEye() )			xr_strcat( res, "BattlEye  " );
 	}
 	else
 	{
-		if ( xr_strlen( res ) == 0 )	strcat_s( res, "free" );
+		if ( xr_strlen( res ) == 0 )	xr_strcat( res, "free" );
 	}
 	si->AddItem( "Access to server", res, RGB(200,155,155) );
 

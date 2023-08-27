@@ -1286,8 +1286,8 @@ void game_cl_CaptureTheArtefact::OnVoteStart(NET_Packet& P)
 #ifdef CLIENT_CTA_LOG
 		Msg("---Next cat iteration state: %s", vstr);
 #endif
-		strcat_s(vstr, vstr_size, " ");
-		strcat_s(vstr, vstr_size, st.translate(args[i]).c_str());
+		xr_strcat(vstr, vstr_size, " ");
+		xr_strcat(vstr, vstr_size, st.translate(args[i]).c_str());
 	}
 	str_c				t_vote_str = st.translate("mp_voting_started").c_str();
 	VERIFY				(t_vote_str);

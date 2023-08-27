@@ -76,7 +76,7 @@ void create_unpack_name(string_path & dst_src_path)
 		strcpy_s(ext_pos, xr_strlen(ext_pos), ".ltx");
 		return;
 	}
-	strcat_s(dst_src_path, ".ltx");
+	xr_strcat(dst_src_path, ".ltx");
 };
 
 static u32 const max_uncompressed_size = 0x100000; //1 Mb

@@ -80,7 +80,7 @@ bool const configs_verifyer::verify_dsign(u8* data,
 
 	shared_str	tmp_dsign = tmp_ini.r_string(cd_info_secion, cd_digital_sign_key);
 
-	strcat_s		(dst_buffer, dst_size, add_str);
+	xr_strcat		(dst_buffer, dst_size, add_str);
 	src_data_size	+= xr_strlen(dst_buffer) + 1; //zero ending
 
 	bool ret		= m_verifyer.verify(data, src_data_size, tmp_dsign);

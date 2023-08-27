@@ -608,7 +608,7 @@ void CEnvironment::load_weathers		()
 
 		string_path					file_name;
 		FS.update_path				(file_name, "$game_weathers$", identifier);
-		strcat_s					(file_name, ".ltx");
+		xr_strcat					(file_name, ".ltx");
 		CInifile*					config = CInifile::Create(file_name);
 
 		typedef CInifile::Root		sections_type;
@@ -665,7 +665,7 @@ void CEnvironment::load_weather_effects	()
 
 		string_path					file_name;
 		FS.update_path				(file_name, "$game_weather_effects$", identifier);
-		strcat_s					(file_name, ".ltx");
+		xr_strcat					(file_name, ".ltx");
 		CInifile*					config = CInifile::Create(file_name);
 
 		typedef CInifile::Root		sections_type;

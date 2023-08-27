@@ -95,7 +95,7 @@ void CConsole::Find_cmd_back() // DIK_TAB+shift
 			PSTR   new_str  = (PSTR)_alloca( (offset + name_cmd_size + 2) * sizeof(char) );
 
 			strcpy_s( new_str, offset + name_cmd_size + 2, (b_ra)? radmin_cmd_name : "" );
-			strcat_s( new_str, offset + name_cmd_size + 2, name_cmd );
+			xr_strcat( new_str, offset + name_cmd_size + 2, name_cmd );
 			ec().set_edit( new_str );
 		}
 	}

@@ -126,8 +126,8 @@ bool UIProperty::read_value_from_section( LPCSTR section, LPCSTR param, float& r
 		}
 		string64 buf;
 		sprintf_s( buf, sizeof(buf), "%f", sum );
-		strcat_s( result, sizeof(result), buf );
-		strcat_s( result, sizeof(result), ", " );
+		xr_strcat( result, sizeof(result), buf );
+		xr_strcat( result, sizeof(result), ", " );
 	} // ib_funct
 
 	if ( not_null )
@@ -158,9 +158,9 @@ bool UIProperty::compute_value( ItemUpgrades_type const& item_upgrades )
 			LPCSTR upgr_section = upgr->section();
 			if ( prop_count > 0 )
 			{
-				strcat_s( buf, sizeof(buf), ", " );
+				xr_strcat( buf, sizeof(buf), ", " );
 			}
-			strcat_s( buf, sizeof(buf), upgr_section );
+			xr_strcat( buf, sizeof(buf), upgr_section );
 			++prop_count;
 		}
 	}

@@ -275,7 +275,7 @@ void	CInifile::Load(IReader* F, LPCSTR path)
 					{
 						while(bInsideSTR)
 						{
-							strcat_s		(value_raw, sizeof(value_raw),"\r\n");
+							xr_strcat		(value_raw, sizeof(value_raw),"\r\n");
 							string4096		str_add_raw;
 							F->r_string		(str_add_raw, sizeof(str_add_raw));
 							R_ASSERT2		(
@@ -286,12 +286,12 @@ void	CInifile::Load(IReader* F, LPCSTR path)
 									name
 								)
 							);
-							strcat_s		(value_raw, sizeof(value_raw),str_add_raw);
+							xr_strcat		(value_raw, sizeof(value_raw),str_add_raw);
 							bInsideSTR		= _parse(str2, value_raw);
                             if(bInsideSTR)
                             {
                             	if( is_empty_line_now(F) )
-									strcat_s		(value_raw, sizeof(value_raw),"\r\n");
+									xr_strcat		(value_raw, sizeof(value_raw),"\r\n");
                             }
 						}
 					}

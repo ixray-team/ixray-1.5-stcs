@@ -366,7 +366,7 @@ LPCSTR GetElipsisText(CGameFont* pFont, float width, LPCSTR source_text, LPSTR b
 			buff[pos]					= 0;
 		}
 
-		strcat_s						(buff,buff_len,"..");
+		xr_strcat						(buff,buff_len,"..");
 		return							buff;
 	}
 }

@@ -45,7 +45,7 @@ IC void _strlwr_s(char* strDestination, size_t sizeInBytes)
     _strlwr(strDestination);
 }
 
-IC void strcat_s(char* strDestination,   size_t sizeInBytes,   const char *strSource)
+IC void xr_strcat(char* strDestination,   size_t sizeInBytes,   const char *strSource)
 {
 	strcat(strDestination, strSource);
 }
@@ -193,9 +193,9 @@ inline errno_t xr_strcpy		( LPSTR destination, size_t const destination_size, LP
 	return						strcpy_s( destination, destination_size, source );
 }
 
-inline errno_t xr_strcat		( LPSTR destination, size_t const buffer_size, LPCSTR source )
+inline errno_t xr_strcat(LPSTR destination, size_t const buffer_size, LPCSTR source)
 {
-	return						strcat_s( destination, buffer_size, source );
+	return strcat_s(destination, buffer_size, source);
 }
 
 inline int __cdecl xr_sprintf	( LPSTR destination, size_t const buffer_size, LPCSTR format_string, ... )
