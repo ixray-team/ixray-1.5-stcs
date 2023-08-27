@@ -319,7 +319,7 @@ void save_mini_dump			(_EXCEPTION_POINTERS *pExceptionInfo)
 		char *pSlash = strchr( szDbgHelpPath, '\\' );
 		if (pSlash)
 		{
-			strcpy_s	(pSlash+1, sizeof(szDbgHelpPath)-(pSlash - szDbgHelpPath), "DBGHELP.DLL" );
+			xr_strcpy	(pSlash+1, sizeof(szDbgHelpPath)-(pSlash - szDbgHelpPath), "DBGHELP.DLL" );
 			hDll = ::LoadLibrary( szDbgHelpPath );
 		}
 	}
@@ -342,7 +342,7 @@ void save_mini_dump			(_EXCEPTION_POINTERS *pExceptionInfo)
 			string64	t_stemp;
 
 			timestamp	(t_stemp);
-			strcpy_s		( szDumpPath, Core.ApplicationName);
+			xr_strcpy		( szDumpPath, Core.ApplicationName);
 			strcat		( szDumpPath, "_"					);
 			strcat		( szDumpPath, Core.UserName			);
 			strcat		( szDumpPath, "_"					);
@@ -355,8 +355,8 @@ void save_mini_dump			(_EXCEPTION_POINTERS *pExceptionInfo)
 			}
             __except( EXCEPTION_EXECUTE_HANDLER ) {
 				string_path	temp;
-				strcpy_s		(temp,szDumpPath);
-				strcpy_s		(szDumpPath,"logs/");
+				xr_strcpy		(temp,szDumpPath);
+				xr_strcpy		(szDumpPath,"logs/");
 				strcat		(szDumpPath,temp);
             }
 
@@ -610,7 +610,7 @@ LONG WINAPI UnhandledFilter	(_EXCEPTION_POINTERS *pExceptionInfo)
 				(wcslen(expression) + 1)*2*sizeof(char)
 			);
 		else
-			strcpy_s					(expression_,"");
+			xr_strcpy					(expression_,"");
 
 		if (function)
 			wcstombs_s	(
@@ -621,7 +621,7 @@ LONG WINAPI UnhandledFilter	(_EXCEPTION_POINTERS *pExceptionInfo)
 				(wcslen(function) + 1)*2*sizeof(char)
 			);
 		else
-			strcpy_s					(function_,__FUNCTION__);
+			xr_strcpy					(function_,__FUNCTION__);
 
 		if (file)
 			wcstombs_s	(
@@ -633,7 +633,7 @@ LONG WINAPI UnhandledFilter	(_EXCEPTION_POINTERS *pExceptionInfo)
 			);
 		else {
 			line						= __LINE__;
-			strcpy_s					(file_,__FILE__);
+			xr_strcpy					(file_,__FILE__);
 		}
 
 		Debug.backend					(

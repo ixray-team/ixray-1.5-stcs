@@ -152,8 +152,8 @@ void	CBlender_Compile::PassBegin		()
 	passTextures.clear		();
 	passMatrices.clear		();
 	passConstants.clear		();
-	strcpy_s					(pass_ps,"null");
-	strcpy_s					(pass_vs,"null");
+	xr_strcpy					(pass_ps,"null");
+	xr_strcpy					(pass_vs,"null");
 	dwStage					= 0;
 }
 
@@ -188,13 +188,13 @@ void	CBlender_Compile::PassEnd			()
 
 void	CBlender_Compile::PassSET_PS		(LPCSTR name)
 {
-	strcpy_s	(pass_ps,name);
+	xr_strcpy	(pass_ps,name);
 	_strlwr	(pass_ps);
 }
 
 void	CBlender_Compile::PassSET_VS		(LPCSTR name)
 {
-	strcpy_s	(pass_vs,name);
+	xr_strcpy	(pass_vs,name);
 	_strlwr	(pass_vs);
 }
 

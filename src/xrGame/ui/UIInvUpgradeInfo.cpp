@@ -112,12 +112,12 @@ bool UIInvUpgradeInfo::init_upgrade( Upgrade_type* upgr, CInventoryItem* inv_ite
 			string32 str_res;
 			switch( upg_res )
 			{
-			case inventory::upgrade::result_e_unknown:		strcpy_s( str_res, sizeof(str_res), "st_upgr_unknown" );		break;
-			case inventory::upgrade::result_e_installed:	strcpy_s( str_res, sizeof(str_res), "st_upgr_installed" );		break;
-			case inventory::upgrade::result_e_parents:		strcpy_s( str_res, sizeof(str_res), "st_upgr_parents" );		break;
-			case inventory::upgrade::result_e_group:		strcpy_s( str_res, sizeof(str_res), "st_upgr_group" );			break;
+			case inventory::upgrade::result_e_unknown:		xr_strcpy( str_res, sizeof(str_res), "st_upgr_unknown" );		break;
+			case inventory::upgrade::result_e_installed:	xr_strcpy( str_res, sizeof(str_res), "st_upgr_installed" );		break;
+			case inventory::upgrade::result_e_parents:		xr_strcpy( str_res, sizeof(str_res), "st_upgr_parents" );		break;
+			case inventory::upgrade::result_e_group:		xr_strcpy( str_res, sizeof(str_res), "st_upgr_group" );			break;
 			//result_e_precondition:
-			default:										strcpy_s( str_res, sizeof(str_res), "st_upgr_unknown" );		break;
+			default:										xr_strcpy( str_res, sizeof(str_res), "st_upgr_unknown" );		break;
 			}
 			m_prereq->SetTextST( str_res );
 		}

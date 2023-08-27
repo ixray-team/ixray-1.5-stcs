@@ -66,7 +66,7 @@ INetLog::INetLog(LPCSTR sFileName, u32 dwStartTime)
 	:m_cs(MUTEX_PROFILE_ID(NET_Log))
 #endif // PROFILE_CRITICAL_SECTIONS
 {
-	strcpy_s(m_cFileName, sFileName);
+	xr_strcpy(m_cFileName, sFileName);
 
 	m_pLogFile = NULL;
 	fopen_s(&m_pLogFile, sFileName, "wb");

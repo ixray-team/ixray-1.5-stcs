@@ -1222,7 +1222,7 @@ void game_sv_CaptureTheArtefact::LoadSkinsForTeam(const shared_str& caSection, T
 	if (!pSettings->line_exist(caSection, "skins")) return;
 
 	// Читаем данные этого поля
-	strcpy_s(Skins, pSettings->r_string(caSection, "skins"));
+	xr_strcpy(Skins, pSettings->r_string(caSection, "skins"));
 	u32 count	= _GetItemCount(Skins);
 	// теперь для каждое имя оружия, разделенные запятыми, заносим в массив
 	for (u32 i = 0; i < count; ++i)
@@ -1246,7 +1246,7 @@ void game_sv_CaptureTheArtefact::LoadDefItemsForTeam(const shared_str& caSection
 	if (!pSettings->line_exist(caSection, "default_items")) return;
 
 	// Читаем данные этого поля
-	strcpy_s(DefItems, pSettings->r_string(caSection, "default_items"));
+	xr_strcpy(DefItems, pSettings->r_string(caSection, "default_items"));
 	u32 count	= _GetItemCount(DefItems);
 	// теперь для каждое имя оружия, разделенные запятыми, заносим в массив
 	for (u32 i = 0; i < count; ++i)

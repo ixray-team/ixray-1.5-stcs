@@ -69,7 +69,7 @@ static char const * ModifyDownloadUrl(char* dest, u32 dest_size, char const * or
 	if (!origDownloadUrl)
 		return "";
 
-	strcpy_s(dest, dest_size, origDownloadUrl);
+	xr_strcpy(dest, dest_size, origDownloadUrl);
 	u32 url_size = xr_strlen(dest);
 	if (url_size < PATCH_SUFFIX_SIZE)
 		return dest;

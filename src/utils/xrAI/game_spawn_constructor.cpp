@@ -75,7 +75,7 @@ void CGameSpawnConstructor::load_spawns	(LPCSTR name, bool no_separator_check)
 	m_patrol_path_storage				= xr_new<CPatrolPathStorage>();
 	xr_vector<LPCSTR>					needed_levels;
 	string4096							levels_string;
-	strcpy_s							(levels_string,name);
+	xr_strcpy							(levels_string,name);
 	_strlwr								(levels_string);
 	fill_needed_levels					(levels_string,needed_levels);
 

@@ -28,7 +28,7 @@ BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 
 	if ( xr_strlen(player_name) == 0 )
 	{
-		strcpy_s( player_name, xr_strlen(Core.UserName) ? Core.UserName : Core.CompName );
+		xr_strcpy( player_name, xr_strlen(Core.UserName) ? Core.UserName : Core.CompName );
 	}
 	VERIFY( xr_strlen(player_name) );
 
@@ -37,7 +37,7 @@ BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 	if (!NameStart)
 	{
 		string512 tmp;
-		strcpy_s(tmp, op_client);
+		xr_strcpy(tmp, op_client);
 		xr_strcat(tmp, "/name=");
 		xr_strcat(tmp, player_name);
 		m_caClientOptions			= tmp;
@@ -48,7 +48,7 @@ BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 		if (!xr_strlen(ret))
 		{
 			string1024 tmpstr;
-			strcpy_s(tmpstr, op_client);
+			xr_strcpy(tmpstr, op_client);
 			*(strstr(tmpstr, "name=")+5) = 0;
 			xr_strcat(tmpstr, player_name);
 			const char* ptmp = strstr(strstr(op_client, "name="), "/");
@@ -163,7 +163,7 @@ bool CLevel::net_start3				()
 		sprintf_s(PortStr, "/port=%d", Server->GetPort());
 
 		string4096	tmp;
-		strcpy_s(tmp, m_caClientOptions.c_str());
+		xr_strcpy(tmp, m_caClientOptions.c_str());
 		xr_strcat(tmp, PortStr);
 		
 		m_caClientOptions = tmp;
@@ -177,7 +177,7 @@ bool CLevel::net_start3				()
 			if (strchr(PSW, '/')) 
 				strncpy(PasswordStr, PSW, strchr(PSW, '/') - PSW);
 			else
-				strcpy_s(PasswordStr, PSW);
+				xr_strcpy(PasswordStr, PSW);
 
 			string4096	tmp;
 			sprintf_s(tmp, "%s/psw=%s", m_caClientOptions.c_str(), PasswordStr);

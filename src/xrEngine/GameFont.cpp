@@ -59,7 +59,7 @@ void CGameFont::Initialize		(LPCSTR cShader, LPCSTR cTextureName)
 	if(_lang && !is_di)
 		strconcat				(sizeof(cTexture),cTexture, cTextureName, _lang);
 	else
-		strcpy_s				(cTexture, sizeof(cTexture), cTextureName);
+		xr_strcpy				(cTexture, sizeof(cTexture), cTextureName);
 
 	uFlags						&=~fsValid;
 	vTS.set						(1.f,1.f); // обязательно !!!
@@ -71,7 +71,7 @@ void CGameFont::Initialize		(LPCSTR cShader, LPCSTR cTextureName)
 
 	// check ini exist
 	string_path fn,buf;
-	strcpy_s		(buf,cTexture); if (strext(buf)) *strext(buf)=0;
+	xr_strcpy		(buf,cTexture); if (strext(buf)) *strext(buf)=0;
 	R_ASSERT2	(FS.exist(fn,"$game_textures$",buf,".ini"),fn);
 	CInifile* ini				= CInifile::Create(fn);
 

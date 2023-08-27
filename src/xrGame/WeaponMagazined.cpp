@@ -1225,13 +1225,13 @@ void CWeaponMagazined::GetBriefInfo(xr_string& str_name, xr_string& icon_sect_na
 
 
 	string256		sItemName;
-	strcpy_s			(sItemName, *CStringTable().translate(pSettings->r_string(icon_sect_name.c_str(), "inv_name_short")));
+	xr_strcpy			(sItemName, *CStringTable().translate(pSettings->r_string(icon_sect_name.c_str(), "inv_name_short")));
 
-	strcpy_s( fire_mode, sizeof(fire_mode), "" );
+	xr_strcpy( fire_mode, sizeof(fire_mode), "" );
 	if ( HasFireModes() )
 	{
 		if (m_iQueueSize == -1)
-			strcpy_s(fire_mode, "A");
+			xr_strcpy(fire_mode, "A");
 		else
 			sprintf_s(fire_mode, "%d", m_iQueueSize);
 	}

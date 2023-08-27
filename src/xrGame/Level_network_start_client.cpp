@@ -25,7 +25,7 @@ bool	CLevel::net_start_client1				()
 	pApp->LoadBegin	();
 	// name_of_server
 	string64					name_of_server = "";
-//	strcpy_s						(name_of_server,*m_caClientOptions);
+//	xr_strcpy						(name_of_server,*m_caClientOptions);
 	if (strchr(*m_caClientOptions, '/'))
 		strncpy(name_of_server,*m_caClientOptions, strchr(*m_caClientOptions, '/')-*m_caClientOptions);
 

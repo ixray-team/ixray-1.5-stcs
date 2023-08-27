@@ -52,7 +52,7 @@ LPCSTR generate_guid(const xrGUID &guid, LPSTR buffer, const u32 &buffer_size)
 		default						: NODEFAULT;
 	}
 	VERIFY			(buffer_size > xr_strlen((LPCSTR)temp2));
-	strcpy_s		(buffer, buffer_size, (LPCSTR)temp2);
+	xr_strcpy		(buffer, buffer_size, (LPCSTR)temp2);
 	RpcStringFree	(&temp2);
 	return			(buffer);
 #else

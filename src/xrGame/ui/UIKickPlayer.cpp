@@ -197,7 +197,7 @@ void CUIKickPlayer::Update()
 		for(u32 e=0;e<15;++e)
 		{
 			game_PlayerState* ps	= xr_new<game_PlayerState>();
-			strcpy_s					(ps->name, _names[e]);
+			xr_strcpy					(ps->name, _names[e]);
 			g_ps.push_back			(ps);
 		}
 		for(u32 _i=0; _i<3; ++_i)

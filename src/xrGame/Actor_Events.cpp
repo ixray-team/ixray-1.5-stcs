@@ -57,7 +57,7 @@ void CActor::OnEvent(NET_Packet& P, u16 type)
 				
 #ifdef MP_LOGGING
 				string64 act;
-				strcpy_s( act, (type == GE_TRADE_BUY)? "buys" : "takes" );
+				xr_strcpy( act, (type == GE_TRADE_BUY)? "buys" : "takes" );
 				Msg("--- Actor [%d][%s]  %s  [%d][%s]", ID(), Name(), act, _GO->ID(), _GO->cNameSect().c_str());
 #endif // MP_LOGGING
 				
@@ -101,7 +101,7 @@ void CActor::OnEvent(NET_Packet& P, u16 type)
 			
 #ifdef MP_LOGGING
 			string64 act;
-			strcpy_s( act, (type == GE_TRADE_SELL)? "sells" : "rejects" );
+			xr_strcpy( act, (type == GE_TRADE_SELL)? "sells" : "rejects" );
 			Msg("--- Actor [%d][%s]  %s  [%d][%s]", ID(), Name(), act, GO->ID(), GO->cNameSect().c_str());
 #endif // MP_LOGGING
 			

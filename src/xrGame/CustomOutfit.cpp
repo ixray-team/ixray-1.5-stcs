@@ -214,7 +214,7 @@ void CCustomOutfit::ApplySkinModel(CActor* pActor, bool bDress, bool bHUDOnly)
 					NewVisual = pSettings->r_string(TeamSection, *cNameSect());
 					string256 SkinName;
 
-					strcpy_s(SkinName, pSettings->r_string("mp_skins_path", "skin_path"));
+					xr_strcpy(SkinName, pSettings->r_string("mp_skins_path", "skin_path"));
 					xr_strcat(SkinName, *NewVisual);
 					xr_strcat(SkinName, ".ogf");
 					NewVisual._set(SkinName);

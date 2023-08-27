@@ -206,10 +206,10 @@ void	CResourceManager::LS_Load			()
 	VERIFY								(folder);
 	for (u32 it=0; it<folder->size(); it++)	{
 		string_path						namesp,fn;
-		strcpy_s							(namesp,(*folder)[it]);
+		xr_strcpy							(namesp,(*folder)[it]);
 		if	(0==strext(namesp) || 0!=xr_strcmp(strext(namesp),".s"))	continue;
 		*strext	(namesp)=0;
-		if		(0==namesp[0])			strcpy_s	(namesp,"_G");
+		if		(0==namesp[0])			xr_strcpy	(namesp,"_G");
 		strconcat						(sizeof(fn),fn,::Render->getShaderPath(),(*folder)[it]);
 		FS.update_path					(fn,"$game_shaders$",fn);
 		try {

@@ -22,8 +22,8 @@ struct file_comparer{
 		m_fs_old=fs2;
 		m_freader=0;
 		m_crc32=0;
-//		strcpy_s(m_short_name,c+xr_strlen(arget_folder)+1);
-		strcpy_s(m_full_name,c);
+//		xr_strcpy(m_short_name,c+xr_strlen(arget_folder)+1);
+		xr_strcpy(m_full_name,c);
 
 		const CLocatorAPI::file* f = m_fs_new->exist("$target_folder$",m_full_name);
 		if(f)

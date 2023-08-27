@@ -55,7 +55,7 @@ void Group::log_hierarchy( LPCSTR nest )
 {
 	u32 sz = (xr_strlen(nest) + 4) * sizeof(char);
 	PSTR	nest2 = (PSTR)_alloca( sz );
-	strcpy_s( nest2, sz, nest );
+	xr_strcpy( nest2, sz, nest );
 	strcat( nest2, "   " );
 	Msg( "%s(g) %s", nest2, m_id.c_str() );
 

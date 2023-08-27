@@ -584,7 +584,7 @@ void line_edit_control::cut_to_clipboard()
 
 void line_edit_control::undo_buf()
 {
-	strcpy_s( m_inserted, m_buffer_size, m_undo_buf );
+	xr_strcpy( m_inserted, m_buffer_size, m_undo_buf );
 	m_undo_buf[0] = 0;
 }
 

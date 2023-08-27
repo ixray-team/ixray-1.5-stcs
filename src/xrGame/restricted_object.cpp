@@ -46,7 +46,7 @@ IC	void construct_string					(LPSTR result, const xr_vector<ALife::_OBJECT_ID> &
 #if 0
 IC	void construct_id_string					(LPSTR result, const xr_vector<ALife::_OBJECT_ID> &restrictions)
 {
-	strcpy_s			(result,"");
+	xr_strcpy			(result,"");
 	string16		temp;
 	u32				count = 0;
 	xr_vector<ALife::_OBJECT_ID>::const_iterator	I = restrictions.begin();
@@ -72,8 +72,8 @@ BOOL CRestrictedObject::net_Spawn			(CSE_Abstract* data)
 	string4096					temp0;
 	string4096					temp1;
 	
-	strcpy_s						(temp0,*monster->m_out_space_restrictors);
-	strcpy_s						(temp1,*monster->m_in_space_restrictors);
+	xr_strcpy						(temp0,*monster->m_out_space_restrictors);
+	xr_strcpy						(temp1,*monster->m_in_space_restrictors);
 
 	if (ai().get_alife()) {
 		construct_string		(temp0,monster->m_dynamic_out_restrictions);

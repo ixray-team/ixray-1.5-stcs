@@ -422,7 +422,7 @@ void game_cl_GameState::set_type_name(LPCSTR s)
 	m_game_type_name		= GameTypeToString		(gid, false); 
 	if(OnClient())
 	{
-		strcpy_s					(g_pGamePersistent->m_game_params.m_game_type, m_game_type_name.c_str());
+		xr_strcpy					(g_pGamePersistent->m_game_params.m_game_type, m_game_type_name.c_str());
 		g_pGamePersistent->OnGameStart();
 	}
 };

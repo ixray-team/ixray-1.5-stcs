@@ -23,8 +23,8 @@ CUIStatsWnd::~CUIStatsWnd()
 void CUIStatsWnd::Init(LPCSTR XML)
 {
 	CUIXml uiXml;
-	if (XML) strcpy_s(XML_NAME, XML);
-	else strcpy_s(XML_NAME, STATS_XML);
+	if (XML) xr_strcpy(XML_NAME, XML);
+	else xr_strcpy(XML_NAME, STATS_XML);
 
 	uiXml.Load(CONFIG_PATH, UI_PATH, XML_NAME);
 

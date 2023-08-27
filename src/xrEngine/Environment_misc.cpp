@@ -252,7 +252,7 @@ void CEnvDescriptor::load	(CEnvironment& environment, CInifile& config)
 	exec_time				= tm.x*3600.f+tm.y*60.f+tm.z;
 	exec_time_loaded		= exec_time;
 	string_path				st,st_env;
-	strcpy_s				(st,config.r_string	(m_identifier.c_str(),"sky_texture"));
+	xr_strcpy				(st,config.r_string	(m_identifier.c_str(),"sky_texture"));
 	strconcat				(sizeof(st_env),st_env,st,"#small"		);
 	sky_texture_name		= st;
 	sky_texture_env_name	= st_env;

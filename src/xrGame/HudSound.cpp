@@ -15,7 +15,7 @@ void HUD_SOUND_ITEM::LoadSound(	LPCSTR section, LPCSTR line,
 	hud_snd.sounds.clear	();
 
 	string256	sound_line;
-	strcpy_s		(sound_line,line);
+	xr_strcpy		(sound_line,line);
 	int k=0;
 	while( pSettings->line_exist(section, sound_line) ){
 		hud_snd.sounds.push_back( SSnd() );

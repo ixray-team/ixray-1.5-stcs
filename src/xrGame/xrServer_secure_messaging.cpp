@@ -36,7 +36,7 @@ void xrServer::OnSecureMessage(NET_Packet & P, xrClientData* xrClSender)
 #ifdef DEBUG
 	char dbg_tmp_buff[33];
 	ZeroMemory	(dbg_tmp_buff, sizeof(dbg_tmp_buff));
-	strcpy_s	(dbg_tmp_buff, "xray crypt check");
+	xr_strcpy	(dbg_tmp_buff, "xray crypt check");
 	u32 dbg_encrypt_checksum = secure_messaging::encrypt(dbg_tmp_buff, sizeof(dbg_tmp_buff), xrClSender->m_secret_key);
 	u32	dbg_decrypt_checksum = secure_messaging::decrypt(dbg_tmp_buff, sizeof(dbg_tmp_buff), xrClSender->m_secret_key);
 	VERIFY(dbg_encrypt_checksum == dbg_decrypt_checksum);

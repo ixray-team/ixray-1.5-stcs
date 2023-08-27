@@ -1573,7 +1573,7 @@ void game_cl_mp::generate_file_name(
 
 LPCSTR game_cl_mp::make_file_name(LPCSTR session_id, string_path & dest)
 {
-	strcpy_s(dest, sizeof(dest), session_id);
+	xr_strcpy(dest, sizeof(dest), session_id);
 	static const char* denied_symbols = "/\\?%%*:|\"<>.";
 	size_t tmp_length = xr_strlen(dest);
 	size_t start_pos = 0;
@@ -1796,7 +1796,7 @@ void game_cl_mp::add_detected_cheater(shared_str const & file_name, string256 di
 {
 	detected_cheater_t	tmp_cheater;
 	tmp_cheater.m_file_name			= file_name;
-	strcpy_s						(tmp_cheater.m_diff, diff);
+	xr_strcpy						(tmp_cheater.m_diff, diff);
 	tmp_cheater.m_detect_time		= Device.dwTimeGlobal;
 	m_detected_cheaters.push_back	(tmp_cheater);
 }

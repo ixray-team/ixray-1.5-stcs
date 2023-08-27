@@ -116,11 +116,11 @@ LPCSTR CObjectHandlerPlanner::action2string(const _action_id_type &id)
 	LPSTR S = m_temp_string;
 	if (action_object_id(id) != 0xffff)
 		if (Level().Objects.net_Find(action_object_id(id)))
-			strcpy_s	(S,sizeof(m_temp_string),*Level().Objects.net_Find(action_object_id(id))->cName());
+			xr_strcpy	(S,sizeof(m_temp_string),*Level().Objects.net_Find(action_object_id(id))->cName());
 		else
-			strcpy_s	(S,sizeof(m_temp_string),"no_items");
+			xr_strcpy	(S,sizeof(m_temp_string),"no_items");
 	else
-		strcpy_s	(S,sizeof(m_temp_string),"no_items");
+		xr_strcpy	(S,sizeof(m_temp_string),"no_items");
 	strcat		(S,":");
 	switch (action_state_id(id)) {
 		case ObjectHandlerSpace::eWorldOperatorShow			: {strcat(S,"Show");					break;}
@@ -168,11 +168,11 @@ LPCSTR CObjectHandlerPlanner::property2string(const _condition_type &id)
 	LPSTR S = m_temp_string;
 	if (action_object_id(id) != 0xffff)
 		if (Level().Objects.net_Find(action_object_id(id)))
-			strcpy_s	(S,sizeof(m_temp_string),*Level().Objects.net_Find(action_object_id(id))->cName());
+			xr_strcpy	(S,sizeof(m_temp_string),*Level().Objects.net_Find(action_object_id(id))->cName());
 		else
-			strcpy_s	(S,sizeof(m_temp_string),"no_items");
+			xr_strcpy	(S,sizeof(m_temp_string),"no_items");
 	else
-		strcpy_s	(S,sizeof(m_temp_string),"no_items");
+		xr_strcpy	(S,sizeof(m_temp_string),"no_items");
 	strcat		(S,":");
 	switch (action_state_id(id)) {
 		case ObjectHandlerSpace::eWorldPropertyHidden			: {strcat(S,"Hidden");				break;}

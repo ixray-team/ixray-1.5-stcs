@@ -44,7 +44,7 @@ void CTextureDescrMngr::LoadTHM(LPCSTR initial)
 		
 		FS.update_path		(fn, initial, (*It).name.c_str());
 		IReader* F			= FS.r_open(fn);
-		strcpy_s			(fn,(*It).name.c_str());
+		xr_strcpy			(fn,(*It).name.c_str());
 		fix_texture_thm_name(fn);
 
 		R_ASSERT			(F->find_chunk(THM_CHUNK_TYPE));

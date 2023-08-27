@@ -110,7 +110,7 @@ CSE_Abstract *CALifeSimulatorBase::spawn_item	(LPCSTR section, const Fvector &po
 	abstract->m_wVersion		= SPAWN_VERSION;
 	
 	string256					s_name_replace;
-	strcpy_s						(s_name_replace,*abstract->s_name);
+	xr_strcpy						(s_name_replace,*abstract->s_name);
 	if (abstract->ID < 1000)
 		strcat					(s_name_replace,"0");
 	if (abstract->ID < 100)
@@ -166,7 +166,7 @@ CSE_Abstract *CALifeSimulatorBase::create(CSE_ALifeGroupAbstract *tpALifeGroupAb
 	k->m_bALifeControl			= true;
 	
 	string256					s_name_replace;
-	strcpy_s						(s_name_replace,*k->s_name);
+	xr_strcpy						(s_name_replace,*k->s_name);
 	if (k->ID < 1000)
 		strcat					(s_name_replace,"0");
 	if (k->ID < 100)

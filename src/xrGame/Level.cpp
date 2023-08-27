@@ -339,7 +339,7 @@ void CLevel::PrefetchSound		(LPCSTR name)
 {
 	// preprocess sound name
 	string_path					tmp;
-	strcpy_s					(tmp,name);
+	xr_strcpy					(tmp,name);
 	xr_strlwr					(tmp);
 	if (strext(tmp))			*strext(tmp)=0;
 	shared_str	snd_name		= tmp;
@@ -906,7 +906,7 @@ void CLevel::OnEvent(EVENT E, u64 P1, u64 /**P2/**/)
 	} else if (E==eDemoPlay && P1) {
 		char* name = (char*)P1;
 		string_path RealName;
-		strcpy_s		(RealName,name);
+		xr_strcpy		(RealName,name);
 		strcat			(RealName,".xrdemo");
 		Cameras().AddCamEffector(xr_new<CDemoPlay> (RealName,1.3f,0));
 	} else if (E==eChangeTrack && P1) {

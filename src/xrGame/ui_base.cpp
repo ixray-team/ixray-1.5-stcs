@@ -283,7 +283,7 @@ shared_str	ui_core::get_xml_name(LPCSTR fn)
 		string_path			str_;
 		if ( strext(fn) )
 		{
-			strcpy_s	(str, fn);
+			xr_strcpy	(str, fn);
 			*strext(str)	= 0;
 			strcat	(str, "_16.xml");
 		}else

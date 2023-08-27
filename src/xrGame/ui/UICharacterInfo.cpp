@@ -173,11 +173,11 @@ void CUICharacterInfo::InitCharacter(u16 id)
 	shared_str const& comm_id = chInfo.Community().id();
 	LPCSTR   community0 = comm_id.c_str();
 	string64 community1;
-	strcpy_s( community1, sizeof(community1), community0 );
+	xr_strcpy( community1, sizeof(community1), community0 );
 	xr_strcat( community1, sizeof(community1), "_icon" );
 
 	string64 community2;
-	strcpy_s( community2, sizeof(community2), community0 );
+	xr_strcpy( community2, sizeof(community2), community0 );
 	xr_strcat( community2, sizeof(community2), "_wide" );
 
 	m_bForceUpdate	= true;
@@ -206,10 +206,10 @@ void CUICharacterInfo::InitCharacter(u16 id)
 	{
 		if ( xr_strcmp( our_comm, "actor" ) ) // !=
 		{
-			strcpy_s( community1, sizeof(community1), our_comm.c_str() );
+			xr_strcpy( community1, sizeof(community1), our_comm.c_str() );
 			xr_strcat( community1, sizeof(community1), "_icon" );
 
-			strcpy_s( community2, sizeof(community2), our_comm.c_str() );
+			xr_strcpy( community2, sizeof(community2), our_comm.c_str() );
 			xr_strcat( community2, sizeof(community2), "_wide" );
 
 			if ( m_icons[eCommunityIcon   ] ) { m_icons[eCommunityIcon   ]->InitTexture( community1 ); }

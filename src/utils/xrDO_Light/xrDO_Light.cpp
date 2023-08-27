@@ -31,7 +31,7 @@ void Startup(LPSTR     lpCmdLine)
 	char cmd[512],name[256];
 	BOOL bModifyOptions		= FALSE;
 
-	strcpy_s(cmd,lpCmdLine);
+	xr_strcpy(cmd,lpCmdLine);
 	_strlwr(cmd);
 	if (strstr(cmd,"-?") || strstr(cmd,"-h"))			{ Help(); return; }
 	if (strstr(cmd,"-f")==0)							{ Help(); return; }

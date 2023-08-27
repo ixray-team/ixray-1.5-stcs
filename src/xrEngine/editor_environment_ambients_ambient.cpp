@@ -28,7 +28,7 @@ using editor::environment::effects::effect;
 template <>
 void property_collection<ambient::effect_container_type, ambient>::display_name	(u32 const& item_index, LPSTR const& buffer, u32 const& buffer_size)
 {
-	strcpy_s				(buffer, buffer_size, m_container[item_index]->id().c_str());
+	xr_strcpy				(buffer, buffer_size, m_container[item_index]->id().c_str());
 }
 
 template <>
@@ -42,7 +42,7 @@ editor::property_holder* property_collection<ambient::effect_container_type, amb
 template <>
 void property_collection<ambient::sound_container_type, ambient>::display_name	(u32 const& item_index, LPSTR const& buffer, u32 const& buffer_size)
 {
-	strcpy_s				(buffer, buffer_size, m_container[item_index]->id().c_str());
+	xr_strcpy				(buffer, buffer_size, m_container[item_index]->id().c_str());
 }
 
 template <>
@@ -130,7 +130,7 @@ void ambient::save			(CInifile& config)
 		*temp				= 0;
 		for (i = b; i != e; ++i) {
 			if (i == b) {
-				strcpy_s	(temp, count, (*i)->id().c_str());
+				xr_strcpy	(temp, count, (*i)->id().c_str());
 				continue;
 			}
 
@@ -154,7 +154,7 @@ void ambient::save			(CInifile& config)
 		*temp				= 0;
 		for (i = b; i != e; ++i) {
 			if (i == b) {
-				strcpy_s	(temp, count, (*i)->id().c_str());
+				xr_strcpy	(temp, count, (*i)->id().c_str());
 				continue;
 			}
 

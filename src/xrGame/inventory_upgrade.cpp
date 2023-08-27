@@ -122,7 +122,7 @@ void Upgrade::log_hierarchy( LPCSTR nest )
 {
 	u32 sz =  (xr_strlen(nest) + 4) * sizeof(char);
 	PSTR	nest2 = (PSTR)_alloca( sz );
-	strcpy_s( nest2, sz , nest );
+	xr_strcpy( nest2, sz , nest );
 	strcat( nest2, "   " );
 	Msg( "%s<u> %s", nest2, id_str() );
 

@@ -100,7 +100,7 @@ dxRender_Visual*	CModelPool::Instance_Load		(const char* N, BOOL allow_register)
 
 	// Add default ext if no ext at all
 	if (0==strext(N))	strconcat	(sizeof(name),name,N,".ogf");
-	else				strcpy_s	(name,sizeof(name),N);
+	else				xr_strcpy	(name,sizeof(name),N);
 
 	// Load data from MESHES or LEVEL
 	if (!FS.exist(N))	{
@@ -114,7 +114,7 @@ dxRender_Visual*	CModelPool::Instance_Load		(const char* N, BOOL allow_register)
 #endif
 			}
 	} else {
-		strcpy_s			(fn,N);
+		xr_strcpy			(fn,N);
 	}
 	
 	// Actual loading
@@ -224,7 +224,7 @@ dxRender_Visual* CModelPool::Create(const char* name, IReader* data)
 	if (!name||!name[0])	return 0;
 #endif
 	string_path low_name;	VERIFY	(xr_strlen(name)<sizeof(low_name));
-	strcpy_s(low_name,name);	_strlwr	(low_name);
+	xr_strcpy(low_name,name);	_strlwr	(low_name);
 	if (strext(low_name))	*strext	(low_name)=0;
 //	Msg						("-CREATE %s",low_name);
 
@@ -261,7 +261,7 @@ dxRender_Visual* CModelPool::Create(const char* name, IReader* data)
 dxRender_Visual* CModelPool::CreateChild(LPCSTR name, IReader* data)
 {
 	string256 low_name;		VERIFY	(xr_strlen(name)<256);
-	strcpy_s(low_name,name);	_strlwr	(low_name);
+	xr_strcpy(low_name,name);	_strlwr	(low_name);
 	if (strext(low_name))	*strext	(low_name) = 0;
 
 	// 1. Search for already loaded model

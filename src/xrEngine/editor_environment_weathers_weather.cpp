@@ -23,7 +23,7 @@ using editor::environment::weathers::time;
 template <>
 void property_collection<weather::container_type, weather>::display_name	(u32 const& item_index, LPSTR const& buffer, u32 const& buffer_size)
 {
-	strcpy_s			(buffer, buffer_size, m_container[item_index]->id().c_str());
+	xr_strcpy			(buffer, buffer_size, m_container[item_index]->id().c_str());
 }
 
 template <>
@@ -241,7 +241,7 @@ shared_str weather::try_all				(u32& hours_, u32& minutes_, u32& seconds_) const
 shared_str weather::generate_unique_id	(shared_str const& start) const
 {
 	string16			id;
-	strcpy_s			(id, start.c_str());
+	xr_strcpy			(id, start.c_str());
 
 	VERIFY				(xr_strlen(id) == 8);
 	VERIFY				(is_digit(id[0]));

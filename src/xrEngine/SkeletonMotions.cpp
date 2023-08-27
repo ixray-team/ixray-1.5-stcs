@@ -25,7 +25,7 @@ u16 CPartition::part_id(const shared_str& name) const
 void CPartition::load(IKinematics* V, LPCSTR model_name)
 {
 	string_path fn, fn_full;
-	strcpy_s(fn, sizeof(fn), model_name);
+	xr_strcpy(fn, sizeof(fn), model_name);
 	if(strext(fn))
 		*strext(fn) = 0;
 	xr_strcat(fn, sizeof(fn), ".ltx");

@@ -26,7 +26,7 @@ void simplify_texture(string_path &fn)
 		if (strstr(fn, "fx\\")) return;
 		if (strstr(fn, "glow\\")) return;
 		if (strstr(fn, "map\\")) return;
-		strcpy_s( fn, "ed\\ed_not_existing_texture" );
+		xr_strcpy( fn, "ed\\ed_not_existing_texture" );
 	}
 }
 
@@ -169,7 +169,7 @@ void		CResourceManager::_DeleteDecl		(const SDeclaration* dcl)
 SVS*	CResourceManager::_CreateVS		(LPCSTR _name)
 {
 	string_path			name;
-	strcpy_s				(name,_name);
+	xr_strcpy				(name,_name);
 	if (0 == ::Render->m_skinning)	strcat(name,"_0");
 	if (1 == ::Render->m_skinning)	strcat(name,"_1");
 	if (2 == ::Render->m_skinning)	strcat(name,"_2");
@@ -518,7 +518,7 @@ CTexture* CResourceManager::_CreateTexture	(LPCSTR _Name)
 	if (0==xr_strcmp(_Name,"null"))	return 0;
 	R_ASSERT		(_Name && _Name[0]);
 	string_path		Name;
-	strcpy_s			(Name,_Name); //. andy if (strext(Name)) *strext(Name)=0;
+	xr_strcpy			(Name,_Name); //. andy if (strext(Name)) *strext(Name)=0;
 	fix_texture_name (Name);
 
 #ifdef	DEBUG

@@ -1270,7 +1270,7 @@ void game_cl_CaptureTheArtefact::OnVoteStart(NET_Packet& P)
 			VERIFY		(ted_str);
 			tcmd_len	= xr_strlen(ted_str) + 1;
 			tcmd_name		= static_cast<char*>(_alloca(tcmd_len));
-			strcpy_s(tcmd_name, tcmd_len, ted_str);
+			xr_strcpy(tcmd_name, tcmd_len, ted_str);
 #ifdef CLIENT_CTA_LOG
 			Msg("---Translated command to: %s", tcmd_name);
 #endif
@@ -1280,7 +1280,7 @@ void game_cl_CaptureTheArtefact::OnVoteStart(NET_Packet& P)
 
 	u32					vstr_size = (args_count * (psize + 1)) + tcmd_len + 1;
 	char*				vstr = static_cast<char*>(_alloca(vstr_size));
-	strcpy_s			(vstr, vstr_size, tcmd_name);
+	xr_strcpy			(vstr, vstr_size, tcmd_name);
 	for (int i = 0; i < args_count; ++i)
 	{
 #ifdef CLIENT_CTA_LOG
@@ -1578,7 +1578,7 @@ void game_cl_CaptureTheArtefact::OnRender()
 				IPos.y -= pTS->Indicator_r2;
 				VERIFY(ps->getName());
 				string64 upper_name;
-				strcpy_s(upper_name, ps->getName());
+				xr_strcpy(upper_name, ps->getName());
 				_strupr_s(upper_name);
 				pActor->RenderText(upper_name, IPos, &dup, PLAYER_NAME_COLOR);
 			}

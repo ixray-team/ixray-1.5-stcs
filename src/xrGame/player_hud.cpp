@@ -75,7 +75,7 @@ void player_hud_motion_container::load(IKinematicsAnimated* model, const shared_
 			for(u32 i=0; i<=8; ++i)
 			{
 				if(i==0)
-					strcpy_s				(buff,pm->m_base_name.c_str());		
+					xr_strcpy				(buff,pm->m_base_name.c_str());		
 				else
 					sprintf				(buff,"%s%d",pm->m_base_name.c_str(),i);		
 

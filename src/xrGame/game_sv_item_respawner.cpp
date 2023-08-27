@@ -184,7 +184,7 @@ u32 item_respawn_manager::load_section_items(CInifile & ini, const char* section
 	while (ini.line_exist(section_name, item_name))
 	{
 		section_item	temp_sect_item;
-		strcpy_s(item_value, ini.r_string(section_name, item_name));
+		xr_strcpy(item_value, ini.r_string(section_name, item_name));
 		if (!parse_string(item_value, xr_strlen(item_value), temp_sect_item))
 		{
 			Msg("! WARNING: failed to parse item [%s] in section [%s]", item_name, section_name);

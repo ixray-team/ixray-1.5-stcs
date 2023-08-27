@@ -792,7 +792,7 @@ void CPHMovementControl::Load					(LPCSTR section){
 
 	//capture
 	
-	//strcpy_s(m_capture_bone,pSettings->r_string(section,"capture_bone"));
+	//xr_strcpy(m_capture_bone,pSettings->r_string(section,"capture_bone"));
 	
 	Fbox	bb;
 

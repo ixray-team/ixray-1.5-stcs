@@ -205,7 +205,7 @@ public:
 	}
 	virtual void	Info	(TInfo& I)		
 	{
-		strcpy_s(I,"game difficulty"); 
+		xr_strcpy(I,"game difficulty"); 
 	}
 };
 
@@ -517,7 +517,7 @@ public:
 		string_path				S,S1;
 		S[0]					= 0;
 //.		sscanf					(args ,"%s",S);
-		strcpy_s					(S,args);
+		xr_strcpy					(S,args);
 		
 #ifdef DEBUG
 		CTimer					timer;
@@ -651,7 +651,7 @@ public:
 		}
 		
 		if (saved_game && *saved_game) {
-			strcpy_s(g_last_saved_game, saved_game);
+			xr_strcpy(g_last_saved_game, saved_game);
 			return;
 		}
 
@@ -853,13 +853,13 @@ public:
 	virtual void	Info	(TInfo& I)		
 	{
 		if(strstr(cName,"script_debug_break")==cName )
-			strcpy_s(I,"initiate script debugger [DebugBreak] command"); 
+			xr_strcpy(I,"initiate script debugger [DebugBreak] command"); 
 
 		else if(strstr(cName,"script_debug_stop")==cName )
-			strcpy_s(I,"stop script debugger activity"); 
+			xr_strcpy(I,"stop script debugger activity"); 
 
 		else if(strstr(cName,"script_debug_restart")==cName )
-			strcpy_s(I,"restarts script debugger or start if no script debugger presents"); 
+			xr_strcpy(I,"restarts script debugger or start if no script debugger presents"); 
 	}
 };
 #endif // #if defined(USE_DEBUGGER) && !defined(USE_LUA_STUDIO)
@@ -894,7 +894,7 @@ public:
 	}
 	virtual void	Info	(TInfo& I)		
 	{
-		strcpy_s(I,"dumps all infoportions that actor have"); 
+		xr_strcpy(I,"dumps all infoportions that actor have"); 
 	}
 };
 class CCC_DumpTasks : public IConsole_Command {
@@ -907,7 +907,7 @@ public:
 	}
 	virtual void	Info	(TInfo& I)		
 	{
-		strcpy_s(I,"dumps all tasks that actor have"); 
+		xr_strcpy(I,"dumps all tasks that actor have"); 
 	}
 };
 #include "map_manager.h"
@@ -919,7 +919,7 @@ public:
 	}
 	virtual void	Info	(TInfo& I)		
 	{
-		strcpy_s(I,"dumps all currentmap locations"); 
+		xr_strcpy(I,"dumps all currentmap locations"); 
 	}
 
 };
@@ -944,7 +944,7 @@ public:
 	}
 	virtual void	Info	(TInfo& I)		
 	{
-		strcpy_s(I,"dumps all creature names"); 
+		xr_strcpy(I,"dumps all creature names"); 
 	}
 
 };
@@ -1031,7 +1031,7 @@ public:
 	
 	//virtual void	Info	(TInfo& I)		
 	//{
-	//	strcpy_s(I,"restart game fast"); 
+	//	xr_strcpy(I,"restart game fast"); 
 	//}
 };
 #endif
@@ -1182,7 +1182,7 @@ public:
 	}
 
 	virtual void Status(TStatus& S) {
-		strcpy_s( S, "<script_name> (Specify script name!)" );
+		xr_strcpy( S, "<script_name> (Specify script name!)" );
 	}
 
 	virtual void Save(IWriter* F) {
@@ -1223,7 +1223,7 @@ public:
 	}//void	Execute
 
 	virtual void Status(TStatus& S) {
-		strcpy_s(S, "<script_name.function()> (Specify script and function name!)");
+		xr_strcpy(S, "<script_name.function()> (Specify script and function name!)");
 	}
 	
 	virtual void Save( IWriter* F ) {
@@ -1255,7 +1255,7 @@ public:
 
 	virtual void	Info	(TInfo& I)
 	{
-		strcpy_s				(I,"[0.001 - 1000.0]");
+		xr_strcpy				(I,"[0.001 - 1000.0]");
 	}
 
 	virtual void fill_tips(vecTips& tips, u32 mode) {
@@ -1507,7 +1507,7 @@ public:
 		if (0==strext(arguments))
 			strconcat			(sizeof(name),name,arguments,".ogf");
 		else
-			strcpy_s			(name,sizeof(name),arguments);
+			xr_strcpy			(name,sizeof(name),arguments);
 
 		if (!FS.exist(arguments) && !FS.exist(fn, "$level$", name) && !FS.exist(fn, "$game_meshes$", name)) {
 			Msg					("! Cannot find visual \"%s\"",arguments);
@@ -1706,7 +1706,7 @@ public:
 	}
 
 	virtual void Info(TInfo &I) {
-		strcpy_s(I, "Set new weather");
+		xr_strcpy(I, "Set new weather");
 	}
 };
 

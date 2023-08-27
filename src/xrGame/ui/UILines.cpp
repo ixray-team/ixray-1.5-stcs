@@ -181,7 +181,7 @@ void CUILines::ParseText(){
 				char szTempLine[ MAX_MB_CHARS ] , *pszSearch = NULL;
 				size_t llen = xr_strlen( line->m_subLines[i].m_text.c_str() );
 				VERIFY( llen < MAX_MB_CHARS );
-				strcpy_s( szTempLine , line->m_subLines[i].m_text.c_str() );
+				xr_strcpy( szTempLine , line->m_subLines[i].m_text.c_str() );
 				pszSearch = szTempLine;
 				while ( ( pszTemp = strstr( pszSearch , "\\n" ) ) != NULL ) {
 					bNewLines = TRUE;

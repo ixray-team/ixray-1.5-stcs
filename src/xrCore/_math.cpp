@@ -232,7 +232,7 @@ void _initialize_cpu	(void)
 		CPU::ID.feature	&= ~_CPU_FEATURE_SSE2	;
 	};
 
-	string128	features;	strcpy_s(features,sizeof(features),"RDTSC");
+	string128	features;	xr_strcpy(features,sizeof(features),"RDTSC");
     if (CPU::ID.feature&_CPU_FEATURE_MMX)	strcat(features,", MMX");
     if (CPU::ID.feature&_CPU_FEATURE_3DNOW)	strcat(features,", 3DNow!");
     if (CPU::ID.feature&_CPU_FEATURE_SSE)	strcat(features,", SSE");

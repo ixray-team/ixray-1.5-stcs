@@ -12,7 +12,7 @@ CUIFrameRect::CUIFrameRect()
 void CUIFrameRect::InitTextureEx(LPCSTR texture, LPCSTR  shader)
 {
 	string_path		buf;
-	strcpy_s			(buf,texture); 
+	xr_strcpy			(buf,texture); 
 
 	CUITextureMaster::InitTexture(strconcat(sizeof(buf),buf,texture,"_back"),shader,	&frame[CUIFrameRect::fmBK]);
 	CUITextureMaster::InitTexture(strconcat(sizeof(buf),buf,texture,"_l"),	shader,		&frame[CUIFrameRect::fmL]);

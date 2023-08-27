@@ -30,12 +30,12 @@
 #endif
 
 #ifdef  _EDITOR
-IC void strcpy_s(char* strDestination,   size_t sizeInBytes,   const char *strSource)
+IC void xr_strcpy(char* strDestination,   size_t sizeInBytes,   const char *strSource)
 {
 	strcpy(strDestination, strSource);
 }
 
-IC void strcpy_s(char* strDestination,   const char *strSource)
+IC void xr_strcpy(char* strDestination,   const char *strSource)
 {
 	strcpy(strDestination, strSource);
 }
@@ -188,13 +188,11 @@ IC int							xr_strcmp				( const char* S1, const char* S2 )
 #ifndef  _EDITOR
 #ifndef MASTER_GOLD
 
-inline errno_t xr_strcpy		( LPSTR destination, size_t const destination_size, LPCSTR source )
-{
-	return						strcpy_s( destination, destination_size, source );
+inline errno_t xr_strcpy(LPSTR destination, size_t const destination_size, LPCSTR source) {
+	return						strcpy_s(destination, destination_size, source);
 }
 
-inline errno_t xr_strcat(LPSTR destination, size_t const buffer_size, LPCSTR source)
-{
+inline errno_t xr_strcat(LPSTR destination, size_t const buffer_size, LPCSTR source) {
 	return strcat_s(destination, buffer_size, source);
 }
 

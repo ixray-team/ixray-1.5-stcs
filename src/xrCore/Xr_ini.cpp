@@ -104,7 +104,7 @@ CInifile::CInifile(LPCSTR szFileName, BOOL ReadOnly, BOOL bLoad, BOOL SaveAtEnd)
 	m_file_name[0]	= 0;
 	m_flags.zero	();
 	if(szFileName)
-		strcpy_s		(m_file_name,szFileName);
+		xr_strcpy		(m_file_name,szFileName);
 
 	m_flags.set		(eSaveAtEnd, SaveAtEnd);
 	m_flags.set		(eReadOnly, ReadOnly);
@@ -269,7 +269,7 @@ void	CInifile::Load(IReader* F, LPCSTR path)
 					*t				= 0;
 					_Trim			(name);
 					++t;
-					strcpy_s		(value_raw, sizeof(value_raw), t);
+					xr_strcpy		(value_raw, sizeof(value_raw), t);
 					bInsideSTR		= _parse(str2, value_raw);
 					if(bInsideSTR)//multiline str value
 					{
@@ -390,7 +390,7 @@ bool CInifile::save_as	(LPCSTR new_fname)
 {
 	// save if needed
     if (new_fname && new_fname[0])
-		strcpy_s		(m_file_name, new_fname);
+		xr_strcpy		(m_file_name, new_fname);
 
     R_ASSERT			(m_file_name&&m_file_name[0]);
     IWriter* F			= FS.w_open_ex(m_file_name);
@@ -437,7 +437,7 @@ BOOL			CInifile::section_exist	( const shared_str& S	)					{ return	section_exis
 //--------------------------------------------------------------------------------------
 CInifile::Sect& CInifile::r_section( LPCSTR S )
 {
-	char	section[256]; strcpy_s(section,sizeof(section),S); _strlwr(section);
+	char	section[256]; xr_strcpy(section,sizeof(section),S); _strlwr(section);
 	RootIt I = std::lower_bound(DATA.begin(),DATA.end(),section,sect_pred);
 	if (!(I!=DATA.end() && xr_strcmp(*(*I)->Name,section)==0))
 		Debug.fatal(DEBUG_INFO,"Can't open section '%s'",S);
@@ -460,7 +460,7 @@ shared_str		CInifile::r_string_wb(LPCSTR S, LPCSTR L)	{
 	if	(0==_base)					return	shared_str(0);
 
 	string4096						_original;
-	strcpy_s						(_original,_base);
+	xr_strcpy						(_original,_base);
 	u32			_len				= xr_strlen(_original);
 	if	(0==_len)					return	shared_str("");
 	if	('"'==_original[_len-1])	_original[_len-1]=0;				// skip end

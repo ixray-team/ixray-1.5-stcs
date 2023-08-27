@@ -338,11 +338,11 @@ public:
 		string_path		cmd;
 		
 		switch	(*value)	{
-			case 0:		strcpy_s(_cfg, "rspec_minimum.ltx");	break;
-			case 1:		strcpy_s(_cfg, "rspec_low.ltx");		break;
-			case 2:		strcpy_s(_cfg, "rspec_default.ltx");	break;
-			case 3:		strcpy_s(_cfg, "rspec_high.ltx");		break;
-			case 4:		strcpy_s(_cfg, "rspec_extreme.ltx");	break;
+			case 0:		xr_strcpy(_cfg, "rspec_minimum.ltx");	break;
+			case 1:		xr_strcpy(_cfg, "rspec_low.ltx");		break;
+			case 2:		xr_strcpy(_cfg, "rspec_default.ltx");	break;
+			case 3:		xr_strcpy(_cfg, "rspec_high.ltx");		break;
+			case 4:		xr_strcpy(_cfg, "rspec_extreme.ltx");	break;
 		}
 		FS.update_path			(_cfg,"$game_config$",_cfg);
 		strconcat				(sizeof(cmd),cmd,"cfg_load", " ", _cfg);

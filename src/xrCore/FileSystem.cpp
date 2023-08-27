@@ -76,7 +76,7 @@ LPCSTR MakeFilter(string1024& dest, LPCSTR info, LPCSTR ext)
 		{
             strconcat		(sizeof(dest),dst,info," (",ext,")");
             dst				+= (xr_strlen(dst)+1);
-            strcpy_s			(dst, sizeof(dest), ext);
+            xr_strcpy			(dst, sizeof(dest), ext);
             dst				+= (xr_strlen(ext)+1);
         }
         for (int i=0; i<icnt; i++)
@@ -85,7 +85,7 @@ LPCSTR MakeFilter(string1024& dest, LPCSTR info, LPCSTR ext)
             _GetItem		(ext,i,buf,';');
             strconcat		(sizeof(dest), dst,info," (",buf,")");
             dst				+= (xr_strlen(dst)+1);
-            strcpy_s			(dst, sizeof(dest) - (dst - dest), buf);
+            xr_strcpy			(dst, sizeof(dest) - (dst - dest), buf);
             dst				+= (xr_strlen(buf)+1);
         }
     }
@@ -115,7 +115,7 @@ bool EFS_Utils::GetOpenNameInternal( LPCSTR initial,  LPSTR buffer, int sz_buf, 
             {
                 string_path		bb;
             	P._update		(bb, buffer);
-                strcpy_s		(buffer, sz_buf, bb);
+                xr_strcpy		(buffer, sz_buf, bb);
              }
         }
     }
@@ -128,7 +128,7 @@ bool EFS_Utils::GetOpenNameInternal( LPCSTR initial,  LPSTR buffer, int sz_buf, 
 	ofn.nFilterIndex 	= start_flt_ext+2;
     ofn.lpstrTitle      = "Open a File";
     string512 path; 
-	strcpy_s				(path,(offset&&offset[0])?offset:P.m_Path);
+	xr_strcpy				(path,(offset&&offset[0])?offset:P.m_Path);
 	ofn.lpstrInitialDir = path;
 	ofn.Flags =         OFN_PATHMUSTEXIST	|
                         OFN_FILEMUSTEXIST	|
@@ -163,8 +163,8 @@ bool EFS_Utils::GetOpenNameInternal( LPCSTR initial,  LPSTR buffer, int sz_buf, 
             char 		buf	  [255*255];
             char 		fns	  [255*255];
 
-            strcpy_s		(dir, buffer);
-            strcpy_s		(fns, dir);
+            xr_strcpy		(dir, buffer);
+            xr_strcpy		(fns, dir);
             strcat		(fns, "\\");
             strcat		(fns, _GetItem	(buffer,1,buf,0x0));
 
@@ -175,7 +175,7 @@ bool EFS_Utils::GetOpenNameInternal( LPCSTR initial,  LPSTR buffer, int sz_buf, 
                 strcat	(fns,"\\");
                 strcat	(fns,_GetItem(buffer,i,buf,0x0));
             }
-            strcpy_s		(buffer, sz_buf, fns);
+            xr_strcpy		(buffer, sz_buf, fns);
         }
     }
     _strlwr				(buffer);
@@ -204,7 +204,7 @@ bool EFS_Utils::GetSaveName( LPCSTR initial, string_path& buffer, LPCSTR offset,
 	ofn.nMaxFile 		= sizeof(buffer);
 	ofn.nFilterIndex 	= start_flt_ext+2;
     ofn.lpstrTitle      = "Save a File";
-    string512 path; strcpy_s(path,(offset&&offset[0])?offset:P.m_Path);
+    string512 path; xr_strcpy(path,(offset&&offset[0])?offset:P.m_Path);
 	ofn.lpstrInitialDir = path;
 	ofn.Flags 			= OFN_HIDEREADONLY|OFN_OVERWRITEPROMPT|OFN_NOCHANGEDIR;
     ofn.FlagsEx			= OFN_EX_NOPLACESBAR;

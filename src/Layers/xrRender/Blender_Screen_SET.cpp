@@ -39,16 +39,16 @@ void	CBlender_Screen_SET::Save	( IWriter& fs	)
 	// Blend mode
 	xrP_TOKEN::Item	I;
 	xrPWRITE_PROP	(fs,"Blending",	xrPID_TOKEN,     oBlend);
-	I.ID = 0; strcpy_s(I.str,"SET");			fs.w		(&I,sizeof(I));
-	I.ID = 1; strcpy_s(I.str,"BLEND");		fs.w		(&I,sizeof(I));
-	I.ID = 2; strcpy_s(I.str,"ADD");			fs.w		(&I,sizeof(I));
-	I.ID = 3; strcpy_s(I.str,"MUL");			fs.w		(&I,sizeof(I));
-	I.ID = 4; strcpy_s(I.str,"MUL_2X");		fs.w		(&I,sizeof(I));
-	I.ID = 5; strcpy_s(I.str,"ALPHA-ADD");	fs.w		(&I,sizeof(I));
-	I.ID = 6; strcpy_s(I.str,"MUL_2X (B^D)");	fs.w		(&I,sizeof(I));
-	I.ID = 7; strcpy_s(I.str,"SET (2r)");		fs.w		(&I,sizeof(I));
-	I.ID = 8; strcpy_s(I.str,"BLEND (2r)");	fs.w		(&I,sizeof(I));
-	I.ID = 9; strcpy_s(I.str,"BLEND (4r)");	fs.w		(&I,sizeof(I));
+	I.ID = 0; xr_strcpy(I.str,"SET");			fs.w		(&I,sizeof(I));
+	I.ID = 1; xr_strcpy(I.str,"BLEND");		fs.w		(&I,sizeof(I));
+	I.ID = 2; xr_strcpy(I.str,"ADD");			fs.w		(&I,sizeof(I));
+	I.ID = 3; xr_strcpy(I.str,"MUL");			fs.w		(&I,sizeof(I));
+	I.ID = 4; xr_strcpy(I.str,"MUL_2X");		fs.w		(&I,sizeof(I));
+	I.ID = 5; xr_strcpy(I.str,"ALPHA-ADD");	fs.w		(&I,sizeof(I));
+	I.ID = 6; xr_strcpy(I.str,"MUL_2X (B^D)");	fs.w		(&I,sizeof(I));
+	I.ID = 7; xr_strcpy(I.str,"SET (2r)");		fs.w		(&I,sizeof(I));
+	I.ID = 8; xr_strcpy(I.str,"BLEND (2r)");	fs.w		(&I,sizeof(I));
+	I.ID = 9; xr_strcpy(I.str,"BLEND (4r)");	fs.w		(&I,sizeof(I));
 	
 	// Params
 	xrPWRITE_PROP		(fs,"Texture clamp",xrPID_BOOL,		oClamp);

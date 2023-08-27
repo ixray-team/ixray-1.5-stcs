@@ -126,7 +126,7 @@ void CUICDkey::SaveValue()
 {
 	CUIOptionsItem::SaveValue();
 
-	strcpy_s( gsCDKey, sizeof(gsCDKey), CMainMenu::AddHyphens(inherited::GetText()) );
+	xr_strcpy( gsCDKey, sizeof(gsCDKey), CMainMenu::AddHyphens(inherited::GetText()) );
 	WriteCDKey_ToRegistry( gsCDKey );
 
 	if ( MainMenu()->IsCDKeyIsValid() )
@@ -157,7 +157,7 @@ void CUIMPPlayerName::OnFocusLost()
 		GetMessageTarget()->SendMessage(this, EDIT_TEXT_COMMIT, NULL);
 	}
 	string64 name;
-	strcpy_s( name, GetText() );
+	xr_strcpy( name, GetText() );
 	string256 new_name;
 	modify_player_name(name, new_name);
 	WritePlayerName_ToRegistry( new_name );

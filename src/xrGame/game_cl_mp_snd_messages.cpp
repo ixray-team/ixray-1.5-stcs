@@ -9,7 +9,7 @@ void	game_cl_mp::LoadSndMessage			(LPCSTR caSection, LPCSTR caLine, u32 ID)
 	if (!pSettings->line_exist(caSection, caLine)) return;
 
 	string4096			Line;
-	strcpy_s(Line, pSettings->r_string(caSection, caLine));
+	xr_strcpy(Line, pSettings->r_string(caSection, caLine));
 	u32 count	= _GetItemCount(Line);
 	if (count < 2) return;
 	string4096 Name, Prior;

@@ -15,7 +15,7 @@ CTAGameClCaptionsManager::CTAGameClCaptionsManager()
 	m_can_show_payspawn			=	false;
 	m_can_show_buy				=	false;
 	m_winner_team				=	etSpectatorsTeam;
-	strcpy_s(timelimit_message, "00:00:00");
+	xr_strcpy(timelimit_message, "00:00:00");
 }
 
 CTAGameClCaptionsManager::~CTAGameClCaptionsManager()

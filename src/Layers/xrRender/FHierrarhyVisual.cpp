@@ -67,7 +67,7 @@ void FHierrarhyVisual::Load(const char* N, IReader *data, u32 dwFlags)
                 IReader* O = OBJ->open_chunk(0);
                 for (int count=1; O; count++) {
 					string_path			name_load,short_name,num;
-					strcpy_s				(short_name,N);
+					xr_strcpy				(short_name,N);
 					if (strext(short_name)) *strext(short_name)=0;
 					strconcat			(sizeof(name_load),name_load,short_name,":",_itoa(count,num,10));
 					children.push_back	((dxRender_Visual*)::Render->model_CreateChild(name_load,O));

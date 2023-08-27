@@ -172,7 +172,7 @@ u32				xrGameSpyServer::OnMessage(NET_Packet& P, ClientID sender)			// Non-Zero 
 			{
 				return 0;
 			}
-			strcpy_s(ResponseStr, "");
+			xr_strcpy(ResponseStr, "");
 			P.r_stringZ(ResponseStr);
 			if (xr_strlen(ResponseStr) == 0)
 			{
@@ -185,7 +185,7 @@ u32				xrGameSpyServer::OnMessage(NET_Packet& P, ClientID sender)			// Non-Zero 
 				Msg("Server : Respond accepted, Authenticate client.");
 #endif // #ifndef MASTER_GOLD
 				m_GCDServer.AuthUser(int(CL->ID.value()), CL->m_cAddress.m_data.data, CL->m_pChallengeString, ResponseStr, this);
-				strcpy_s(CL->m_guid,128,this->GCD_Server()->GetKeyHash(CL->ID.value()));
+				xr_strcpy(CL->m_guid,128,this->GCD_Server()->GetKeyHash(CL->ID.value()));
 			}
 			else
 			{
@@ -204,7 +204,7 @@ bool xrGameSpyServer::Check_ServerAccess( IClient* CL, string512& reason )
 {
 	if( !HasProtected() )
 	{
-		strcpy_s( reason, "Access successful by server. " );
+		xr_strcpy( reason, "Access successful by server. " );
 		return true;
 	}
 
@@ -212,20 +212,20 @@ bool xrGameSpyServer::Check_ServerAccess( IClient* CL, string512& reason )
 	FS.update_path( fn, "$app_data_root$", "server_users.ltx" );
 	if( FS.exist(fn) == NULL )
 	{
-		strcpy_s( reason, "Access denied by server. " );
+		xr_strcpy( reason, "Access denied by server. " );
 		return false;
 	}
 
 	CInifile inif( fn );
 	if( inif.section_exist( "users" ) == FALSE )
 	{
-		strcpy_s( reason, "Access denied by server. " );
+		xr_strcpy( reason, "Access denied by server. " );
 		return false;
 	}
 
 	if( inif.line_count( "users" ) == 0 )
 	{
-		strcpy_s( reason, "Access denied by server. " );
+		xr_strcpy( reason, "Access denied by server. " );
 		return false;
 	}
 	
@@ -233,7 +233,7 @@ bool xrGameSpyServer::Check_ServerAccess( IClient* CL, string512& reason )
 	{
 		if( game->NewPlayerName_Exists( CL, CL->name.c_str() ) )
 		{
-			strcpy_s( reason, "! Access denied by server. Login \"" );
+			xr_strcpy( reason, "! Access denied by server. Login \"" );
 			xr_strcat( reason, CL->name.c_str() );
 			xr_strcat( reason, "\" exist already. " );
 			return false;
@@ -242,13 +242,13 @@ bool xrGameSpyServer::Check_ServerAccess( IClient* CL, string512& reason )
 		shared_str pass1 = inif.r_string_wb( "users", CL->name.c_str() );
 		if( xr_strcmp( pass1, CL->pass ) == 0 )
 		{
-			strcpy_s( reason, "- User \"" );
+			xr_strcpy( reason, "- User \"" );
 			xr_strcat( reason, CL->name.c_str() );
 			xr_strcat( reason, "\" access successful by server. " );
 			return true;
 		}
 	}
-	strcpy_s( reason, "! Access denied by server. Wrong login/password. " );
+	xr_strcpy( reason, "! Access denied by server. Wrong login/password. " );
 	return false;
 }
 
@@ -264,22 +264,22 @@ void xrGameSpyServer::Assign_ServerType( string512& res )
 			if( inif.line_count( "users" ) != 0 )
 			{
 				ServerFlags.set( server_flag_protected, 1 );
-				strcpy_s( res, "# Server started as protected, using users list." );
+				xr_strcpy( res, "# Server started as protected, using users list." );
 				Msg( res );
 				return;
 			}else{
-				strcpy_s( res, "Users count in list is null." );
+				xr_strcpy( res, "Users count in list is null." );
 			}
 		}else{
-			strcpy_s( res, "Section [users] not found." );
+			xr_strcpy( res, "Section [users] not found." );
 		}
 	}else{
-		strcpy_s( res, "File <server_users.ltx> not found in folder <$app_data_root$>." );
+		xr_strcpy( res, "File <server_users.ltx> not found in folder <$app_data_root$>." );
 	}// if FS.exist(fn)
 
 	Msg( res );
 	ServerFlags.set( server_flag_protected, 0 );
-	strcpy_s( res, "# Server started without users list." );
+	xr_strcpy( res, "# Server started without users list." );
 	Msg( res );
 }
 
@@ -290,7 +290,7 @@ void xrGameSpyServer::GetServerInfo( CServerInfo* si )
 	si->AddItem( "Server name", HostName.c_str(), RGB(128,128,255) );
 	si->AddItem( "Map", MapName.c_str(), RGB(255,0,128) );
 	
-	strcpy_s( tmp, _itoa( GetPlayersCount(), tmp2, 10 ) );
+	xr_strcpy( tmp, _itoa( GetPlayersCount(), tmp2, 10 ) );
 	xr_strcat( tmp, " / ");
 	xr_strcat( tmp, _itoa( m_iMaxPlayers, tmp2, 10 ) );
 	si->AddItem( "Players", tmp, RGB(255,128,255) );
@@ -298,7 +298,7 @@ void xrGameSpyServer::GetServerInfo( CServerInfo* si )
 	string256 res;
 	si->AddItem( "Game version", QR2()->GetGameVersion( res ), RGB(0,158,255) );
 	
-	strcpy_s( res, "" );
+	xr_strcpy( res, "" );
 	if ( HasProtected() || Password.size() > 0 || HasBattlEye() )
 	{
 		if ( HasProtected() )			xr_strcat( res, "protected  " );

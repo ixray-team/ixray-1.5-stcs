@@ -14,7 +14,7 @@ using editor::environment::detail::logical_string_predicate;
 template <>
 void property_collection<manager::effect_container_type, manager>::display_name	(u32 const& item_index, LPSTR const& buffer, u32 const& buffer_size)
 {
-	strcpy_s				(buffer, buffer_size, m_container[item_index]->id());
+	xr_strcpy				(buffer, buffer_size, m_container[item_index]->id());
 }
 
 template <>

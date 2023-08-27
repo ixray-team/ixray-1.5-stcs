@@ -61,7 +61,7 @@ CALifeSimulator::CALifeSimulator		(xrServer *server, shared_str *command_line) :
 	);
 	
 	string256					temp;
-	strcpy_s						(temp,p.m_game_or_spawn);
+	xr_strcpy						(temp,p.m_game_or_spawn);
 	strcat						(temp,"/");
 	strcat						(temp,p.m_game_type);
 	strcat						(temp,"/");

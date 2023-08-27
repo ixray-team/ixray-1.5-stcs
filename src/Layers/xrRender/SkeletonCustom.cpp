@@ -162,7 +162,7 @@ void	CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
     if (LD)
 	{
         string_path		short_name;
-        strcpy_s		(short_name,sizeof(short_name),N);
+        xr_strcpy		(short_name,sizeof(short_name),N);
 
         if (strext(short_name)) *strext(short_name)=0;
         // From stream

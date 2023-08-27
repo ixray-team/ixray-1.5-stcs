@@ -1350,9 +1350,9 @@ void CActor::OnHUDDraw	(CCustomHUD*)
 		HUD().Font().pFontStat->OutNext	("Vel Actual:    [%3.2f]",m_PhysicMovementControl->GetVelocityActual());
 		switch (m_PhysicMovementControl->Environment())
 		{
-		case CPHMovementControl::peOnGround:	strcpy_s(buf,"ground");			break;
-		case CPHMovementControl::peInAir:		strcpy_s(buf,"air");				break;
-		case CPHMovementControl::peAtWall:		strcpy_s(buf,"wall");				break;
+		case CPHMovementControl::peOnGround:	xr_strcpy(buf,"ground");			break;
+		case CPHMovementControl::peInAir:		xr_strcpy(buf,"air");				break;
+		case CPHMovementControl::peAtWall:		xr_strcpy(buf,"wall");				break;
 		}
 		HUD().Font().pFontStat->OutNext	(buf);
 

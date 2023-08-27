@@ -203,7 +203,7 @@ IC	void CSpaceRestrictionManager::join_restrictions		(shared_str &restrictions, 
 {
 	string4096					m_temp1;
 	string4096					m_temp2;
-	strcpy_s						(m_temp2,*restrictions);
+	xr_strcpy						(m_temp2,*restrictions);
 	for (u32 i=0, n=_GetItemCount(*update), count = xr_strlen(m_temp2); i<n; ++i)
 		if (!restriction_presented(m_temp2,_GetItem(*update,i,m_temp1))) {
 			if (count)
@@ -218,7 +218,7 @@ IC	void CSpaceRestrictionManager::difference_restrictions	(shared_str &restricti
 {
 	string4096					m_temp1;
 	string4096					m_temp2;
-	strcpy_s						(m_temp2,"");
+	xr_strcpy						(m_temp2,"");
 	for (u32 i=0, n=_GetItemCount(*restrictions), count = 0; i<n; ++i)
 		if (!restriction_presented(update,_GetItem(*restrictions,i,m_temp1))) {
 			if (count)

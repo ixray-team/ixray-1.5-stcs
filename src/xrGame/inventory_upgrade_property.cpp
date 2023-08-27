@@ -69,7 +69,7 @@ bool Property::run_functor( LPCSTR parameter, string256& result )
 	{
 		return false;
 	}
-	strcpy_s( result, sizeof(result), functor_res );
+	xr_strcpy( result, sizeof(result), functor_res );
 	return true;
 }
 

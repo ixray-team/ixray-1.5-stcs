@@ -15,10 +15,10 @@ void CBlender_DESC::Setup	(LPCSTR N)
 	// Name
 	VERIFY(xr_strlen(N)<128);
 	VERIFY(0==strchr(N,'.'));
-	strcpy_s(cName,N);
+	xr_strcpy(cName,N);
 	_strlwr(cName);
 	
-	strcpy_s(cComputer,Core.CompName);			// Computer
+	xr_strcpy(cComputer,Core.CompName);			// Computer
 #ifndef _EDITOR
 	_tzset(); _time32( (__time32_t*)&cTime );	// Time
 #else
@@ -35,8 +35,8 @@ IBlender::IBlender()
 	oPriority.min	= 0;
 	oPriority.max	= 3;
 	oPriority.value	= 1;
-	strcpy_s			(oT_Name,	"$base0");
-	strcpy_s			(oT_xform,	"$null");
+	xr_strcpy			(oT_Name,	"$base0");
+	xr_strcpy			(oT_xform,	"$null");
 }
 
 IBlender::~IBlender()

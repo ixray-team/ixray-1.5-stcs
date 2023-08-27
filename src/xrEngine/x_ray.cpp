@@ -60,7 +60,7 @@ void compute_build_id	()
 	int					years;
 	string16			month;
 	string256			buffer;
-	strcpy_s				(buffer,__DATE__);
+	xr_strcpy				(buffer,__DATE__);
 	sscanf				(buffer,"%s %d %d",month,&days,&years);
 
 	for (int i=0; i<12; i++) {
@@ -142,11 +142,11 @@ void InitConsole	()
 #endif
 	Console->Initialize			( );
 
-	strcpy_s						(Console->ConfigFile,"user.ltx");
+	xr_strcpy						(Console->ConfigFile,"user.ltx");
 	if (strstr(Core.Params,"-ltx ")) {
 		string64				c_name;
 		sscanf					(strstr(Core.Params,"-ltx ")+5,"%[^ ] ",c_name);
-		strcpy_s					(Console->ConfigFile,c_name);
+		xr_strcpy					(Console->ConfigFile,c_name);
 	}
 }
 
@@ -666,8 +666,8 @@ int APIENTRY WinMain_impl(HINSTANCE hInstance,
 
 	// Adjust player & computer name for Asian
 	if ( pSettings->line_exist( "string_table" , "no_native_input" ) ) {
-			strcpy_s( Core.UserName , sizeof( Core.UserName ) , "Player" );
-			strcpy_s( Core.CompName , sizeof( Core.CompName ) , "Computer" );
+			xr_strcpy( Core.UserName , sizeof( Core.UserName ) , "Player" );
+			xr_strcpy( Core.CompName , sizeof( Core.CompName ) , "Computer" );
 	}
 
 #ifndef DEDICATED_SERVER
@@ -997,7 +997,7 @@ void CApplication::LoadTitleInt(LPCSTR str)
 
 	VERIFY						(ll_dwReference);
 	VERIFY						(str && xr_strlen(str)<256);
-	strcpy_s						(app_title, str);
+	xr_strcpy						(app_title, str);
 	Msg							("* phase time: %d ms",phase_timer.GetElapsed_ms());	phase_timer.Start();
 	Msg							("* phase cmem: %d K", Memory.mem_usage()/1024);
 //.	Console->Execute			("stat_memory");

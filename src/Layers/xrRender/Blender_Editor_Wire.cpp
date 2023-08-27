@@ -10,7 +10,7 @@
 CBlender_Editor_Wire::CBlender_Editor_Wire()
 {
 	description.CLS		= B_EDITOR_WIRE;
-	strcpy_s				(oT_Factor,"$null");
+	xr_strcpy				(oT_Factor,"$null");
 }
 
 CBlender_Editor_Wire::~CBlender_Editor_Wire()

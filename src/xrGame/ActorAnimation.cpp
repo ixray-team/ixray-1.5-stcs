@@ -139,14 +139,14 @@ void SActorState::CreateClimb(IKinematicsAnimated* K)
 	string16		base;
 	
 	//climb anims
-	strcpy_s(base,"cl");
+	xr_strcpy(base,"cl");
 	legs_idle		= K->ID_Cycle(strconcat(sizeof(buf),buf,base,"_idle_1"));
 	m_torso_idle	= K->ID_Cycle(strconcat(sizeof(buf),buf,base,"_torso_0_aim_0"));
 	m_walk.Create	(K,base,"_run");
 	m_run.Create	(K,base,"_run");
 
 	//norm anims
-	strcpy_s(base,"norm");
+	xr_strcpy(base,"norm");
 	legs_turn		= K->ID_Cycle(strconcat(sizeof(buf),buf,base,"_turn"));
 	death			= K->ID_Cycle(strconcat(sizeof(buf),buf,base,"_death_0"));
 	m_torso[0].Create(K,base,"_1");
@@ -574,7 +574,7 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 #ifdef _DEBUG
 	if ((Level().CurrentControlEntity() == this) && g_ShowAnimationInfo) {
 		string128 buf;
-		strcpy_s(buf,"");
+		xr_strcpy(buf,"");
 		if (isActorAccelerated(mstate_rl, IsZoomAimingMode()))		strcat(buf,"Accel ");
 		if (mstate_rl&mcCrouch)		strcat(buf,"Crouch ");
 		if (mstate_rl&mcFwd)		strcat(buf,"Fwd ");
@@ -592,9 +592,9 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 /*
 		switch (m_PhysicMovementControl->Environment())
 		{
-		case CPHMovementControl::peOnGround:	strcpy_s(buf,"ground");			break;
-		case CPHMovementControl::peInAir:		strcpy_s(buf,"air");				break;
-		case CPHMovementControl::peAtWall:		strcpy_s(buf,"wall");				break;
+		case CPHMovementControl::peOnGround:	xr_strcpy(buf,"ground");			break;
+		case CPHMovementControl::peInAir:		xr_strcpy(buf,"air");				break;
+		case CPHMovementControl::peAtWall:		xr_strcpy(buf,"wall");				break;
 		}
 		HUD().Font().pFontStat->OutNext	(buf);
 		HUD().Font().pFontStat->OutNext	("Accel     [%3.2f, %3.2f, %3.2f]",VPUSH(NET_SavedAccel));

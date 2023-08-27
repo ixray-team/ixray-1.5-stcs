@@ -78,7 +78,7 @@ void        CPostprocessAnimator::Load                            (LPCSTR name)
           Debug.fatal (DEBUG_INFO,"Can't find motion file '%s'.", name);
 #else /*_PP_EDITOR_*/
     string_path full_path;
-    strcpy_s (full_path, name);
+    xr_strcpy (full_path, name);
 #endif /*_PP_EDITOR_*/
 
     LPCSTR  ext = strext(full_path);

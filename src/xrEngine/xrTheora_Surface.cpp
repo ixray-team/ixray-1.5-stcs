@@ -79,10 +79,10 @@ BOOL CTheoraSurface::Load(const char* fname)
 	BOOL res			= m_rgb->Load(fname);
 	if (res){
 		string_path		alpha,ext;
-		strcpy_s			(alpha,fname);
+		xr_strcpy			(alpha,fname);
 		pstr pext		= strext(alpha);
 		if (pext){	
-			strcpy_s		(ext,pext);
+			xr_strcpy		(ext,pext);
 			*pext		= 0;
 		}
 		strconcat		(sizeof(alpha),alpha,alpha,"#alpha",ext);

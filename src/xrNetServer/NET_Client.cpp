@@ -383,7 +383,7 @@ if(!psNET_direct_connect)
 {
 	//
 		string256						server_name = "";
-//	strcpy_s							(server_name,options);
+//	xr_strcpy							(server_name,options);
 	if (strchr(options, '/'))
 		strncpy(server_name,options, strchr(options, '/')-options);
 	if (strchr(server_name,'/'))	*strchr(server_name,'/') = 0;
@@ -395,7 +395,7 @@ if(!psNET_direct_connect)
 		if (strchr(PSW, '/')) 
 			strncpy(password_str, PSW, strchr(PSW, '/') - PSW);
 		else
-			strcpy_s(password_str, PSW);
+			xr_strcpy(password_str, PSW);
 	}
 
 		string64				user_name_str = "";
@@ -405,7 +405,7 @@ if(!psNET_direct_connect)
 			if (strchr(NM, '/')) 
 				strncpy(user_name_str, NM, strchr(NM, '/') - NM);
 			else
-				strcpy_s(user_name_str, NM);
+				xr_strcpy(user_name_str, NM);
 		}
 
 		string64				user_pass = "";
@@ -415,14 +415,14 @@ if(!psNET_direct_connect)
 			if (strchr(UP, '/')) 
 				strncpy(user_pass, UP, strchr(UP, '/') - UP);
 			else
-				strcpy_s(user_pass, UP);
+				xr_strcpy(user_pass, UP);
 		}
 	
 	int				psSV_Port	= BASE_PORT_LAN_SV;
 	if (strstr(options, "port="))
 	{
 		string64	portstr;
-        strcpy_s(portstr, strstr(options, "port=")+5);
+        xr_strcpy(portstr, strstr(options, "port=")+5);
 		if (strchr(portstr,'/'))	*strchr(portstr,'/') = 0;
 		psSV_Port = atol(portstr);
 		clamp(psSV_Port, int(BASE_PORT), int(END_PORT));
@@ -433,7 +433,7 @@ if(!psNET_direct_connect)
 	if (strstr(options, "portcl="))
 	{
 		string64	portstr;
-		strcpy_s(portstr, strstr(options, "portcl=")+7);
+		xr_strcpy(portstr, strstr(options, "portcl=")+7);
 		if (strchr(portstr,'/'))	*strchr(portstr,'/') = 0;
 		psCL_Port = atol(portstr);
 		clamp(psCL_Port, int(BASE_PORT), int(END_PORT));
@@ -495,7 +495,7 @@ if(!psNET_direct_connect)
     dpAppDesc.guidApplication	= NET_GUID;
 	
 	// Setup client info
-		/*strcpy_s( tmp, server_name );
+		/*xr_strcpy( tmp, server_name );
 		xr_strcat( tmp, "/name=" );
 		xr_strcat( tmp, user_name_str );
 		xr_strcat( tmp, "/" );*/
@@ -512,8 +512,8 @@ if(!psNET_direct_connect)
 
 			SClientConnectData			cl_data;
 			cl_data.process_id			= GetCurrentProcessId();
-			strcpy_s( cl_data.name, user_name_str );
-			strcpy_s( cl_data.pass, user_pass );
+			xr_strcpy( cl_data.name, user_name_str );
+			xr_strcpy( cl_data.pass, user_pass );
 
 			Pinfo.pvData				= &cl_data;
 			Pinfo.dwDataSize			= sizeof(cl_data);

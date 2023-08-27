@@ -44,7 +44,7 @@ struct FS_item
 		struct tm*	newtime;	
 		time_t t	= modif; 
 		newtime		= localtime( &t ); 
-		strcpy_s		(buff, asctime( newtime ) );
+		xr_strcpy		(buff, asctime( newtime ) );
 		return		buff;
 	}
 

@@ -25,10 +25,10 @@ CDemoPlay::CDemoPlay(const char *name, float ms, u32 cycles, float life_time) : 
 	m_pMotion			= 0;
 	m_MParam			= 0;
 	string_path			nm, fn;
-	strcpy_s			(nm,sizeof(nm),name);	
+	xr_strcpy			(nm,sizeof(nm),name);	
 	LPSTR extp			=strext(nm);
 	if (extp)	
-		strcpy_s			( nm, sizeof( nm ) - ( extp - nm ), ".anm");
+		xr_strcpy			( nm, sizeof( nm ) - ( extp - nm ), ".anm");
 
 	if ( FS.exist(fn,"$level$",nm) || FS.exist(fn,"$game_anims$",nm) )
 	{

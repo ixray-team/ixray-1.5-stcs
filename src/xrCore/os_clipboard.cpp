@@ -21,7 +21,7 @@ void os_clipboard::copy_to_clipboard	( LPCSTR buf )
 	}
 
 	char* memory			= (char*)GlobalLock( handle );
-	strcpy_s				( memory, handle_size, buf );
+	xr_strcpy				( memory, handle_size, buf );
 	GlobalUnlock			( handle );
 	EmptyClipboard			();
 	SetClipboardData		( CF_TEXT, handle );
@@ -77,7 +77,7 @@ void os_clipboard::update_clipboard		( LPCSTR string )
 #else // #ifndef _EDITOR
 	LPSTR	buffer			= (LPSTR)xr_alloc<char>( buffer_size );
 #endif // #ifndef _EDITOR
-	strcpy_s				(buffer, buffer_size, memory);
+	xr_strcpy				(buffer, buffer_size, memory);
 	GlobalUnlock			(handle);
 
 	strcat					(buffer, string);

@@ -206,7 +206,7 @@ void			CGameSpy_Browser::RefreshList_Full(bool Local, const char* FilterStr)
 		if (m_bAbleToConnectToMasterServer)
 		{
 			RefreshData*	pRData = xr_new<RefreshData>();
-			strcpy_s(pRData->FilterStr, FilterStr);
+			xr_strcpy(pRData->FilterStr, FilterStr);
 			pRData->pGSBrowser = this;
 
 			m_bTryingToConnectToMasterServer = true;

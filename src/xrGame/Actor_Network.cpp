@@ -64,7 +64,7 @@ CActor*			Actor()
 //--------------------------------------------------------------------
 void	CActor::ConvState(u32 mstate_rl, string128 *buf)
 {
-	strcpy_s(*buf,"");
+	xr_strcpy(*buf,"");
 	if (isActorAccelerated(mstate_rl, IsZoomAimingMode()))		strcat(*buf,"Accel ");
 	if (mstate_rl&mcCrouch)		strcat(*buf,"Crouch ");
 	if (mstate_rl&mcFwd)		strcat(*buf,"Fwd ");

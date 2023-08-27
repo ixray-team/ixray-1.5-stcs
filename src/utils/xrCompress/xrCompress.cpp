@@ -538,7 +538,7 @@ void xrCompressor::ProcessLTX(CInifile& ltx)
 
 			string_path path;
 			LPCSTR _path		= 0==xr_strcmp(if_it->first.c_str(),".\\")?"":if_it->first.c_str();
-			strcpy_s			(path,_path);
+			xr_strcpy			(path,_path);
 			u32 path_len		= xr_strlen(path);
 			if ((0!=path_len)&&(path[path_len-1]!='\\')) strcat(path,"\\");
 

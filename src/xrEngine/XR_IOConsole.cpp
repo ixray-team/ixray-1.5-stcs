@@ -496,7 +496,7 @@ void CConsole::ExecuteCommand( LPCSTR cmd_str, bool record_cmd )
 	PSTR first = (PSTR)_alloca( (str_size + 1) * sizeof(char) );
 	PSTR last  = (PSTR)_alloca( (str_size + 1) * sizeof(char) );
 	
-	strcpy_s( edt, str_size+1, cmd_str );
+	xr_strcpy( edt, str_size+1, cmd_str );
 	edt[str_size] = 0;
 
 	scroll_delta	= 0;
@@ -645,7 +645,7 @@ void CConsole::ExecuteScript( LPCSTR str )
 {
 	u32  str_size = xr_strlen( str );
 	PSTR buf = (PSTR)_alloca( (str_size + 10) * sizeof(char) );
-	strcpy_s( buf, str_size + 10, "cfg_load " );
+	xr_strcpy( buf, str_size + 10, "cfg_load " );
 	xr_strcat( buf, str_size + 10, str );
 	Execute( buf );
 }
@@ -668,7 +668,7 @@ IConsole_Command* CConsole::find_next_cmd(LPCSTR in_str, shared_str& out_str)
 		u32    name_cmd_size = xr_strlen(name_cmd);
 		PSTR   new_str = (PSTR)_alloca((offset + name_cmd_size + 2) * sizeof(char));
 
-		strcpy_s(new_str, offset + name_cmd_size + 2, (b_ra) ? radmin_cmd_name : "");
+		xr_strcpy(new_str, offset + name_cmd_size + 2, (b_ra) ? radmin_cmd_name : "");
 		xr_strcat(new_str, offset + name_cmd_size + 2, name_cmd);
 
 		out_str._set((LPCSTR)new_str);

@@ -51,7 +51,7 @@ public		:
 	}
 	virtual void	Execute	(LPCSTR args)	= 0;
 	virtual void	Status	(TStatus& S)	{ S[0]=0; }
-	virtual void	Info	(TInfo& I)		{ strcpy_s(I,"no arguments"); }
+	virtual void	Info	(TInfo& I)		{ xr_strcpy(I,"no arguments"); }
 	virtual void	Save	(IWriter *F)	{
 		TStatus		S;	Status(S);
 		if (S[0])	F->w_printf("%s %s\r\n",cName,S); 
@@ -87,9 +87,9 @@ public		:
 		else InvalidSyntax();
 	}
 	virtual void	Status	(TStatus& S)
-	{	strcpy_s(S,value->test(mask)?"on":"off"); }
+	{	xr_strcpy(S,value->test(mask)?"on":"off"); }
 	virtual void	Info	(TInfo& I)
-	{	strcpy_s(I,"'on/off' or '1/0'"); }
+	{	xr_strcpy(I,"'on/off' or '1/0'"); }
 
 	virtual void fill_tips(vecTips& tips, u32 mode) {
 		TStatus str;
@@ -119,9 +119,9 @@ public		:
 		Log(S);
 	}
 	virtual void	Status	(TStatus& S)
-	{	strcpy_s(S,value->test(mask)?"on":"off"); }
+	{	xr_strcpy(S,value->test(mask)?"on":"off"); }
 	virtual void	Info	(TInfo& I)
-	{	strcpy_s(I,"'on/off' or '1/0'"); }
+	{	xr_strcpy(I,"'on/off' or '1/0'"); }
 
 	virtual void fill_tips(vecTips& tips, u32 mode) {
 		TStatus str;
@@ -160,12 +160,12 @@ public		:
 		xr_token *tok = tokens;
 		while (tok->name) {
 			if (tok->id==(int)(*value)) {
-				strcpy_s(S,tok->name);
+				xr_strcpy(S,tok->name);
 				return;
 			}
 			tok++;
 		}
-		strcpy_s(S,"?");
+		xr_strcpy(S,"?");
 		return;
 	}
 	virtual void	Info	(TInfo& I)
@@ -352,7 +352,7 @@ public:
 	}
 	virtual void	Status	(TStatus& S)
 	{	
-		strcpy_s	(S,value);
+		xr_strcpy	(S,value);
 	}
 	virtual void	Info	(TInfo& I)
 	{	

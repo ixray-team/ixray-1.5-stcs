@@ -171,7 +171,7 @@ void game_sv_mp::OnRoundEnd()
 	inherited::OnRoundEnd();
 
 	string64 res_str;
-	strcpy_s( res_str, get_token_name( round_end_result_str, round_end_reason ) );
+	xr_strcpy( res_str, get_token_name( round_end_result_str, round_end_reason ) );
 	
 	OnVoteStop();
 
@@ -659,7 +659,7 @@ void	game_sv_mp::SetSkin					(CSE_Abstract* E, u16 Team, u16 ID)
 	if (!pV) return;
 	//-------------------------------------------
 	string256 SkinName;
-	strcpy_s(SkinName, pSettings->r_string("mp_skins_path", "skin_path"));
+	xr_strcpy(SkinName, pSettings->r_string("mp_skins_path", "skin_path"));
 	//загружены ли скины для этой комманды
 
 	if (!TeamList.empty()	&&
@@ -1019,7 +1019,7 @@ void game_sv_mp::OnVoteStart				(LPCSTR VoteCommand, ClientID sender)
 	sscanf	(VoteCommand,"%s ", CommandName);
 	if (xr_strlen(CommandName)+1 < xr_strlen(VoteCommand))
 	{
-		strcpy_s(CommandParams, VoteCommand + xr_strlen(CommandName)+1);
+		xr_strcpy(CommandParams, VoteCommand + xr_strlen(CommandName)+1);
 	}
 
 	int i=0;
@@ -1088,7 +1088,7 @@ void game_sv_mp::OnVoteStart				(LPCSTR VoteCommand, ClientID sender)
 			{
 				m_pVoteCommand.sprintf("%s %s", votecommands[i].command, CommandParams);	//backward compatibility
 			}
-			strcpy_s(resVoteCommand, VoteCommand);
+			xr_strcpy(resVoteCommand, VoteCommand);
 		} else if (!_stricmp(votecommands[i].name, "ban"))
 		{
 			string256 tmp_victim_name;
@@ -1108,11 +1108,11 @@ void game_sv_mp::OnVoteStart				(LPCSTR VoteCommand, ClientID sender)
 			//{
 			//	Msg("! ERROR: failed to extract ban time from vote string.");
 			//}
-			strcpy_s(resVoteCommand, VoteCommand);
+			xr_strcpy(resVoteCommand, VoteCommand);
 		} else
 		{
 			m_pVoteCommand.sprintf("%s %s", votecommands[i].command, CommandParams);
-			strcpy_s(resVoteCommand, VoteCommand);
+			xr_strcpy(resVoteCommand, VoteCommand);
 		}		
 	}
 	else
@@ -1333,7 +1333,7 @@ void	game_sv_mp::SetPlayersDefItems		(game_PlayerState* ps)
 			strconcat(sizeof(ItemStr),ItemStr, "def_item_repl_", *WeaponName);
 			if (!pSettings->line_exist(RankStr, ItemStr)) continue;
 			
-			strcpy_s(NewItemStr,sizeof(NewItemStr),pSettings->r_string(RankStr, ItemStr));
+			xr_strcpy(NewItemStr,sizeof(NewItemStr),pSettings->r_string(RankStr, ItemStr));
 //			if (!GetTeamItem_ByName(&pWpnS, &(TeamList[ps->team].aWeapons), NewItemStr)) continue;
 			if (m_strWeaponsData->GetItemIdx(NewItemStr) == u32(-1)) continue;
 
@@ -1355,7 +1355,7 @@ void	game_sv_mp::SetPlayersDefItems		(game_PlayerState* ps)
 		if (pSettings->line_exist(WeaponName, "ammo_class"))
 		{
 			string1024 wpnAmmos, BaseAmmoName;
-			strcpy_s(wpnAmmos, pSettings->r_string(WeaponName, "ammo_class"));
+			xr_strcpy(wpnAmmos, pSettings->r_string(WeaponName, "ammo_class"));
 			_GetItem(wpnAmmos, 0, BaseAmmoName);
 			AmmoID = u16(m_strWeaponsData->GetItemIdx(BaseAmmoName)&0xffff);
 		};
@@ -1800,8 +1800,8 @@ void game_sv_mp::ReadOptions(shared_str &options)
 	g_sv_dwMaxClientPing					= get_option_i(*options,"maxping",g_sv_dwMaxClientPing);
 
 	string64	StartTime, TimeFactor;
-	strcpy_s(StartTime,get_option_s			(*options,"estime","9:00"));
-	strcpy_s(TimeFactor,get_option_s		(*options,"etimef","1"));
+	xr_strcpy(StartTime,get_option_s			(*options,"estime","9:00"));
+	xr_strcpy(TimeFactor,get_option_s		(*options,"etimef","1"));
 
 	u32 hours = 0, mins = 0;
 	sscanf									(StartTime,"%d:%d",&hours,&mins);

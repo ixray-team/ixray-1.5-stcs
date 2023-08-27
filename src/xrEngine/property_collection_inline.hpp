@@ -145,7 +145,7 @@ shared_str PROPERTY_COLLECTION::generate_unique_id		(LPCSTR prefix) const
 {
 	for (u32 i=0; ; ++i) {
 		string_path		result;
-		strcpy_s		(result, prefix);
+		xr_strcpy		(result, prefix);
 
 		string_path		number;
 		R_ASSERT		(!_itoa_s(i, number, 10));

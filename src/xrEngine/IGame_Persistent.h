@@ -36,7 +36,7 @@ public:
 		void			reset		()
 		{
 			for (int i=0; i<4; ++i)
-				strcpy_s	(m_params[i],"");
+				xr_strcpy	(m_params[i],"");
 		}
 		void						parse_cmd_line		(LPCSTR cmd_line)
 		{

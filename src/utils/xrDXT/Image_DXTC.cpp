@@ -99,7 +99,7 @@ bool Image_DXTC::LoadFromFile(LPCSTR filename )
 
 	char fileupper[256];
 
-	strcpy_s( fileupper, filename); 
+	xr_strcpy( fileupper, filename); 
 	_strupr( fileupper );
 
 

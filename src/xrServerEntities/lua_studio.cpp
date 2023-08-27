@@ -18,14 +18,14 @@
 
 inline pstr sz_cpy								(pstr destination, const u32 &size, pcstr source)
 {
-	strcpy_s		(destination,size,source);
+	xr_strcpy		(destination,size,source);
 	return			(destination);
 }
 
 template <int size>
 inline pstr sz_cpy								(char (&destination)[size], pcstr source)
 {
-	strcpy_s		(destination,size,source);
+	xr_strcpy		(destination,size,source);
 	return			(destination);
 }
 

@@ -236,7 +236,7 @@ string64&			game_sv_GameState::get_option_s				(LPCSTR lst, LPCSTR name, LPCSTR 
 	}
 	else			
 	{
-		if (def)	strcpy_s		(ret,def);
+		if (def)	xr_strcpy		(ret,def);
 		else		ret[0]=0;
 	}
 	return ret;
@@ -288,10 +288,10 @@ struct player_exporter
 
 		if (!owner_entity)
 		{
-			strcpy_s(p_name, "Unknown");
+			xr_strcpy(p_name, "Unknown");
 		} else
 		{
-			strcpy_s(p_name, owner_entity->name_replace());
+			xr_strcpy(p_name, owner_entity->name_replace());
 		}
 		curr_ps->setName(p_name);
 		u16 tmp_flags = curr_ps->flags__;
@@ -497,7 +497,7 @@ void	game_sv_GameState::ReadOptions				(shared_str &options)
 {
 	g_sv_base_dwRPointFreezeTime = get_option_i(*options, "rpfrz", g_sv_base_dwRPointFreezeTime/1000) * 1000;
 
-//.	strcpy_s(MAPROT_LIST, MAPROT_LIST_NAME);
+//.	xr_strcpy(MAPROT_LIST, MAPROT_LIST_NAME);
 //.	if (!FS.exist(MAPROT_LIST))
 	FS.update_path(MAPROT_LIST, "$app_data_root$", MAPROT_LIST_NAME);
 	if (FS.exist(MAPROT_LIST))
@@ -838,7 +838,7 @@ void game_sv_GameState::NewPlayerName_Generate( void* pClient, LPSTR NewPlayerNa
 		sprintf_s( NewXName, "%s_%d", NewPlayerName, i );
 		if ( !NewPlayerName_Exists( pClient, NewXName ) )
 		{
-			strcpy_s( NewPlayerName, 22 , NewXName );
+			xr_strcpy( NewPlayerName, 22 , NewXName );
 			return;
 		}
 	}
@@ -1083,10 +1083,10 @@ shared_str game_sv_GameState::parse_level_version			(const shared_str &server_op
 		if (strchr(map_ver, '/'))
 			strncpy_s(result_version, map_ver, strchr(map_ver, '/') - map_ver);
 		else
-			strcpy_s(result_version, map_ver);
+			xr_strcpy(result_version, map_ver);
 	} else
 	{
-		strcpy_s(result_version, default_map_version);
+		xr_strcpy(result_version, default_map_version);
 	}
 	return shared_str(result_version);
 }

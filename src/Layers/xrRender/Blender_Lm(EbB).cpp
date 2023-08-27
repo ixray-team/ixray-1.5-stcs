@@ -15,8 +15,8 @@ CBlender_LmEbB::CBlender_LmEbB	()
 {
 	description.CLS		= B_LmEbB;
 	description.version	= 0x1;
-	strcpy_s				(oT2_Name,	"$null");
-	strcpy_s				(oT2_xform,	"$null");
+	xr_strcpy				(oT2_Name,	"$null");
+	xr_strcpy				(oT2_xform,	"$null");
 	oBlend.value		= FALSE;
 }
 

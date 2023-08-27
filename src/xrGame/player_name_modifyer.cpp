@@ -2,7 +2,7 @@
 
 LPCSTR modify_player_name(LPCSTR src_name, string256 & dest)
 {
-	strcpy_s(dest, src_name);
+	xr_strcpy(dest, src_name);
 	static const char* denied_symbols = "\\?%%\"";
 	size_t tmp_length = xr_strlen(dest);
 	size_t start_pos = 0;

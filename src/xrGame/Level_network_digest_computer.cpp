@@ -23,7 +23,7 @@ char const * ComputeClientDigest(string128& dest, bool lower_case)
 	}
 	MD5Digest(reinterpret_cast<unsigned char*>(cd_key), cd_keylen, md5hash);
 	md5hash[33] = 0;
-	strcpy_s(dest, sizeof(dest), md5hash);
+	xr_strcpy(dest, sizeof(dest), md5hash);
 	return dest;
 };
 

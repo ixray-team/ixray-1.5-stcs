@@ -107,7 +107,7 @@ void Phase			(const char *phase_name)
 
 	// Start _new phase
 	phase_start_time	= timeGetTime();
-	strcpy_s				(phase,  phase_name);
+	xr_strcpy				(phase,  phase_name);
 	SetWindowText		( hwStage,		phase_name );
 	sprintf				( tbuf,"--:--:-- * %s",phase);
 	SendMessage			( hwPhaseTime,  LB_ADDSTRING, 0, (LPARAM) tbuf);

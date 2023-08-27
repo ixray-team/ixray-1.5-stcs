@@ -746,7 +746,7 @@ u32 xrServer::OnMessage	(NET_Packet& P, ClientID sender)			// Non-Zero means bro
 			if(0==_stricmp(user.c_str(),"logoff"))
 			{
 				CL->m_admin_rights.m_has_admin_rights	= FALSE;
-				strcpy_s				(reason,"logged off");
+				xr_strcpy				(reason,"logged off");
 				Msg("# Remote administrator logged off.");
 			}else
 			{
@@ -806,16 +806,16 @@ bool xrServer::CheckAdminRights(const shared_str& user, const shared_str& pass, 
 		{
 			if (ini.r_string ("radmins",user.c_str()) == pass)
 			{
-				strcpy_s			(reason, sizeof(reason),"Access permitted.");
+				xr_strcpy			(reason, sizeof(reason),"Access permitted.");
 				res				= true;
 			}else
 			{
-				strcpy_s			(reason, sizeof(reason),"Access denied. Wrong password.");
+				xr_strcpy			(reason, sizeof(reason),"Access denied. Wrong password.");
 			}
 		}else
-			strcpy_s			(reason, sizeof(reason),"Access denied. No such user.");
+			xr_strcpy			(reason, sizeof(reason),"Access denied. No such user.");
 	}else
-		strcpy_s				(reason, sizeof(reason),"Access denied.");
+		xr_strcpy				(reason, sizeof(reason),"Access denied.");
 
 	return				res;
 }
@@ -1053,7 +1053,7 @@ void xrServer::create_direct_client()
 {
 	SClientConnectData cl_data;
 	cl_data.clientID.set(1);
-	strcpy_s( cl_data.name, "single_player" );
+	xr_strcpy( cl_data.name, "single_player" );
 	cl_data.process_id = GetCurrentProcessId();
 	
 	new_client( &cl_data );
@@ -1155,8 +1155,8 @@ void xrServer::GetServerInfo( CServerInfo* si )
 	LPCSTR time = InventoryUtilities::GetTimeAsString( Device.dwTimeGlobal, InventoryUtilities::etpTimeToSecondsAndDay ).c_str();
 	si->AddItem( "Uptime", time, RGB(255,228,0) );
 
-//	strcpy_s( tmp256, get_token_name(game_types, game->Type() ) );
-	strcpy_s( tmp256, GameTypeToString( game->Type(), true ) );
+//	xr_strcpy( tmp256, get_token_name(game_types, game->Type() ) );
+	xr_strcpy( tmp256, GameTypeToString( game->Type(), true ) );
 	if ( game->Type() == eGameIDDeathmatch || game->Type() == eGameIDTeamDeathmatch )
 	{
 		xr_strcat( tmp256, " [" );
@@ -1189,7 +1189,7 @@ void xrServer::GetServerInfo( CServerInfo* si )
 	{
 		time = InventoryUtilities::GetGameTimeAsString( InventoryUtilities::etpTimeToMinutes ).c_str();
 		
-		strcpy_s( tmp256, time );
+		xr_strcpy( tmp256, time );
 		if ( g_sv_mp_iDumpStatsPeriod > 0 )
 		{
 			xr_strcat( tmp256, " statistic [" );

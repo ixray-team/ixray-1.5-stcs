@@ -1088,7 +1088,7 @@ void game_sv_Deathmatch::LoadSkinsForTeam(const shared_str& caSection, TEAM_SKIN
 	if (!pSettings->line_exist(caSection, "skins")) return;
 
 	// Читаем данные этого поля
-	strcpy_s(Skins, pSettings->r_string(caSection, "skins"));
+	xr_strcpy(Skins, pSettings->r_string(caSection, "skins"));
 	u32 count	= _GetItemCount(Skins);
 	// теперь для каждое имя оружия, разделенные запятыми, заносим в массив
 	for (u32 i = 0; i < count; ++i)
@@ -1112,7 +1112,7 @@ void game_sv_Deathmatch::LoadDefItemsForTeam(const shared_str& caSection, DEF_IT
 	if (!pSettings->line_exist(caSection, "default_items")) return;
 
 	// Читаем данные этого поля
-	strcpy_s(DefItems, pSettings->r_string(caSection, "default_items"));
+	xr_strcpy(DefItems, pSettings->r_string(caSection, "default_items"));
 	u32 count	= _GetItemCount(DefItems);
 	// теперь для каждое имя оружия, разделенные запятыми, заносим в массив
 	for (u32 i = 0; i < count; ++i)
@@ -1130,7 +1130,7 @@ void game_sv_Deathmatch::SetSkin(CSE_Abstract* E, u16 Team, u16 ID)
 	if (!pV) return;
 	//-------------------------------------------
 	string256 SkinName;
-	strcpy_s(SkinName, pSettings->r_string("mp_skins_path", "skin_path"));
+	xr_strcpy(SkinName, pSettings->r_string("mp_skins_path", "skin_path"));
 	//загружены ли скины для этой комманды
 //	if (SkinID != -1) ID = u16(SkinID);
 
@@ -1478,7 +1478,7 @@ void	game_sv_Deathmatch::LoadAnomalySets			()
 		if (!Level().pLevel->line_exist(ASetBaseName, SetName))
 			continue;
 
-		strcpy_s(AnomaliesNames, Level().pLevel->r_string(ASetBaseName, SetName));
+		xr_strcpy(AnomaliesNames, Level().pLevel->r_string(ASetBaseName, SetName));
 		u32 count	= _GetItemCount(AnomaliesNames);
 		if (!count) continue;
 
@@ -1495,7 +1495,7 @@ void	game_sv_Deathmatch::LoadAnomalySets			()
 	//---------------------------------------------------------
 	if (Level().pLevel->line_exist(ASetBaseName, "permanent"))
 	{
-		strcpy_s(AnomaliesNames, Level().pLevel->r_string(ASetBaseName, "permanent"));
+		xr_strcpy(AnomaliesNames, Level().pLevel->r_string(ASetBaseName, "permanent"));
 		u32 count	= _GetItemCount(AnomaliesNames);
 		for (u32 j=0; j<count; j++)
 		{

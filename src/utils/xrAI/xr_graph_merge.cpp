@@ -112,10 +112,10 @@ public:
 		FILE_NAME				caFileName;
 		
 		// loading graph
-		strcpy_s				(caFileName,graph_file_name);
+		xr_strcpy				(caFileName,graph_file_name);
 		m_tpGraph				= xr_new<CGameGraph>(caFileName);
 
-		strcpy_s				(caFileName,raw_cross_table_file_name);
+		xr_strcpy				(caFileName,raw_cross_table_file_name);
 		CGameLevelCrossTable	*l_tpCrossTable = xr_new<CGameLevelCrossTable>(caFileName);
 
 		CLevelGraph				*l_tpAI_Map = xr_new<CLevelGraph>(S);
@@ -169,7 +169,7 @@ public:
 		
 		// updating cross-table
 		{
-			strcpy_s				(caFileName,raw_cross_table_file_name);
+			xr_strcpy				(caFileName,raw_cross_table_file_name);
 			CGameLevelCrossTable	*tpCrossTable = xr_new<CGameLevelCrossTable>(caFileName);
 			xr_vector<CGameLevelCrossTable::CCell> tCrossTableUpdate;
 			tCrossTableUpdate.resize(tpCrossTable->header().level_vertex_count());
@@ -407,7 +407,7 @@ void read_levels(CInifile *Ini, xr_set<CLevelInfo> &levels, bool rebuild_graph, 
 	string_path			caFileName, file_name;
 	for (u32 k = 0; Ini->r_line("levels",k,&_N,&V); k++) {
 		string256		N;
-		strcpy_s(N,_N);
+		xr_strcpy(N,_N);
 		_strlwr			(N);
 
 		if (!Ini->section_exist(N)) {
@@ -433,7 +433,7 @@ void read_levels(CInifile *Ini, xr_set<CLevelInfo> &levels, bool rebuild_graph, 
 		u8				id = Ini->r_u8(N,"id");
 		LPCSTR			_S = Ini->r_string(N,"name");
 		string256		S;
-		strcpy_s		(S,_S);
+		xr_strcpy		(S,_S);
 		_strlwr			(S);
 
 		if (needed_levels) {
@@ -557,7 +557,7 @@ CGraphMerger::CGraphMerger(
 	xr_set<CLevelInfo>				levels;
 	xr_vector<LPCSTR>				needed_levels;
 	string4096						levels_string;
-	strcpy_s						(levels_string,name);
+	xr_strcpy						(levels_string,name);
 	_strlwr							(levels_string);
 	fill_needed_levels				(levels_string,needed_levels);
 
@@ -573,7 +573,7 @@ CGraphMerger::CGraphMerger(
 	for ( ; I != E; ++I) {
 		tLevel.m_offset				= (*I).m_offset;
 		tLevel.m_name				= (*I).m_name;
-		strcpy_s					(S1,sizeof(S1),*(*I).m_name);
+		xr_strcpy					(S1,sizeof(S1),*(*I).m_name);
 		strconcat					(sizeof(S2),S2,name,S1);
 		strconcat					(sizeof(S1),S1,S2,"\\");
 		tLevel.m_id					= (*I).m_id;
@@ -707,7 +707,7 @@ CGraphMerger::CGraphMerger(
 	}
 	
 	string256						l_caFileName;
-	strcpy_s							(l_caFileName,game_graph_id);
+	xr_strcpy							(l_caFileName,game_graph_id);
 	F.save_to						(l_caFileName);
 
 	// free all the graphs

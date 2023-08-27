@@ -332,7 +332,7 @@ string1024 s;
 bool	 rendered;
 	SPHDBGOutText(LPCSTR t)
 	{
-		strcpy_s(s,t);
+		xr_strcpy(s,t);
 		rendered=false;
 	}
 	virtual void render()
@@ -712,7 +712,7 @@ LPCSTR PH_DBG_ObjectTrackName()
 void PH_DBG_SetTrackObject()
 {
 	
-//	strcpy_s( s_dbg_trace_obj_name,obj);
+//	xr_strcpy( s_dbg_trace_obj_name,obj);
 //	dbg_trace_object_name=s_dbg_trace_obj_name;
 	if(g_pGameLevel)
 		trace_object = Level().Objects.FindObjectByName( PH_DBG_ObjectTrackName() );

@@ -297,7 +297,7 @@ IPureServer::EConnect IPureServer::Connect(LPCSTR options, GameDescriptionData &
 	
 
 	//sertanly we can use game_descr structure for determinig level_name, but for backward compatibility we save next line...
-	strcpy_s					(session_name,options);
+	xr_strcpy					(session_name,options);
 	if (strchr(session_name,'/'))	*strchr(session_name,'/')=0;
 
 	if (strstr(options, "psw="))
@@ -520,7 +520,7 @@ HRESULT	IPureServer::net_Handler(u32 dwMessageType, PVOID pMessage)
 			CHK_DX( WideCharToMultiByte( CP_ACP, 0, Pinfo->pwszName, -1, cname, sizeof(cname) , 0, 0 ) );
 
 			SClientConnectData	cl_data;
-			strcpy_s( cl_data.name, cname );
+			xr_strcpy( cl_data.name, cname );
 
 			if( Pinfo->pvData && Pinfo->dwDataSize == sizeof(cl_data) )
 			{

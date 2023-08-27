@@ -601,7 +601,7 @@ void CSpectator::GetSpectatorString		(string1024& pStr)
 			SpectatorMsg += m_pActorToLookAt ? m_pActorToLookAt->Name() : "";
 		}break;
 	};
-	strcpy_s(pStr, SpectatorMsg.c_str());
+	xr_strcpy(pStr, SpectatorMsg.c_str());
 };
 
 

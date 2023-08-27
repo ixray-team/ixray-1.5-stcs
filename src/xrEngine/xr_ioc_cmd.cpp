@@ -198,7 +198,7 @@ public:
 	virtual void Execute(LPCSTR args) 
 	{
 		string_path			cfg_full_name;
-		strcpy_s			(cfg_full_name, (xr_strlen(args)>0)?args:Console->ConfigFile);
+		xr_strcpy			(cfg_full_name, (xr_strlen(args)>0)?args:Console->ConfigFile);
 
 		bool b_abs_name = xr_strlen(cfg_full_name)>2 && cfg_full_name[1]==':';
 
@@ -232,7 +232,7 @@ void CCC_LoadCFG::Execute(LPCSTR args)
 		Msg("Executing config-script \"%s\"...",args);
 		string_path						cfg_name;
 
-		strcpy_s							(cfg_name, args);
+		xr_strcpy							(cfg_name, args);
 		if (strext(cfg_name))			*strext(cfg_name) = 0;
 		strcat							(cfg_name,".ltx");
 
@@ -244,7 +244,7 @@ void CCC_LoadCFG::Execute(LPCSTR args)
 			FS.update_path					(cfg_full_name, "$fs_root$", cfg_name);
 			
 		if( NULL == FS.exist(cfg_full_name) )
-			strcpy_s						(cfg_full_name, cfg_name);
+			xr_strcpy						(cfg_full_name, cfg_name);
 		
 		IReader* F						= FS.r_open(cfg_full_name);
 		
@@ -265,7 +265,7 @@ void CCC_LoadCFG::Execute(LPCSTR args)
 CCC_LoadCFG_custom::CCC_LoadCFG_custom(LPCSTR cmd)
 :CCC_LoadCFG(cmd)
 {
-	strcpy_s(m_cmd, cmd);
+	xr_strcpy(m_cmd, cmd);
 };
 bool CCC_LoadCFG_custom::allow(LPCSTR cmd)
 {
@@ -285,7 +285,7 @@ class CCC_Start : public IConsole_Command
 	void	protect_Name_strlwr( LPSTR str )
 	{
  		string4096	out;
-		strcpy_s( out, sizeof(out), str );
+		xr_strcpy( out, sizeof(out), str );
 		_strlwr( str );
 
 		LPCSTR name_str = "name=";
@@ -331,7 +331,7 @@ public:
 		protect_Name_strlwr( op_client );
 
 		if(!op_client[0] && strstr(op_server,"single"))
-			strcpy_s(op_client, "localhost");
+			xr_strcpy(op_client, "localhost");
 
 		if (0==xr_strlen(op_client))	
 		{
@@ -387,7 +387,7 @@ public :
 	virtual xr_token* GetToken()				{return vid_mode_token;}
 	virtual void	Info	(TInfo& I)
 	{	
-		strcpy_s(I,sizeof(I),"change screen resolution WxH");
+		xr_strcpy(I,sizeof(I),"change screen resolution WxH");
 	}
 
 	virtual void fill_tips(vecTips& tips, u32 mode) {

@@ -8,8 +8,8 @@
 int _cpuid (_processor_info *pinfo)
 {
 	_processor_info&	P	= *pinfo;
-	strcpy_s				(P.v_name,		"AuthenticAMD");
-	strcpy_s				(P.model_name,	"AMD64 family");
+	xr_strcpy				(P.v_name,		"AuthenticAMD");
+	xr_strcpy				(P.model_name,	"AMD64 family");
 	P.family			=	8;
 	P.model				=	8;
 	P.stepping			=	0;
@@ -326,7 +326,7 @@ notamd:
         pinfo->model = (dwStandard >> 4)&0xF;   // retriving model
         pinfo->stepping = (dwStandard) & 0xF;   // retriving stepping
         Ident.cBuf[12] = 0;
-        strcpy_s		(pinfo->v_name, Ident.cBuf);
+        xr_strcpy		(pinfo->v_name, Ident.cBuf);
         map_mname	(pinfo->family, pinfo->model, pinfo->v_name, pinfo->model_name);
     }
    return feature;

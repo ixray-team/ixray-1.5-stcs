@@ -1136,7 +1136,7 @@ CSE_ALifeMonsterAbstract::CSE_ALifeMonsterAbstract(LPCSTR caSection)	: CSE_ALife
 		for ( ; I != E; ++I)
 		{
 			//			*I					= READ_IF_EXISTS(pSettings,r_float,imm_section,strcat(strcpy(S,ALife::g_cafHitType2String(ALife::EHitType(I - B))),"_immunity"),1.f);
-			strcpy_s(S, ALife::g_cafHitType2String(ALife::EHitType(I - B)));
+			xr_strcpy(S, ALife::g_cafHitType2String(ALife::EHitType(I - B)));
 			strcat(S,"_immunity");
 			*I					= READ_IF_EXISTS(pSettings,r_float,imm_section,S,1.f);
 		}

@@ -241,7 +241,7 @@ void CTextConsole::DrawLog( HDC hDC, RECT* pRect )
 
 	u32 cur_len = xr_strlen( s_cur ) + xr_strlen( ch_cursor ) + 1;
 	PSTR buf = (PSTR)_alloca( cur_len * sizeof(char) );
-	strcpy_s( buf, cur_len, s_cur );
+	xr_strcpy( buf, cur_len, s_cur );
 	xr_strcat( buf, cur_len, ch_cursor );
 	buf[cur_len-1] = 0;
 
@@ -267,7 +267,7 @@ void CTextConsole::DrawLog( HDC hDC, RECT* pRect )
 	u32 log_line = LogFile->size()-1;
 	string16 q, q2;
 	_itoa( log_line, q, 10 );
-	strcpy_s( q2, sizeof(q2), "[" );
+	xr_strcpy( q2, sizeof(q2), "[" );
 	xr_strcat( q2, sizeof(q2), q );
 	xr_strcat( q2, sizeof(q2), "]" );
 	u32 qn = xr_strlen( q2 );

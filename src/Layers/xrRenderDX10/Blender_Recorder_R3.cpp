@@ -46,7 +46,7 @@ void CBlender_Compile::r_dx10Texture(LPCSTR ResourceName,	LPCSTR texture)
 	if (!texture) return;
 	//
 	string256				TexName;
-	strcpy_s				(TexName,texture);
+	xr_strcpy				(TexName,texture);
 	fix_texture_name		(TexName);
 
 	// Find index
@@ -114,7 +114,7 @@ u32 CBlender_Compile::r_dx10Sampler(LPCSTR ResourceName)
 	//return ((u32)-1);
 	VERIFY(ResourceName);
 	string256				name;
-	strcpy_s				(name,ResourceName);
+	xr_strcpy				(name,ResourceName);
 	fix_texture_name		(name);
 
 	// Find index

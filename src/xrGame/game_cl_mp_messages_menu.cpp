@@ -25,7 +25,7 @@ void				game_cl_mp::AddMessageMenu			(LPCSTR	menu_section, LPCSTR snd_path, LPCS
 		if (!pSettings->line_exist(menu_section, *LineName)) break;
 		//---------------------------------------------------------
 		string4096			Line;
-		strcpy_s(Line, pSettings->r_string(menu_section, *LineName));
+		xr_strcpy(Line, pSettings->r_string(menu_section, *LineName));
 		u32 count	= _GetItemCount(Line);
 		if (!count) continue;
 		//---------------------------------------------------------

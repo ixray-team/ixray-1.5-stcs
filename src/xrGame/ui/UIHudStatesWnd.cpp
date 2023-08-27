@@ -253,7 +253,7 @@ void CUIHudStatesWnd::UpdateActiveItemInfo( CActor* actor )
 		xr_string	icon_sect_name;
 		xr_string	str_count;
 		string16	str_fire_mode;
-		strcpy_s					( str_fire_mode, sizeof(str_fire_mode), "" );
+		xr_strcpy					( str_fire_mode, sizeof(str_fire_mode), "" );
 		item->GetBriefInfo			( str_name, icon_sect_name, str_count, str_fire_mode );
 
 		m_ui_weapon_sign_ammo->Show	( true );

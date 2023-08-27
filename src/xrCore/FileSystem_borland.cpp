@@ -14,7 +14,7 @@
 bool EFS_Utils::GetOpenName(LPCSTR initial, xr_string& buffer, bool bMulti, LPCSTR offset, int start_flt_ext )
 {
 	char			buf	[255*255]; //max files to select
-	strcpy_s			(buf, buffer.c_str());
+	xr_strcpy			(buf, buffer.c_str());
 
 	bool bRes		= GetOpenNameInternal(initial, buf, sizeof(buf), bMulti, offset, start_flt_ext);
 
@@ -28,7 +28,7 @@ bool EFS_Utils::GetOpenName(LPCSTR initial, xr_string& buffer, bool bMulti, LPCS
 bool EFS_Utils::GetSaveName( LPCSTR initial, xr_string& buffer, LPCSTR offset, int start_flt_ext )
 {
 	string_path				buf;
-	strcpy_s				(buf,sizeof(buf), buffer.c_str());
+	xr_strcpy				(buf,sizeof(buf), buffer.c_str());
 	bool bRes				= GetSaveName(initial,buf,offset,start_flt_ext);
 	if (bRes) 
 		buffer				= buf;
@@ -52,14 +52,14 @@ void EFS_Utils::MarkFile(LPCSTR fn, bool bDeleteSource)
 xr_string	EFS_Utils::AppendFolderToName(xr_string& tex_name, int depth, BOOL full_name)
 {
 	string1024 nm;
-	strcpy_s(nm,tex_name.c_str());
+	xr_strcpy(nm,tex_name.c_str());
 	tex_name = AppendFolderToName(nm,depth,full_name);
 	return tex_name;
 }
 
 BOOL EFS_Utils::CheckLocking(LPCSTR fname, bool bOnlySelf, bool bMsg)//, shared_str* owner)
 {
-	string256 fn; strcpy_s(fn,fname);
+	string256 fn; xr_strcpy(fn,fname);
 
 	if (bOnlySelf) return (m_LockFiles.find(fn)!=m_LockFiles.end());
 	if (FS.exist(fn)){
@@ -76,7 +76,7 @@ BOOL EFS_Utils::CheckLocking(LPCSTR fname, bool bOnlySelf, bool bMsg)//, shared_
 
 BOOL EFS_Utils::LockFile(LPCSTR fname, bool bLog)
 {
-	string256 fn; strcpy_s(fn,fname);
+	string256 fn; xr_strcpy(fn,fname);
 
 	BOOL bRes=false;
 	if (m_LockFiles.find(fn)==m_LockFiles.end()){
@@ -94,7 +94,7 @@ BOOL EFS_Utils::LockFile(LPCSTR fname, bool bLog)
 
 BOOL EFS_Utils::UnlockFile(LPCSTR fname, bool bLog)
 {
-	string256 fn; strcpy_s(fn,fname);
+	string256 fn; xr_strcpy(fn,fname);
 
 	HANDLEPairIt it 			= m_LockFiles.find(fn);
 	if (it!=m_LockFiles.end()){

@@ -32,7 +32,7 @@ FS_Path::FS_Path	(LPCSTR _Root, LPCSTR _Add, LPCSTR _DefExt, LPCSTR _FilterCapti
 {
 //	VERIFY			(_Root&&_Root[0]);
 	string_path		temp;
-    strcpy_s		(temp,sizeof(temp),_Root); 
+    xr_strcpy		(temp,sizeof(temp),_Root); 
     if (_Add) 		strcat(temp,_Add);
 	if (temp[0] && temp[xr_strlen(temp)-1]!='\\') strcat(temp,"\\");
 	m_Path			= xr_strlwr(xr_strdup(temp));
@@ -92,7 +92,7 @@ LPCSTR FS_Path::_update(string_path& dest, LPCSTR src)const
 	R_ASSERT			(dest);
     R_ASSERT			(src);
 	string_path			temp;
-	strcpy_s			(temp, sizeof(temp), src);
+	xr_strcpy			(temp, sizeof(temp), src);
 	strconcat			(sizeof(dest), dest, m_Path, temp);
 	return xr_strlwr	(dest);
 }

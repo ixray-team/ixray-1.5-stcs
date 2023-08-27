@@ -192,7 +192,7 @@ void message_filter::dbg_print_msg(NET_Packet & packet, msg_type_subtype_t const
 		return;
 	} 
 	Msg(tmp_string);
-	strcpy_s(m_last_string, tmp_string);
+	xr_strcpy(m_last_string, tmp_string);
 	if (m_msg_log_file)
 	{
 		if (m_strrepeat_count)
