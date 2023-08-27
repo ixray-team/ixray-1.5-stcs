@@ -358,14 +358,14 @@ void engine::fill_class_info	(cs::lua_debugger::backend& backend, char* const bu
 {
 	pstr					stream = buffer;
 
-	stream					+= sprintf_s(stream, size - (stream - buffer), "{");
+	stream					+= xr_sprintf(stream, size - (stream - buffer), "{");
 
 	typedef luabind::detail::class_rep::property_map	property_map;
 	property_map::const_iterator	I = class_rep->properties().begin();
 	property_map::const_iterator	E = class_rep->properties().end();
 	for (u32 i=0; I != E; ++I) {
 		if (i == 3) {
-			stream				+= sprintf_s(stream, size - (stream - buffer), "...");
+			stream				+= xr_sprintf(stream, size - (stream - buffer), "...");
 			break;
 		}
 		lua_pushstring			(state,(*I).first);
@@ -387,14 +387,14 @@ void engine::fill_class_info	(cs::lua_debugger::backend& backend, char* const bu
 		lua_remove				(state,1);
 
 		if (use_in_description)
-			stream				+= sprintf_s(stream, size - (stream - buffer), "%s[%s]=%s ", (*I).first, type, value);
+			stream				+= xr_sprintf(stream, size - (stream - buffer), "%s[%s]=%s ", (*I).first, type, value);
 		else
-			stream				+= sprintf_s(stream, size - (stream - buffer), "%s=%s ", (*I).first, value);
+			stream				+= xr_sprintf(stream, size - (stream - buffer), "%s=%s ", (*I).first, value);
 
 		++i;
 	}
 
-	stream						+= sprintf_s(stream, size - (stream - buffer), "}%c",0);
+	stream						+= xr_sprintf(stream, size - (stream - buffer), "}%c",0);
 }
 
 void engine::value_convert_class	(cs::lua_debugger::backend& backend, char* buffer, unsigned int size, luabind::detail::class_rep	*class_rep, lua_State* state, int index, cs::lua_debugger::icon_type& icon_type, bool const full_description)
@@ -433,7 +433,7 @@ bool engine::value_convert_instance	(cs::lua_debugger::backend& backend, char* b
 		return				(false);
 
 	pstr stream				= buffer;
-	stream					+= sprintf_s(stream, size - (stream - buffer), "{");
+	stream					+= xr_sprintf(stream, size - (stream - buffer), "{");
 
 	tbl.get					(state);
 	int						i;
@@ -441,7 +441,7 @@ bool engine::value_convert_instance	(cs::lua_debugger::backend& backend, char* b
 	for (i=0; lua_next(state,-2); ++i) {
 		if (i == 3) {
 			lua_pop_value	(state, 2);
-			stream			+= sprintf_s(stream, size - (stream - buffer), "...");
+			stream			+= xr_sprintf(stream, size - (stream - buffer), "...");
 			break;
 		}
 
@@ -456,9 +456,9 @@ bool engine::value_convert_instance	(cs::lua_debugger::backend& backend, char* b
 		backend.value_to_string	(value, sizeof(value), state, -1, icon_type, false);
 
 		if (use_in_description)
-			stream			+= sprintf_s(stream, size - (stream - buffer), "%s[%s]=%s ", name, type, value);
+			stream			+= xr_sprintf(stream, size - (stream - buffer), "%s[%s]=%s ", name, type, value);
 		else
-			stream			+= sprintf_s(stream, size - (stream - buffer), "%s=%s ", name, value);
+			stream			+= xr_sprintf(stream, size - (stream - buffer), "%s=%s ", name, value);
 
 		lua_pop_value			(state, 1);
 	}
@@ -468,7 +468,7 @@ bool engine::value_convert_instance	(cs::lua_debugger::backend& backend, char* b
 	if (!i)
 		return				(false);
 
-	stream					+= sprintf_s(stream, size - (stream - buffer), "}%c",0);
+	stream					+= xr_sprintf(stream, size - (stream - buffer), "}%c",0);
 
 	return					(true);
 }
@@ -506,7 +506,7 @@ bool engine::value_to_string					(cs::lua_debugger::backend& backend, char* cons
 				if (!is_luabind_class(state, index)) {
 					icon_type		= cs::lua_debugger::icon_type_unknown;
 					pcvoid			user_data = lua_topointer(state, index);
-					sprintf_s		(buffer, size, "0x%08x", *(u32 const*)&user_data);
+					xr_sprintf		(buffer, size, "0x%08x", *(u32 const*)&user_data);
 					return			(true);
 				}
 
@@ -521,7 +521,7 @@ bool engine::value_to_string					(cs::lua_debugger::backend& backend, char* cons
 
 			icon_type				= cs::lua_debugger::icon_type_unknown;
 			pcvoid					user_data = lua_topointer(state, index);
-			sprintf_s				(buffer, size, "0x%08x", *(u32 const*)&user_data);
+			xr_sprintf				(buffer, size, "0x%08x", *(u32 const*)&user_data);
 			return					(true);
 		}
 		default							: NODEFAULT;

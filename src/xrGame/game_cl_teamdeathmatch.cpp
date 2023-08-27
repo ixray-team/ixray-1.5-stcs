@@ -128,7 +128,7 @@ void game_cl_TeamDeathmatch::TranslateGameMessage	(u32 msg, NET_Packet& P)
 			u16 Team;
 			P.r_u16		(Team);
 
-			sprintf_s(Text, "%s%s %s%s %s%s",
+			xr_sprintf(Text, "%s%s %s%s %s%s",
 							"",//no color
 							PlayerName,
 							Color_Main,
@@ -151,7 +151,7 @@ void game_cl_TeamDeathmatch::TranslateGameMessage	(u32 msg, NET_Packet& P)
 			game_PlayerState* pPlayer = GetPlayerByGameID(PlayerID);
 			if (!pPlayer) break;
 
-			sprintf_s(Text, "%s%s %s%s %s%s", 
+			xr_sprintf(Text, "%s%s %s%s %s%s", 
 							CTeamInfo::GetTeam_color_tag(int(OldTeam)), 
 							pPlayer->name, 
 							Color_Main, 
@@ -397,7 +397,7 @@ void game_cl_TeamDeathmatch::shedule_Update			(u32 dt)
 	{
 	case GAME_PHASE_TEAM1_SCORES:
 		{
-			sprintf_s(msg, /*team %s wins*/ *st.translate("mp_team_wins"), CTeamInfo::GetTeam_name(1));
+			xr_sprintf(msg, /*team %s wins*/ *st.translate("mp_team_wins"), CTeamInfo::GetTeam_name(1));
 			m_game_ui->SetRoundResultCaption(msg);
 			
 			m_game_ui->UpdateTeamPanels();
@@ -407,7 +407,7 @@ void game_cl_TeamDeathmatch::shedule_Update			(u32 dt)
 		}break;
 	case GAME_PHASE_TEAM2_SCORES:
 		{
-			sprintf_s(msg, /*team %s wins*/ *st.translate("mp_team_wins"), CTeamInfo::GetTeam_name(2));
+			xr_sprintf(msg, /*team %s wins*/ *st.translate("mp_team_wins"), CTeamInfo::GetTeam_name(2));
 			m_game_ui->SetRoundResultCaption(msg);
 			
 			m_game_ui->UpdateTeamPanels();

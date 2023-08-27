@@ -586,7 +586,7 @@ void CUIMapWnd::Update()
 #ifdef DEBUG
 float gm_zoom				= m_GlobalMap->GetCurrentZoom();
 	string256					buff;
-	sprintf_s					(buff,sizeof(buff),"%5.1f", gm_zoom);
+	xr_sprintf					(buff,sizeof(buff),"%5.1f", gm_zoom);
 	m_dbg_info->SetText			(buff);
 #endif // DEBUG /**/
 	

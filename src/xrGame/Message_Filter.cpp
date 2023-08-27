@@ -116,23 +116,23 @@ void message_filter::dbg_print_msg(NET_Packet & packet, msg_type_subtype_t const
 			{
 			case GE_DESTROY:
 				{
-					sprintf_s(tmp_string, "--- CL_EVENT [%7u][%5u]: GE_DESTROY", msg_type.msg_receive_time, msg_type.dest_obj_id);
+					xr_sprintf(tmp_string, "--- CL_EVENT [%7u][%5u]: GE_DESTROY", msg_type.msg_receive_time, msg_type.dest_obj_id);
 				}break;
 			case GE_OWNERSHIP_TAKE:
 				{
 					u16 tmp_id_what;
 					packet.r_u16(tmp_id_what);
-					sprintf_s(tmp_string, "--- CL_EVENT [%7u][%5u]: GE_OWNERSHIP_TAKE    [%d]", msg_type.msg_receive_time, msg_type.dest_obj_id, tmp_id_what);
+					xr_sprintf(tmp_string, "--- CL_EVENT [%7u][%5u]: GE_OWNERSHIP_TAKE    [%d]", msg_type.msg_receive_time, msg_type.dest_obj_id, tmp_id_what);
 				}break;
 			case GE_OWNERSHIP_REJECT:
 				{
 					u16 tmp_id_what;
 					packet.r_u16(tmp_id_what);
-					sprintf_s(tmp_string, "--- CL_EVENT [%7u][%5u]: GE_OWNERSHIP_REJECT  [%d]", msg_type.msg_receive_time, msg_type.dest_obj_id, tmp_id_what);
+					xr_sprintf(tmp_string, "--- CL_EVENT [%7u][%5u]: GE_OWNERSHIP_REJECT  [%d]", msg_type.msg_receive_time, msg_type.dest_obj_id, tmp_id_what);
 				}break;
 			default:
 				{
-					sprintf_s(tmp_string, "--- CL_EVENT [%7u][%5u]: EVENT_ID=[%d]", msg_type.msg_receive_time, msg_type.dest_obj_id, msg_type.msg_subtype);
+					xr_sprintf(tmp_string, "--- CL_EVENT [%7u][%5u]: EVENT_ID=[%d]", msg_type.msg_receive_time, msg_type.dest_obj_id, msg_type.msg_subtype);
 				};
 			}; //switch (mtype.msg_subtype)
 		}break;
@@ -146,19 +146,19 @@ void message_filter::dbg_print_msg(NET_Packet & packet, msg_type_subtype_t const
 			{
 			case GAME_EVENT_PLAYER_KILLED:
 				{
-					sprintf_s(tmp_string, "--- GM_EVENT [%7u]: GAME_EVENT_PLAYER_KILLED", msg_type.msg_receive_time);
+					xr_sprintf(tmp_string, "--- GM_EVENT [%7u]: GAME_EVENT_PLAYER_KILLED", msg_type.msg_receive_time);
 				}break;
 			case GAME_EVENT_ROUND_STARTED:
 				{
-					sprintf_s(tmp_string, "--- GM_EVENT [%7u]: GAME_EVENT_ROUND_STARTED", msg_type.msg_receive_time);
+					xr_sprintf(tmp_string, "--- GM_EVENT [%7u]: GAME_EVENT_ROUND_STARTED", msg_type.msg_receive_time);
 				}break;
 			case GAME_EVENT_ARTEFACT_TAKEN:
 				{
-					sprintf_s(tmp_string, "--- GM_EVENT [%7u]: GAME_EVENT_ARTEFACT_TAKEN", msg_type.msg_receive_time);	
+					xr_sprintf(tmp_string, "--- GM_EVENT [%7u]: GAME_EVENT_ARTEFACT_TAKEN", msg_type.msg_receive_time);	
 				}break;
 			default:
 				{
-					sprintf_s(tmp_string, "--- GM_EVENT [%7u]: GAME_EVENT_ID=[%d]", msg_type.msg_receive_time, msg_type.msg_subtype);	
+					xr_sprintf(tmp_string, "--- GM_EVENT [%7u]: GAME_EVENT_ID=[%d]", msg_type.msg_receive_time, msg_type.msg_subtype);	
 				};
 			}
 		}break;
@@ -167,23 +167,23 @@ void message_filter::dbg_print_msg(NET_Packet & packet, msg_type_subtype_t const
 		}break;
 	case M_SPAWN:
 		{
-			sprintf_s(tmp_string, "--- M_SPAWN                [%7u]", msg_type.msg_receive_time);
+			xr_sprintf(tmp_string, "--- M_SPAWN                [%7u]", msg_type.msg_receive_time);
 		}break;
 	case M_SV_CONFIG_NEW_CLIENT:
 		{
-			sprintf_s(tmp_string, "--- M_SV_CONFIG_NEW_CLIENT [%7u]", msg_type.msg_receive_time);
+			xr_sprintf(tmp_string, "--- M_SV_CONFIG_NEW_CLIENT [%7u]", msg_type.msg_receive_time);
 		}break;
 	case M_SV_CONFIG_GAME:
 		{
-			sprintf_s(tmp_string, "--- M_SV_CONFIG_GAME       [%7u]", msg_type.msg_receive_time);
+			xr_sprintf(tmp_string, "--- M_SV_CONFIG_GAME       [%7u]", msg_type.msg_receive_time);
 		}break;
 	case M_SV_CONFIG_FINISHED:
 		{
-			sprintf_s(tmp_string, "--- M_SV_CONFIG_FINISHED   [%7u]", msg_type.msg_receive_time);
+			xr_sprintf(tmp_string, "--- M_SV_CONFIG_FINISHED   [%7u]", msg_type.msg_receive_time);
 		}break;
 	default:
 		{
-			sprintf_s(tmp_string, "--- MESSAGE_ID[%u]         [%7u]", msg_type.msg_type, msg_type.msg_receive_time);
+			xr_sprintf(tmp_string, "--- MESSAGE_ID[%u]         [%7u]", msg_type.msg_type, msg_type.msg_receive_time);
 		};
 	}; //switch (m_type)
 	if (!xr_strcmp(tmp_string, m_last_string))

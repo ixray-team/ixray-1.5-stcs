@@ -276,7 +276,7 @@ shared_str	ui_core::get_xml_name(LPCSTR fn)
 {
 	string_path				str;
 	if(!is_widescreen()){
-		sprintf_s(str, "%s", fn);
+		xr_sprintf(str, "%s", fn);
 		if ( NULL==strext(fn) ) strcat(str, ".xml");
 	}else{
 
@@ -287,11 +287,11 @@ shared_str	ui_core::get_xml_name(LPCSTR fn)
 			*strext(str)	= 0;
 			strcat	(str, "_16.xml");
 		}else
-			sprintf_s				(str, "%s_16", fn);
+			xr_sprintf				(str, "%s_16", fn);
 
 		if(NULL==FS.exist(str_, "$game_config$", "ui\\" , str) )
 		{
-			sprintf_s(str, "%s", fn);
+			xr_sprintf(str, "%s", fn);
 			if ( NULL==strext(fn) ) strcat(str, ".xml");
 		}
 #ifdef DEBUG

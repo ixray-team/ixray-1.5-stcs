@@ -1131,7 +1131,7 @@ void CLocatorAPI::file_from_archive	(IReader *&R, LPCSTR fname, const file &desc
 	u8* ptr						= (u8*)MapViewOfFile(A.hSrcMap, FILE_MAP_READ, 0, start, sz); VERIFY3(ptr,"cannot create file mapping on file",fname);
 
 	string512					temp;
-	sprintf_s					(temp, sizeof(temp),"%s:%s",*A.path,fname);
+	xr_sprintf					(temp, sizeof(temp),"%s:%s",*A.path,fname);
 
 #ifdef DEBUG
 	register_file_mapping		(ptr,sz,temp);

@@ -303,7 +303,7 @@ BOOL CPEDef::Load2(CInifile& ini)
         for (EPAVecIt it=m_EActionList.begin(); it!=m_EActionList.end(); ++it,++action_id)
 		{
 			string256					sect;
-			sprintf_s					(sect, sizeof(sect), "action_%04d", action_id);
+			xr_sprintf					(sect, sizeof(sect), "action_%04d", action_id);
             PAPI::PActionEnum type		= (PAPI::PActionEnum)(ini.r_u32(sect,"action_type"));
             (*it)						= pCreateEAction(type);
             (*it)->Load2				(ini, sect);
@@ -365,7 +365,7 @@ void CPEDef::Save2(CInifile& ini)
 	for (EPAVecIt it=m_EActionList.begin(); it!=m_EActionList.end(); ++it,++action_id)
 	{
 		string256		sect;
-		sprintf_s		(sect, sizeof(sect), "action_%04d", action_id);
+		xr_sprintf		(sect, sizeof(sect), "action_%04d", action_id);
 		ini.w_u32		(sect, "action_type", (*it)->type);
     	(*it)->Save2	(ini, sect);
     }

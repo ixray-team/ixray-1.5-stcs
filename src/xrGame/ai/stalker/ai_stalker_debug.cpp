@@ -963,7 +963,7 @@ void CAI_Stalker::dbg_draw_vision	()
 
 	CNotYetVisibleObject		*object = memory().visual().not_yet_visible_object(smart_cast<CGameObject*>(Level().CurrentEntity()));
 	string64					out_text;
-	sprintf_s						(out_text,"%.2f",object ? object->m_value : 0.f);
+	xr_sprintf						(out_text,"%.2f",object ? object->m_value : 0.f);
 
 	HUD().Font().pFontMedium->SetColor(color_rgba(255, 0, 0, 95));
 	HUD().Font().pFontMedium->OutSet	(x,y);

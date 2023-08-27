@@ -81,8 +81,8 @@ void CUIOutfitImmunity::SetProgressValue( float cur, float comp )
 	comp *= m_magnitude;
 	m_progress.SetTwoPos( cur, comp );
 	string32 buf;
-//	sprintf_s( buf, sizeof(buf), "%d %%", (int)cur );
-	sprintf_s( buf, sizeof(buf), "%.0f", cur );
+//	xr_sprintf( buf, sizeof(buf), "%d %%", (int)cur );
+	xr_sprintf( buf, sizeof(buf), "%.0f", cur );
 	m_value.SetText( buf );
 }
 

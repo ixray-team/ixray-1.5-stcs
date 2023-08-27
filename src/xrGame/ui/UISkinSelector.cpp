@@ -144,7 +144,7 @@ void CUISkinSelectorWnd::Init(const char* strSectionName)
 	string64 buff;
 	for (int i = 0; i<4; i++)
 	{
-		sprintf_s(buff,"skin_selector:image_%d",i);
+		xr_sprintf(buff,"skin_selector:image_%d",i);
 		CUIXmlInit::InitStatic(xml_doc,buff,0,m_pImage[i]);
 	}
 	UpdateSkins();

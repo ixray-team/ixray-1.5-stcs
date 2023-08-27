@@ -109,12 +109,12 @@ void CUIOutfitInfo2::SetItem(u32 hitType, bool force_add)
 //	LPCSTR			_clr_outfit, _clr_af;
 	LPCSTR			_imm_name	= *CStringTable().translate(_imm_st_names[hitType]);
 
-	int _sz			= sprintf_s	(_buff,sizeof(_buff),"%s ", _imm_name);
-	_sz				+= sprintf_s	(_buff+_sz,sizeof(_buff)-_sz,"%s %+3.0f%%", (_val_outfit>0.0f)?"%c[green]":"%c[red]", _val_outfit*100.0f);
+	int _sz			= xr_sprintf	(_buff,sizeof(_buff),"%s ", _imm_name);
+	_sz				+= xr_sprintf	(_buff+_sz,sizeof(_buff)-_sz,"%s %+3.0f%%", (_val_outfit>0.0f)?"%c[green]":"%c[red]", _val_outfit*100.0f);
 
 	if( !fsimilar(_val_af, 0.0f) )
 	{
-		_sz		+= sprintf_s	(_buff+_sz,sizeof(_buff)-_sz,"%s %+3.0f%%", (_val_af>0.0f)?"%c[green]":"%c[red]", _val_af*100.0f);
+		_sz		+= xr_sprintf	(_buff+_sz,sizeof(_buff)-_sz,"%s %+3.0f%%", (_val_af>0.0f)?"%c[green]":"%c[red]", _val_af*100.0f);
 	}
 	_s->SetText			(_buff);
 

@@ -22,7 +22,7 @@ void HUD_SOUND_ITEM::LoadSound(	LPCSTR section, LPCSTR line,
 		SSnd& s = hud_snd.sounds.back();
 
 		LoadSound	(section, sound_line, s.snd, type, &s.volume, &s.delay);
-		sprintf_s		(sound_line,"%s%d",line,++k);
+		xr_sprintf		(sound_line,"%s%d",line,++k);
 	}//while
 }
 

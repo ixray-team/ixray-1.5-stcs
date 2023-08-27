@@ -49,7 +49,7 @@ void ip_address::set(LPCSTR src_string)
 xr_string ip_address::to_string() const
 {
 	string128	res;
-	sprintf_s	(res,sizeof(res),"%d.%d.%d.%d", m_data.a1, m_data.a2, m_data.a3, m_data.a4);
+	xr_sprintf	(res,sizeof(res),"%d.%d.%d.%d", m_data.a1, m_data.a2, m_data.a3, m_data.a4);
 	return		res;
 }
 
@@ -87,7 +87,7 @@ xr_string IBannedClient::BannedTimeTo() const
 	string256			res;
 	tm*					_tm_banned;
 	_tm_banned			= _localtime64(&BanTime);
-	sprintf_s			(	res, sizeof(res),
+	xr_sprintf			(	res, sizeof(res),
 							"%02d.%02d.%d_%02d:%02d:%02d",
 							_tm_banned->tm_mday, 
 							_tm_banned->tm_mon+1, 

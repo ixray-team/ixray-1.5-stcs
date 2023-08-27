@@ -268,7 +268,7 @@ public:
 		}
 
 		float v = Level().GetGameTimeFactor();
-		sprintf_s(S, sizeof(S),"%3.5f", v);
+		xr_sprintf(S, sizeof(S),"%3.5f", v);
 		while (xr_strlen(S) && ('0' == S[xr_strlen(S) - 1])) {
 			S[xr_strlen(S)-1] = 0;
 		}
@@ -278,7 +278,7 @@ public:
 			return;
 		}
 		float v = Level().GetGameTimeFactor();
-		sprintf_s(I,sizeof(I)," value = %3.5f", v);
+		xr_sprintf(I,sizeof(I)," value = %3.5f", v);
 	}
 	virtual void fill_tips(vecTips& tips, u32 mode) {
 		if (!OnServer()) {
@@ -288,7 +288,7 @@ public:
 		float v = Level().GetGameTimeFactor();
 
 		TStatus str;
-		sprintf_s(str, sizeof(str), "%3.5f  (current)  [0.0,1000.0]", v);
+		xr_sprintf(str, sizeof(str), "%3.5f  (current)  [0.0,1000.0]", v);
 		tips.push_back(str);
 		IConsole_Command::fill_tips(tips, mode);
 	}
@@ -1069,9 +1069,9 @@ public:
 	  virtual void	Status	(TStatus& S)
 	{	
 		if(ph_world)
-			sprintf_s	(S,"%3.5f",ph_world->Gravity());
+			xr_sprintf	(S,"%3.5f",ph_world->Gravity());
 		else
-			sprintf_s	(S,"%3.5f",default_world_gravity);
+			xr_sprintf	(S,"%3.5f",default_world_gravity);
 		while	(xr_strlen(S) && ('0'==S[xr_strlen(S)-1]))	S[xr_strlen(S)-1] = 0;
 	}
 	
@@ -1093,7 +1093,7 @@ public:
 	  }
 	  virtual void	Status	(TStatus& S)
 	  {	
-		 	sprintf_s	(S,"%3.5f",1.f/fixed_step);	  
+		 	xr_sprintf	(S,"%3.5f",1.f/fixed_step);	  
 	  }
 
 };
@@ -1207,7 +1207,7 @@ public:
 
 			string4096		S;
 			shared_str		m_script_name = "console command";
-			sprintf_s			(S,"%s\n",args);
+			xr_sprintf			(S,"%s\n",args);
 			int				l_iErrorCode = luaL_loadbuffer(ai().script_engine().lua(),S,xr_strlen(S),"@console_command");
 			if (!l_iErrorCode) {
 				l_iErrorCode = lua_pcall(ai().script_engine().lua(),0,0,0);
@@ -1250,7 +1250,7 @@ public:
 	}
 	virtual void	Status			(TStatus &S)
 	{
-		sprintf_s	(S,sizeof(S),"%f",Device.time_factor());
+		xr_sprintf	(S,sizeof(S),"%f",Device.time_factor());
 	}
 
 	virtual void	Info	(TInfo& I)
@@ -1260,7 +1260,7 @@ public:
 
 	virtual void fill_tips(vecTips& tips, u32 mode) {
 		TStatus str;
-		sprintf_s(str, sizeof(str), "%3.3f  (current)  [0.001 - 1000.0]", Device.time_factor());
+		xr_sprintf(str, sizeof(str), "%3.3f  (current)  [0.001 - 1000.0]", Device.time_factor());
 		tips.push_back(str);
 		IConsole_Command::fill_tips(tips, mode);
 	}
@@ -1328,7 +1328,7 @@ struct CCC_StartTimeSingle : public IConsole_Command {
 	{
 		u32 year = 1, month = 1, day = 1, hours = 0, mins = 0, secs = 0, milisecs = 0;
 		split_time	(g_qwStartGameTime, year, month, day, hours, mins, secs, milisecs);
-		sprintf_s		(S,"%d.%d.%d %d:%d:%d.%d",year,month,day,hours,mins,secs,milisecs);
+		xr_sprintf		(S,"%d.%d.%d %d:%d:%d.%d",year,month,day,hours,mins,secs,milisecs);
 	}
 };
 
@@ -1454,7 +1454,7 @@ public		:
 
 	virtual void	Info	(TInfo& I)
 	{	
-		sprintf_s(I,"allows to change bind rotation and position offsets for attached item, <section_name> given as arguments");
+		xr_sprintf(I,"allows to change bind rotation and position offsets for attached item, <section_name> given as arguments");
 	}
 };
 

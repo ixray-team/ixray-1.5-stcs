@@ -211,7 +211,7 @@ void CUITaskWnd::ReloadTaskInfo()
 	{
 		u32 task2_index				= Level().GameTaskManager().GetTaskIndex( t, eTaskStateInProgress, eTaskTypeAdditional );
 		string32 buf;
-		sprintf_s( buf, sizeof(buf), "%d / %d", task2_index, task2_count );
+		xr_sprintf( buf, sizeof(buf), "%d / %d", task2_index, task2_count );
 
 		m_second_task_index->SetVisible( true );
 		m_second_task_index->SetText( buf );
@@ -443,7 +443,7 @@ void CUITaskItem::InitTask(CGameTask* task)
 	{
 		string512									buff, buff2;
 		InventoryUtilities::GetTimePeriodAsString	(buff, sizeof(buff), Level().GetGameTime(), task->m_TimeToComplete);
-		sprintf_s									(buff2,"%s %s", *CStringTable().translate("ui_st_time_remains"), buff);
+		xr_sprintf									(buff2,"%s %s", *CStringTable().translate("ui_st_time_remains"), buff);
 		S->SetText					(buff2);
 	}*/
 /*

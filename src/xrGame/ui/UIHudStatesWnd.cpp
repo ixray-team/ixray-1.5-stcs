@@ -474,7 +474,7 @@ void CUIHudStatesWnd::UpdateZones()
 		zone_info.cur_period = zone_type->freq.x + (zone_type->freq.y - zone_type->freq.x) * (fRelPow * fRelPow);
 		
 		//string256	buff_z;
-		//sprintf_s( buff_z, "zone %2.2f\n", zone_info.cur_period );
+		//xr_sprintf( buff_z, "zone %2.2f\n", zone_info.cur_period );
 		//strcat( buff, buff_z );
 		if( zone_info.snd_time > zone_info.cur_period )
 		{

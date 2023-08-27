@@ -651,7 +651,7 @@ void CActor::HitMark	(float P,
 		}
 
 		string64 sect_name;
-		sprintf_s( sect_name, "effector_fire_hit_%d", id );
+		xr_sprintf( sect_name, "effector_fire_hit_%d", id );
 		AddEffector( this, effFireHit, sect_name, P * 0.001f );
 
 	}//if hit_type

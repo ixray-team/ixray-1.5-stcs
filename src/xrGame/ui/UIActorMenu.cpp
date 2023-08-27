@@ -823,7 +823,7 @@ void CUIActorMenu::UpdateActorMP()
 	int money = Game().local_player->money_for_round;
 
 	string64 buf;
-	sprintf_s( buf, "%d RU", money );
+	xr_sprintf( buf, "%d RU", money );
 	m_ActorMoney->SetText( buf );
 
 	m_ActorCharacterInfo->InitCharacterMP( Game().local_player->name, "ui_npc_u_nebo_1" );

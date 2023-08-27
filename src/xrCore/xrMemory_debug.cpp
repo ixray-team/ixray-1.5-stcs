@@ -37,7 +37,7 @@ void	xrMemory::dbg_register		(void* _p, size_t _size, const char* _name)
 	if ((_size == MEMORY_LEAK_SIZE) && _name &&!xr_strcmp(MEMORY_LEAK_DESCRIPTION,_name)) {
 		static int			i = 0;
 		string2048			temp;
-		sprintf_s			(temp,sizeof(temp),"____[%s][%d] : 0x%8x [REGISTER][%d]\n",_name,_size,(u32)((size_t)_p),i++);
+		xr_sprintf			(temp,sizeof(temp),"____[%s][%d] : 0x%8x [REGISTER][%d]\n",_name,_size,(u32)((size_t)_p),i++);
 		OutputDebugString	(temp);
 	}
 #endif
@@ -80,7 +80,7 @@ void	xrMemory::dbg_unregister	(void* _p)
 #ifdef DEBUG_MEMORY_LEAK
 		if ((debug_info[_found]._size == MEMORY_LEAK_SIZE) && debug_info[_found]._name && !xr_strcmp(MEMORY_LEAK_DESCRIPTION,debug_info[_found]._name)) {
 			string2048			temp;
-			sprintf_s			(temp,sizeof(temp),"____[%s][%d] : 0x%8x [UNREGISTER]\n",debug_info[_found]._name,debug_info[_found]._size,(u32)((size_t)_p));
+			xr_sprintf			(temp,sizeof(temp),"____[%s][%d] : 0x%8x [UNREGISTER]\n",debug_info[_found]._name,debug_info[_found]._size,(u32)((size_t)_p));
 			OutputDebugString	(temp);
 		}
 #endif

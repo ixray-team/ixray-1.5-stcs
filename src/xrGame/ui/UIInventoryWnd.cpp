@@ -272,7 +272,7 @@ void CUIInventoryWnd::Update()
 		}
 		// update money
 		string64						sMoney;
-		sprintf_s							(sMoney,"%d RU", _money);
+		xr_sprintf							(sMoney,"%d RU", _money);
 		UIMoneyWnd.SetText				(sMoney);
 
 		// update outfit parameters
@@ -306,15 +306,15 @@ void CUIInventoryWnd::Show()
 		if ((gameid == eGameIDTeamDeathmatch) || (gameid == eGameIDArtefactHunt))
 		{
 			if (1==team)
-		        sprintf_s(_path, "ui_hud_status_green_0%d", rank+1);
+		        xr_sprintf(_path, "ui_hud_status_green_0%d", rank+1);
 			else
-				sprintf_s(_path, "ui_hud_status_blue_0%d", rank+1);
+				xr_sprintf(_path, "ui_hud_status_blue_0%d", rank+1);
 		} else
 		{
 			if (team == 0)
-				sprintf_s(_path, "ui_hud_status_green_0%d", rank+1);
+				xr_sprintf(_path, "ui_hud_status_green_0%d", rank+1);
 			else
-				sprintf_s(_path, "ui_hud_status_blue_0%d", rank+1);
+				xr_sprintf(_path, "ui_hud_status_blue_0%d", rank+1);
 		}
 
 		UIRank->InitTexture(_path);

@@ -728,16 +728,16 @@ void CUIGameCTA::SetRank(ETeam team, u8 rank)
 void CUIGameCTA::SetScore(s32 max_score, s32 greenTeamScore, s32 blueTeamScore)
 {
 	string32 str;
-	sprintf_s(str,"%d", greenTeamScore);
+	xr_sprintf(str,"%d", greenTeamScore);
 	m_team1_score->SetText(str);
-	sprintf_s(str,"%d", blueTeamScore);
+	xr_sprintf(str,"%d", blueTeamScore);
 	m_team2_score->SetText(str);
 	if (max_score <= 0)
 	{
 		xr_strcpy(str,"--");
 	} else
 	{
-		sprintf_s(str,"%d", max_score);
+		xr_sprintf(str,"%d", max_score);
 	}
 	m_pFragLimitIndicator->SetText(str);
 	teamPanels->SetArtefactsCount(greenTeamScore, blueTeamScore);
@@ -846,7 +846,7 @@ void CUIGameCTA::ShowBuySpawn(s32 spawn_cost)
 	size_t	pay_frm_size	= xr_strlen(format_str)*sizeof(char) + 64;
 	PSTR	pay_frm_str		= static_cast<char*>(_alloca(pay_frm_size));
 	
-	sprintf_s(
+	xr_sprintf(
 		pay_frm_str,
 		pay_frm_size,
 		format_str, 

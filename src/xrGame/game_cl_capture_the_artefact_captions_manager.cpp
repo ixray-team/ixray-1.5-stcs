@@ -113,7 +113,7 @@ void CTAGameClCaptionsManager::ShowScoreCaptions()
 	u32				win_str_size = st.translate("mp_team_wins").size() + 
 									xr_strlen(team_name) + 1;
 	char*			win_str = static_cast<char*>(_alloca(win_str_size));
-	sprintf_s		(win_str, win_str_size, 
+	xr_sprintf		(win_str, win_str_size, 
 					st.translate("mp_team_wins").c_str(), 
 					team_name
 					);
@@ -181,7 +181,7 @@ void CTAGameClCaptionsManager::ConvertTime2String(string64 & str, u32 time)
 	u32 RMinutes = time / 60000;
 	time %= 60000;
 	u32 RSecs = time / 1000;
-	sprintf_s(str, sizeof(str), "%02d:%02d:%02d", RHour, RMinutes, RSecs);
+	xr_sprintf(str, sizeof(str), "%02d:%02d:%02d", RHour, RMinutes, RSecs);
 };
 
 u32 CTAGameClCaptionsManager::SetWarmupTime(u32 current_warmup_time, u32 current_time)

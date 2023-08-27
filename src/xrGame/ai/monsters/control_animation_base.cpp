@@ -155,7 +155,7 @@ void CControlAnimationBase::select_animation(bool anim_end)
 	// Заполнить текущую анимацию
 	string64	st,tmp;
 	strconcat	(sizeof(st),st,*anim_it->target_name,_itoa(index,tmp,10));
-	//	sprintf_s		(st, "%s%d", *anim_it->second.target_name, index);
+	//	xr_sprintf		(st, "%s%d", *anim_it->second.target_name, index);
 	m_cur_anim.name				= st; 
 	m_cur_anim.index			= u8(index);
 	m_cur_anim.time_started		= Device.dwTimeGlobal;
@@ -426,7 +426,7 @@ void CControlAnimationBase::UpdateAnimCount()
 
 		if (count != 0) (*it)->count = count;
 		else {
-			sprintf_s(s, "Error! No animation: %s for monster %s", *((*it)->target_name), *m_object->cName());
+			xr_sprintf(s, "Error! No animation: %s for monster %s", *((*it)->target_name), *m_object->cName());
 			R_ASSERT2(count != 0, s);
 		} 
 	}

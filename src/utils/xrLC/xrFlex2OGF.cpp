@@ -110,7 +110,7 @@ void CBuild::Flex2OGF()
 					CLightmap*	LM	= F->lmap_layer;
 					if (LM)		{
 						string_path	fn;
-						sprintf_s		(fn,"%s_1",LM->lm_texture.name); 
+						xr_sprintf		(fn,"%s_1",LM->lm_texture.name); 
 						T.name		= fn;
 						T.pSurface	= &(LM->lm_texture);
 						R_ASSERT	(T.pSurface);

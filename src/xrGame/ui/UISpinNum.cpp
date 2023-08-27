@@ -150,7 +150,7 @@ void CUISpinFlt::SetValue()
 {
 	clamp					(m_fVal, m_fMin, m_fMax);
 	string16				buff;
-	sprintf_s					(buff,"%.1f",m_fVal);
+	xr_sprintf					(buff,"%.1f",m_fVal);
 	m_pLines->SetText		(buff); 
 }
 

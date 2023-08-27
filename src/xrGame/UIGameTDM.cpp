@@ -172,10 +172,10 @@ void CUIGameTDM::Render()
 void CUIGameTDM::SetScoreCaption(int t1, int t2)
 {
 	string32				str;
-	sprintf_s					(str,"%d", t1);
+	xr_sprintf					(str,"%d", t1);
 	m_team1_score->SetText	(str);
 
-	sprintf_s					(str,"%d", t2);
+	xr_sprintf					(str,"%d", t2);
 	m_team2_score->SetText	(str);
 	
 	m_pTeamPanels->SetArtefactsCount(t1, t2);
@@ -185,9 +185,9 @@ void CUIGameTDM::SetFraglimit(int local_frags, int fraglimit)
 {
 	string64 str;
 	if(fraglimit)
-		sprintf_s(str,"%d", fraglimit);
+		xr_sprintf(str,"%d", fraglimit);
 	else
-		sprintf_s(str,"%s", "--");
+		xr_sprintf(str,"%s", "--");
 
 	m_pFragLimitIndicator->SetText(str);
 }

@@ -119,11 +119,11 @@ void CUIKickPlayer::OnBtnOk()
 		switch (mode)
 		{
 			case MODE_KICK:
-                sprintf_s(command, "cl_votestart kick %s", item->m_text.GetText());
+                xr_sprintf(command, "cl_votestart kick %s", item->m_text.GetText());
 				break;
 			case MODE_BAN:
 				{
-					sprintf_s(command, "cl_votestart ban %s %d", item->m_text.GetText(), m_spin_ban_sec->Value());
+					xr_sprintf(command, "cl_votestart ban %s %d", item->m_text.GetText(), m_spin_ban_sec->Value());
 				}break;
 		}
 		Console->Execute			(command);

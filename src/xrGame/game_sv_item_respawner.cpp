@@ -179,7 +179,7 @@ u32 item_respawn_manager::load_section_items(CInifile & ini, const char* section
 
 	u32			item_number = 0;
 	u32			added_items = 0;
-	sprintf_s	(item_name, "item%d", item_number);
+	xr_sprintf	(item_name, "item%d", item_number);
 
 	while (ini.line_exist(section_name, item_name))
 	{
@@ -194,7 +194,7 @@ u32 item_respawn_manager::load_section_items(CInifile & ini, const char* section
 			++added_items;
 		}
 		++item_number;
-		sprintf_s	(item_name, "item%d", item_number);
+		xr_sprintf	(item_name, "item%d", item_number);
 	}
 	return added_items;
 }

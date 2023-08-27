@@ -280,7 +280,7 @@ void CUIActorMenu::UpdateActor()
 	if ( IsGameTypeSingle() )
 	{
 		string64 buf;
-		sprintf_s( buf, "%d RU", m_pActorInvOwner->get_money() );
+		xr_sprintf( buf, "%d RU", m_pActorInvOwner->get_money() );
 		m_ActorMoney->SetText( buf );
 	}
 	else
@@ -326,13 +326,13 @@ void CUIActorMenu::UpdatePartnerBag()
 	}
 	else
 	{
-		sprintf_s( buf, "%d RU", m_pPartnerInvOwner->get_money() );
+		xr_sprintf( buf, "%d RU", m_pPartnerInvOwner->get_money() );
 		m_PartnerMoney->SetText( buf );
 	}	
 
 	LPCSTR kg_str = CStringTable().translate( "st_kg" ).c_str();
 	float total	= CalcItemsWeight( m_pTradePartnerBagList );
-	sprintf_s( buf, "%.1f %s", total, kg_str );
+	xr_sprintf( buf, "%.1f %s", total, kg_str );
 	m_PartnerWeight->SetText( buf );
 	m_PartnerWeight->AdjustWidthToText();
 
@@ -353,14 +353,14 @@ void CUIActorMenu::UpdatePrices()
 	u32 partner_price = CalcItemsPrice( m_pTradePartnerList, m_partner_trade, false );
 
 	string64 buf;
-	sprintf_s( buf, "%d RU", actor_price );		m_ActorTradePrice->SetText( buf );		m_ActorTradePrice->AdjustWidthToText();
-	sprintf_s( buf, "%d RU", partner_price );	m_PartnerTradePrice->SetText( buf );	m_PartnerTradePrice->AdjustWidthToText();
+	xr_sprintf( buf, "%d RU", actor_price );		m_ActorTradePrice->SetText( buf );		m_ActorTradePrice->AdjustWidthToText();
+	xr_sprintf( buf, "%d RU", partner_price );	m_PartnerTradePrice->SetText( buf );	m_PartnerTradePrice->AdjustWidthToText();
 
 	float actor_weight   = CalcItemsWeight( m_pTradeActorList );
 	float partner_weight = CalcItemsWeight( m_pTradePartnerList );
 
-	sprintf_s( buf, "(%.1f %s)", actor_weight, kg_str );		m_ActorTradeWeightMax->SetText( buf );
-	sprintf_s( buf, "(%.1f %s)", partner_weight, kg_str );	m_PartnerTradeWeightMax->SetText( buf );
+	xr_sprintf( buf, "(%.1f %s)", actor_weight, kg_str );		m_ActorTradeWeightMax->SetText( buf );
+	xr_sprintf( buf, "(%.1f %s)", partner_weight, kg_str );	m_PartnerTradeWeightMax->SetText( buf );
 
 	Fvector2 pos = m_ActorTradePrice->GetWndPos();
 	pos.x = m_ActorTradeWeightMax->GetWndPos().x - m_ActorTradePrice->GetWndSize().x - 5.0f;

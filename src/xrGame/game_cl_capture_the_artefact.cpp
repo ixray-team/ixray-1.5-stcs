@@ -283,7 +283,7 @@ void game_cl_CaptureTheArtefact::TranslateGameMessage(u32 msg, NET_Packet& P)
 			if (ps->team == artefactOwnerTeam)
 			{
 				// player has returned team artefact
-				sprintf_s(Text, "%s%s %s%s",
+				xr_sprintf(Text, "%s%s %s%s",
 					CTeamInfo::GetTeam_color_tag(ModifyTeam(artefactOwnerTeam) + 1),
 					ps->name, 
 					Color_Main,
@@ -292,7 +292,7 @@ void game_cl_CaptureTheArtefact::TranslateGameMessage(u32 msg, NET_Packet& P)
 			} else if (ps != local_player)
 			{
 				// player has captured the artefact
-				sprintf_s(Text, "%s%s %s%s",
+				xr_sprintf(Text, "%s%s %s%s",
 					CTeamInfo::GetTeam_color_tag(ModifyTeam(ps->team) + 1),
 					ps->name, 
 					Color_Main,
@@ -309,7 +309,7 @@ void game_cl_CaptureTheArtefact::TranslateGameMessage(u32 msg, NET_Packet& P)
 				}
 			} else
 			{
-				sprintf_s(Text, "%s%s", 
+				xr_sprintf(Text, "%s%s", 
 					Color_Main, *st.translate("mp_you_captured_artefact"));
 				
 				PlayCapturedTheArtefact(ps);
@@ -354,14 +354,14 @@ void game_cl_CaptureTheArtefact::TranslateGameMessage(u32 msg, NET_Packet& P)
 			}
 			if (ps)
 			{
-				sprintf_s(Text, "%s%s %s%s",
+				xr_sprintf(Text, "%s%s %s%s",
 						CTeamInfo::GetTeam_color_tag(ModifyTeam(ps->team) + 1),
 						ps->name, 
 						Color_Main,
 						st.translate("mp_has_dropped_artefact").c_str()); //need translate
 			} else
 			{
-				sprintf_s(Text, "%s%s",
+				xr_sprintf(Text, "%s%s",
 						Color_Main,
 						st.translate("mp_artefact_dropped").c_str());
 			}
@@ -382,13 +382,13 @@ void game_cl_CaptureTheArtefact::TranslateGameMessage(u32 msg, NET_Packet& P)
 			if (delivererTeam == local_player->team)
 			{
 				//artefact on base !
-				sprintf_s(Text, "%s%s",
+				xr_sprintf(Text, "%s%s",
 					Color_Artefact,
 					st.translate("mp_artefact_on_base").c_str());
 			} else
 			{
 				//artefact on enemy base !
-				sprintf_s(Text, "%s%s",
+				xr_sprintf(Text, "%s%s",
 					Color_Artefact,
 					st.translate("mp_artefact_on_enemy_base").c_str());
 			}
@@ -1298,7 +1298,7 @@ void game_cl_CaptureTheArtefact::OnVoteStart(NET_Packet& P)
 	Msg("---Making finally string: (t_vote_str: %s), (vstr: %s), (player: %s)", t_vote_str, vstr, player);
 #endif
 	
-	sprintf_s			(fin_str, fin_str_size, t_vote_str, vstr, player);
+	xr_sprintf			(fin_str, fin_str_size, t_vote_str, vstr, player);
 
 #ifdef CLIENT_CTA_LOG
 	Msg("---Starting vote: %s", fin_str);
@@ -1352,7 +1352,7 @@ void game_cl_CaptureTheArtefact::UpdateVotingTime(u32 current_time)
 			if (ps->m_bCurrentVoteAgreed == 1) NumAgreed++;
 		}
 		
-		sprintf_s(VoteTimeResStr, st.translate("mp_timeleft").c_str(), MinitsLeft, SecsLeft, float(NumAgreed)/players.size());
+		xr_sprintf(VoteTimeResStr, st.translate("mp_timeleft").c_str(), MinitsLeft, SecsLeft, float(NumAgreed)/players.size());
 		if (m_game_ui)
 			m_game_ui->SetVoteTimeResultMsg(VoteTimeResStr);
 	};

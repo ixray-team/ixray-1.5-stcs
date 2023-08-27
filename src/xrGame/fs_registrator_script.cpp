@@ -53,7 +53,7 @@ struct FS_item
 		struct tm*	newtime;	
 		time_t t	= modif; 
 		newtime		= localtime( &t ); 
-		sprintf_s		(buff, "%02d/%02d/%4d %02d:%02d",
+		xr_sprintf		(buff, "%02d/%02d/%4d %02d:%02d",
 							newtime->tm_mday, 
 							newtime->tm_mon+1,
 							newtime->tm_year+1900,

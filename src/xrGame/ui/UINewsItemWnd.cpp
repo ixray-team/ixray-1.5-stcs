@@ -36,7 +36,7 @@ void CUINewsItemWnd::Setup			(GAME_NEWS_DATA& news_data)
 //	string128						time_str;
 //	u32								years, months, days, hours, minutes, seconds, milliseconds;
 //	split_time						(news_data.receive_time, years, months, days, hours, minutes, seconds, milliseconds);
-//	sprintf_s						(time_str, "%%c[255,225,225,250]%02i/%02i/%04i %02i:%02i  ", days, months, years, hours, minutes );
+//	xr_sprintf						(time_str, "%%c[255,225,225,250]%02i/%02i/%04i %02i:%02i  ", days, months, years, hours, minutes );
 
 	shared_str time_str				= InventoryUtilities::GetTimeAndDateAsString( news_data.receive_time );
 	u32    sz  = (time_str.size() + 5) * sizeof(char);

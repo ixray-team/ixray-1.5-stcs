@@ -196,14 +196,14 @@ bool const configs_verifyer::verify(u8* data, u32 data_size, string256 & diff)
 	
 	string16	tmp_digit;
 	u32			ap_index = 1;
-	sprintf_s	(tmp_digit, "%d", ap_index);
+	xr_sprintf	(tmp_digit, "%d", ap_index);
 	while		(tmp_ini.line_exist(active_params_section, tmp_digit))
 	{
 		LPCSTR	tmp_ap_section		= tmp_ini.r_string(active_params_section, tmp_digit);
 		tmp_active_params.w_string	(active_params_section, tmp_digit, tmp_ap_section);
 		m_original_ap.load_to		(tmp_ap_section, tmp_active_params);
 		++ap_index;
-		sprintf_s					(tmp_digit, "%d", ap_index);
+		xr_sprintf					(tmp_digit, "%d", ap_index);
 	}
 	
 	m_orig_config_body.seek			(m_orig_config_end_pos);

@@ -103,7 +103,7 @@ BOOL CPGDef::Load2(CInifile& ini)
 	{
     	*it							= xr_new<SEffect>();
 
-		sprintf_s					(buff, sizeof(buff), "effect_%04d", counter);
+		xr_sprintf					(buff, sizeof(buff), "effect_%04d", counter);
         
 		(*it)->m_EffectName			= ini.r_string	(buff, "effect_name");
         (*it)->m_OnPlayChildName	= ini.r_string	(buff, "on_play_child");
@@ -160,7 +160,7 @@ void CPGDef::Save2(CInifile& ini)
 	string256		buff;
     for (EffectIt it=m_Effects.begin(); it!=m_Effects.end(); ++it,++counter)
 	{
-		sprintf_s		(buff, sizeof(buff), "effect_%04d", counter);
+		xr_sprintf		(buff, sizeof(buff), "effect_%04d", counter);
     	
 		ini.w_string	(buff, "effect_name",	(*it)->m_EffectName.c_str());
     	ini.w_string	(buff, "on_play_child", (*it)->m_Flags.test(SEffect::flOnPlayChild)?(*it)->m_OnPlayChildName.c_str():"");

@@ -112,13 +112,13 @@ void CUIInventoryCellItem::UpdateItemText()
 
 	if ( count > 1 || helper_count )
 	{
-		sprintf_s						( str, "x%d", count );
+		xr_sprintf						( str, "x%d", count );
 		m_text->SetText					( str );
 		m_text->Show					( true );
 	}
 	else
 	{
-		sprintf_s						( str, "");
+		xr_sprintf						( str, "");
 		m_text->SetText					( str );
 		m_text->Show					( false );
 	}
@@ -170,7 +170,7 @@ void CUIAmmoCellItem::UpdateItemText()
 		const u32 total = CalculateAmmoCount();
 		
 		string32	str;
-		sprintf_s( str, "%d", total );
+		xr_sprintf( str, "%d", total );
 		m_text->SetText( str );
 		m_text->Show( true );
 	}

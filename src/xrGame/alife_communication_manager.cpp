@@ -401,18 +401,18 @@ bool CALifeCommunicationManager::bfCheckForInventoryCapacity(CSE_ALifeHumanAbstr
 			string4096		S;
 			char			*S1 = S;	
 			if (psAI_Flags.test(aiALife)) {
-				S1				+= sprintf_s(S1,"%s -> ",tpALifeHumanAbstract1->name_replace());
+				S1				+= xr_sprintf(S1,"%s -> ",tpALifeHumanAbstract1->name_replace());
 				
 				if (iSum1) {
 					for (int i=0, n=l_tpIndexes1.size(); i<n ;++i)
-						S1		+= sprintf_s(S1,"%3d",l_tpIndexes1[i]);
+						S1		+= xr_sprintf(S1,"%3d",l_tpIndexes1[i]);
 				}
 			}
 #endif
 			if (iSum1 < iBalance + iSum2) {
 #ifdef DEBUG
 				if (psAI_Flags.test(aiALife)) {
-					S1			+= sprintf_s(S1," + $%d",iBalance + iSum2 - iSum1);
+					S1			+= xr_sprintf(S1," + $%d",iBalance + iSum2 - iSum1);
 				}
 #endif
 				R_ASSERT	(int(tpALifeHumanAbstract1->m_dwMoney) >= iBalance + iSum2 - iSum1);
@@ -422,11 +422,11 @@ bool CALifeCommunicationManager::bfCheckForInventoryCapacity(CSE_ALifeHumanAbstr
 			
 #ifdef DEBUG
 			if (psAI_Flags.test(aiALife)) {
-				S1				+= sprintf_s(S1,"\n%s -> ",tpALifeHumanAbstract2->name_replace());
+				S1				+= xr_sprintf(S1,"\n%s -> ",tpALifeHumanAbstract2->name_replace());
 				
 				if (iSum2) {
 					for (int i=0, n=l_tpIndexes2.size(); i<n ;++i)
-						S1		+= sprintf_s(S1,"%3d",l_tpIndexes2[i]);
+						S1		+= xr_sprintf(S1,"%3d",l_tpIndexes2[i]);
 				}
 			}
 #endif
@@ -434,7 +434,7 @@ bool CALifeCommunicationManager::bfCheckForInventoryCapacity(CSE_ALifeHumanAbstr
 			if (iSum1 > iBalance + iSum2) {
 #ifdef DEBUG
 				if (psAI_Flags.test(aiALife)) {
-					S1			+= sprintf_s(S1," + $%d",iSum1 - iBalance - iSum2);
+					S1			+= xr_sprintf(S1," + $%d",iSum1 - iBalance - iSum2);
 				}
 #endif
 				R_ASSERT	(int(tpALifeHumanAbstract2->m_dwMoney) >= iSum1 - iBalance - iSum2);
@@ -552,17 +552,17 @@ bool CALifeCommunicationManager::bfCheckIfCanNullTradersBalance(CSE_ALifeHumanAb
 			{
 				string4096		S;
 				char			*S1 = S;
-				S1				+= sprintf_s(S1,"%s [%5d]: ",tpALifeHumanAbstract1->name_replace(),tpALifeHumanAbstract1->m_dwMoney);
+				S1				+= xr_sprintf(S1,"%s [%5d]: ",tpALifeHumanAbstract1->name_replace(),tpALifeHumanAbstract1->m_dwMoney);
 				for (int i=0, n=m_tpTrader1.size(); i<n; ++i)
-					S1			+= sprintf_s(S1,"%6d",m_tpTrader1[i]->m_dwCost);
+					S1			+= xr_sprintf(S1,"%6d",m_tpTrader1[i]->m_dwCost);
 				Msg				("%s",S);
 			}
 			{
 				string4096		S;
 				char			*S1 = S;
-				S1				+= sprintf_s(S1,"%s [%5d]: ",tpALifeHumanAbstract2->name_replace(),tpALifeHumanAbstract2->m_dwMoney);
+				S1				+= xr_sprintf(S1,"%s [%5d]: ",tpALifeHumanAbstract2->name_replace(),tpALifeHumanAbstract2->m_dwMoney);
 				for (int i=0, n=m_tpTrader2.size(); i<n; ++i)
-					S1			+= sprintf_s(S1,"%6d",m_tpTrader2[i]->m_dwCost);
+					S1			+= xr_sprintf(S1,"%6d",m_tpTrader2[i]->m_dwCost);
 				Msg				("%s",S);
 			}
 			Msg					("Balance : %6d",iBalance);
@@ -577,21 +577,21 @@ bool CALifeCommunicationManager::bfCheckIfCanNullTradersBalance(CSE_ALifeHumanAb
 			{	
 				string4096		S;
 				char			*S1 = S;
-				S1				+= sprintf_s(S1,"%s : ",tpALifeHumanAbstract1->name_replace());
+				S1				+= xr_sprintf(S1,"%s : ",tpALifeHumanAbstract1->name_replace());
 				INT_IT			I = m_tpSums1.begin();
 				INT_IT			E = m_tpSums1.end();
 				for ( ; I != E; ++I)
-					S1			+= sprintf_s(S1,"%6d",*I);
+					S1			+= xr_sprintf(S1,"%6d",*I);
 				Msg				("%s",S);
 			}
 			{
 				string4096		S;
 				char			*S1 = S;
-				S1				+= sprintf_s(S1,"%s : ",tpALifeHumanAbstract2->name_replace());
+				S1				+= xr_sprintf(S1,"%s : ",tpALifeHumanAbstract2->name_replace());
 				INT_IT			I = m_tpSums2.begin();
 				INT_IT			E = m_tpSums2.end();
 				for ( ; I != E; ++I)
-					S1			+= sprintf_s(S1,"%6d",*I);
+					S1			+= xr_sprintf(S1,"%6d",*I);
 				Msg				("%s",S);
 			}
 		}

@@ -44,7 +44,7 @@ void cdkey_ban_list::save()
 	for (ban_list_t::iterator i = m_ban_list.begin(),
 		ie = m_ban_list.end(); i != ie; ++i)
 	{
-		sprintf_s(tmp_sect_name, "client_%d", index);
+		xr_sprintf(tmp_sect_name, "client_%d", index);
 		(*i)->save(&bl_ini, tmp_sect_name);
 		++index;
 	}
@@ -163,7 +163,7 @@ void cdkey_ban_list::unban_player_by_index(size_t const index)
 char const * print_time(time_t const & src_time, string64 & dest_time)
 {
 	tm* tmp_tm = _localtime64(&src_time);
-	sprintf_s(dest_time, sizeof(dest_time),
+	xr_sprintf(dest_time, sizeof(dest_time),
 		"%02d.%02d.%d_%02d:%02d:%02d",
 		tmp_tm->tm_mday, 
 		tmp_tm->tm_mon+1, 
@@ -188,7 +188,7 @@ void cdkey_ban_list::print_ban_list(char const * filter_string)
 		ie = m_ban_list.end(); i != ie; ++i)
 	{
 		string64 temp_time;
-		sprintf_s(tmp_string, "- (player index : %d), (ip : %s), (name : %s), (end time : %s), (hex digest : %s);",
+		xr_sprintf(tmp_string, "- (player index : %d), (ip : %s), (name : %s), (end time : %s), (hex digest : %s);",
 			index,
 			(*i)->client_ip_addr.to_string().c_str(),
 			(*i)->client_name.c_str(),

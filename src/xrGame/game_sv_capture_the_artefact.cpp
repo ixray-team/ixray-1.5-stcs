@@ -189,7 +189,7 @@ void game_sv_CaptureTheArtefact::SM_CheckViewSwitching()
 		if (pObject && smart_cast<CActor*>(pObject))
 		{
 			string1024						Text;
-			sprintf_s						(Text, "Following %s", pObject->cName().c_str());
+			xr_sprintf						(Text, "Following %s", pObject->cName().c_str());
 
 			gameCTA->SetSpectrModeMsgCaption	(Text);
 		}else
@@ -1026,7 +1026,7 @@ void game_sv_CaptureTheArtefact::LoadAnomalySet()
 	string16	set_id_str;
 	for (u32 i = 0; i < MAX_ANOMALIES_COUNT; ++i)
 	{
-		sprintf_s	(set_id_str, "set%d", i);
+		xr_sprintf	(set_id_str, "set%d", i);
 		if (!level_ini_file->line_exist(CTA_ANOMALY_SET_BASE_NAME, set_id_str))
 			continue;
 		
@@ -1445,7 +1445,7 @@ void game_sv_CaptureTheArtefact::OnGiveBonus(KILL_RES KillResult, game_PlayerSta
 			if (pKiller->m_iKillsInRowCurr)
 			{
 				string64 tmpStr;
-				sprintf_s(tmpStr, "%d_kill_in_row", pKiller->m_iKillsInRowCurr);
+				xr_sprintf(tmpStr, "%d_kill_in_row", pKiller->m_iKillsInRowCurr);
 				Player_AddBonusMoney(pKiller, READ_IF_EXISTS(pSettings, r_s32, "mp_bonus_money", tmpStr,0), SKT_KIR, u8(pKiller->m_iKillsInRowCurr & 0xff));
 			};			
 		}break;

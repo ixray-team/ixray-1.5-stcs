@@ -39,7 +39,7 @@ void CPartition::load(IKinematics* V, LPCSTR model_name)
 	for(u32 i=0; i<MAX_PARTS; ++i)
 	{
 		string64			buff;
-		sprintf_s			(buff,sizeof(buff), "part_%d", i);
+		xr_sprintf			(buff,sizeof(buff), "part_%d", i);
 		
 		CInifile::Sect S		= ini.r_section(buff);
 		CInifile::SectCIt it	= S.Data.begin();

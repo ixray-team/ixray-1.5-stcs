@@ -160,7 +160,7 @@ bool CLevel::net_start3				()
 	if (!strstr(m_caClientOptions.c_str(), "port=") && Server)
 	{
 		string64	PortStr;
-		sprintf_s(PortStr, "/port=%d", Server->GetPort());
+		xr_sprintf(PortStr, "/port=%d", Server->GetPort());
 
 		string4096	tmp;
 		xr_strcpy(tmp, m_caClientOptions.c_str());
@@ -180,7 +180,7 @@ bool CLevel::net_start3				()
 				xr_strcpy(PasswordStr, PSW);
 
 			string4096	tmp;
-			sprintf_s(tmp, "%s/psw=%s", m_caClientOptions.c_str(), PasswordStr);
+			xr_sprintf(tmp, "%s/psw=%s", m_caClientOptions.c_str(), PasswordStr);
 			m_caClientOptions = tmp;
 		};
 	};
@@ -191,7 +191,7 @@ bool CLevel::net_start3				()
 		const char* start = strstr(m_caClientOptions.c_str(),"/cdkey=") +xr_strlen("/cdkey=");
 		sscanf			(start, "%[^/]",CDKey);
 		string128 cmd;
-		sprintf_s(cmd, "cdkey %s", _strupr(CDKey));
+		xr_sprintf(cmd, "cdkey %s", _strupr(CDKey));
 		Console->Execute			(cmd);
 	}
 	return true;

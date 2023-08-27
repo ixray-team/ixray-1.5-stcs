@@ -692,7 +692,7 @@ CUIXmlInit::StaticsVec CUIXmlInit::InitAutoStaticGroup(CUIXml& xml_doc, LPCSTR p
 	{
 		pUIStatic						= xr_new<CUIStatic>();
 		InitStatic						(xml_doc, "auto_static", i, pUIStatic);
-		sprintf_s							(sname,"auto_static_%d", i);
+		xr_sprintf							(sname,"auto_static_%d", i);
 		pUIStatic->SetWindowName		(sname);
 		pUIStatic->SetAutoDelete		(true);
 		pParentWnd->AttachChild			(pUIStatic);
@@ -722,7 +722,7 @@ void CUIXmlInit::InitAutoFrameLineGroup(CUIXml& xml_doc, LPCSTR path, int index,
 	{
 		pUIFL							= xr_new<CUIFrameLineWnd>();
 		InitFrameLine					(xml_doc, "auto_frameline", i, pUIFL);
-		sprintf_s						(sname,"auto_frameline_%d", i);
+		xr_sprintf						(sname,"auto_frameline_%d", i);
 		pUIFL->SetWindowName			(sname);
 		pUIFL->SetAutoDelete			(true);
 		pParentWnd->AttachChild			(pUIFL);

@@ -233,10 +233,10 @@ void CUIEventsWnd::ShowDescription			(CGameTask* t, int idx)
 			}else
 			if(o.article_key.size())
 			{
-				sprintf_s(need_group, "%s/%s", *t->m_ID, *o.article_key);
+				xr_sprintf(need_group, "%s/%s", *t->m_ID, *o.article_key);
 			}else
 			{
-				sprintf_s(need_group, "%s/%d", *t->m_ID, idx);
+				xr_sprintf(need_group, "%s/%d", *t->m_ID, idx);
 			}
 
 			ARTICLE_VECTOR::const_iterator it		= Actor()->encyclopedia_registry->registry().objects_ptr()->begin();

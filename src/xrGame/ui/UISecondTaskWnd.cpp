@@ -158,7 +158,7 @@ void UISecondTaskWnd::UpdateCounter()
 	u32 task2_index     = Level().GameTaskManager().GetTaskIndex( act_task, eTaskStateInProgress, eTaskTypeAdditional );
 
 	string32 buf;
-	sprintf_s( buf, sizeof(buf), "%d / %d", task2_index, m_progress_task_count );
+	xr_sprintf( buf, sizeof(buf), "%d / %d", task2_index, m_progress_task_count );
 	m_counter->SetText( buf );
 }
 */

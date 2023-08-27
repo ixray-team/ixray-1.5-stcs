@@ -712,7 +712,7 @@ CBaseMonster::SDebugInfo CAI_Bloodsucker::show_debug_info()
 	if (!info.active) return CBaseMonster::SDebugInfo();
 
 	string128 text;
-	sprintf_s(text, "Vampire Want Value = [%f] Speed = [%f]", m_vampire_want_value, m_vampire_want_speed);
+	xr_sprintf(text, "Vampire Want Value = [%f] Speed = [%f]", m_vampire_want_value, m_vampire_want_speed);
 	DBG().text(this).add_item(text, info.x, info.y+=info.delta_y, info.color);
 	DBG().text(this).add_item("---------------------------------------", info.x, info.y+=info.delta_y, info.delimiter_color);
 

@@ -21,7 +21,7 @@ void CUIRankIndicator::InitFromXml(CUIXml& xml_doc)
 	for(u8 i=0; i<max_rank;++i){
 		CUIStatic*&	s	= m_ranks[i];
 		s				= xr_new<CUIStatic>();
-		sprintf_s(str, "rank_wnd:rank_%d", i);
+		xr_sprintf(str, "rank_wnd:rank_%d", i);
 		CUIXmlInit::InitStatic(xml_doc, str, 0,	s);
 	}
 	CUIStatic* back	= xr_new<CUIStatic>(); back->SetAutoDelete(true);

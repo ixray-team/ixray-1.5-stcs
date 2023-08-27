@@ -16,8 +16,8 @@ static unsigned char rnd_seed[] = "S.T.A.L.K.E.R. 4ever Rulezz !!!";
 CRYPTO_API	void		xr_crypto_init	()
 {
 	string256 random_string;
-	sprintf_s					(random_string, "%I64d_%s", CPU::QPC(), rnd_seed);
-	//sprintf_s					(random_string, "%s", rnd_seed);
+	xr_sprintf					(random_string, "%I64d_%s", CPU::QPC(), rnd_seed);
+	//xr_sprintf					(random_string, "%s", rnd_seed);
 	CRYPTO_set_mem_functions	(xr_malloc, xr_realloc, unsafe_xr_free);
 	RAND_seed					(random_string, xr_strlen(random_string));
 	//unsigned int siglen;

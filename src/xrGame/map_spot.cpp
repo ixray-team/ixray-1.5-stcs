@@ -164,7 +164,7 @@ LPCSTR CMapSpotPointer::GetHint()
 	cam_pos.set(Device.vCameraPosition.x,Device.vCameraPosition.z);
 	float dist = MapLocation()->Position().distance_to(cam_pos);
 	string32 s;
-	sprintf_s(s," [%.2f]m.", dist);
+	xr_sprintf(s," [%.2f]m.", dist);
 	m_pointer_hint += s;
 	return m_pointer_hint.c_str();
 */

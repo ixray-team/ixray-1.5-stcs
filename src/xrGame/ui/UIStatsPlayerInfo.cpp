@@ -105,13 +105,13 @@ const char* CUIStatsPlayerInfo::GetInfoByID(const char* id){
 	if (0 == xr_strcmp(id,"name"))
 		xr_strcpy(ans,m_pPlayerInfo->name);
 	else if (0 == xr_strcmp(id,"frags"))
-		sprintf_s(ans,"%d",(int)m_pPlayerInfo->frags());
+		xr_sprintf(ans,"%d",(int)m_pPlayerInfo->frags());
 	else if (0 == xr_strcmp(id,"deaths"))
-		sprintf_s(ans,"%d",(int)m_pPlayerInfo->m_iDeaths);
+		xr_sprintf(ans,"%d",(int)m_pPlayerInfo->m_iDeaths);
 	else if (0 == xr_strcmp(id,"ping"))
-		sprintf_s(ans,"%d",(int)m_pPlayerInfo->ping);
+		xr_sprintf(ans,"%d",(int)m_pPlayerInfo->ping);
 	else if (0 == xr_strcmp(id,"artefacts"))
-		sprintf_s(ans,"%d",(int)m_pPlayerInfo->af_count);
+		xr_sprintf(ans,"%d",(int)m_pPlayerInfo->af_count);
 	else if (0 == xr_strcmp(id,"rank"))
 	{
 		int team = m_pPlayerInfo->team;
@@ -119,9 +119,9 @@ const char* CUIStatsPlayerInfo::GetInfoByID(const char* id){
 			team -= 1;
 
 		if (0 == team)
-            sprintf_s(ans,"ui_hud_status_green_0%d",(int)m_pPlayerInfo->rank + 1);
+            xr_sprintf(ans,"ui_hud_status_green_0%d",(int)m_pPlayerInfo->rank + 1);
 		else
-			sprintf_s(ans,"ui_hud_status_blue_0%d",(int)m_pPlayerInfo->rank + 1);
+			xr_sprintf(ans,"ui_hud_status_blue_0%d",(int)m_pPlayerInfo->rank + 1);
 
 	}
 	else if (0 == xr_strcmp(id, "death_atf"))

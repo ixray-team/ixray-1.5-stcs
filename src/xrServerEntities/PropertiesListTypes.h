@@ -486,12 +486,12 @@ public:
 //------------------------------------------------------------------------------
 template <class T>
 IC xr_string draw_sprintf(xr_string& s, const T& V, int tag)
-{  string256 tmp; sprintf_s(tmp,sizeof(tmp),"%d",V); s=tmp; return s;}
+{  string256 tmp; xr_sprintf(tmp,sizeof(tmp),"%d",V); s=tmp; return s;}
 //------------------------------------------------------------------------------
 IC xr_string draw_sprintf(xr_string& s, const float& V, int dec)
 {
-    string32 	fmt; sprintf_s(fmt,sizeof(fmt),"%%.%df",dec);
-	string256 	tmp; sprintf_s(tmp,sizeof(tmp),fmt,V);
+    string32 	fmt; xr_sprintf(fmt,sizeof(fmt),"%%.%df",dec);
+	string256 	tmp; xr_sprintf(tmp,sizeof(tmp),fmt,V);
     s			= tmp; 
     return s;
 }
@@ -506,8 +506,8 @@ IC void clamp(Fvector& V, const Fvector& mn, const Fvector& mx)
 }
 IC xr_string draw_sprintf(xr_string& s, const Fvector& V, int dec)
 {
-	string128 fmt;	sprintf_s(fmt,sizeof(fmt),"{%%.%df, %%.%df, %%.%df}",dec,dec,dec);
-    string256 tmp;	sprintf_s(tmp,sizeof(tmp),fmt,V.x,V.y,V.z);
+	string128 fmt;	xr_sprintf(fmt,sizeof(fmt),"{%%.%df, %%.%df, %%.%df}",dec,dec,dec);
+    string256 tmp;	xr_sprintf(tmp,sizeof(tmp),fmt,V.x,V.y,V.z);
     s 				= tmp;
     return s;
 }

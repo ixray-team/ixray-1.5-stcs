@@ -253,13 +253,13 @@ LPCSTR EFS_Utils::GenerateName(LPCSTR base_path, LPCSTR base_name, LPCSTR def_ex
     if (base_name)	
 		strconcat		(sizeof(fn), fn, base_path,base_name,def_ext);
 	else 			
-		sprintf_s		(fn, sizeof(fn), "%s%02d%s",base_path,cnt++,def_ext);
+		xr_sprintf		(fn, sizeof(fn), "%s%02d%s",base_path,cnt++,def_ext);
 
 	while (FS.exist(fn))
 	    if (base_name)	
-			sprintf_s	(fn, sizeof(fn),"%s%s%02d%s",base_path,base_name,cnt++,def_ext);
+			xr_sprintf	(fn, sizeof(fn),"%s%s%02d%s",base_path,base_name,cnt++,def_ext);
         else 			
-			sprintf_s	(fn, sizeof(fn), "%s%02d%s",base_path,cnt++,def_ext);
+			xr_sprintf	(fn, sizeof(fn), "%s%02d%s",base_path,cnt++,def_ext);
     strcpy(out_name,fn);
 	return out_name;
 }

@@ -461,7 +461,7 @@ bool CScriptStorage::load_buffer	(lua_State *L, LPCSTR caBuffer, size_t tSize, L
 		if (!parse_namespace(caNameSpaceName,a,b))
 			return		(false);
 
-		sprintf_s		(insert,header,caNameSpaceName,a,b);
+		xr_sprintf		(insert,header,caNameSpaceName,a,b);
 		u32				str_len = xr_strlen(insert);
 		LPSTR			script = xr_alloc<char>(str_len + tSize);
 		xr_strcpy		(script, str_len + tSize, insert);

@@ -34,7 +34,7 @@ u32 const	generate_key	(s32 const seed, key_t& result_key)
 		result_key.m_key[i] = (tmp_random.randI() << 17) | (tmp_random.randI() << 2) | (tmp_random.randI() & 3);
 #ifdef DEBUG
 		string16 dst_num;
-		sprintf_s				(dst_num, "%08x", result_key.m_key[i]);
+		xr_sprintf				(dst_num, "%08x", result_key.m_key[i]);
 		xr_strcat				(tmp_str, dst_num);
 #endif
 	}

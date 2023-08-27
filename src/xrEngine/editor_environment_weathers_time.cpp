@@ -663,7 +663,7 @@ void time::lerp	(CEnvironment* parent, CEnvDescriptor& A, CEnvDescriptor& B, flo
 	u32						seconds = current_time_u32%60;
 
 	string16				temp;
-	sprintf_s				(temp, "%02d:%02d:%02d", hours, minutes, seconds);
+	xr_sprintf				(temp, "%02d:%02d:%02d", hours, minutes, seconds);
 	m_identifier			= temp;
 
 	time&					a = static_cast<time&>(A);

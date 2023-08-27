@@ -981,7 +981,7 @@ public:
 				DWORD dwPort		= 0;
 				Level().Server->GetClientAddress(client->ID, Address, &dwPort);
 				string512 tmp_string;
-				sprintf_s(tmp_string, "- (player session id : %u), (name : %s), (ip: %s), (ping: %u);",
+				xr_sprintf(tmp_string, "- (player session id : %u), (name : %s), (ip: %s), (ping: %u);",
 					client->ID.value(),
 					l_pC->ps->getName(),
 					Address.to_string().c_str(),
@@ -1117,7 +1117,7 @@ public:
 		//sscanf				(args,"%s", GameType);
 
 		string1024			argsNew;
-		sprintf_s				(argsNew, "%s %s %s", 
+		xr_sprintf				(argsNew, "%s %s %s", 
 			Level().name().c_str(), 
 			Level().version().c_str(),
 			args);
@@ -1133,7 +1133,7 @@ public:
 		if (g_pGameLevel && Level().Server && OnServer() && Level().Server->game) {
 			EGameIDs type = Level().Server->game->Type();
 			TStatus str;
-			sprintf_s(str, sizeof(str), "%s  (current game type)  [dm,tdm,ah,cta]", GameTypeToString(type, true));
+			xr_sprintf(str, sizeof(str), "%s  (current game type)  [dm,tdm,ah,cta]", GameTypeToString(type, true));
 			tips.push_back(str);
 		}
 		IConsole_Command::fill_tips( tips, mode );
@@ -1162,7 +1162,7 @@ public:
 		);
 
 		string1024		argsNew;
-		sprintf_s		(argsNew, "%s %s %s", LevelName, LevelVersion, Level().Server->game->type_name());
+		xr_sprintf		(argsNew, "%s %s %s", LevelName, LevelVersion, Level().Server->game->type_name());
 
 		CCC_ChangeLevelGameType::Execute((LPCSTR)argsNew);
 	};
@@ -1720,7 +1720,7 @@ public:
 		if (!(&Level()))											return;
 		if (!(&Game()))												return;
 		if (!Game().local_player || !Game().local_player->name )	return;
-		sprintf_s( S, "is \"%s\" ", Game().local_player->name );
+		xr_sprintf( S, "is \"%s\" ", Game().local_player->name );
 	}
 
 	virtual void	Save	(IWriter *F)	{}

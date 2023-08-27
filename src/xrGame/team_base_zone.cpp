@@ -84,7 +84,7 @@ BOOL CTeamBaseZone::net_Spawn	(CSE_Abstract* DC)
 	if (GameID() != eGameIDSingle && !g_dedicated_server)
 	{
 		char BaseMapLocation[1024];
-		sprintf_s (BaseMapLocation, "mp_team_base_%d_location", m_Team);
+		xr_sprintf (BaseMapLocation, "mp_team_base_%d_location", m_Team);
 		(Level().MapManager().AddMapLocation(BaseMapLocation,ID()))->EnablePointer();
 		
 	};

@@ -36,7 +36,7 @@ void register_file_mapping			(void *address, const u32 &size, LPCSTR file_name)
 #ifdef USE_MEMORY_MONITOR
 //	memory_monitor::monitor_alloc	(addres,size,"file mapping");
 	string512						temp;
-	sprintf_s						(temp, sizeof(temp),"file mapping: %s",file_name);
+	xr_sprintf						(temp, sizeof(temp),"file mapping: %s",file_name);
 	memory_monitor::monitor_alloc	(address,size,temp);
 #endif // USE_MEMORY_MONITOR
 }

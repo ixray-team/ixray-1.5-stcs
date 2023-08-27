@@ -365,7 +365,7 @@ void game_sv_Deathmatch::OnGiveBonus(KILL_RES KillResult, game_PlayerState* pKil
 			if (pKiller->m_iKillsInRowCurr)
 			{
 				string64 tmpStr;
-				sprintf_s(tmpStr, "%d_kill_in_row", pKiller->m_iKillsInRowCurr);
+				xr_sprintf(tmpStr, "%d_kill_in_row", pKiller->m_iKillsInRowCurr);
 				Player_AddBonusMoney(pKiller, READ_IF_EXISTS(pSettings, r_s32, "mp_bonus_money", tmpStr,0), SKT_KIR, u8(pKiller->m_iKillsInRowCurr & 0xff));
 			};			
 		}break;
@@ -461,7 +461,7 @@ void	game_sv_Deathmatch::Update()
 					if (pObject && smart_cast<CActor*>(pObject))
 					{
 						string1024					Text;
-						sprintf_s						(Text, "Following %s", pObject->cName().c_str());
+						xr_sprintf						(Text, "Following %s", pObject->cName().c_str());
 
 						GameDM->SetSpectrModeMsgCaption(Text);
 					}else
@@ -1474,7 +1474,7 @@ void	game_sv_Deathmatch::LoadAnomalySets			()
 		AnomalySingleSet.clear();
 		AnomalyIDSingleSet.clear();
 
-		sprintf_s(SetName, "set%i", i);		
+		xr_sprintf(SetName, "set%i", i);		
 		if (!Level().pLevel->line_exist(ASetBaseName, SetName))
 			continue;
 

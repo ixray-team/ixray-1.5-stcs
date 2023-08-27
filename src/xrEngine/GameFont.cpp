@@ -95,7 +95,7 @@ void CGameFont::Initialize		(LPCSTR cShader, LPCSTR cTextureName)
 			vFirstValid.set( v.x , v.y , 1 + v[2] - v[0] );
 		} else 
 		for ( u32 i=0 ; i < nNumChars ; i++ ) {
-			sprintf_s( buf ,sizeof(buf), "%05d" , i );
+			xr_sprintf( buf ,sizeof(buf), "%05d" , i );
 			if ( ini->line_exist( "mb_symbol_coords" , buf ) ) {
 				Fvector v = ini->r_fvector3( "mb_symbol_coords" , buf );
 				vFirstValid.set( v.x , v.y , 1 + v[2] - v[0] );
@@ -106,7 +106,7 @@ void CGameFont::Initialize		(LPCSTR cShader, LPCSTR cTextureName)
 		// Filling entire character table
 
 		for ( u32 i=0 ; i < nNumChars ; i++ ) {
-			sprintf_s( buf ,sizeof(buf), "%05d" , i );
+			xr_sprintf( buf ,sizeof(buf), "%05d" , i );
 			if ( ini->line_exist( "mb_symbol_coords" , buf ) ) {
 				Fvector v = ini->r_fvector3( "mb_symbol_coords" , buf );
 				TCMap[i].set( v.x , v.y , 1 + v[2] - v[0] );
@@ -129,7 +129,7 @@ void CGameFont::Initialize		(LPCSTR cShader, LPCSTR cTextureName)
 
 		fHeight						= ini->r_float("symbol_coords","height");
 		for (u32 i=0; i<nNumChars; i++){
-			sprintf_s				(buf,sizeof(buf),"%03d",i);
+			xr_sprintf				(buf,sizeof(buf),"%03d",i);
 			Fvector v				= ini->r_fvector3("symbol_coords",buf);
 			TCMap[i].set			(v.x,v.y,v[2]-v[0]+d);
 		}
@@ -138,7 +138,7 @@ void CGameFont::Initialize		(LPCSTR cShader, LPCSTR cTextureName)
 		fHeight					= ini->r_float("char widths","height");
 		int cpl					= 16;
 		for (u32 i=0; i<nNumChars; i++){
-			sprintf_s			(buf,sizeof(buf),"%d",i);
+			xr_sprintf			(buf,sizeof(buf),"%d",i);
 			float w				= ini->r_float("char widths",buf);
 			TCMap[i].set		((i%cpl)*fHeight,(i/cpl)*fHeight,w);
 		}

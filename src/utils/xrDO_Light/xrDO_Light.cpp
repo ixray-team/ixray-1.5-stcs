@@ -47,7 +47,7 @@ void Startup(LPSTR     lpCmdLine)
 
 	extern  HWND logWindow;
 	string256			temp;
-	sprintf_s			(temp, "%s - Detail Compiler", name);
+	xr_sprintf			(temp, "%s - Detail Compiler", name);
 	SetWindowText		(logWindow, temp);
 
 	//FS.update_path	(name,"$game_levels$",name);

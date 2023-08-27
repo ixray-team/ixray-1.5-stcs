@@ -379,7 +379,7 @@ CBaseMonster::SDebugInfo CBurer::show_debug_info()
 	if (!info.active) return CBaseMonster::SDebugInfo();
 
 	string128 text;
-	sprintf_s(text, "Scan Value = [%f]", TScanner::get_scan_value());
+	xr_sprintf(text, "Scan Value = [%f]", TScanner::get_scan_value());
 	DBG().text(this).add_item(text, info.x, info.y+=info.delta_y, info.color);
 	DBG().text(this).add_item("---------------------------------------", info.x, info.y+=info.delta_y, info.delimiter_color);
 

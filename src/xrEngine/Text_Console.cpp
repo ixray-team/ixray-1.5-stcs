@@ -122,7 +122,7 @@ void	CTextConsole::CreateLogWnd()
 	lf.lfClipPrecision = CLIP_STROKE_PRECIS;	
 	lf.lfQuality = DRAFT_QUALITY;
 	lf.lfPitchAndFamily = VARIABLE_PITCH | FF_SWISS;
-	sprintf_s(lf.lfFaceName,sizeof(lf.lfFaceName),"");
+	xr_sprintf(lf.lfFaceName,sizeof(lf.lfFaceName),"");
 
 	m_hLogWndFont = CreateFontIndirect(&lf);
 	R_ASSERT2(m_hLogWndFont, "Unable to Create Font for Log Window");

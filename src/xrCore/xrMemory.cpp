@@ -26,7 +26,7 @@ XRCORE_API void dump_phase		()
 	static int					phase_counter = 0;
 
 	string256					temp;
-	sprintf_s					(temp,sizeof(temp),"x:\\$phase$%d.dump",++phase_counter);
+	xr_sprintf					(temp,sizeof(temp),"x:\\$phase$%d.dump",++phase_counter);
 	Memory.mem_statistic		(temp);
 }
 #endif // DEBUG_MEMORY_MANAGER

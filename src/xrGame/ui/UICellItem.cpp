@@ -275,7 +275,7 @@ void CUICellItem::UpdateItemText()
 	if ( ChildsCount() )
 	{
 		string32	str;
-		sprintf_s( str, "x%d", ChildsCount()+1 );
+		xr_sprintf( str, "x%d", ChildsCount()+1 );
 		m_text->SetText( str );
 		m_text->Show( true );
 	}

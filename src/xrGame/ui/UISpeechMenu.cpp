@@ -41,13 +41,13 @@ void CUISpeechMenu::InitList(LPCSTR section_name)
 	for (int i = 0; true; i++)
 	{
 		CStringTable st;
-		sprintf_s(phrase,"phrase_%i",i);		
+		xr_sprintf(phrase,"phrase_%i",i);		
 		if (pSettings->line_exist(section_name, phrase))
 		{
 			
             LPCSTR s = pSettings->r_string(section_name, phrase);
 			_GetItem(s,0,phrase);
-			sprintf_s(str, "%d. %s",i+1, *st.translate(phrase));
+			xr_sprintf(str, "%d. %s",i+1, *st.translate(phrase));
 
 			ADD_TEXT_TO_VIEW3(str, pItem, m_pList);
 			pItem->SetFont(GetFont());

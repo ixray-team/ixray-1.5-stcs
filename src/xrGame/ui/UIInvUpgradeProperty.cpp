@@ -125,7 +125,7 @@ bool UIProperty::read_value_from_section( LPCSTR section, LPCSTR param, float& r
 			not_null = true;
 		}
 		string64 buf;
-		sprintf_s( buf, sizeof(buf), "%f", sum );
+		xr_sprintf( buf, sizeof(buf), "%f", sum );
 		xr_strcat( result, sizeof(result), buf );
 		xr_strcat( result, sizeof(result), ", " );
 	} // ib_funct

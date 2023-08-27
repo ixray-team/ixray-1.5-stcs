@@ -176,7 +176,7 @@ void dx103DFluidData::ParseProfile(const xr_string &Profile)
 		string32	EmitterSectionName;
 		CEmitter	&Emitter = m_Emitters[i];
 		ZeroMemory(&Emitter, sizeof(Emitter));
-		sprintf_s(EmitterSectionName, "emitter%02d", i);
+		xr_sprintf(EmitterSectionName, "emitter%02d", i);
 
 		Emitter.m_eType = (dx103DFluidEmitters::EmitterType)ini.r_token( EmitterSectionName, "Type", emitter_type_token);
 

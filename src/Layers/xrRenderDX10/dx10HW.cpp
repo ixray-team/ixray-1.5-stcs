@@ -569,11 +569,11 @@ void CHW::selectResolution( u32 &dwWidth, u32 &dwHeight, BOOL bWindowed )
 	else //check
 	{
 		string64					buff;
-		sprintf_s					(buff,sizeof(buff),"%dx%d",psCurrentVidMode[0],psCurrentVidMode[1]);
+		xr_sprintf					(buff,sizeof(buff),"%dx%d",psCurrentVidMode[0],psCurrentVidMode[1]);
 
 		if(_ParseItem(buff,vid_mode_token)==u32(-1)) //not found
 		{ //select safe
-			sprintf_s				(buff,sizeof(buff),"vid_mode %s",vid_mode_token[0].name);
+			xr_sprintf				(buff,sizeof(buff),"vid_mode %s",vid_mode_token[0].name);
 			Console->Execute		(buff);
 		}
 
@@ -893,7 +893,7 @@ void fill_vid_mode_list(CHW* _hw)
 		if(desc.Width < 800)
 			continue;
 
-		sprintf_s(str, sizeof(str), "%dx%d", desc.Width, desc.Height);
+		xr_sprintf(str, sizeof(str), "%dx%d", desc.Width, desc.Height);
 
 		if(_tmp.end() != std::find_if(_tmp.begin(), _tmp.end(), _uniq_mode(str)))
 			continue;
@@ -940,7 +940,7 @@ void fill_vid_mode_list(CHW* _hw)
 		_hw->pD3D->EnumAdapterModes(_hw->DevAdapter, _hw->Caps.fTarget, i, &Mode);
 		if(Mode.Width < 800)		continue;
 
-		sprintf_s						(str,sizeof(str),"%dx%d", Mode.Width, Mode.Height);
+		xr_sprintf						(str,sizeof(str),"%dx%d", Mode.Width, Mode.Height);
 
 		if(_tmp.end() != std::find_if(_tmp.begin(), _tmp.end(), _uniq_mode(str)))
 			continue;

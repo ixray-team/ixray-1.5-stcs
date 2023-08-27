@@ -594,7 +594,7 @@ void game_sv_TeamDeathmatch::WriteGameState(CInifile& ini, LPCSTR sect, bool bRo
 	for(u32 i=0; i<teams.size(); ++i )
 	{
 		string16		buf_name;
-		sprintf_s		(buf_name,"team_%d_score",i);
+		xr_sprintf		(buf_name,"team_%d_score",i);
 		ini.w_u32		(sect,buf_name, GetTeamScore(i));
 	}
 }

@@ -115,7 +115,7 @@ void CCar::DbgUbdateCl()
 			Fvector v;
 			m_pPhysicsShell->get_LinearVel(v);
 			string32 s;
-			sprintf_s									(s,"speed, %f km/hour",v.magnitude()/1000.f*3600.f)								;
+			xr_sprintf									(s,"speed, %f km/hour",v.magnitude()/1000.f*3600.f)								;
 			HUD().Font().pFontStat->SetColor		(color_rgba(0xff,0xff,0xff,0xff))												;
 			HUD().Font().pFontStat->OutSet			(120,530)																		;
 			HUD().Font().pFontStat->OutNext		(s)																				;

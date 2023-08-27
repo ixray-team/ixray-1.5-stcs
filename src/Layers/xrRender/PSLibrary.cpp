@@ -149,7 +149,7 @@ bool CPSLibrary::Load2()
         if(pb) pb->Inc					();
 #endif
 
-        sprintf_s				(_path, sizeof(_path),"%s%s",p_path, p_name);
+        xr_sprintf				(_path, sizeof(_path),"%s%s",p_path, p_name);
         if(0==_stricmp(p_ext,".pe"))
         {
             PS::CPEDef*	def		= xr_new<PS::CPEDef>();

@@ -210,7 +210,7 @@ void logThread(void *dummy)
 			}
 
 			// percentage text
-			sprintf_s(tbuf,sizeof(tbuf),"%3.2f%%",progress*100.f);
+			xr_sprintf(tbuf,sizeof(tbuf),"%3.2f%%",progress*100.f);
 			SetWindowText	( hwPText, tbuf );
 		}
 

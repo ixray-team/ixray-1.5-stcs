@@ -28,7 +28,7 @@ void property_collection<flares::flares_type, flares>::display_name	(
 	)
 {
 	float					position = m_container[item_index]->m_position;
-	sprintf_s				(buffer, buffer_size, "flare [%f]", position);
+	xr_sprintf				(buffer, buffer_size, "flare [%f]", position);
 }
 
 template <>

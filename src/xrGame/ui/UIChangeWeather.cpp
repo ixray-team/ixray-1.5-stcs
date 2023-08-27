@@ -43,9 +43,9 @@ void CUIChangeWeather::InitChangeWeather(CUIXml& xml_doc)
 
 	string256 _path;
 	for (int i = 0; i<4; i++){
-		sprintf_s(_path, "change_weather:btn_%d", i + 1);
+		xr_sprintf(_path, "change_weather:btn_%d", i + 1);
 		CUIXmlInit::Init3tButtonEx(xml_doc, _path, 0, btn[i]);
-		sprintf_s(_path, "change_weather:txt_%d", i + 1);
+		xr_sprintf(_path, "change_weather:txt_%d", i + 1);
 		CUIXmlInit::InitStatic(xml_doc, _path, 0, m_data[i].m_static);
 	}
 
@@ -92,7 +92,7 @@ bool CUIChangeWeather::OnKeyboardAction(int dik, EUIMessages keyboard_action){
 void CUIChangeWeather::OnBtn(int i){
 	game_cl_mp* game		= smart_cast<game_cl_mp*>(&Game());
 	string1024				command;
-	sprintf_s					(command, "cl_votestart changeweather %s %s", *m_data[i].m_weather_name, *m_data[i].m_weather_time);
+	xr_sprintf					(command, "cl_votestart changeweather %s %s", *m_data[i].m_weather_name, *m_data[i].m_weather_time);
 	Console->Execute		(command);
 	game->StartStopMenu(this, true);
 }
@@ -135,9 +135,9 @@ void CUIChangeGameType::InitChangeGameType(CUIXml& xml_doc)
 
 	string256 _path;
 	for (int i = 0; i<4; i++){
-		sprintf_s(_path, "change_gametype:btn_%d", i + 1);
+		xr_sprintf(_path, "change_gametype:btn_%d", i + 1);
 		CUIXmlInit::Init3tButtonEx(xml_doc, _path, 0, btn[i]);
-		sprintf_s(_path, "change_gametype:txt_%d", i + 1);
+		xr_sprintf(_path, "change_gametype:txt_%d", i + 1);
 		CUIXmlInit::InitStatic(xml_doc, _path, 0, m_data[i].m_static);
 		m_data[i].m_weather_name = xml_doc.ReadAttrib(_path,0,"id");
 	}
@@ -149,7 +149,7 @@ void CUIChangeGameType::OnBtn(int i)
 {
 	game_cl_mp* game		= smart_cast<game_cl_mp*>(&Game());
 	string1024				command;
-	sprintf_s				(command, "cl_votestart changegametype %s", m_data[i].m_weather_name.c_str());
+	xr_sprintf				(command, "cl_votestart changegametype %s", m_data[i].m_weather_name.c_str());
 	Console->Execute		(command);
 	game->StartStopMenu		(this, true);
 }

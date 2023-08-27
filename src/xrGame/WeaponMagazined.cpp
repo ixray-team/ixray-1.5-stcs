@@ -1233,16 +1233,16 @@ void CWeaponMagazined::GetBriefInfo(xr_string& str_name, xr_string& icon_sect_na
 		if (m_iQueueSize == -1)
 			xr_strcpy(fire_mode, "A");
 		else
-			sprintf_s(fire_mode, "%d", m_iQueueSize);
+			xr_sprintf(fire_mode, "%d", m_iQueueSize);
 	}
 
 	str_name		= sItemName;
 
 	{
 		if (!unlimited_ammo())
-			sprintf_s			(sItemName, "%d/%d",AE,AC - AE);
+			xr_sprintf			(sItemName, "%d/%d",AE,AC - AE);
 		else
-			sprintf_s			(sItemName, "%d/--",AE);
+			xr_sprintf			(sItemName, "%d/--",AE);
 
 		str_count				= sItemName;
 	}

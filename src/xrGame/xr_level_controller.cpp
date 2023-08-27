@@ -371,7 +371,7 @@ void GetActionAllBinding		(LPCSTR _action, char* dst_buff, int dst_buff_sz)
 		xr_strcpy(sec, pbinding->m_keyboard[1]->key_local_name.c_str());
 	}
 	
-	sprintf_s		(dst_buff, dst_buff_sz, "%s%s%s", prim[0]?prim:"", (sec[0]&&prim[0])?" , ":"", sec[0]?sec:"");
+	xr_sprintf		(dst_buff, dst_buff_sz, "%s%s%s", prim[0]?prim:"", (sec[0]&&prim[0])?" , ":"", sec[0]?sec:"");
 					
 }
 
@@ -535,7 +535,7 @@ public:
 		for(int idx=0; idx<bindings_count;++idx)
 		{
 			_binding* pbinding		= &g_key_bindings[idx];
-			sprintf_s		(buff,"[%s] primary is[%s] secondary is[%s]",
+			xr_sprintf		(buff,"[%s] primary is[%s] secondary is[%s]",
 						pbinding->m_action->action_name,
 						(pbinding->m_keyboard[0])?pbinding->m_keyboard[0]->key_local_name.c_str():"NULL",
 						(pbinding->m_keyboard[1])?pbinding->m_keyboard[1]->key_local_name.c_str():"NULL");

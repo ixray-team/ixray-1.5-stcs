@@ -20,11 +20,11 @@ void CUIStatsIcon::InitTexInfo(){
 	string128 rank_tex;	
 	for (int i = RANK_0; i <= RANK_4; i++)
 	{
-		sprintf_s(rank_tex, "ui_hud_status_green_0%d", i+1);
+		xr_sprintf(rank_tex, "ui_hud_status_green_0%d", i+1);
 		m_tex_info[i][0].sh->create("hud\\default",		CUITextureMaster::GetTextureFileName(rank_tex));
 		m_tex_info[i][0].rect =						CUITextureMaster::GetTextureRect	(rank_tex);
 
-		sprintf_s(rank_tex, "ui_hud_status_blue_0%d", i+1);
+		xr_sprintf(rank_tex, "ui_hud_status_blue_0%d", i+1);
 		m_tex_info[i][1].sh->create("hud\\default",		CUITextureMaster::GetTextureFileName(rank_tex));
 		m_tex_info[i][1].rect =						CUITextureMaster::GetTextureRect	(rank_tex);
 	}

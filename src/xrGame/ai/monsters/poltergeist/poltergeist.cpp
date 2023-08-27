@@ -305,7 +305,7 @@ CBaseMonster::SDebugInfo CPoltergeist::show_debug_info()
 	if (!info.active) return CBaseMonster::SDebugInfo();
 
 	string128 text;
-	sprintf_s(text, "Invisibility Value = [%f]", Energy::get_value());
+	xr_sprintf(text, "Invisibility Value = [%f]", Energy::get_value());
 	DBG().text(this).add_item(text, info.x, info.y+=info.delta_y, info.color);
 	DBG().text(this).add_item("---------------------------------------", info.x, info.y+=info.delta_y, info.delimiter_color);
 

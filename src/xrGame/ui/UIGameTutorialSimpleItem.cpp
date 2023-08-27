@@ -111,7 +111,7 @@ void CUISequenceSimpleItem::Load(CUIXml* xml, int idx)
 		XML_NODE* _sr				= xml->GetLocalRoot();
 		xml->SetLocalRoot			(xml->NavigateToNode("main_wnd",0));
 
-		sprintf_s						(sname,"auto_static_%d", i);
+		xr_sprintf						(sname,"auto_static_%d", i);
 
 		SSubItem* _si				= &m_subitems[i];
 		_si->m_start				= xml->ReadAttribFlt("auto_static",i,"start_time",0);

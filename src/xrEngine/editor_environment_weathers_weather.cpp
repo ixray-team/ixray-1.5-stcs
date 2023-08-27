@@ -197,7 +197,7 @@ bool weather::try_hours					(u32& hours, u32& minutes, u32& seconds, shared_str&
 {
 	for (u32 i=hours + 1; i<24; ++i) {
 		string16		temp;
-		sprintf_s		(temp, "%02d:%02d:%02d", i, minutes, seconds);
+		xr_sprintf		(temp, "%02d:%02d:%02d", i, minutes, seconds);
 		if (!m_collection->unique_id(temp))
 			continue;
 
@@ -212,7 +212,7 @@ bool weather::try_minutes				(u32& hours, u32& minutes, u32& seconds, shared_str
 {
 	for (u32 i=minutes + 1; i<60; ++i) {
 		string16		temp;
-		sprintf_s		(temp, "%02d:%02d:%02d", hours, i, seconds);
+		xr_sprintf		(temp, "%02d:%02d:%02d", hours, i, seconds);
 		if (!m_collection->unique_id(temp))
 			continue;
 
@@ -229,7 +229,7 @@ shared_str weather::try_all				(u32& hours_, u32& minutes_, u32& seconds_) const
 		for (u32 minutes = minutes_; minutes<60; ++minutes)
 			for (u32 seconds = seconds_ + 1; seconds<60; ++seconds) {
 				string16	temp;
-				sprintf_s	(temp, "%02d:%02d:%02d", hours, minutes, seconds);
+				xr_sprintf	(temp, "%02d:%02d:%02d", hours, minutes, seconds);
 				if (!m_collection->unique_id(temp))
 					continue;
 

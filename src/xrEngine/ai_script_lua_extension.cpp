@@ -235,7 +235,7 @@ bool Script::bfLoadBuffer(CLuaVirtualMachine *tpLuaVM, LPCSTR caBuffer, size_t t
 	int				l_iErrorCode;
 	if (caNameSpaceName) {
 		string256		insert;
-		sprintf_s		(insert,sizeof(insert),"local this = %s\n",caNameSpaceName);
+		xr_sprintf		(insert,sizeof(insert),"local this = %s\n",caNameSpaceName);
 		size_t			str_len = xr_strlen(insert);
 		LPSTR			script = xr_alloc<char>(u32(str_len + tSize));
 		xr_strcpy		(script, str_len+tSize, insert);

@@ -724,7 +724,7 @@ HRESULT	CRender::shader_compile			(
 
 	if (RImplementation.o.advancedpp && ps_r_sun_shafts)
 	{
-		sprintf_s					(c_sun_shafts,"%d",ps_r_sun_shafts);
+		xr_sprintf					(c_sun_shafts,"%d",ps_r_sun_shafts);
 		defines[def_it].Name		=	"SUN_SHAFTS_QUALITY";
 		defines[def_it].Definition	=	c_sun_shafts;
 		def_it						++;
@@ -732,7 +732,7 @@ HRESULT	CRender::shader_compile			(
 
 	if (RImplementation.o.advancedpp && ps_r_ssao)
 	{
-		sprintf_s					(c_ssao,"%d",ps_r_ssao);
+		xr_sprintf					(c_ssao,"%d",ps_r_ssao);
 		defines[def_it].Name		=	"SSAO_QUALITY";
 		defines[def_it].Definition	=	c_ssao;
 		def_it						++;
@@ -740,7 +740,7 @@ HRESULT	CRender::shader_compile			(
 
 	if (RImplementation.o.advancedpp && ps_r_sun_quality)
 	{
-		sprintf_s					(c_sun_quality,"%d",ps_r_sun_quality);
+		xr_sprintf					(c_sun_quality,"%d",ps_r_sun_quality);
 		defines[def_it].Name		=	"SUN_QUALITY";
 		defines[def_it].Definition	=	c_sun_quality;
 		def_it						++;

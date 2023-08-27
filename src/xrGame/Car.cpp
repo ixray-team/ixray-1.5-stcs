@@ -789,7 +789,7 @@ void CCar::ParseDefinitions()
 	string32 rat_num;
 	for(int i=1;true;++i)
 	{
-		sprintf_s(rat_num,"N%d",i);
+		xr_sprintf(rat_num,"N%d",i);
 		if(!ini->line_exist("transmission_gear_ratio",rat_num)) break;
 		Fvector gear_rat=ini->r_fvector3("transmission_gear_ratio",rat_num);
 		gear_rat[0]*=main_gear_ratio;

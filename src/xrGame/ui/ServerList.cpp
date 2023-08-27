@@ -248,10 +248,10 @@ void CServerList::FillUpDetailedServerInfo()
 				pItemAdv->SetTextColor			(m_list[LST_PLAYERS].GetTextColor());
 				pItemAdv->AddField				(pf.Name, m_header2[1].GetWidth());
 
-				sprintf_s						(buf,sizeof(buf),"%d",pf.Frags);
+				xr_sprintf						(buf,sizeof(buf),"%d",pf.Frags);
 				pItemAdv->AddField				(buf, m_header2[2].GetWidth());
 
-				sprintf_s						(buf,sizeof(buf),"%d",pf.Deaths);
+				xr_sprintf						(buf,sizeof(buf),"%d",pf.Deaths);
 				pItemAdv->AddField				(buf, m_header2[3].GetWidth());
 
 				m_list[LST_PLAYERS].AddItem		(pItemAdv);
@@ -286,10 +286,10 @@ void CServerList::FillUpDetailedServerInfo()
 				pItemAdv->SetTextColor			(m_list[LST_PLAYERS].GetTextColor());
 				pItemAdv->AddField				(pf.Name, m_header2[1].GetWidth());
 				
-				sprintf_s						(buf,sizeof(buf),"%d",pf.Frags);
+				xr_sprintf						(buf,sizeof(buf),"%d",pf.Frags);
 				pItemAdv->AddField				(buf, m_header2[2].GetWidth());
 
-				sprintf_s						(buf,sizeof(buf),"%d",pf.Deaths);
+				xr_sprintf						(buf,sizeof(buf),"%d",pf.Deaths);
 				pItemAdv->AddField				(buf, m_header2[3].GetWidth());
 				m_list[LST_PLAYERS].AddItem		(pItemAdv);
 			}
@@ -320,10 +320,10 @@ void CServerList::FillUpDetailedServerInfo()
 				pItemAdv->AddField				(pf.Name, m_header2[1].GetWidth());
 
 
-				sprintf_s						(buf,sizeof(buf),"%d",pf.Frags);
+				xr_sprintf						(buf,sizeof(buf),"%d",pf.Frags);
 				pItemAdv->AddField				(buf, m_header2[2].GetWidth());
 
-				sprintf_s						(buf,sizeof(buf),"%d",pf.Deaths);
+				xr_sprintf						(buf,sizeof(buf),"%d",pf.Deaths);
 				pItemAdv->AddField				(buf, m_header2[3].GetWidth());
 				m_list[LST_PLAYERS].AddItem		(pItemAdv);
 			}
@@ -343,10 +343,10 @@ void CServerList::FillUpDetailedServerInfo()
 				pItemAdv->SetTextColor			(m_list[LST_PLAYERS].GetTextColor());
 				pItemAdv->AddField				(pf.Name, m_header2[1].GetWidth());
 
-				sprintf_s						(buf,sizeof(buf),"%d",pf.Frags);
+				xr_sprintf						(buf,sizeof(buf),"%d",pf.Frags);
 				pItemAdv->AddField				(buf, m_header2[2].GetWidth());
 
-				sprintf_s						(buf,sizeof(buf),"%d",pf.Deaths);
+				xr_sprintf						(buf,sizeof(buf),"%d",pf.Deaths);
 				pItemAdv->AddField				(buf, m_header2[3].GetWidth());
 				m_list[LST_PLAYERS].AddItem		(pItemAdv);
 			}

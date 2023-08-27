@@ -78,7 +78,7 @@ public:
 		u32 i					= 1;
 		string256				temp;
 		do{
-			sprintf_s			(temp, "%s_class_%d", prefix, i);
+			xr_sprintf			(temp, "%s_class_%d", prefix, i);
 			if(pSettings->line_exist(sect,temp))
 			{
 				LPCSTR z_Class			= pSettings->r_string(sect,temp);
@@ -87,10 +87,10 @@ public:
 				m_TypesMap.insert		(std::make_pair(item_cls,ITEM_TYPE()));
 				ITEM_TYPE& item_type	= m_TypesMap[item_cls];
 
-				sprintf_s				(temp, "%s_freq_%d", prefix, i);
+				xr_sprintf				(temp, "%s_freq_%d", prefix, i);
 				item_type.freq			= pSettings->r_fvector2(sect,temp);
 
-				sprintf_s				(temp, "%s_sound_%d_", prefix, i);
+				xr_sprintf				(temp, "%s_sound_%d_", prefix, i);
 				HUD_SOUND_ITEM::LoadSound	(sect, temp	,item_type.detect_snds		, SOUND_TYPE_ITEM);
 
 				++i;

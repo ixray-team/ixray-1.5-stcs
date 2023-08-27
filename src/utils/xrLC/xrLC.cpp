@@ -87,7 +87,7 @@ void Startup(LPSTR     lpCmdLine)
 
 	extern  HWND logWindow;
 	string256				temp;
-	sprintf_s				(temp, "%s - Levels Compiler", name);
+	xr_sprintf				(temp, "%s - Levels Compiler", name);
 	SetWindowText			(logWindow, temp);
 
 	string_path				prjName;

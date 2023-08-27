@@ -259,7 +259,7 @@ void	CUIMapList::SaveMapList()
 		u32 _idx						= (u32)(__int64)(itm->GetData());
 		const SGameTypeMaps::SMapItm& M	= GetMapNameInt(GetCurGameType(), _idx);
 
-		sprintf_s						(map_name, "sv_addmap %s/ver=%s", M.map_name.c_str(), M.map_ver.c_str() );
+		xr_sprintf						(map_name, "sv_addmap %s/ver=%s", M.map_name.c_str(), M.map_ver.c_str() );
 		pW->w_string					(map_name);
 	}
 

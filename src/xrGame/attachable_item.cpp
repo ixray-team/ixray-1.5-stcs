@@ -200,9 +200,9 @@ void attach_draw_adjust_mode()
 	F->SetAligment		(CGameFont::alCenter);
 	F->OutSetI			(0.f,-0.8f);
 	F->SetColor			(0xffffffff);
-	sprintf_s(_text, "Adjusting attachable item [%s]", CAttachableItem::m_dbgItem->object().cNameSect().c_str());
+	xr_sprintf(_text, "Adjusting attachable item [%s]", CAttachableItem::m_dbgItem->object().cNameSect().c_str());
 	F->OutNext			(_text);
-	sprintf_s(_text, "move step  [%3.3f] rotate step  [%3.3f]", ATT_ITEM_MOVE_CURR, ATT_ITEM_ROT_CURR);
+	xr_sprintf(_text, "move step  [%3.3f] rotate step  [%3.3f]", ATT_ITEM_MOVE_CURR, ATT_ITEM_ROT_CURR);
 	F->OutNext			(_text);
 
 	F->OutNext			("HOLD LShift to move. ALT to rotate");
@@ -212,11 +212,11 @@ void attach_draw_adjust_mode()
 	F->OutSkip			();
 
 	Fvector _pos = CAttachableItem::get_pos_offset();
-	sprintf_s(_text, "attach_position_offset IS [%3.3f][%3.3f][%3.3f]", _pos.x, _pos.y, _pos.z);
+	xr_sprintf(_text, "attach_position_offset IS [%3.3f][%3.3f][%3.3f]", _pos.x, _pos.y, _pos.z);
 	F->OutNext			(_text);
 
 	Fvector _ang = CAttachableItem::get_angle_offset();
-	sprintf_s(_text, "attach_angle_offset IS [%3.3f][%3.3f][%3.3f]", _ang.x, _ang.y, _ang.z);
+	xr_sprintf(_text, "attach_angle_offset IS [%3.3f][%3.3f][%3.3f]", _ang.x, _ang.y, _ang.z);
 	F->OutNext			(_text);
 }
 #endif // #ifdef DEBUG

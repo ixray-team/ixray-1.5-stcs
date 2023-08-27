@@ -93,7 +93,7 @@ public		:
 
 	virtual void fill_tips(vecTips& tips, u32 mode) {
 		TStatus str;
-		sprintf_s(str, sizeof(str), "%s  (current)  [on/off]", value->test(mask) ? "on" : "off");
+		xr_sprintf(str, sizeof(str), "%s  (current)  [on/off]", value->test(mask) ? "on" : "off");
 		tips.push_back(str);
 	}
 
@@ -125,7 +125,7 @@ public		:
 
 	virtual void fill_tips(vecTips& tips, u32 mode) {
 		TStatus str;
-		sprintf_s(str, sizeof(str), "%s  (current)  [on/off]", value->test(mask) ? "on" : "off");
+		xr_sprintf(str, sizeof(str), "%s  (current)  [on/off]", value->test(mask) ? "on" : "off");
 		tips.push_back(str);
 	}
 
@@ -186,7 +186,7 @@ public		:
 		xr_token* tok = GetToken();
 		while (tok->name && !res) {
 			if (tok->id == (int)(*value)) {
-				sprintf_s(str, sizeof(str), "%s  (current)", tok->name);
+				xr_sprintf(str, sizeof(str), "%s  (current)", tok->name);
 				tips.push_back(str);
 				res = true;
 			}
@@ -231,16 +231,16 @@ public		:
 	}
 	virtual void	Status	(TStatus& S)
 	{	
-		sprintf_s	(S,sizeof(S),"%3.5f",*value);
+		xr_sprintf	(S,sizeof(S),"%3.5f",*value);
 		while	(xr_strlen(S) && ('0'==S[xr_strlen(S)-1]))	S[xr_strlen(S)-1] = 0;
 	}
 	virtual void	Info	(TInfo& I)
 	{	
-		sprintf_s(I,sizeof(I),"float value in range [%3.3f,%3.3f]",min,max);
+		xr_sprintf(I,sizeof(I),"float value in range [%3.3f,%3.3f]",min,max);
 	}
 	virtual void fill_tips(vecTips& tips, u32 mode) {
 		TStatus str;
-		sprintf_s(str, sizeof(str), "%3.5f  (current)  [%3.3f,%3.3f]", *value, min, max);
+		xr_sprintf(str, sizeof(str), "%3.5f  (current)  [%3.3f,%3.3f]", *value, min, max);
 		tips.push_back(str);
 		IConsole_Command::fill_tips(tips, mode);
 	}
@@ -274,15 +274,15 @@ public
 	}
 	virtual void	Status	(TStatus& S)
 	{	
-		sprintf_s	(S,sizeof(S),"%f,%f,%f",value->x,value->y,value->z);
+		xr_sprintf	(S,sizeof(S),"%f,%f,%f",value->x,value->y,value->z);
 	}
 	virtual void	Info	(TInfo& I)
 	{	
-		sprintf_s(I,sizeof(I),"vector3 in range [%e,%e,%e]-[%e,%e,%e]",min.x,min.y,min.z,max.x,max.y,max.z);
+		xr_sprintf(I,sizeof(I),"vector3 in range [%e,%e,%e]-[%e,%e,%e]",min.x,min.y,min.z,max.x,max.y,max.z);
 	}
 	virtual void fill_tips(vecTips& tips, u32 mode) {
 		TStatus str;
-		sprintf_s(str, sizeof(str), "(%e, %e, %e)  (current)  [(%e,%e,%e)-(%e,%e,%e)]", value->x, value->y, value->z, min.x, min.y, min.z, max.x, max.y, max.z);
+		xr_sprintf(str, sizeof(str), "(%e, %e, %e)  (current)  [(%e,%e,%e)-(%e,%e,%e)]", value->x, value->y, value->z, min.x, min.y, min.z, max.x, max.y, max.z);
 		tips.push_back(str);
 		IConsole_Command::fill_tips(tips, mode);
 	}
@@ -320,11 +320,11 @@ public		:
 	}
 	virtual void	Info	(TInfo& I)
 	{	
-		sprintf_s(I,sizeof(I),"integer value in range [%d,%d]",min,max);
+		xr_sprintf(I,sizeof(I),"integer value in range [%d,%d]",min,max);
 	}
 	virtual void fill_tips(vecTips& tips, u32 mode) {
 		TStatus str;
-		sprintf_s(str, sizeof(str), "%d  (current)  [%d,%d]", *value, min, max);
+		xr_sprintf(str, sizeof(str), "%d  (current)  [%d,%d]", *value, min, max);
 		tips.push_back(str);
  		IConsole_Command::fill_tips(tips, mode);
 	}
@@ -356,7 +356,7 @@ public:
 	}
 	virtual void	Info	(TInfo& I)
 	{	
-		sprintf_s(I,sizeof(I),"string with up to %d characters",size);
+		xr_sprintf(I,sizeof(I),"string with up to %d characters",size);
 	}
 	virtual void	fill_tips(vecTips& tips, u32 mode) {
 		tips.push_back((LPCSTR)value);

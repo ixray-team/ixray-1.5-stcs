@@ -52,7 +52,7 @@ void CUIOptionsItem::GetOptIntegerValue(int& val, int& min, int& max)
 void CUIOptionsItem::SaveOptIntegerValue(int val)
 {
 	string512			command;
-	sprintf_s			(command, "%s %d", m_entry.c_str(), val);
+	xr_sprintf			(command, "%s %d", m_entry.c_str(), val);
 	Console->Execute	(command);
 }
 
@@ -64,7 +64,7 @@ void CUIOptionsItem::GetOptFloatValue(float& val, float& min, float& max)
 void CUIOptionsItem::SaveOptFloatValue(float val)
 {
 	string512			command;
-	sprintf_s				(command, "%s %f", m_entry.c_str(), val);
+	xr_sprintf				(command, "%s %f", m_entry.c_str(), val);
 	Console->Execute	(command);
 }
 
@@ -76,7 +76,7 @@ bool CUIOptionsItem::GetOptBoolValue()
 void CUIOptionsItem::SaveOptBoolValue(bool val)
 {
 	string512		command;
-	sprintf_s		(command, "%s %s", m_entry.c_str(), (val)?"1":"0");
+	xr_sprintf		(command, "%s %s", m_entry.c_str(), (val)?"1":"0");
 	Console->Execute(command);
 }
 

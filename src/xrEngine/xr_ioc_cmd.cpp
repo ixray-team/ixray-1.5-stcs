@@ -66,7 +66,7 @@ public:
 	CCC_MemStat(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = TRUE; };
 	virtual void Execute(LPCSTR args) {
 		string_path fn;
-		if (args&&args[0])	sprintf_s	(fn,sizeof(fn),"%s.dump",args);
+		if (args&&args[0])	xr_sprintf	(fn,sizeof(fn),"%s.dump",args);
 		else				strcpy_s_s	(fn,sizeof(fn),"x:\\$memory$.dump");
 		Memory.mem_statistic				(fn);
 //		g_pStringContainer->dump			();
@@ -382,7 +382,7 @@ public :
 	}
 	virtual void	Status	(TStatus& S)	
 	{ 
-		sprintf_s(S,sizeof(S),"%dx%d",psCurrentVidMode[0],psCurrentVidMode[1]); 
+		xr_sprintf(S,sizeof(S),"%dx%d",psCurrentVidMode[0],psCurrentVidMode[1]); 
 	}
 	virtual xr_token* GetToken()				{return vid_mode_token;}
 	virtual void	Info	(TInfo& I)
@@ -398,7 +398,7 @@ public :
 		xr_token* tok = GetToken();
 		while (tok->name && !res) {
 			if (!xr_strcmp(tok->name, cur)) {
-				sprintf_s(str, sizeof(str), "%s  (current)", tok->name);
+				xr_sprintf(str, sizeof(str), "%s  (current)", tok->name);
 				tips.push_back(str);
 				res = true;
 			}
@@ -636,7 +636,7 @@ public		:
 	}
 	virtual void	Info	(TInfo& I)
 	{	
-		sprintf_s		(I,sizeof(I),"hide console");
+		xr_sprintf		(I,sizeof(I),"hide console");
 	}
 };
 

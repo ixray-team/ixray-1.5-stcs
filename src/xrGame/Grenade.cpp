@@ -359,7 +359,7 @@ void CGrenade::GetBriefInfo(xr_string& str_name, xr_string& icon_sect_name, xr_s
 	str_name				= NameShort();
 	u32 ThisGrenadeCount	= m_pInventory->dwfGetSameItemCount( *cNameSect(), true );
 	string16				stmp;
-	sprintf_s				( stmp, "%d", ThisGrenadeCount );
+	xr_sprintf				( stmp, "%d", ThisGrenadeCount );
 	str_count				= stmp;
 	icon_sect_name			= *cNameSect();
 }

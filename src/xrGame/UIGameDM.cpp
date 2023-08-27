@@ -369,9 +369,9 @@ void CUIGameDM::SetFraglimit(int local_frags, int fraglimit)
 {
 	string64 str;
 	if(fraglimit)
-		sprintf_s(str,"%d/%d", local_frags, fraglimit);
+		xr_sprintf(str,"%d/%d", local_frags, fraglimit);
 	else
-		sprintf_s(str,"%d", local_frags);
+		xr_sprintf(str,"%d", local_frags);
 
 	m_pFragLimitIndicator->SetText(str);
 }
