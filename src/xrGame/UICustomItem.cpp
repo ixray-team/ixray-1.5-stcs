@@ -36,14 +36,14 @@ void CUICustomItem::Render(const Fvector2& pos, u32 color,
 
 	Fvector2 LTp,RBp;
 	Fvector2 LTt,RBt;
-	//координаты на экране в пикселях
+	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	UI()->ClientToScreenScaled	(LTp, x1,y1);
 	LTp.add						(pos);
 
 	UI()->ClientToScreenScaled	(RBp, x2,y2);
 	RBp.add						(pos);
 
-	//текстурные координаты
+	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	LTt.set			( iOriginalRect.x1/ts.x, iOriginalRect.y1/ts.y);
 	RBt.set			( iOriginalRect.x2/ts.x, iOriginalRect.y2/ts.y);
 
@@ -122,7 +122,7 @@ void CUICustomItem::Render(const Fvector2& pos_ns, u32 color, float angle)
 	LTt.set								(iOriginalRect.x1/ts.x+hp.x, iOriginalRect.y1/ts.y+hp.y);
 	RBt.set								(iOriginalRect.x2/ts.x+hp.x, iOriginalRect.y2/ts.y+hp.y);
 
-	float kx =	(UI()->is_16_9_mode())?0.8333f:1.0f;
+	float kx =	(UI()->is_widescreen())?0.8333f:1.0f;
 
 	// clip poly
 	sPoly2D								S; 

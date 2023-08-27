@@ -633,7 +633,7 @@ bool fit_in_rect(CUIWindow* w, Frect const& vis_rect, float border, float dx16po
 {
 	float const cursor_height = 43.0f;
 	Fvector2 cursor_pos_	= GetUICursor()->GetCursorPosition();
-	if ( UI()->is_16_9_mode() )
+	if ( UI()->is_widescreen() )
 	{
 		cursor_pos_.x -= dx16pos;
 	}

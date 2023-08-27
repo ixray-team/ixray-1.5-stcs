@@ -135,7 +135,7 @@ void attachable_hud_item::set_bone_visible(const shared_str& bone_name, BOOL bVi
 void attachable_hud_item::update(bool bForce)
 {
 	if(!bForce && m_upd_firedeps_frame==Device.dwFrame)	return;
-	bool is_16x9 = UI()->is_16_9_mode();
+	bool is_16x9 = UI()->is_widescreen();
 	
 	if(!!m_measures.m_prop_flags.test(hud_item_measures::e_16x9_mode_now)!=is_16x9)
 		m_measures.load(m_sect_name, m_model);
@@ -232,7 +232,7 @@ void attachable_hud_item::render_item_ui()
 
 void hud_item_measures::load(const shared_str& sect_name, IKinematics* K)
 {
-	bool is_16x9 = UI()->is_16_9_mode();
+	bool is_16x9 = UI()->is_widescreen();
 	string64	_prefix;
 	sprintf_s	(_prefix,"%s",is_16x9?"_16x9":"");
 	string128	val_name;
@@ -319,7 +319,7 @@ u32 attachable_hud_item::anim_play(const shared_str& anm_name_b, BOOL bMixIn, co
 
 	R_ASSERT				(strstr(anm_name_b.c_str(),"anm_")==anm_name_b.c_str());
 	string256				anim_name_r;
-	bool is_16x9			= UI()->is_16_9_mode();
+	bool is_16x9			= UI()->is_widescreen();
 	sprintf_s				(anim_name_r,"%s%s",anm_name_b.c_str(),((m_attach_place_idx==1)&&is_16x9)?"_16x9":"");
 
 	player_hud_motion* anm	= m_hand_motions.find_motion(anim_name_r);
@@ -535,12 +535,10 @@ u32 player_hud::motion_length(const MotionID& M, const CMotionDef*& md, float sp
 const Fvector& player_hud::attach_rot() const {
 	if (m_attached_items[0]) {
 		return m_attached_items[0]->hands_attach_rot();
-	}
-	else {
+	} else {
 		if (m_attached_items[1]) {
 			return m_attached_items[1]->hands_attach_rot();
-		}
-		else {
+		} else {
 			static Fvector default_attach_rot {};
 			default_attach_rot.set(0, 0, 0);
 			return default_attach_rot;
@@ -551,12 +549,10 @@ const Fvector& player_hud::attach_rot() const {
 const Fvector& player_hud::attach_pos() const {
 	if (m_attached_items[0]) {
 		return m_attached_items[0]->hands_attach_pos();
-	}
-	else {
+	} else {
 		if (m_attached_items[1]) {
 			return m_attached_items[1]->hands_attach_pos();
-		}
-		else {
+		} else {
 			static Fvector default_attach_pos {};
 			default_attach_pos.set(0, 0, 0);
 			return default_attach_pos;

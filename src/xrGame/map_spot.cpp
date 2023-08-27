@@ -54,7 +54,7 @@ void CMapSpot::Load(CUIXml* xml, LPCSTR path)
 		m_border_static->Show( false );
 		if (!Heading()) {
 			m_border_static->SetWidth(m_border_static->GetWidth() * UI()->get_current_kx());
-			if (!UI()->is_16_9_mode()) {
+			if (!UI()->is_widescreen()) {
 				m_border_static->SetHeight(m_border_static->GetHeight() * UI()->get_current_kx());
 			} else {
 				m_border_static->SetTextureOffset(1, 0);
@@ -327,7 +327,7 @@ void CComplexMapSpot::Load( CUIXml* xml, LPCSTR path ) // complex_spot_template
 	m_top_icon		= CreateStaticOrig( *xml, "top_icon" );
 	m_top_icon->SetStretchTexture(true);
 	m_top_icon->SetWidth(m_top_icon->GetWidth() * UI()->get_current_kx());
-	if (!UI()->is_16_9_mode()) {
+	if (!UI()->is_widescreen()) {
 		m_top_icon->SetHeight(m_top_icon->GetHeight() * UI()->get_current_kx());
 	}
 	m_timer			= CreateStaticOrig( *xml, "timer" );

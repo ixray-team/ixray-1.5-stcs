@@ -211,7 +211,7 @@ void player_hud::tune(Ivector _values)
 	Ivector				values;
 	tune_remap			(_values,values);
 
-	bool is_16x9		= UI()->is_16_9_mode();
+	bool is_16x9		= UI()->is_widescreen();
 
 	auto is_attached = m_attached_items[hud_adj_item_idx];
 
