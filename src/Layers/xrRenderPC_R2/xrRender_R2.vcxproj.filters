@@ -157,6 +157,9 @@
     <Filter Include="Interfase implementations\UI\UISequenceVideoItem">
       <UniqueIdentifier>{72a36778-b737-43e3-b1f0-462aa8c67e0a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core_Target\ColorMap">
+      <UniqueIdentifier>{caa39d42-a562-4e6f-a708-d95f2465a084}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cl_intersect.h">
@@ -632,6 +635,9 @@
     </ClInclude>
     <ClInclude Include="..\xrRender\blender_fxaa.h">
       <Filter>Shading templates</Filter>
+    </ClInclude>
+    <ClInclude Include="..\xrRender\ColorMapManager.h">
+      <Filter>Core_Target\ColorMap</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1135,6 +1141,9 @@
     </ClCompile>
     <ClCompile Include="blender_fxaa.cpp">
       <Filter>Shading templates</Filter>
+    </ClCompile>
+    <ClCompile Include="..\xrRender\ColorMapManager.cpp">
+      <Filter>Core_Target\ColorMap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

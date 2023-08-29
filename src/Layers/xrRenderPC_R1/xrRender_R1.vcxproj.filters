@@ -151,6 +151,9 @@
     <Filter Include="Refactored\Interfaces">
       <UniqueIdentifier>{8cf71b95-c499-4454-a40c-6eaafcf83137}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\ColorMap">
+      <UniqueIdentifier>{ae707ee7-430d-40ec-9a07-e92f21bb80c5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\xrRender\cl_intersect.h">
@@ -594,6 +597,9 @@
     <ClInclude Include="..\..\Include\xrRender\RenderDetailModel.h">
       <Filter>Refactored\Interfaces</Filter>
     </ClInclude>
+    <ClInclude Include="..\xrRender\ColorMapManager.h">
+      <Filter>Core\ColorMap</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -991,6 +997,9 @@
     </ClCompile>
     <ClCompile Include="..\xrRender\xr_effgamma.cpp">
       <Filter>Refactored\Execution &amp; 3D\Gamma</Filter>
+    </ClCompile>
+    <ClCompile Include="..\xrRender\ColorMapManager.cpp">
+      <Filter>Core\ColorMap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

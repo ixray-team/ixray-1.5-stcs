@@ -12,20 +12,25 @@ struct 	v2p
 uniform sampler2D 	s_base0;
 uniform sampler2D 	s_base1;
 uniform sampler2D 	s_noise;
-uniform sampler2D 	s_distort;
-uniform sampler2D 	s_intensity;
-uniform sampler2D 	s_grad0;
 uniform float4 		c_brightness;
+uniform sampler2D 	s_grad0;
+uniform sampler2D 	s_grad1;
+uniform float4 		c_colormap;
 
 //////////////////////////////////////////////////////////////////////////////////////////
 // Pixel
 float4 	main	( v2p I )	: COLOR
 {
-	float4 	distort	= tex2D		(s_distort, I.tc0);
-	float2	offset	= (distort.xy-.5h)*def_distort;
-	float3	t_0 	= tex2D		(s_base0,I.tc0+ offset);
-	float3	t_1 	= tex2D		(s_base1,I.tc1+ offset);	
-	float3 	image	= (t_0+t_1)*0.5f;					// add_d2
+	float3	t_0 	= tex2D		(s_base0,I.tc0);
+	float3	t_1 	= tex2D		(s_base1,I.tc1);	
+	float3 	image_o	= (t_0+t_1)*0.5f;					// add_d2
+
+	float	grad_i 	= dot		(image_o,(0.3333f).xxx);
+
+	float3 	image0 	= tex2D		(s_grad0, float2(grad_i,0.5f));
+	float3 	image1 	= tex2D		(s_grad1, float2(grad_i,0.5f));
+	float3	image	= lerp		(image0, image1, c_colormap.y);
+			image	= lerp		(image_o, image, c_colormap.x);
 
 	float	gray 	= dot		(image,I.gray);			// dp3
 			image 	= lerp 		(gray,image,I.gray.w);		// mul/mad
@@ -34,7 +39,7 @@ float4 	main	( v2p I )	: COLOR
 	float3 	noised 	= image*t_noise*2.0f;                     		// mul_2x
 			image	= lerp 		(noised,image,I.color.w); 	// lrp ?
 			image	= (image * I.color + c_brightness)*2.0f;		// mad
-//			image	= (image + c_brightness) * I.color;		// mad ?
 
-	return  float4	(image, 1.0f);					// +mov
+	// out
+	return  float4(image, 1.0f);					// +mov
 }

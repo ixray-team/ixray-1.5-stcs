@@ -11,6 +11,7 @@
 //////////////////////////////////////////////////////////////////////
 
 CEffectorPP::CEffectorPP(EEffectorPPType type, f32 lifeTime, bool free_on_remove) 
+:bOverlap(true)
 {
 	eType			= type;
 	fLifeTime		= lifeTime;

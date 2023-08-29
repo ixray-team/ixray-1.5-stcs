@@ -1,4 +1,6 @@
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "postprocessanimator.h"
 #ifndef _PP_EDITOR_
 #include "ActorEffector.h"	
@@ -88,7 +90,7 @@ void        CPostprocessAnimator::Load                            (LPCSTR name)
           {
           IReader* F = FS.r_open (full_path);
           u32 dwVersion = F->r_u32();
-          VERIFY (dwVersion == POSTPROCESS_FILE_VERSION);
+//.       VERIFY (dwVersion == POSTPROCESS_FILE_VERSION);
           //load base color
           VERIFY (m_Params[0]);
           m_Params[0]->load (*F);
@@ -119,6 +121,12 @@ void        CPostprocessAnimator::Load                            (LPCSTR name)
           //load noise fps
           VERIFY (m_Params[9]);
           m_Params[9]->load (*F);
+		  if(dwVersion>=0x0002)
+		  {
+			  VERIFY (m_Params[10]);
+			  m_Params[10]->load (*F);
+			  F->r_stringZ(m_EffectorParams.cm_tex1);
+		  }
           //close reader
           FS.r_close (F);
           }
@@ -278,12 +286,14 @@ void        CPostprocessAnimator::Create                          ()
     VERIFY (m_Params[8]);
     m_Params[9] = xr_new<CPostProcessValue> (&m_EffectorParams.noise.fps);          //noise fps
     VERIFY (m_Params[9]);
+    m_Params[10] = xr_new<CPostProcessValue> (&m_EffectorParams.cm_influence);
+    VERIFY (m_Params[10]);
 }
 
 #ifdef _PP_EDITOR_
 CPostProcessParam*  CPostprocessAnimator::GetParam                (pp_params param)
 {
-    VERIFY (param >= pp_base_color && param <= pp_noise_f);
+    VERIFY (param >= pp_base_color && param < pp_last);
     return m_Params[param];
 }
 void        CPostprocessAnimator::Save                            (LPCSTR name)
@@ -301,9 +311,22 @@ void        CPostprocessAnimator::Save                            (LPCSTR name)
     m_Params[7]->save (*W);
     m_Params[8]->save (*W);
     m_Params[9]->save (*W);
+    m_Params[10]->save (*W);
+	W->w_stringZ		(m_EffectorParams.cm_tex1);
     FS.w_close (W);
-
 }
+
+SPPInfo::SPPInfo				()
+{
+	blur = gray = duality.h = duality.v = 0;
+	noise.intensity=0; noise.grain = 1; noise.fps = 10;
+	color_base.set	(.5f,	.5f,	.5f);
+	color_gray.set	(.333f, .333f,	.333f);
+	color_add.set	(0.f,	0.f,	0.f);
+	cm_influence	= 0.0f;
+	cm_interpolate	= 1.0f;
+}
+
 //-----------------------------------------------------------------------
 void        CPostprocessAnimator::ResetParam                      (pp_params param)
 {
@@ -339,6 +362,9 @@ void        CPostprocessAnimator::ResetParam                      (pp_params par
                 break;
            case pp_noise_f:
                 m_Params[9] = xr_new<CPostProcessValue>  (&m_EffectorParams.noise.fps);         //noise fps
+                break;
+           case pp_cm_influence:
+                m_Params[10] = xr_new<CPostProcessValue>  (&m_EffectorParams.cm_influence);
                 break;
            }
     VERIFY (m_Params[param]);

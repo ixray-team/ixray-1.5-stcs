@@ -55,49 +55,15 @@ struct ENGINE_API SPPInfo {
 	SColor		color_base;
 	SColor		color_gray;
 	SColor		color_add;
+	float				cm_influence;
+	float				cm_interpolate;
+	shared_str			cm_tex1;
+	shared_str			cm_tex2;
 
-	IC SPPInfo& add (const SPPInfo &ppi) 
-	{
-		blur		+= ppi.blur;
-		gray		+= ppi.gray;
-		duality.h	+= ppi.duality.h; 
-		duality.v += ppi.duality.v;
-		
-		noise.intensity	= _max(noise.intensity, ppi.noise.intensity);
-		noise.grain		= _max(noise.grain, ppi.noise.grain);
-		noise.fps		= _max(noise.fps, ppi.noise.fps);
-
-//		noise.intensity += ppi.noise.intensity; 
-//		noise.grain += ppi.noise.grain;
-//		noise.fps	+= ppi.noise.fps;
-		color_base	+= ppi.color_base;
-		color_gray	+= ppi.color_gray;
-		color_add	+= ppi.color_add;
-		return *this;
-	}
-	IC SPPInfo& sub (const SPPInfo &ppi) 
-	{
-		blur		-= ppi.blur;
-		gray		-= ppi.gray;
-		duality.h	-= ppi.duality.h; 
-		duality.v	-= ppi.duality.v;
-//		noise.intensity -= ppi.noise.intensity; 
-//		noise.grain -= ppi.noise.grain;
-//		noise.fps	-= ppi.noise.fps;
-		color_base	-= ppi.color_base;
-		color_gray	-= ppi.color_gray;
-		color_add	-= ppi.color_add;
-		return *this;
-	}
+	SPPInfo& add		(const SPPInfo &ppi);
+	SPPInfo& sub		(const SPPInfo &ppi);
 	void normalize		();
-	SPPInfo				()
-	{
-		blur = gray = duality.h = duality.v = 0;
-		noise.intensity=0; noise.grain = 1; noise.fps = 10;
-		color_base.set	(.5f,	.5f,	.5f);
-		color_gray.set	(.333f, .333f,	.333f);
-		color_add.set	(0.f,	0.f,	0.f);
-	}
+	SPPInfo				();
 	SPPInfo&	lerp(const SPPInfo& def, const SPPInfo& to, float factor);
 	void		validate(LPCSTR str);
 };
@@ -107,6 +73,8 @@ using EffectorCamIt = EffectorCamVec::iterator;
 
 using EffectorPPVec = xr_vector<CEffectorPP*>;
 using EffectorPPIt = EffectorPPVec::iterator;
+
+#define			effCustomEffectorStartID	10000
 
 struct SCamEffectorInfo;
 class ENGINE_API CCameraManager
@@ -132,10 +100,13 @@ public:
 #endif
 
 	void					Dump					();
+	u32						Count					()	{return m_EffectorsCam.size()+m_EffectorsCam_added_deffered.size();}
 	CEffectorCam*			AddCamEffector			(CEffectorCam*		ef);
 	CEffectorCam*			GetCamEffector			(ECamEffectorType	type);
 	void					RemoveCamEffector		(ECamEffectorType	type);
 
+	ECamEffectorType		RequestCamEffectorId	();
+	EEffectorPPType			RequestPPEffectorId		();
 	CEffectorPP*			GetPPEffector			(EEffectorPPType	type);
 	CEffectorPP*			AddPPEffector			(CEffectorPP*		ef);
 	void					RemovePPEffector		(EEffectorPPType	type);

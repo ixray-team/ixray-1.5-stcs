@@ -68,6 +68,13 @@ void					CRender::create					()
 	else										o.distortion = FALSE;
 	if (strstr(Core.Params,"-nodistort"))		o.distortion = FALSE;
 	Msg				("* distortion: %s, dev(%d),need(%d)",o.distortion?"used":"unavailable",v_dev,v_need);
+
+	//	Color mapping
+	if ( v_dev >= v_need )						o.color_mapping = TRUE;
+	else										o.color_mapping = FALSE;
+	if (strstr(Core.Params,"-nocolormap"))		o.color_mapping = FALSE;
+	Msg				("* color_mapping: %s, dev(%d),need(%d)",o.color_mapping?"used":"unavailable",v_dev,v_need);
+
 	m_skinning					= -1;
 
 	// disasm

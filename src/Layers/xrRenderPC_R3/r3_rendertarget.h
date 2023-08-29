@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../xrRender/ColorMapManager.h"
+
 class light;
 
 //#define DU_SPHERE_NUMVERTEX 92
@@ -215,6 +217,11 @@ private:
 	u32							param_color_gray;
 	Fvector					param_color_add;
 
+	//	Color mapping
+	float						param_color_map_influence;
+	float						param_color_map_interpolate;
+	ColorMapManager				color_map_manager;
+
 	//	Igor: used for volumetric lights
 	bool						m_bHasActiveVolumetric;
 public:
@@ -239,6 +246,7 @@ public:
 	void						u_calc_tc_noise			(Fvector2& p0, Fvector2& p1);
 	void						u_calc_tc_duality_ss	(Fvector2& r0, Fvector2& r1, Fvector2& l0, Fvector2& l1);
 	BOOL						u_need_PP				();
+	bool						u_need_CM				();
 	BOOL						u_DBT_enable			(float zMin, float zMax);
 	void						u_DBT_disable			();
 
@@ -249,6 +257,7 @@ public:
 	void						phase_scene_end			();
 	void						phase_occq				();
 	void						phase_ssao				();
+	void						phase_hdao				();
 	void						phase_downsamp			();
 	void						phase_wallmarks			();
 	void						phase_smap_direct		(light* L,	u32 sub_phase);
@@ -303,6 +312,10 @@ public:
 
 	virtual u32					get_width				()				{ return dwWidth;					}
 	virtual u32					get_height				()				{ return dwHeight;					}
+
+	virtual void				set_cm_imfluence	(float	f)		{ param_color_map_influence = f;							}
+	virtual void				set_cm_interpolate	(float	f)		{ param_color_map_interpolate = f;							}
+	virtual void				set_cm_textures		(const shared_str &tex0, const shared_str &tex1) {color_map_manager.SetTextures(tex0, tex1);}
 
 	//	Need to reset stencil only when marker overflows.
 	//	Don't clear when render for the first time

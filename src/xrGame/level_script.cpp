@@ -310,33 +310,6 @@ void map_add_object_spot(u16 id, LPCSTR spot_type, LPCSTR text)
 	}
 }
 
-/*void map_add_object_spot_complex(u16 id, LPCSTR spot_name, LPCSTR hint, 
-								 LPCSTR left_icon, LPCSTR right_icon, LPCSTR top_icon, int time_end )
-{
-	CMapLocation* ml = Level().MapManager().AddMapLocation(spot_name,id);
-	R_ASSERT2( ml, spot_name );
-	R_ASSERT2( ml->complex_spot(), spot_name );
-
-	ml->complex_spot()->SetTTL( time_end );
-
-	if ( hint && xr_strlen(hint) )
-	{
-		ml->SetHint(hint);
-	}
-	if ( left_icon && xr_strlen(left_icon) )
-	{
-		ml->complex_spot()->SetLeftTexture(left_icon);
-	}
-	if ( right_icon && xr_strlen(right_icon) )
-	{
-		ml->complex_spot()->SetRightTexture(right_icon);
-	}
-	if ( top_icon && xr_strlen(top_icon) )
-	{
-		ml->complex_spot()->SetTopTexture(top_icon);
-	}
-}
-*/
 void map_add_object_spot_ser(u16 id, LPCSTR spot_type, LPCSTR text)
 {
 	CMapLocation* ml = Level().MapManager().AddMapLocation(spot_type,id);

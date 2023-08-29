@@ -181,6 +181,9 @@
     <Filter Include="Debug">
       <UniqueIdentifier>{c7869e3e-fa1f-4c2b-bb73-60baba509744}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core_Target\ColorMap">
+      <UniqueIdentifier>{3a5dac49-7a09-4132-b64b-4c116ace2ecb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cl_intersect.h">
@@ -722,6 +725,9 @@
     </ClInclude>
     <ClInclude Include="..\xrRender\blender_smaa.h">
       <Filter>Shading templates</Filter>
+    </ClInclude>
+    <ClInclude Include="..\xrRender\ColorMapManager.h">
+      <Filter>Core_Target\ColorMap</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1321,6 +1327,9 @@
     </ClCompile>
     <ClCompile Include="r3_rendertarget_phase_smaa.cpp">
       <Filter>Core_Target</Filter>
+    </ClCompile>
+    <ClCompile Include="..\xrRender\ColorMapManager.cpp">
+      <Filter>Core_Target\ColorMap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

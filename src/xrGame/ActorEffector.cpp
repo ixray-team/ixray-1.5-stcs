@@ -10,8 +10,12 @@
 void AddEffector		(CActor* A, int type, const shared_str& sect_name)
 {
 	if(pSettings->line_exist(sect_name,"pp_eff_name")){
-		bool bCyclic						= !!pSettings->r_bool(sect_name,"pp_eff_cyclic");
 		CPostprocessAnimator* pp_anm		= xr_new<CPostprocessAnimator>();
+
+		bool bCyclic						= !!pSettings->r_bool(sect_name,"pp_eff_cyclic");
+
+		pp_anm->bOverlap					= !!pSettings->r_bool(sect_name,"pp_eff_overlap");
+
 		pp_anm->SetType						((EEffectorPPType)type);
 		pp_anm->SetCyclic					(bCyclic);
 
@@ -44,6 +48,7 @@ void AddEffector		(CActor* A, int type, const shared_str& sect_name, CEffectorCo
 		CPostprocessAnimatorControlled* pp_anm	= xr_new<CPostprocessAnimatorControlled>(ec);
 		pp_anm->SetType						((EEffectorPPType)type);
 		pp_anm->SetCyclic					(bCyclic);
+		pp_anm->bOverlap					= !!pSettings->r_bool(sect_name,"pp_eff_overlap");
 		LPCSTR fn = pSettings->r_string		(sect_name,"pp_eff_name");
 		pp_anm->Load						(fn);
 		A->Cameras().AddPPEffector			(pp_anm);
@@ -73,6 +78,7 @@ void AddEffector		(CActor* A, int type, const shared_str& sect_name, GET_KOEFF_F
 		CPostprocessAnimatorLerp* pp_anm	= xr_new<CPostprocessAnimatorLerp>();
 		pp_anm->SetType						((EEffectorPPType)type);
 		pp_anm->SetCyclic					(bCyclic);
+		pp_anm->bOverlap					= !!pSettings->r_bool(sect_name,"pp_eff_overlap");
 		LPCSTR fn = pSettings->r_string		(sect_name,"pp_eff_name");
 		pp_anm->SetFactorFunc				(k_func);
 		pp_anm->Load						(fn);
@@ -106,6 +112,7 @@ void AddEffector(CActor* A, int type, const shared_str& sect_name, float factor)
 		pp_anm->SetType						((EEffectorPPType)type);
 		pp_anm->SetCyclic					(bCyclic);
 		pp_anm->SetPower					(factor);
+		pp_anm->bOverlap					= !!pSettings->r_bool(sect_name,"pp_eff_overlap");
 		LPCSTR fn = pSettings->r_string		(sect_name,"pp_eff_name");
 		pp_anm->Load						(fn);
 		A->Cameras().AddPPEffector			(pp_anm);
