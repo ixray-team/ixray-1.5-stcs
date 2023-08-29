@@ -638,11 +638,6 @@ HRESULT	CRender::shader_compile			(
 		void*							_ppErrorMsgs,
 		void*							_ppConstantTable)
 {
-	if ('v' == pTarget[0])
-		pTarget = D3DXGetVertexShaderProfile(HW.pDevice);	// vertex	"vs_2_a"; //	
-	else
-		pTarget = D3DXGetPixelShaderProfile(HW.pDevice);	// pixel	"ps_2_a"; //
-
 	D3DXMACRO						defines			[128];
 	int								def_it			= 0;
 	CONST D3DXMACRO*                pDefines		= (CONST D3DXMACRO*)	_pDefines;

@@ -758,12 +758,6 @@ HRESULT	CRender::shader_compile			(
 	defines[def_it].Definition		=	0;
 	def_it							++;
 
-	// 
-	if (0==xr_strcmp(pFunctionName,"main"))	{
-		if ('v'==pTarget[0])			pTarget = D3DXGetVertexShaderProfile	(HW.pDevice);	// vertex	"vs_2_a"; //	
-		else							pTarget = D3DXGetPixelShaderProfile		(HW.pDevice);	// pixel	"ps_2_a"; //	
-	}
-
 	LPD3DXINCLUDE                   pInclude		= (LPD3DXINCLUDE)		_pInclude;
 	LPD3DXBUFFER*                   ppShader		= (LPD3DXBUFFER*)		_ppShader;
 	LPD3DXBUFFER*                   ppErrorMsgs		= (LPD3DXBUFFER*)		_ppErrorMsgs;

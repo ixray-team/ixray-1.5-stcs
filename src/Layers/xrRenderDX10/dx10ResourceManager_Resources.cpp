@@ -173,19 +173,11 @@ SVS*	CResourceManager::_CreateVS		(LPCSTR _name)
 		R_ASSERT3					(fs, "shader file doesnt exist", cname);
 
 		// Select target
-		LPCSTR						c_target	= "vs_2_0";
+		LPCSTR						c_target	= "vs_4_0";
 		LPCSTR						c_entry		= "main";
-		/*if (HW.Caps.geometry.dwVersion>=CAP_VERSION(3,0))			target="vs_3_0";
-		else*/ if (HW.Caps.geometry_major>=2)						c_target="vs_2_0";
-		else 														c_target="vs_1_1";
-
 		LPSTR pfs					= xr_alloc<char>(fs->length() + 1);
 		strncpy						(pfs, (LPCSTR)fs->pointer(), fs->length());
 		pfs							[fs->length()] = 0;
-
-		if (strstr(pfs, "main_vs_1_1"))			{ c_target = "vs_1_1"; c_entry = "main_vs_1_1";	}
-		if (strstr(pfs, "main_vs_2_0"))			{ c_target = "vs_2_0"; c_entry = "main_vs_2_0";	}
-
 		xr_free(pfs);
 
 		// vertex
@@ -327,13 +319,8 @@ SPS*	CResourceManager::_CreatePS			(LPCSTR _name)
 		FS.r_close				(R);
 
 		// Select target
-		LPCSTR						c_target	= "ps_2_0";
+		LPCSTR						c_target	= "ps_4_0";
 		LPCSTR						c_entry		= "main";
-		if (strstr(data,"main_ps_1_1"))			{ c_target = "ps_1_1"; c_entry = "main_ps_1_1";	}
-		if (strstr(data,"main_ps_1_2"))			{ c_target = "ps_1_2"; c_entry = "main_ps_1_2";	}
-		if (strstr(data,"main_ps_1_3"))			{ c_target = "ps_1_3"; c_entry = "main_ps_1_3";	}
-		if (strstr(data,"main_ps_1_4"))			{ c_target = "ps_1_4"; c_entry = "main_ps_1_4";	}
-		if (strstr(data,"main_ps_2_0"))			{ c_target = "ps_2_0"; c_entry = "main_ps_2_0";	}
 
 		// Compile
 		ID3DBlob*					pShaderBuf	= NULL;
