@@ -313,7 +313,10 @@ void		CHW::CreateDevice		(HWND m_hWnd, bool move_window)
 	}
 
 	if ((D3DFMT_UNKNOWN==fTarget) || (D3DFMT_UNKNOWN==fTarget))	{
-		Msg					("Failed to initialize graphics hardware.\nPlease try to restart the game.");
+		Msg					("Failed to initialize graphics hardware.\n"
+							 "Please try to restart the game.\n"
+							 "Can not find matching format for back buffer."
+							 );
 		FlushLog			();
 		MessageBox			(NULL,"Failed to initialize graphics hardware.\nPlease try to restart the game.","Error!",MB_OK|MB_ICONERROR);
 		TerminateProcess	(GetCurrentProcess(),0);
@@ -371,7 +374,9 @@ void		CHW::CreateDevice		(HWND m_hWnd, bool move_window)
 	}
 	if (D3DERR_DEVICELOST==R)	{
 		// Fatal error! Cannot create rendering device AT STARTUP !!!
-		Msg					("Failed to initialize graphics hardware.\nPlease try to restart the game.");
+		Msg					("Failed to initialize graphics hardware.\n"
+							 "Please try to restart the game.\n"
+							 "CreateDevice returned 0x%08x(D3DERR_DEVICELOST)", R);
 		FlushLog			();
 		MessageBox			(NULL,"Failed to initialize graphics hardware.\nPlease try to restart the game.","Error!",MB_OK|MB_ICONERROR);
 		TerminateProcess	(GetCurrentProcess(),0);
@@ -426,7 +431,8 @@ u32	CHW::selectPresentInterval	()
 
 u32 CHW::selectGPU ()
 {
-	if (Caps.bForceGPU_SW) return D3DCREATE_SOFTWARE_VERTEXPROCESSING;
+	if ( Caps.bForceGPU_SW ) 
+		return D3DCREATE_SOFTWARE_VERTEXPROCESSING;
 
 	D3DCAPS9	caps;
 	pD3D->GetDeviceCaps(DevAdapter,DevT,&caps);
@@ -531,7 +537,7 @@ void	CHW::updateWindowProps	(HWND m_hWnd)
 			AdjustWindowRect		(	&m_rcWindowBounds, dwWindowStyle, FALSE );
 
 			SetWindowPos			(	m_hWnd, 
-										HWND_TOP,	
+										HWND_NOTOPMOST,	
 										m_rcWindowBounds.left, 
 										m_rcWindowBounds.top,
 										( m_rcWindowBounds.right - m_rcWindowBounds.left ),
@@ -542,6 +548,7 @@ void	CHW::updateWindowProps	(HWND m_hWnd)
 	else
 	{
 		SetWindowLong			( m_hWnd, GWL_STYLE, dwWindowStyle=(WS_POPUP|WS_VISIBLE) );
+		SetWindowLong			( m_hWnd, GWL_EXSTYLE, WS_EX_TOPMOST);
 	}
 
 #ifndef _EDITOR

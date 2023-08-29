@@ -149,6 +149,7 @@ public:
 
 void CHOM::Render_DB			(CFrustum& base)
 {
+	//Update projection matrices on every frame to ensure valid HOM culling
 	float			view_dim	= occ_dim_0;
 	Fmatrix			m_viewport		= {
 		view_dim/2.f,			0.0f,					0.0f,		0.0f,

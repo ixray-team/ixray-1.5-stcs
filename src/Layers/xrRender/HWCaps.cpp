@@ -67,8 +67,8 @@ void CHWCaps::Update()
 	// *******1********** Vertex cache
 	ID3DQuery*	q_vc;
 	D3DDEVINFO_VCACHE	vc;
-	HRESULT hr = HW.pDevice->CreateQuery(D3DQUERYTYPE_VCACHE, &q_vc);
-	if (FAILED(hr))
+	HRESULT _hr			= HW.pDevice->CreateQuery(D3DQUERYTYPE_VCACHE,&q_vc);
+	if (FAILED(_hr))
 	{
 		vc.OptMethod			= 0;
 		vc.CacheSize			= 16;
