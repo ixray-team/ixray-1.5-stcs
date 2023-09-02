@@ -83,21 +83,21 @@ void CWeaponMagazined::Load	(LPCSTR section)
 	inherited::Load		(section);
 		
 	// Sounds
-	m_sounds.LoadSound(section,"snd_draw", "sndShow"		, m_eSoundShow		);
-	m_sounds.LoadSound(section,"snd_holster", "sndHide"		, m_eSoundHide		);
-	m_sounds.LoadSound(section,"snd_shoot", "sndShot"		, m_eSoundShot		);
-	m_sounds.LoadSound(section,"snd_empty", "sndEmptyClick"	, m_eSoundEmptyClick	);
-	m_sounds.LoadSound(section,"snd_reload", "sndReload"		, m_eSoundReload		);
+	m_sounds.LoadSound(section,"snd_draw", "sndShow"		, false, m_eSoundShow		);
+	m_sounds.LoadSound(section,"snd_holster", "sndHide"		, false, m_eSoundHide		);
+	m_sounds.LoadSound(section,"snd_shoot", "sndShot"		, false, m_eSoundShot		);
+	m_sounds.LoadSound(section,"snd_empty", "sndEmptyClick"	, false, m_eSoundEmptyClick	);
+	m_sounds.LoadSound(section,"snd_reload", "sndReload"	, true, m_eSoundReload		);
 
 	if (WeaponSoundExist(section, "snd_reload_empty") && isHUDAnimationExist("anm_reload_empty"))
-		m_sounds.LoadSound(section, "snd_reload_empty", "sndReloadEmpty", m_eSoundReload);
+		m_sounds.LoadSound(section,"snd_reload_empty", "sndReloadEmpty"	, true, m_eSoundReload);
 	
 	if (WeaponSoundExist(section, "snd_reload_misfire") && isHUDAnimationExist("anm_reload_misfire"))
-		m_sounds.LoadSound(section, "snd_reload_misfire", "sndReloadMis", m_eSoundReload);
+		m_sounds.LoadSound(section, "snd_reload_misfire", "sndReloadMis", true, m_eSoundReload);
 
 	m_sSndShotCurrent = "sndShot";
 		
-	//звуки и партиклы глушителя, еслит такой есть
+	//Р·РІСѓРєРё Рё РїР°СЂС‚РёРєР»С‹ РіР»СѓС€РёС‚РµР»СЏ, РµСЃР»РёС‚ С‚Р°РєРѕР№ РµСЃС‚СЊ
 	if ( m_eSilencerStatus == ALife::eAddonAttachable || m_eSilencerStatus == ALife::eAddonPermanent )
 	{
 		if(pSettings->line_exist(section, "silencer_flame_particles"))
@@ -105,7 +105,7 @@ void CWeaponMagazined::Load	(LPCSTR section)
 		if(pSettings->line_exist(section, "silencer_smoke_particles"))
 			m_sSilencerSmokeParticles = pSettings->r_string(section, "silencer_smoke_particles");
 		
-		m_sounds.LoadSound(section,"snd_silncer_shot", "sndSilencerShot", m_eSoundShot);
+		m_sounds.LoadSound(section,"snd_silncer_shot", "sndSilencerShot", false, m_eSoundShot);
 	}
 
 	if (pSettings->line_exist(section, "dispersion_start"))
@@ -309,7 +309,7 @@ void CWeaponMagazined::ReloadMagazine()
 {
 	m_dwAmmoCurrentCalcFrame = 0;	
 
-	//устранить осечку при перезарядке
+	//СѓСЃС‚СЂР°РЅРёС‚СЊ РѕСЃРµС‡РєСѓ РїСЂРё РїРµСЂРµР·Р°СЂСЏРґРєРµ
 	if(IsMisfire())	bMisfire = false;
 	
 	if (!m_bLockType) {
@@ -326,14 +326,14 @@ void CWeaponMagazined::ReloadMagazine()
 	
 	if(!unlimited_ammo()) 
 	{
-		//попытаться найти в инвентаре патроны текущего типа 
+		//РїРѕРїС‹С‚Р°С‚СЊСЃСЏ РЅР°Р№С‚Рё РІ РёРЅРІРµРЅС‚Р°СЂРµ РїР°С‚СЂРѕРЅС‹ С‚РµРєСѓС‰РµРіРѕ С‚РёРїР° 
 		m_pAmmo = smart_cast<CWeaponAmmo*>(m_pInventory->GetAny(*m_ammoTypes[m_ammoType]));
 		
 		if(!m_pAmmo && !m_bLockType) 
 		{
 			for(u32 i = 0; i < m_ammoTypes.size(); ++i) 
 			{
-				//проверить патроны всех подходящих типов
+				//РїСЂРѕРІРµСЂРёС‚СЊ РїР°С‚СЂРѕРЅС‹ РІСЃРµС… РїРѕРґС…РѕРґСЏС‰РёС… С‚РёРїРѕРІ
 				m_pAmmo = smart_cast<CWeaponAmmo*>(m_pInventory->GetAny(*m_ammoTypes[i]));
 				if(m_pAmmo) 
 				{ 
@@ -347,10 +347,10 @@ void CWeaponMagazined::ReloadMagazine()
 		m_ammoType = m_ammoType;
 
 
-	//нет патронов для перезарядки
+	//РЅРµС‚ РїР°С‚СЂРѕРЅРѕРІ РґР»СЏ РїРµСЂРµР·Р°СЂСЏРґРєРё
 	if(!m_pAmmo && !unlimited_ammo() ) return;
 
-	//разрядить магазин, если загружаем патронами другого типа
+	//СЂР°Р·СЂСЏРґРёС‚СЊ РјР°РіР°Р·РёРЅ, РµСЃР»Рё Р·Р°РіСЂСѓР¶Р°РµРј РїР°С‚СЂРѕРЅР°РјРё РґСЂСѓРіРѕРіРѕ С‚РёРїР°
 	if(!m_bLockType && !m_magazine.empty() && 
 		(!m_pAmmo || xr_strcmp(m_pAmmo->cNameSect(), 
 					 *m_magazine.back().m_ammoSect)))
@@ -375,7 +375,7 @@ void CWeaponMagazined::ReloadMagazine()
 
 	VERIFY((u32)iAmmoElapsed == m_magazine.size());
 
-	//выкинуть коробку патронов, если она пустая
+	//РІС‹РєРёРЅСѓС‚СЊ РєРѕСЂРѕР±РєСѓ РїР°С‚СЂРѕРЅРѕРІ, РµСЃР»Рё РѕРЅР° РїСѓСЃС‚Р°СЏ
 	if(m_pAmmo && !m_pAmmo->m_boxCurr && OnServer()) 
 		m_pAmmo->SetDropManual(TRUE);
 
@@ -427,8 +427,8 @@ void CWeaponMagazined::UpdateCL			()
 
 	
 
-	//когда происходит апдейт состояния оружия
-	//ничего другого не делать
+	//РєРѕРіРґР° РїСЂРѕРёСЃС…РѕРґРёС‚ Р°РїРґРµР№С‚ СЃРѕСЃС‚РѕСЏРЅРёСЏ РѕСЂСѓР¶РёСЏ
+	//РЅРёС‡РµРіРѕ РґСЂСѓРіРѕРіРѕ РЅРµ РґРµР»Р°С‚СЊ
 	if(GetNextState() == GetState())
 	{
 		switch (GetState())
@@ -598,10 +598,10 @@ void CWeaponMagazined::OnShot()
 	PHGetLinearVell				(vel);
 	OnShellDrop					(get_LastSP(), vel);
 	
-	// Огонь из ствола
+	// РћРіРѕРЅСЊ РёР· СЃС‚РІРѕР»Р°
 	StartFlameParticles			();
 
-	//дым из ствола
+	//РґС‹Рј РёР· СЃС‚РІРѕР»Р°
 	ForceUpdateFireParticles	();
 	StartSmokeParticles			(get_LastFP(), vel);
 }
@@ -715,15 +715,15 @@ void CWeaponMagazined::PlayReloadSound()
 	else if (m_sounds.FindSoundItem("sndReloadEmpty", false) && isHUDAnimationExist("anm_reload_empty") && iAmmoElapsed == 0)
 		PlaySound("sndReloadEmpty", get_LastFP());
 	else
-		PlaySound("sndReload",get_LastFP());
+		PlaySound("sndReload", get_LastFP());
 }
 
 void CWeaponMagazined::switch2_Reload()
 {
 	CWeapon::FireEnd	();
 
-	PlayReloadSound		();
 	PlayAnimReload		();
+	PlayReloadSound		();
 	SetPending			(TRUE);
 }
 void CWeaponMagazined::switch2_Hiding()
@@ -758,7 +758,7 @@ bool CWeaponMagazined::Action(s32 cmd, u32 flags)
 {
 	if(inherited::Action(cmd, flags)) return true;
 	
-	//если оружие чем-то занято, то ничего не делать
+	//РµСЃР»Рё РѕСЂСѓР¶РёРµ С‡РµРј-С‚Рѕ Р·Р°РЅСЏС‚Рѕ, С‚Рѕ РЅРёС‡РµРіРѕ РЅРµ РґРµР»Р°С‚СЊ
 	if(IsPending()) return false;
 	
 	switch(cmd) 
@@ -874,7 +874,7 @@ bool CWeaponMagazined::Attach(PIItem pIItem, bool b_send_event)
 	{
 		if (b_send_event && OnServer())
 		{
-			//уничтожить подсоединенную вещь из инвентаря
+			//СѓРЅРёС‡С‚РѕР¶РёС‚СЊ РїРѕРґСЃРѕРµРґРёРЅРµРЅРЅСѓСЋ РІРµС‰СЊ РёР· РёРЅРІРµРЅС‚Р°СЂСЏ
 //.			pIItem->Drop					();
 			pIItem->object().DestroyObject	();
 		};
@@ -984,7 +984,7 @@ void CWeaponMagazined::InitAddons()
 		m_sSmokeParticlesCurrent	= m_sSilencerSmokeParticles;
 		m_sSndShotCurrent			= "sndSilencerShot";
 
-		//подсветка от выстрела
+		//РїРѕРґСЃРІРµС‚РєР° РѕС‚ РІС‹СЃС‚СЂРµР»Р°
 		LoadLights					(*cNameSect(), "silencer_");
 		ApplySilencerKoeffs			();
 	}
@@ -994,7 +994,7 @@ void CWeaponMagazined::InitAddons()
 		m_sSmokeParticlesCurrent	= m_sSmokeParticles;
 		m_sSndShotCurrent			= "sndShot";
 
-		//подсветка от выстрела
+		//РїРѕРґСЃРІРµС‚РєР° РѕС‚ РІС‹СЃС‚СЂРµР»Р°
 		LoadLights		(*cNameSect(), "");
 		ResetSilencerKoeffs();
 	}
@@ -1119,7 +1119,7 @@ void CWeaponMagazined::OnZoomOut		()
 
 }
 
-//переключение режимов стрельбы одиночными и очередями
+//РїРµСЂРµРєР»СЋС‡РµРЅРёРµ СЂРµР¶РёРјРѕРІ СЃС‚СЂРµР»СЊР±С‹ РѕРґРёРЅРѕС‡РЅС‹РјРё Рё РѕС‡РµСЂРµРґСЏРјРё
 bool CWeaponMagazined::SwitchMode			()
 {
 	if(eIdle != GetState() || IsPending()) return false;
@@ -1273,23 +1273,23 @@ bool CWeaponMagazined::install_upgrade_impl( LPCSTR section, bool test )
 
 	// sounds (name of the sound, volume (0.0 - 1.0), delay (sec))
 	result2 = process_if_exists_set( section, "snd_draw", &CInifile::r_string, str, test );
-	if ( result2 && !test ) { m_sounds.LoadSound( section, "snd_draw"	    , "sndShow"		, m_eSoundShow		);	}
+	if ( result2 && !test ) { m_sounds.LoadSound( section, "snd_draw"	    , "sndShow"		, false, m_eSoundShow		);	}
 	result |= result2;
 
 	result2 = process_if_exists_set( section, "snd_holster", &CInifile::r_string, str, test );
-	if ( result2 && !test ) { m_sounds.LoadSound( section, "snd_holster"	, "sndHide"		, m_eSoundHide		);	}
+	if ( result2 && !test ) { m_sounds.LoadSound( section, "snd_holster"	, "sndHide"		, false, m_eSoundHide		);	}
 	result |= result2;
 
 	result2 = process_if_exists_set( section, "snd_shoot", &CInifile::r_string, str, test );
-	if ( result2 && !test ) { m_sounds.LoadSound( section, "snd_shoot"	, "sndShot"		, m_eSoundShot		);	}
+	if ( result2 && !test ) { m_sounds.LoadSound( section, "snd_shoot"	, "sndShot"		, false, m_eSoundShot		);	}
 	result |= result2;
 
 	result2 = process_if_exists_set( section, "snd_empty", &CInifile::r_string, str, test );
-	if ( result2 && !test ) { m_sounds.LoadSound( section, "snd_empty"	, "sndEmptyClick"	, m_eSoundEmptyClick);	}
+	if ( result2 && !test ) { m_sounds.LoadSound( section, "snd_empty"	, "sndEmptyClick"	, false, m_eSoundEmptyClick);	}
 	result |= result2;
 
 	result2 = process_if_exists_set( section, "snd_reload", &CInifile::r_string, str, test );
-	if ( result2 && !test ) { m_sounds.LoadSound( section, "snd_reload"	, "sndReload"		, m_eSoundReload	);	}
+	if ( result2 && !test ) { m_sounds.LoadSound( section, "snd_reload"	, "sndReload"		, true, m_eSoundReload	);	}
 	result |= result2;
 
 	//snd_shoot1     = weapons\ak74u_shot_1 ??
@@ -1302,7 +1302,7 @@ bool CWeaponMagazined::install_upgrade_impl( LPCSTR section, bool test )
 		result |= process_if_exists_set( section, "silencer_smoke_particles", &CInifile::r_string, m_sSilencerSmokeParticles, test );
 
 		result2 = process_if_exists_set( section, "snd_silncer_shot", &CInifile::r_string, str, test );
-		if ( result2 && !test ) { m_sounds.LoadSound( section, "snd_silncer_shot"	, "sndSilencerShot", m_eSoundShot	);	}
+		if ( result2 && !test ) { m_sounds.LoadSound( section, "snd_silncer_shot"	, "sndSilencerShot", false, m_eSoundShot	);	}
 		result |= result2;
 	}
 
