@@ -618,8 +618,11 @@ void CWeaponMagazined::OnAnimationEnd(u32 state)
 	{
 		case eReload:
 		{
-			bReloadKeyPressed = false;
-			bAmmotypeKeyPressed = false;
+			if (!IsTriStateReload())
+			{
+				bReloadKeyPressed = false;
+				bAmmotypeKeyPressed = false;
+			}
 
 			if (bMisfireReload)
 			{
