@@ -14,9 +14,9 @@ uniform float4 		m_plmap_clamp	[2];	// 0.w = factor
 float  	calc_fogging 	(float4 w_pos)	{  return saturate(dot(w_pos,fog_plane)); 	}
 float2 	calc_detail 	(float3 w_pos)	{ 
 	float  	dtl	= distance(w_pos,eye_position)*dt_params.w;
-		dtl	= min(dtl*dtl, 1);
-	float  	dt_mul	= 1  - dtl;	// dt*  [1 ..  0 ]
-	float  	dt_add	= .5 * dtl;	// dt+	[0 .. 0.5]
+		dtl	= min(dtl*dtl, 1.0f);
+	float  	dt_mul	= 1.0f  - dtl;	// dt*  [1 ..  0 ]
+	float  	dt_add	= 0.5f * dtl;	// dt+	[0 .. 0.5]
 	return	float2	(dt_mul,dt_add);
 }
 float3 	calc_reflection	(float3 pos_w, float3 norm_w)

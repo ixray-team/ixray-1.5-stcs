@@ -39,7 +39,7 @@
 #define parallax float2(PARALLAX_H, -PARALLAX_H/2)
 
 #ifdef        USE_R2_STATIC_SUN
-#  define xmaterial float(1.0h/4.h)
+#  define xmaterial float(1.0f/4.0f)
 #else
 #  define xmaterial float(L_material.w)
 #endif
@@ -57,9 +57,9 @@ uniform float4                J_spot                [6];
 float          calc_fogging               (float4 w_pos)      { return dot(w_pos,fog_plane);         }
 float2         calc_detail                (float3 w_pos)      {
         float                 dtl        = distance                (w_pos,eye_position)*dt_params.w;
-                              dtl        = min              (dtl*dtl, 1);
-        float                  dt_mul     = 1  - dtl;        // dt*  [1 ..  0 ]
-        float                  dt_add     = .5 * dtl;        // dt+  [0 .. 0.5]
+                              dtl        = min(dtl * dtl, 1.0f);
+        float                  dt_mul     = 1.0f  - dtl;        // dt*  [1 ..  0 ]
+        float                  dt_add     = 0.5f * dtl;        // dt+  [0 .. 0.5]
         return                float2      (dt_mul,dt_add);
 }
 float3         calc_reflection     (float3 pos_w, float3 norm_w)
@@ -226,13 +226,13 @@ uniform sampler         s_image;                // used in various post-processi
 uniform sampler2D       s_tonemap;              // actually MidleGray / exp(Lw + eps)
 //////////////////////////////////////////////////////////////////////////////////////////
 // Defines                                		//
-#define def_gloss       float(2.f /255.f)
-#define def_aref        float(200.f/255.f)
+#define def_gloss       float(2.0f /255.0f)
+#define def_aref        float(200.0f/255.0f)
 #define def_dbumph      float(0.333f)
 #define def_virtualh    float(0.05f)              // 5cm
 #define def_distort     float(0.05f)             // we get -0.5 .. 0.5 range, this is -512 .. 512 for 1024, so scale it
-#define def_hdr         float(9.h)         		// hight luminance range float(3.h)
-#define def_hdr_clip	float(0.75h)        		//
+#define def_hdr         float(9.0f)         		// hight luminance range float(3.h)
+#define def_hdr_clip	float(0.75f)        		//
 
 //////////////////////////////////////////////////////////////////////////////////////////
 #define	LUMINANCE_VECTOR                 float3(0.3f, 0.38f, 0.22f)
@@ -250,8 +250,8 @@ void        tonemap              (out float4 low, out float4 high, float3 rgb, f
 
         high	=		low/def_hdr		;        // 8x dynamic range
 #else
-        low		=       float4           ( ( (rgb*(1+rgb/fWhiteIntensitySQR)) / (rgb+1) ),           0 )	;
-        high	=       float4       	(rgb/def_hdr,   0 )	;		// 8x dynamic range
+        low		=       float4           ( ( (rgb*(1.0f+rgb/fWhiteIntensitySQR)) / (rgb+1.0f) ),           0 )	;
+        high	=       float4       	(rgb/def_hdr,   0.0f )	;		// 8x dynamic range
 #endif
 
 /*
@@ -266,7 +266,7 @@ void        tonemap              (out float4 low, out float4 high, float3 rgb, f
 //		high	= 	float4	(rgb, dot(rgb,0.333f)-def_hdr_clip)		;
 }
 float4		combine_bloom        (float3  low, float4 high)	{
-        return        float4(low + high*high.a, 1.h);
+        return        float4(low + high*high.a, 1.0f);
 }
 
 float3	v_hemi        	(float3 n)                        	{        return L_hemi_color*(.5f + .5f*n.y);                   }
@@ -294,10 +294,10 @@ float   get_sun( float4 lmh)
 float Contrast(float Input, float ContrastPower)
 {
      //piecewise contrast function
-     bool IsAbovefloat = Input > 0.5 ;
-     float ToRaise = saturate(2*(IsAbovefloat ? 1-Input : Input));
-     float Output = 0.5*pow(ToRaise, ContrastPower);
-     Output = IsAbovefloat ? 1-Output : Output;
+     bool IsAbovefloat = Input > 0.5f ;
+     float ToRaise = saturate(2.0f*(IsAbovefloat ? 1.0f-Input : Input));
+     float Output = 0.5f*pow(ToRaise, ContrastPower);
+     Output = IsAbovefloat ? 1.0f-Output : Output;
      return Output;
 }
 

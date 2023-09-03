@@ -27,8 +27,9 @@ float4 	main	( v2p I )	: COLOR
 
 	// final-color
 	float3 	base 	= lerp		(t_env,t_base,t_base.a);
-	float3	final 	= light*base*2;
+	float3	final 	= light*base*2.0f;
 	final = lerp(fog_color.xyz, final, I.fog);
+
 	// out
 	return float4(final, t_base.a);
 }

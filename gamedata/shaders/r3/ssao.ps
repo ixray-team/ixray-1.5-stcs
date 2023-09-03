@@ -194,7 +194,7 @@ float	calc_ssao( float3 P, float3 N, float2 tc, float2 tcJ, uint iSample)
 		//float3	tap_pos	= s_position.Sample(smp_nofilter,tap);
 		float3	tap_pos	= gbd.P;
 #else // SSAO_OPT_DATA
-		float	z	= s_float_depth.SampleLevel(smp_nofilter,tap, 0);
+		float	z	= s_half_depth.SampleLevel(smp_nofilter,tap, 0);
 		float3	tap_pos	= uv_to_eye(tap, z);
 #endif // SSAO_OPT_DATA
 		float3 	dir 	= tap_pos-P.xyz;

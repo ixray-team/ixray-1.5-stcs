@@ -44,16 +44,16 @@ float4 	main		( v2p I )	: COLOR
 	dd.y 		=  (float)tex2D(s_position,I.tc3).z + (float)tex2D(s_position,I.tc4).z;
 	dd.z 		=  (float)tex2D(s_position,I.tc5).z + (float)tex2D(s_position,tc5r).z;
 	dd.w 		=  (float)tex2D(s_position,I.tc6).z + (float)tex2D(s_position,tc6r).z;
-	dd 		=  abs(2*dc.z-dd)-e_barrier.y;
-	dd 		=  step		(dd,0);		// bw
+	dd 		=  abs(2.0f*dc.z-dd)-e_barrier.y;
+	dd 		=  step		(dd,0.0f);		// bw
   float  de 		=  saturate	(dot(dd,e_weights.y));
 
   // weight
-  float 	w 		=  (1-de*ne)*e_kernel.x;	// 0 - no aa, 1=full aa
+  float 	w 		=  (1.0f-de*ne)*e_kernel.x;	// 0 - no aa, 1=full aa
 
 #ifdef 	USE_DISTORT
 	float4 	distort	= tex2D		(s_distort, I.tc0)	;
-	float2	doffs	= (distort.xy-.5h)*def_distort		;
+	float2	doffs	= (distort.xy-0.5f)*def_distort		;
 	float2	center	= I.tc0 + doffs;
 #else
 	float2	center 	= I.tc0;
@@ -68,7 +68,7 @@ float4 	main		( v2p I )	: COLOR
   float4 	s2 	=  tex2D	(s_image, offset + I.tc3*w);
   float4 	s3 	=  tex2D	(s_image, offset + I.tc4*w);
 
-	float3 	final	=  mblur	(center, dc, (s0+s1+s2+s3)/4.h);
+	float3 	final	=  mblur	(center, dc, (s0+s1+s2+s3)/4.0f);
 	float3	bloom	=  tex2D	(s_bloom, I.tc0);
 
   return combine_bloom	(final,bloom);

@@ -30,7 +30,7 @@ float4 	main		( v2p I )	: COLOR
 	nd.z 		=  dot 		(nc, (float3)tex2D(s_normal,I.tc3));
 	nd.w 		=  dot 		(nc, (float3)tex2D(s_normal,I.tc4));
 	nd 		-= e_barrier.x	;
-	nd 		=  step		(0,nd);	// bw
+	nd 		=  step		(0.0f,nd);	// bw
   float  ne 		=  saturate	(dot(nd,e_weights.x));
 
   // Opposite coords
@@ -49,11 +49,11 @@ float4 	main		( v2p I )	: COLOR
   float  de 		=  saturate	(dot(dd,e_weights.y));
 
   // weight
-  float 	w 		=  (1-de*ne)*e_kernel.x;	// 0 - no aa, 1=full aa
+  float 	w 		=  (1.0f-de*ne)*e_kernel.x;	// 0 - no aa, 1=full aa
 
 #ifdef 	USE_DISTORT
 	float4 	distort	= tex2D		(s_distort, I.tc0);
-	float2	doffs	= (distort.xy-.5h)*def_distort;
+	float2	doffs	= (distort.xy-0.5f)*def_distort;
 	float2	center	= I.tc0 + doffs;
 #else
 	float2	center 	= I.tc0;
@@ -68,7 +68,7 @@ float4 	main		( v2p I )	: COLOR
   float4 	s2 	=  tex2D	(s_image, offset + I.tc3*w);
   float4 	s3 	=  tex2D	(s_image, offset + I.tc4*w);
 
-	float3 	final	=  mblur	(center, dc, (s0+s1+s2+s3)/4.h);
+	float3 	final	=  mblur	(center, dc, (s0+s1+s2+s3)/4.0f);
 
   return combine_bloom(final,tex2D	(s_bloom, I.tc0));
 }

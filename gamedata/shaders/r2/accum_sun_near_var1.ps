@@ -8,7 +8,7 @@ float4 	xlight_infinity	(float m, float3 _point, float3 normal, float3 light_dir
   float3 V 		= -normalize	(_point);					// vector2eye
   float3 L 		= -light_direction;						// vector2light
   float3 H		= normalize	(L+V);						// float-angle-vector 
-  return tex3Dlod	(s_material,	float4( dot(L,N), dot(H,N), m, 0 ) );		// sample material
+  return tex3Dlod	(s_material,	float4( dot(L,N), dot(H,N), m, 0.0f ) );		// sample material
 }
 float  	xsample_hw	(float4 tc,float4 shift){
 	static const float 	ts = XKERNEL / float(SMAP_size);
@@ -30,6 +30,7 @@ float 	xsunmask	(float4 P)	{		//
 //////////////////////////////////////////////////////////////////////////////////////////
 // hardware
 //////////////////////////////////////////////////////////////////////////////////////////
+
 float4 	main		( float2 tc : TEXCOORD0, float4 tcJ : TEXCOORD1 ) : COLOR
 {
   float4 _P		= tex2D 	(s_position, 	tc); 

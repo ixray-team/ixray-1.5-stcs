@@ -25,9 +25,9 @@ float 	sample_sw	(float2 tc, float2 shift, float depth_cmp)
 		depth_cmp-tex2D	(s_smap, Tex01).x,
 		depth_cmp-tex2D	(s_smap, Tex10).x,
 		depth_cmp-tex2D	(s_smap, Tex11).x);
-	float4 	compare = step	(depth,0);
+	float4 	compare = step	(depth, 0.0f);
 	float2 	fr 		= frac	(Tex00*texsize);
-	float2 	ifr 	= float2	(1,1) - fr;
+	float2 	ifr 	= float2	(1.0f,1.0f) - fr;
 	float4 	fr4 	= float4	(ifr.x*ifr.y, ifr.x*fr.y, fr.x*ifr.y,  fr.x*fr.y);
 	return	dot		(compare, fr4);
 }
@@ -55,10 +55,10 @@ float  	sample_hw_pcf	(float4 tc,float4 shift){
 #endif	//	SUNSHAFTS_DYNAMIC
 }
 float 	shadow_hw	(float4 tc)		{
-  float  s0		= sample_hw_pcf	(tc,float4(-1,-1,0,0)); 
-  float  s1		= sample_hw_pcf	(tc,float4(+1,-1,0,0)); 
-  float  s2		= sample_hw_pcf	(tc,float4(-1,+1,0,0)); 
-  float  s3		= sample_hw_pcf	(tc,float4(+1,+1,0,0));
+  float s0 = sample_hw_pcf(tc, float4(-1.0f, -1.0f, 0.0f, 0.0f)); 
+  float s1 = sample_hw_pcf(tc, float4(+1.0f, -1.0f, 0.0f, 0.0f)); 
+  float s2 = sample_hw_pcf(tc, float4(-1.0f, +1.0f, 0.0f, 0.0f)); 
+  float s3 = sample_hw_pcf(tc, float4(+1.0f, +1.0f, 0.0f, 0.0f));
 
   return	(s0+s1+s2+s3)/(4.h);
 }
@@ -87,7 +87,7 @@ float  	sample_hw_f4	(float4 tc,float4 shift){
 
 	float  	texsize 		= 	SMAP_size	;
 	float2 	fr 				= 	frac		(T4.xy * texsize);
-	float2 	ifr 			= 	float2		(1,1) - fr;
+	float2 	ifr 			= 	float2		(1.0f,1.0f) - fr;
 	float4 	fr4 			= 	float4		(ifr.x*ifr.y, ifr.x*fr.y, fr.x*ifr.y,  fr.x*fr.y);
 	float4 	fr4s		 	= 	fr4.zywx	;
 
@@ -97,10 +97,10 @@ float  	sample_hw_f4	(float4 tc,float4 shift){
 
 
 float 	shadow_hw_f4	(float4 tc)		{
-  float  s0	= sample_hw_f4	(tc,float4(-1,-1,0,0)); 
-  float  s1	= sample_hw_f4	(tc,float4(+1,-1,0,0)); 
-  float  s2	= sample_hw_f4	(tc,float4(-1,+1,0,0)); 
-  float  s3	= sample_hw_f4	(tc,float4(+1,+1,0,0));
+  float  s0	= sample_hw_f4	(tc, float4(-1.0f, -1.0f, 0.0f, 0.0f)); 
+  float  s1	= sample_hw_f4	(tc, float4(+1.0f, -1.0f, 0.0f, 0.0f)); 
+  float  s2	= sample_hw_f4	(tc, float4(-1.0f, +1.0f, 0.0f, 0.0f)); 
+  float  s3	= sample_hw_f4	(tc, float4(+1.0f, +1.0f, 0.0f, 0.0f));
 	return	(s0+s1+s2+s3)/4.h;
 }
 
@@ -119,6 +119,7 @@ float4 	test 		(float4 tc, float2 offset)
 	float4	tcx	= float4 (tc.xy + tc.w*offset, tc.zw);
 	return 	tex2Dproj (s_smap,tcx);
 }
+
 float 	shadowtest 	(float4 tc, float4 tcJ)				// jittered sampling
 {
 	float4	r;
@@ -134,6 +135,7 @@ float 	shadowtest 	(float4 tc, float4 tcJ)				// jittered sampling
 
 	return	dot(r,1.h/4.h);
 }
+
 float 	shadowtest_sun 	(float4 tc, float4 tcJ)			// jittered sampling
 {
 	float4	r;
@@ -159,7 +161,7 @@ float 	shadowtest_sun 	(float4 tc, float4 tcJ)			// jittered sampling
 float shadow_high(float4 tc) {  
 	const float scale = (0.5f / float(SMAP_size));
 
-	float2 tc_J = frac(tc.xy / tc.w * SMAP_size / 4.0f ) * 0.5f;
+	float2 	tc_J	= frac(tc.xy/tc.w*SMAP_size/4.0f )*.5f;
 	float4 J0 = tex2D(jitter0, tc_J) * scale;
 
 	const float k = 1.0f / float(SMAP_size);
@@ -169,14 +171,15 @@ float shadow_high(float4 tc) {
 	
  	r.z = test(tc, J0.xy + float2(-k, k)).z;
  	r.w = test(tc, J0.wz + float2(k, k)).x;
-	
+
+
 	const float k1 = 1.3f / float(SMAP_size);
 	float4	r1;
-	r1.x = test(tc, -J0.xy + float2(-k1, 0)).x;
-	r1.y = test(tc, -J0.wz + float2(0, -k1)).y;
+	r1.x 	= test 	(tc,-J0.xy+float2(-k1,0.0f)).x;
+	r1.y 	= test 	(tc,-J0.wz+float2( 0.0f,-k1)).y;
 
-	r1.z = test(tc, -2 * J0.xy + float2(k1, 0)).z;
- 	r1.w = test(tc, -2 * J0.wz + float2(0, k1)).x;
+	r1.z	= test	(tc,-2*J0.xy+float2( k1, 0.0f)).z;
+ 	r1.w	= test	(tc,-2*J0.wz+float2( 0.0f, k1)).x;
 
 	return (r.x + r.y + r.z + r.w + r1.x + r1.y + r1.z + r1.w) * 1.0f/ 8.0f;
 }

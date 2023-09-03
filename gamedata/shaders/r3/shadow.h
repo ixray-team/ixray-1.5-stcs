@@ -652,17 +652,17 @@ float 	shadowtest_sun 	(float4 tc, float4 tcJ)			// jittered sampling
 	const 	float 	scale 	= (0.7f/float(SMAP_size));
 
 
-	float2 	tc_J	= frac(tc.xy/tc.w*SMAP_size/4.0f )*.5f;
+	float2 	tc_J	= frac(tc.xy/tc.w*SMAP_size/4.0f )*0.5f;
 	float4	J0		= jitter0.Sample(smp_jitter,tc_J)*scale;
 	//float4	J1 	= tex2D	(jitter1,tc_J)*scale;
 
-	const float k = .5f/float(SMAP_size);
+	const float k = 0.5f/float(SMAP_size);
 	r.x 	= test 	(tc, J0.xy+float2(-k,-k)).x;
 	r.y 	= test 	(tc, J0.wz+float2( k,-k)).y;
 	r.z		= test	(tc,-J0.xy+float2(-k, k)).z;
 	r.w		= test	(tc,-J0.wz+float2( k, k)).x;
 
-	return	dot(r,1.h/4.h);
+	return	dot(r,1.0f/4.0f);
 }
 
 // jittered sampling
@@ -679,6 +679,7 @@ float shadow_high(float4 tc) {
 
 	r.z = test(tc, J0.xy + float2(-k, k)).z;
 	r.w = test(tc, J0.wz + float2(k, k)).x;
+
 
 	const float k1 = 1.3f / float(SMAP_size);
 	float4 r1;

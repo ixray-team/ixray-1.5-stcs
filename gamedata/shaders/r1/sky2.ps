@@ -19,5 +19,5 @@ float4 	main	( v2p I )	: COLOR
 	float3 	s1	= texCUBE(s_sky1,I.tc1);
 	float3	sky	= I.factor*lerp(s0,s1,I.factor.w);
 
-	return  float4	(sky,1);
+	return  float4	(sky,1.0f);
 }

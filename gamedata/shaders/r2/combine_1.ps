@@ -4,7 +4,7 @@
 //#define USE_ORIGINAL_SSAO
 //#define HBAO_WORLD_JITTER
 
-uniform	sampler2D	s_float_depth;
+uniform	sampler2D	s_half_depth;
 
 #include "lmodel.h"
 #include "hmodel.h"
@@ -58,7 +58,7 @@ _out         main                ( _input I )
         // static sun
 	float mtl 		= P.w;
 #ifdef        USE_R2_STATIC_SUN
-	float	sun_occ        	=       P.w*2	;
+	float	sun_occ        	=       P.w*2.0f	;
 			mtl 			= 		xmaterial;
             L              +=       Ldynamic_color * sun_occ * plight_infinity	(mtl, P.xyz, N.xyz, Ldynamic_dir);
 #endif

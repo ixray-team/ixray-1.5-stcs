@@ -9,7 +9,7 @@
 #include "lmodel.h"
 #include "hmodel.h"
 
-uniform	Texture2D					s_float_depth;
+uniform	Texture2D					s_half_depth;
 
 //#include "ssao_blur.ps"
 
@@ -186,7 +186,7 @@ _out main ( _input I, uint iSample : SV_SAMPLEINDEX )
 //float3 color = (0.5 * (sign( gbd.N - gbd.N_org ) + 1.0 ) );
 //color = float3( abs( gbd.hemi - gbd.hemi_org), 0, abs( gbd.mtl - gbd.mtl_org) );
 //color = abs( gbd.N - gbd.N_org );
-		//color = occ;
+//		color = occ; // holger test
 		//color = gbd.N;
         _out        	o;
         tonemap        	(o.low, o.high, color, tm_scale )	;

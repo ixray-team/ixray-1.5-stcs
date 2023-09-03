@@ -21,9 +21,9 @@ uniform float3		eye_direction;
 uniform float3		eye_normal;
 uniform	float4 		dt_params;
 
-float3 	unpack_normal	(float3 v)	{ return 2*v-1;			}
-float3 	unpack_bx2	(float3 v)	{ return 2*v-1; 		}
-float3 	unpack_bx4	(float3 v)	{ return 4*v-2; 		}
+float3 	unpack_normal	(float3 v)	{ return 2.0f*v-1.0f;			}
+float3 	unpack_bx2	(float3 v)	{ return 2.0f*v-1.0f; 		}
+float3 	unpack_bx4	(float3 v)	{ return 4.0f*v-2.0f; 		}
 
 float2 	unpack_tc_base	(float2 tc, float du, float dv)		{
 		return (tc.xy + float2	(du,dv))*(32.f/32768.f);

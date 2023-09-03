@@ -23,7 +23,7 @@ void        hmodel                 (out float3 hdiffuse, out float3 hspecular, f
         float3        v2pointL        		= normalize        (_point);
         float3         v2point               = mul                (m_v2w,v2pointL);
         float3        vreflect        		= reflect         (v2point,nw);
-        float         hspec                 	= .5h+.5h*dot        (vreflect,v2point);
+        float         hspec                 	= 0.5f+0.5f*dot        (vreflect,v2point);
 
         // material
           float4         light                = tex3D                (s_material, float3(hscale, hspec, m) );                // sample material
@@ -52,7 +52,7 @@ void         hmodel_table        (out float3 hdiffuse, out float3 hspecular, flo
         // reflection vector
         float3         v2point        = normalize        (_point);
         float3        vreflect= reflect         (v2point,normal);
-        float         hspec         = .5h+.5h*dot        (vreflect,v2point);
+        float hspec = 0.5f + 0.5f * dot(vreflect,v2point);
 
         // material
           float4         light        = tex3D                (s_material, float3(hscale, hspec, m) );                // sample material

@@ -29,7 +29,7 @@ float4	sun_shafts_intensity;
 float4 	main (float2 tc : TEXCOORD0, float4 tcJ : TEXCOORD1 ) : COLOR
 {
 #ifndef	SUN_SHAFTS_QUALITY
-	return float4(0,0,0,0);
+	return float4(0.0f,0.0f,0.0f,0.0f);
 #else	//	SUN_SHAFTS_QUALITY
 
 	float3	P = tex2D(s_position, tc).xyz;
@@ -41,7 +41,7 @@ float4 	main (float2 tc : TEXCOORD0, float4 tcJ : TEXCOORD1 ) : COLOR
 #else	//	JITTER_SUN_SHAFTS
 //	Variable ray length, variable step dencity, use jittering
 	float4	J0 	= tex2D		(jitter0,tcJ);
-	float	coeff = (RAY_SAMPLES - 2*J0.x)/(RAY_SAMPLES*RAY_SAMPLES);		
+	float	coeff = (RAY_SAMPLES - 2.0f*J0.x)/(RAY_SAMPLES*RAY_SAMPLES);		
 	float3	direction = P*coeff;
 //	float3	direction = P/(RAY_SAMPLES+(J0.x*4-2));
 #endif	//	JITTER_SUN_SHAFTS
@@ -49,20 +49,20 @@ float4 	main (float2 tc : TEXCOORD0, float4 tcJ : TEXCOORD1 ) : COLOR
 	float	depth = P.z;
 	float	deltaDepth = direction.z;
 	
-	float4	current	= mul (m_shadow,float4(P,1));
-	float4	delta 	= mul (m_shadow, float4(direction,0));
+	float4	current	= mul (m_shadow,float4(P,1.0f));
+	float4	delta 	= mul (m_shadow, float4(direction,0.0f));
 
-	float	res = 0;
+	float	res = 0.0f;
 	float	max_density = sun_shafts_intensity;
 	float	density = max_density/RAY_SAMPLES;
 
-	if (depth<0.0001)
+	if (depth<0.0001f)
 		res = max_density;
 
 	#ifndef SUNSHAFTS_DYNAMIC
 	for ( int i=0; i<RAY_SAMPLES; ++i )
 	{
-		if (depth>0.3)
+		if (depth>0.3f)
 #ifndef	FILTER_LOW
 				res += density*shadow(current);
 #else	//	FILTER_LOW
@@ -89,9 +89,9 @@ float4 	main (float2 tc : TEXCOORD0, float4 tcJ : TEXCOORD1 ) : COLOR
 	float fSturation = -Ldynamic_dir.z;
 
 	//	Normalize dot product to
-	fSturation	= 0.5*fSturation+0.5;
+	fSturation	= 0.5f*fSturation+0.5f;
 	//	Map saturation to 0.2..1
-	fSturation	= 0.80*fSturation+0.20;
+	fSturation	= 0.80f*fSturation+0.20f;
 
 	res		*= fSturation;
 

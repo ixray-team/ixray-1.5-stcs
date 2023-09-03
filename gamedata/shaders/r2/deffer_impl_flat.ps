@@ -24,7 +24,7 @@ f_deffer 	main	( p_flat I 		)
 # ifdef	USE_TDETAIL
  # ifdef USE_4_DETAIL
 	float4	mask= tex2D		(s_mask, I.tcdh);
-	float 	mag	= dot 		(mask,1);
+	float 	mag	= dot 		(mask,1.0f);
 			mask= mask/mag	;
 
 	float3	d_R	= tex2D		(s_dt_r, I.tcdbump)*mask.r;
@@ -41,10 +41,10 @@ f_deffer 	main	( p_flat I 		)
 	 float4	n_Bt = tex2D	(s_dn_b, I.tcdbump).wzyx;
 	 float4	n_At = tex2D	(s_dn_a, I.tcdbump).wzyx;
 	 
- 	 float3	n_R = (n_Rt-0.5)*mask.r; float g_R=n_Rt.w*mask.r;
-	 float3	n_G = (n_Gt-0.5)*mask.g; float g_G=n_Gt.w*mask.g;
-	 float3	n_B = (n_Bt-0.5)*mask.b; float g_B=n_Bt.w*mask.b;
-	 float3	n_A = (n_At-0.5)*mask.a; float g_A=n_At.w*mask.a;
+ 	 float3	n_R = (n_Rt - 0.5f) * mask.r; float g_R=n_Rt.w*mask.r;
+	 float3	n_G = (n_Gt - 0.5f) * mask.g; float g_G=n_Gt.w*mask.g;
+	 float3	n_B = (n_Bt - 0.5f) * mask.b; float g_B=n_Bt.w*mask.b;
+	 float3	n_A = (n_At - 0.5f) * mask.a; float g_A=n_At.w*mask.a;
 
 	 float3	mix		= 	n_R+n_G+n_B+n_A;
 			mix.z	*=	0.5;		//. make bump twice as contrast (fake, remove me if possible)
@@ -72,7 +72,7 @@ f_deffer 	main	( p_flat I 		)
 
   // 2. Standart output
   O.Ne          = float4		(normalize(N), 									D.w			);	// hemi
-  O.position    = float4 	(I.position.xyz + O.Ne.xyz*def_virtualh/2.h, 	ms			);	//
+  O.position    = float4 	(I.position.xyz + O.Ne.xyz*def_virtualh/2.0f, 	ms			);	//
   O.C			= float4		(D.x,	D.y,	D.z,							G			);	// OUT: rgb.gloss
 
   return O;

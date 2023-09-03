@@ -44,7 +44,7 @@ float3	dof(float2 center)
 	//	const amount of blur: define controlled
 	//float2 	scale 	= float2	(.5f / 1024.h, .5f / 768.h) * MAXCOF * blur;
 	//	const amount of blur: engine controlled
-	float2 	scale 	= float2	(.5f / 1024.h, .5f / 768.h) * (dof_kernel.z * blur);
+	float2 	scale 	= float2	(0.5f / 1024.0f, 0.5f / 768.0f) * (dof_kernel.z * blur);
 	//	amount of blur varies according to resolution
 	//	but kernel size in pixels is fixed.
 	//	float2 	scale 	= dof_kernel.xy * blur;
@@ -66,7 +66,7 @@ float3	dof(float2 center)
 
 	// sample
 	float3	sum 	= tex2D(s_image,center);
-	float 	contrib	= 1.h;
+	float 	contrib	= 1.0f;
 
    	for (int i=0; i<12; i++)
 	{

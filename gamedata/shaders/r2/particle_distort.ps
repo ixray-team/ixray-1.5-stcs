@@ -18,7 +18,7 @@ uniform sampler s_distort;
 float4 	main	( v2p I )	: COLOR
 {
 	float4	distort	= tex2D		(s_distort,I.tc0);
-	float    factor	= distort.a * dot(I.c.rgb,0.33h);
+	float    factor	= distort.a * dot(I.c.rgb,0.33f);
 /*
 #ifdef	USE_SOFT_PARTICLES
 	float2	zero = float2( 0.5, 0.5);

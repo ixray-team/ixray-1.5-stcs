@@ -45,7 +45,7 @@ float tangent(float3 P, float3 S)
 float3 fetch_eye_pos(float2 uv)
 {
 #ifdef SSAO_OPT_DATA
-    float z = tex2Dlod(s_float_depth, float4(uv, 0, 0)).x;
+    float z = tex2Dlod(s_half_depth, float4(uv, 0, 0)).x;
     return uv_to_eye(uv, z);
 #else // SSAO_OPT_DATA 
     return tex2Dlod	(s_position, float4(uv, 0, 0));
@@ -187,11 +187,9 @@ float horizon_occlusion(float2 deltaUV,
         
         // Ignore any samples outside the radius of influence
         float d2  = length2(S - P);
-        if (d2 < g_sqr_R) {
             float tanS = tangent(P, S);
+        if ((d2 < g_sqr_R) && (tanS > tanH)) {
 
-			//[branch]
-            if(tanS > tanH) {
                 // Accumulate AO between the horizon and the sample
                 float sinS = tanS / sqrt(1.0f + tanS*tanS);
                 float r = sqrt(d2) * g_inv_R;
@@ -202,7 +200,6 @@ float horizon_occlusion(float2 deltaUV,
                 sinH = sinS;
             }
         } 
-    }
 
     return ao;
 }
