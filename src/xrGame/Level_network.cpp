@@ -147,7 +147,7 @@ void CLevel::net_Stop		()
 
 void CLevel::ClientSend()
 {
-	if (GameID() == eGameIDSingle || OnClient())
+	if (IsGameTypeSingle() || OnClient())
 	{
 		if ( !net_HasBandwidth() ) return;
 	};
@@ -284,7 +284,7 @@ void CLevel::Send		(NET_Packet& P, u32 dwFlags, u32 dwTimeout)
 	}else											
 		IPureClient::Send	(P,dwFlags,dwTimeout	);
 
-	if (g_pGameLevel && Level().game && GameID() != eGameIDSingle && !g_SV_Disable_Auth_Check)		{
+	if (g_pGameLevel && Level().game && !IsGameTypeSingle() && !g_SV_Disable_Auth_Check)		{
 		// anti-cheat
 		phTimefactor		= 1.f					;
 		psDeviceFlags.set	(rsConstantFPS,FALSE)	;	

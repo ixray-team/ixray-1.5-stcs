@@ -120,7 +120,7 @@ BOOL CActor::CanPickItem(const CFrustum& frustum, const Fvector& from, CObject* 
 void CActor::PickupModeUpdate()
 {
 	if(!m_bPickupMode) return;
-	if (GameID() != eGameIDSingle) return;
+	if (!IsGameTypeSingle()) return;
 
 	//подбирание объекта
 	if(	m_pObjectWeLookingAt									&& 

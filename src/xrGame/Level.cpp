@@ -488,7 +488,7 @@ void CLevel::ProcessGameEvents		()
 				}break;
 			case M_STATISTIC_UPDATE:
 				{
-					if (GameID() != eGameIDSingle)
+					if (!IsGameTypeSingle())
 						Game().m_WeaponUsageStatistic->OnUpdateRequest(&P);
 				}break;
 			case M_FILE_TRANSFER:
@@ -578,7 +578,7 @@ void CLevel::OnFrame	()
 	// Client receive
 	if (net_isDisconnected())	
 	{
-		if (OnClient() && GameID() != eGameIDSingle)
+		if (OnClient() && !IsGameTypeSingle())
 		{
 #ifdef DEBUG
 			Msg("--- I'm disconnected, so clear all objects...");
@@ -823,7 +823,7 @@ void CLevel::OnRender()
 			if (team_base_zone)
 				team_base_zone->OnRender();
 			
-			if (GameID() != eGameIDSingle)
+			if (!IsGameTypeSingle())
 			{
 				CInventoryItem* pIItem = smart_cast<CInventoryItem*>(_O);
 				if (pIItem) pIItem->OnRender();
@@ -1072,7 +1072,7 @@ bool		CLevel::InterpolationDisabled	()
 void 		CLevel::PhisStepsCallback		( u32 Time0, u32 Time1 )
 {
 	if (!Level().game)				return;
-	if (GameID() == eGameIDSingle)	return;
+	if (IsGameTypeSingle())	return;
 
 //#pragma todo("Oles to all: highly inefficient and slow!!!")
 //fixed (Andy)

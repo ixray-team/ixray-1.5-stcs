@@ -91,7 +91,7 @@ void CWeaponKnife::OnStateSwitch	(u32 S)
 			//fHitPower		= fHitPower_1;
 			if (ParentIsActor())
 			{
-				if (GameID() == eGameIDSingle)
+				if (IsGameTypeSingle())
 				{
 					fCurrentHit			= fvHitPower_1[g_SingleGameDifficulty];
 				}
@@ -115,7 +115,7 @@ void CWeaponKnife::OnStateSwitch	(u32 S)
 			//fHitPower		= fHitPower_2;
 			if (ParentIsActor())
 			{
-				if (GameID() == eGameIDSingle)
+				if (IsGameTypeSingle())
 				{
 					fCurrentHit			= fvHitPower_2[g_SingleGameDifficulty];
 				}
@@ -346,18 +346,18 @@ void CWeaponKnife::LoadFireParams(LPCSTR section)
 
 	fvHitPower_2[egdNovice] = fvHitPower_2[egdStalker] = fvHitPower_2[egdVeteran] = fvHitPower_2[egdMaster];//изначально параметры для других уровней сложности такие же
 
-	int num_game_diff_param=_GetItemCount(*s_sHitPower_2);//узнаём колличество параметров для хитов
-	if (num_game_diff_param>1)//если задан второй параметр хита
+	int num_game_diff_param=_GetItemCount(*s_sHitPower_2);//СѓР·РЅР°С‘Рј РєРѕР»Р»РёС‡РµСЃС‚РІРѕ РїР°СЂР°РјРµС‚СЂРѕРІ РґР»СЏ С…РёС‚РѕРІ
+	if (num_game_diff_param>1)//РµСЃР»Рё Р·Р°РґР°РЅ РІС‚РѕСЂРѕР№ РїР°СЂР°РјРµС‚СЂ С…РёС‚Р°
 	{
-		fvHitPower_2[egdVeteran] = (float)atof(_GetItem(*s_sHitPower_2,1,buffer));//то вычитываем его для уровня ветерана
+		fvHitPower_2[egdVeteran] = (float)atof(_GetItem(*s_sHitPower_2,1,buffer));//С‚Рѕ РІС‹С‡РёС‚С‹РІР°РµРј РµРіРѕ РґР»СЏ СѓСЂРѕРІРЅСЏ РІРµС‚РµСЂР°РЅР°
 	}
-	if (num_game_diff_param>2)//если задан третий параметр хита
+	if (num_game_diff_param>2)//РµСЃР»Рё Р·Р°РґР°РЅ С‚СЂРµС‚РёР№ РїР°СЂР°РјРµС‚СЂ С…РёС‚Р°
 	{
-		fvHitPower_2[egdStalker] = (float)atof(_GetItem(*s_sHitPower_2,2,buffer));//то вычитываем его для уровня сталкера
+		fvHitPower_2[egdStalker] = (float)atof(_GetItem(*s_sHitPower_2,2,buffer));//С‚Рѕ РІС‹С‡РёС‚С‹РІР°РµРј РµРіРѕ РґР»СЏ СѓСЂРѕРІРЅСЏ СЃС‚Р°Р»РєРµСЂР°
 	}
-	if (num_game_diff_param>3)//если задан четвёртый параметр хита
+	if (num_game_diff_param>3)//РµСЃР»Рё Р·Р°РґР°РЅ С‡РµС‚РІС‘СЂС‚С‹Р№ РїР°СЂР°РјРµС‚СЂ С…РёС‚Р°
 	{
-		fvHitPower_2[egdNovice]  = (float)atof(_GetItem(*s_sHitPower_2,3,buffer));//то вычитываем его для уровня новичка
+		fvHitPower_2[egdNovice]  = (float)atof(_GetItem(*s_sHitPower_2,3,buffer));//С‚Рѕ РІС‹С‡РёС‚С‹РІР°РµРј РµРіРѕ РґР»СЏ СѓСЂРѕРІРЅСЏ РЅРѕРІРёС‡РєР°
 	}
 
 	fHitImpulse_2		= pSettings->r_float	(section, "hit_impulse_2" );

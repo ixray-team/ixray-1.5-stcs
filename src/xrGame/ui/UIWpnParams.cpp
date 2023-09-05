@@ -94,7 +94,7 @@ void CUIWpnParams::SetInfo( CInventoryItem const* slot_wpn, CInventoryItem const
 	float cur_rpm    = g_lua_wpn_params->m_functorRPM( cur_section, str_upgrades );
 	float cur_accur  = g_lua_wpn_params->m_functorAccuracy( cur_section, str_upgrades );
 	float cur_hand   = g_lua_wpn_params->m_functorHandling( cur_section, str_upgrades );
-	float cur_damage = ( GameID() == eGameIDSingle ) ?
+	float cur_damage = ( IsGameTypeSingle() ) ?
 		g_lua_wpn_params->m_functorDamage( cur_section, str_upgrades )
 		: g_lua_wpn_params->m_functorDamageMP( cur_section, str_upgrades );
 
@@ -112,7 +112,7 @@ void CUIWpnParams::SetInfo( CInventoryItem const* slot_wpn, CInventoryItem const
 		slot_rpm    = g_lua_wpn_params->m_functorRPM( slot_section, str_upgrades );
 		slot_accur  = g_lua_wpn_params->m_functorAccuracy( slot_section, str_upgrades );
 		slot_hand   = g_lua_wpn_params->m_functorHandling( slot_section, str_upgrades );
-		slot_damage = ( GameID() == eGameIDSingle ) ?
+		slot_damage = ( IsGameTypeSingle() ) ?
 			g_lua_wpn_params->m_functorDamage( slot_section, str_upgrades )
 			: g_lua_wpn_params->m_functorDamageMP( slot_section, str_upgrades );
 	}

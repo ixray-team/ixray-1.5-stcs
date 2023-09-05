@@ -256,7 +256,7 @@ void CBulletManager::DynamicObjectHit	(CBulletManager::_event& E)
 	}
 
 	if (g_clear) E.Repeated = false;
-	if (GameID() == eGameIDSingle) E.Repeated = false;
+	if (IsGameTypeSingle()) E.Repeated = false;
 	bool NeedShootmark = true;//!E.Repeated;
 	
 	if (smart_cast<CActor*>(E.R.O))
@@ -305,7 +305,7 @@ void CBulletManager::DynamicObjectHit	(CBulletManager::_event& E)
 	{
 		//-------------------------------------------------
 		bool AddStatistic = false;
-		if (GameID() != eGameIDSingle && E.bullet.flags.allow_sendhit && smart_cast<CActor*>(E.R.O)
+		if (!IsGameTypeSingle() && E.bullet.flags.allow_sendhit && smart_cast<CActor*>(E.R.O)
 			&& Game().m_WeaponUsageStatistic->CollectData())
 		{
 			CActor* pActor = smart_cast<CActor*>(E.R.O);

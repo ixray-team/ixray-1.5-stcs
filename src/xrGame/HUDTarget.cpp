@@ -224,7 +224,7 @@ void CHUDTarget::Render()
 			{
 				if (E_ && (E_->GetfHealth()>0))
 				{
-					if (pCurEnt && GameID() == eGameIDSingle)
+					if (pCurEnt && IsGameTypeSingle())
 					{
 						if (GameID() == eGameIDDeathmatch)			C = C_ON_ENEMY;
 						else

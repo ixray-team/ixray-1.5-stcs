@@ -264,7 +264,7 @@ void CActor::Load	(LPCSTR section )
 	CInventoryOwner::Load		(section);
 	m_location_manager->Load	(section);
 
-	if (GameID() == eGameIDSingle)
+	if (IsGameTypeSingle())
 		OnDifficultyChanged		();
 	//////////////////////////////////////////////////////////////////////////
 	ISpatial*		self			=	smart_cast<ISpatial*> (this);
@@ -1228,7 +1228,7 @@ void CActor::shedule_Update	(u32 DT)
 		m_pVehicleWeLookingAt			= smart_cast<CHolderCustom*>(game_object);
 		CEntityAlive* pEntityAlive		= smart_cast<CEntityAlive*>(game_object);
 		
-		if (GameID() == eGameIDSingle )
+		if (IsGameTypeSingle() )
 		{
 			if (m_pUsableObject && m_pUsableObject->tip_text())
 			{

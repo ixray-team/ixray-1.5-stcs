@@ -22,7 +22,7 @@
 
 BOOL	GodMode	()	
 { 
-	if (GameID() == eGameIDSingle) 
+	if (IsGameTypeSingle()) 
 		return psActorFlags.test(AF_GODMODE|AF_GODMODE_RT); 
 	return FALSE;	
 }
@@ -82,7 +82,7 @@ void CActorCondition::LoadCondition(LPCSTR entity_section)
 	m_fAccelK					= pSettings->r_float(section,"accel_k");
 	m_fSprintK					= pSettings->r_float(section,"sprint_k");
 
-	//порог силы и здоровья меньше которого актер начинает хромать
+	//РїРѕСЂРѕРі СЃРёР»С‹ Рё Р·РґРѕСЂРѕРІСЊСЏ РјРµРЅСЊС€Рµ РєРѕС‚РѕСЂРѕРіРѕ Р°РєС‚РµСЂ РЅР°С‡РёРЅР°РµС‚ С…СЂРѕРјР°С‚СЊ
 	m_fLimpingHealthBegin		= pSettings->r_float(section,	"limping_health_begin");
 	m_fLimpingHealthEnd			= pSettings->r_float(section,	"limping_health_end");
 	R_ASSERT					(m_fLimpingHealthBegin<=m_fLimpingHealthEnd);
@@ -160,7 +160,7 @@ float CActorCondition::GetZoneMaxPower( ALife::EHitType hit_type ) const
 }
 
 
-//вычисление параметров с ходом времени
+//РІС‹С‡РёСЃР»РµРЅРёРµ РїР°СЂР°РјРµС‚СЂРѕРІ СЃ С…РѕРґРѕРј РІСЂРµРјРµРЅРё
 #include "UI.h"
 #include "HUDManager.h"
 
@@ -386,7 +386,7 @@ CWound* CActorCondition::ConditionHit(SHit* pHDS)
 	return inherited::ConditionHit(pHDS);
 }
 
-//weight - "удельный" вес от 0..1
+//weight - "СѓРґРµР»СЊРЅС‹Р№" РІРµСЃ РѕС‚ 0..1
 void CActorCondition::ConditionJump(float weight)
 {
 	float power			=	m_fJumpPower;

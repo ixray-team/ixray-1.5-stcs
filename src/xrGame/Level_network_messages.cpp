@@ -125,8 +125,8 @@ void CLevel::ClientReceive()
 				//-------------------------------------------
 				if (OnServer()) break;
 				//-------------------------------------------
-			};	// íè â êîåì ñëó÷àå íåëüçÿ çäåñü ñòàâèòü break, ò.ê. â ñëó÷àå åñëè âñå îáúåêòû íå âëàçÿò â ïàêåò M_UPDATE,
-				// îíè äîñûëàþòñÿ ÷åðåç M_UPDATE_OBJECTS
+			};	// Ð½Ð¸ Ð² ÐºÐ¾ÐµÐ¼ ÑÐ»ÑƒÑ‡Ð°Ðµ Ð½ÐµÐ»ÑŒÐ·Ñ Ð·Ð´ÐµÑÑŒ ÑÑ‚Ð°Ð²Ð¸Ñ‚ÑŒ break, Ñ‚.Ðº. Ð² ÑÐ»ÑƒÑ‡Ð°Ðµ ÐµÑÐ»Ð¸ Ð²ÑÐµ Ð¾Ð±ÑŠÐµÐºÑ‚Ñ‹ Ð½Ðµ Ð²Ð»Ð°Ð·ÑÑ‚ Ð² Ð¿Ð°ÐºÐµÑ‚ M_UPDATE,
+				// Ð¾Ð½Ð¸ Ð´Ð¾ÑÑ‹Ð»Ð°ÑŽÑ‚ÑÑ Ñ‡ÐµÑ€ÐµÐ· M_UPDATE_OBJECTS
 		case M_UPDATE_OBJECTS:
 			{
 				/*if (!game_configured)
@@ -464,7 +464,7 @@ void CLevel::ClientReceive()
 		case M_BULLET_CHECK_RESPOND:
 			{
 				if (!game) break;
-				if (GameID() != eGameIDSingle)
+				if (!IsGameTypeSingle())
 					Game().m_WeaponUsageStatistic->On_Check_Respond(P);
 			}break;
 		case M_STATISTIC_UPDATE:
@@ -478,7 +478,7 @@ void CLevel::ClientReceive()
 			{
 				/*Msg("--- CL: On Update Respond");
 				if (!game) break;
-				if (GameID() != eGameIDSingle)
+				if (!IsGameTypeSingle())
 					Game().m_WeaponUsageStatistic->OnUpdateRespond(P);*/
 			}break;
 		case M_BATTLEYE:

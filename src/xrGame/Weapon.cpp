@@ -1549,7 +1549,7 @@ int		g_iWeaponRemove = 1;
 
 bool CWeapon::NeedToDestroyObject()	const
 {
-	if (GameID() == eGameIDSingle) return false;
+	if (IsGameTypeSingle()) return false;
 	if (Remote()) return false;
 	if (H_Parent()) return false;
 	if (g_iWeaponRemove == -1) return false;
