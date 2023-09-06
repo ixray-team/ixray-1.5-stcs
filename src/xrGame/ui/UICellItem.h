@@ -38,6 +38,8 @@ protected:
 	//CUIStatic*				m_mark; 
 	CUIStatic*				m_upgrade;
 	Fvector2				m_upgrade_pos;
+	CUIStatic*				m_custom_text;
+	Fvector2				m_custom_text_pos;
 
 	virtual void			UpdateItemText			();
 			void			init					();
@@ -49,6 +51,7 @@ public:
 	virtual		bool		OnMouseAction			(float x, float y, EUIMessages mouse_action);
 	virtual		void		Draw					();
 	virtual		void		Update					();
+				void		UpdateCustomMarksAndText();
 	virtual		void		SetOriginalRect			(const Frect& r);
 				
 	virtual		void		OnAfterChild			(CUIDragDropListEx* parent_list)						{};
@@ -85,6 +88,7 @@ public:
 				bool		m_select_armament;
 				bool		m_cur_mark;
 				bool		m_has_upgrade;
+				bool		m_with_custom_text;
 };
 
 class CUIDragItem: public CUIWindow, public pureRender, public pureFrame

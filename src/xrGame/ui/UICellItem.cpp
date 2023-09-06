@@ -6,6 +6,7 @@
 #include "../../xrEngine/xr_input.h"
 #include "../HUDManager.h"
 #include "../level.h"
+#include "../UIGameSP.h"
 #include "object_broker.h"
 #include "UIXmlInit.h"
 #include "UIProgressBar.h"
@@ -21,6 +22,7 @@ CUICellItem::CUICellItem()
 //-	m_mark				= NULL;
 	m_upgrade			= NULL;
 	m_pConditionState	= NULL;
+	m_custom_text		= NULL;
 	m_drawn_frame		= 0;
 	SetAccelerator		(0);
 	m_b_destroy_childs	= true;
@@ -28,6 +30,7 @@ CUICellItem::CUICellItem()
 	m_select_armament	= false;
 	m_cur_mark			= false;
 	m_has_upgrade		= false;
+	m_with_custom_text	= false;
 	
 	init();
 }
@@ -69,6 +72,13 @@ void CUICellItem::init()
 	AttachChild(m_pConditionState);
 	CUIXmlInit::InitProgressBar(uiXml, "condition_progess_bar", 0, m_pConditionState);
 	m_pConditionState->Show(true);
+
+	m_custom_text = xr_new<CUIStatic>();
+	m_custom_text->SetAutoDelete(true);
+	AttachChild(m_custom_text);
+	CUIXmlInit::InitStatic(uiXml, "cell_item_custom_text", 0, m_custom_text);
+	m_custom_text_pos = m_custom_text->GetWndPos();
+	m_custom_text->Show(false);
 }
 
 void CUICellItem::Draw()
@@ -118,6 +128,47 @@ void CUICellItem::Update()
 		m_upgrade->SetWndPos( pos );
 	}
 	m_upgrade->Show( m_has_upgrade );
+	UpdateCustomMarksAndText();
+}
+
+void CUICellItem::UpdateCustomMarksAndText()
+{
+	PIItem item = (PIItem)m_pData;
+	if (item)
+	{
+		m_with_custom_text = item->m_custom_text != nullptr;
+		if (m_with_custom_text)
+		{
+			Fvector2 pos;
+			pos.set(m_custom_text_pos);
+			Fvector2 size = GetWndSize();
+			Fvector2 up_size = m_custom_text->GetWndSize();
+			pos.x = size.x - up_size.x - 4.0f;// making pos at right-end of cell
+			pos.y = size.y - up_size.y - 4.0f;// making pos at bottom-end of cell
+			m_custom_text->SetWndPos(pos);
+			m_custom_text->SetTextST(*item->m_custom_text);
+			
+			if (item->m_custom_text_clr_inv != 0)
+			{
+				CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+				//if (pGameSP && pGameSP->ActorMenu().IsShown())// Hrust: used for pick_up_item on CUICellItem class
+				{
+					m_custom_text->SetTextColor(item->m_custom_text_clr_inv);
+				}
+				/*else
+				{
+					m_custom_text->SetTextColor(item->m_custom_text_clr_hud);
+				}*/
+			}
+			if (item->m_custom_text_font != nullptr)
+			{
+				m_custom_text->SetFont(item->m_custom_text_font);
+			}
+
+			m_custom_text->SetTextPos(item->m_custom_text_offset.x, item->m_custom_text_offset.y);
+		}
+	}
+	m_custom_text->Show(m_with_custom_text);
 }
 
 void CUICellItem::SetOriginalRect(const Frect& r)
