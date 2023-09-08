@@ -458,6 +458,14 @@
     <ProjectReference Include="..\3rd party\luajit\lua.JIT.1.1.4.vcxproj">
       <Project>{f6c4f74a-152c-4612-9e3b-d02346234855}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\editor\editor.vcxproj">
+      <Project>{492d3dfe-9068-4e7e-a008-7c2420a651c0}</Project>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+    <ProjectReference Include="..\editor_controls\editor_controls.vcxproj">
+      <Project>{b45374aa-c7ed-42cf-bbd3-deaa2b7acb48}</Project>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
     <ProjectReference Include="..\Layers\xrAPI\xrAPI.vcxproj">
       <Project>{1daec516-e52c-4a3c-a4da-ae3553e6e0f8}</Project>
     </ProjectReference>
@@ -466,6 +474,10 @@
     </ProjectReference>
     <ProjectReference Include="..\xrCore\xrCore.vcxproj">
       <Project>{a0f7d1fb-59a7-4717-a7e4-96f37e91998e}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\xrD3D9-Null\xrD3D9-Null.vcxproj">
+      <Project>{0899b131-f1d4-4876-9ba1-67ac821db9e1}</Project>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
     <ProjectReference Include="..\xrSound\xrSound.vcxproj">
       <Project>{ccca7859-eb86-493e-9b53-c4235f45b3c5}</Project>
@@ -487,4 +499,5 @@
     <Error Condition="!Exists('..\..\packages\ImeSense.Packages.LibOgg.1.3.5.4\build\native\ImeSense.Packages.LibOgg.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ImeSense.Packages.LibOgg.1.3.5.4\build\native\ImeSense.Packages.LibOgg.targets'))" />
     <Error Condition="!Exists('..\..\packages\ImeSense.Packages.LibTheora.1.1.1.3\build\native\ImeSense.Packages.LibTheora.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ImeSense.Packages.LibTheora.1.1.1.3\build\native\ImeSense.Packages.LibTheora.targets'))" />
   </Target>
+  <Import Project="..\Mixed.targets" />
 </Project>

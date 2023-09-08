@@ -5633,5 +5633,5 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <Import Project="..\Mixed.targets" />
+  <Import Project="..\GameSpy.targets" />
 </Project>
