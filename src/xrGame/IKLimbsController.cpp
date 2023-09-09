@@ -73,7 +73,7 @@ void	CIKLimbsController::LimbUpdate( CIKLimb &L )
 
 IC void	update_blend (CBlend* &b)
 {
-	if(b && CBlend::eFREE_SLOT == b->blend)
+	if(b && CBlend::eFREE_SLOT == b->blend_state())
 		b = 0;
 }
 

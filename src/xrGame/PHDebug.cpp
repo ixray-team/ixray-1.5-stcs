@@ -776,7 +776,7 @@ void DBG_AnimBlend(IKinematicsAnimated &ka, const CBlend &B )
 		DBG_OutText( "bonepart: %d, channel: %d, stop_at_end: %s, fall_at_end: %s "
 			, B.bone_or_part, B.channel, name_bool( B.stop_at_end ), name_bool( B.fall_at_end ) );
 	if( dbg_track_obj_flags.test(dbg_track_obj_blends_state) )
-		DBG_OutText( "state: %s, playing: %s, stop_at_end_callback: %s ", name_blend_type( B.blend ), name_bool( B.playing ), name_bool( B.stop_at_end_callback ));
+		DBG_OutText( "state: %s, playing: %s, stop_at_end_callback: %s ", name_blend_type( B.blend_state()), name_bool( B.playing ), name_bool( B.stop_at_end_callback ));
 	//DBG_OutText( "callback: %p callback param: %p", B.Callback, B.CallbackParam );
 	
 

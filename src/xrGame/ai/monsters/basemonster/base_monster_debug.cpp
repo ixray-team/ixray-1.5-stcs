@@ -487,7 +487,7 @@ void   add_debug_info (debug::text_tree& root_s, CBlend* p_blend)
 	root_s.add_line("Blend_Amount", p_blend->blendAmount);
 	root_s.add_line("Time_Current", p_blend->timeCurrent);
 	root_s.add_line("Time_Total", p_blend->timeTotal);
-	root_s.add_line("Blend_Type", p_blend->blend);
+	root_s.add_line("Blend_Type", p_blend->blend_state());
 	root_s.add_line("Blend_Accrue", p_blend->blendAccrue);
 	root_s.add_line("Blend_Falloff", p_blend->blendFalloff);
 	root_s.add_line("Blend_Power", p_blend->blendPower);

@@ -2,7 +2,20 @@
 
 #include	"animation_motion.h"
 //*** Run-time Blend definition *******************************************************************
-class  CBlend {
+#ifdef	DEBUG
+class	bnon_copy
+{
+
+protected:
+	bnon_copy(){}
+protected:
+	bnon_copy( const bnon_copy& ){ }
+protected:
+	const bnon_copy& operator=( const bnon_copy& ){ return *this; }
+};
+#endif
+class  CBlend 
+{
 public:
 	enum ECurvature
 	{
@@ -19,7 +32,9 @@ public:
 	MotionID		motionID;
 	u16				bone_or_part;	// startup parameters
 	u8				channel;
+private:
 	ECurvature		blend;
+public:
 	float			blendAccrue;	// increasing
 	float			blendFalloff;	// decreasing
 	float			blendPower;			
@@ -39,6 +54,66 @@ IC	bool			update_time			( float dt );
 IC  void			update_play			( float dt, PlayCallback _Callback );
 IC	bool			update_falloff		( float dt );
 IC	bool			update				( float dt, PlayCallback _Callback );
+IC	ECurvature		blend_state			(  )const { return blend ;}
+IC	void			set_free_state		( ){ blend = eFREE_SLOT; }
+IC	void			set_accrue_state	( ){ blend = eAccrue; }
+IC	void			set_falloff_state	( ){ blend = eFalloff; }
+IC	void			set					( const CBlend &r ){ *this = r; }
+#ifdef	DEBUG
+CBlend(  ):
+
+	blendAmount(0)			,
+	timeCurrent(0)			,
+	timeTotal(0)			,
+	motionID()				,
+	bone_or_part(0)			,	
+	channel(0)				,
+	blend(eFREE_SLOT)		,
+	blendAccrue(0)			,	
+	blendFalloff(0)			,	
+	blendPower(0)			,			
+	speed(0)				,
+	playing(0)				,
+	stop_at_end_callback(0)	,
+	stop_at_end(0)			,
+	fall_at_end(0)			,
+	Callback(0)				,
+	CallbackParam(0)		,
+	dwFrame(0)
+{
+
+}
+
+CBlend( const CBlend& r )
+{
+	*this = r;
+}
+
+const CBlend& operator=( const CBlend& r )
+{ 
+	VERIFY( r.blend_state()!=eFREE_SLOT );
+	blendAmount			=	r.blendAmount			;
+	timeCurrent			=	r.timeCurrent			;
+	timeTotal			=	r.timeTotal				;
+	motionID			=	r.motionID				;
+	bone_or_part		=	r.bone_or_part			;
+	channel				=	r.channel				;
+	blend				=	r.blend					;
+	blendAccrue			=	r.blendAccrue			;
+	blendFalloff		=	r.blendFalloff			;
+	blendPower			=	r.blendPower			;
+	speed				=	r.speed					;
+	playing				=	r.playing				;
+	stop_at_end_callback=	r.stop_at_end_callback;
+	stop_at_end			=	r.stop_at_end			;
+	fall_at_end			=	r.fall_at_end			;
+	Callback			=	r.Callback				;
+	CallbackParam		=	r.CallbackParam			;
+	dwFrame				=	r.dwFrame				;
+	return *this; 
+}
+
+#endif
 };
 
 
