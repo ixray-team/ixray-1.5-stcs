@@ -2,6 +2,56 @@
 
 Full changelog of _IX-Ray_ 1.5 project
 
+## Release 0.6.1 (September 2023)
+
+### Common
+
+- Added logo icons and TortoiseGit config
+- Fixed project references and links
+- Replaced `strcat_s` function with X-Ray analog
+- Replaced `strcpy_s` function with X-Ray analog
+- Replaced `sprintf_s` function with X-Ray analog
+- Backported `xrCDB` project from X-Ray 1.6
+- Backported `xrXMLParser` project from X-Ray 1.6
+- Backported `xrSound` project from X-Ray 1.6
+
+### Engine
+
+- Deleted `CopyProtection` module
+
+### Render
+
+- Implemented `get_luminocity_hemi_cube` method
+- Improved render error messages
+- Improved object clipping
+- Deleted `ShaderProfile` functions related code
+
+### Gameplay
+
+- Fixed shotgun reload
+- Added `exclusive` argument in `HUD_SOUND_COLLECTION::LoadSound` method
+- Added `sound_params.m_data` entry in `CSoundPlayer::add` method
+- Renamed `is_16_9_mode` method to `is_widescreen`
+
+### Resources
+
+- Fixed Sakharov moneys
+- Fixed looped award giving of Vintorez and artefact in Red Forest
+- Fixed rain sound positioning
+- Fixed issuing tasks on early jumping into anomaly
+- Fixed fog displaying on static lighting
+- Fixed sound reload of `wpn_pkm` weapon
+- Fixed sound reload of `wpn_svd` weapon
+- Fixed sound reload of `wpn_spas12` and `wpn_wincheaster1300` weapons
+- Fixed treasures for Duty leader
+- Fixed 6 Yantar treasures from 5 stalkers from Agroprom
+- Fixed sound config for all killers
+- Fixed sound config of Wolf
+- Added `snd_bore` parameter in weapons
+- Added fight ignoring for quest bandits
+- Maked bandits in ambush invulnerable
+- Unified shaders refactoring with IX-Ray 1.6
+
 ## Release 0.6 (August 2023)
 
 ### Common
