@@ -40,6 +40,34 @@ void CGrenade::Load(LPCSTR section)
 	m_grenade_detonation_threshold_hit=READ_IF_EXISTS(pSettings,r_float,section,"detonation_threshold_hit",default_grenade_detonation_threshold_hit);
 }
 
+bool CGrenade::CheckGrenadeExplosionByHit(SHit* SHit)
+{
+    shared_str sect = cNameSect();
+    bool result = false;
+
+    if (pSettings->line_exist(sect, "explosion_on_hit") && pSettings->r_bool(sect, "explosion_on_hit"))
+	{
+        if (m_grenade_detonation_threshold_hit < SHit->power)
+		{
+            if (!Useful() || (!pSettings->line_exist(sect, "explosive_while_not_activated")) || pSettings->r_bool(sect, "explosive_while_not_activated"))
+			{
+                if (pSettings->line_exist(sect, "explosion_hit_types"))
+				{
+                    if (strstr(pSettings->r_string(sect, "explosion_hit_types"), std::to_string(SHit->hit_type).c_str()) != nullptr)
+                        result = true;
+                }
+                else
+				{
+                    if (SHit->hit_type == ALife::eHitTypeExplosion)
+                        result = true;
+                }
+            }
+        }
+    }
+
+    return result;
+}
+
 void CGrenade::Hit					(SHit* pHDS)
 {
 	if( ALife::eHitTypeExplosion==pHDS->hit_type && m_grenade_detonation_threshold_hit<pHDS->damage()&&CExplosive::Initiator()==u16(-1)) 
