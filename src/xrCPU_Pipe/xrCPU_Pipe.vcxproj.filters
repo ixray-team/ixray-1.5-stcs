@@ -2,16 +2,19 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Kernel">
-      <UniqueIdentifier>{3aa2de68-2a41-4786-b1b0-9240e5d8cc50}</UniqueIdentifier>
+      <UniqueIdentifier>{b93dfbc2-3f6a-4d4f-8faf-ff2f007d78a9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="3DNow!">
-      <UniqueIdentifier>{4f02e078-7590-4dde-8962-31a06ca16302}</UniqueIdentifier>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{0c0f3637-08ad-4ae4-a039-1207c2968557}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SSE">
-      <UniqueIdentifier>{dab5216b-98a3-4658-8259-feb57665b369}</UniqueIdentifier>
+    <Filter Include="Skinning">
+      <UniqueIdentifier>{ba13bfd9-28e3-4493-bdf0-dffda64c79e6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Generic x86">
-      <UniqueIdentifier>{33fe3647-338c-48cf-ad21-7cf0c268a20d}</UniqueIdentifier>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{fd8cb683-a59c-4294-bd4c-cbfcba6cfd4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PLC">
+      <UniqueIdentifier>{e6be6d91-0b05-4a8e-abb0-ab74eebc51b1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -21,58 +24,27 @@
     <ClCompile Include="xrCPU_Pipe.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
-    <ClCompile Include="3DNow!Lib.cpp">
-      <Filter>3DNow!</Filter>
-    </ClCompile>
-    <ClCompile Include="xrBoneLerp_3DNow!.cpp">
-      <Filter>3DNow!</Filter>
-    </ClCompile>
-    <ClCompile Include="xrM44mul_3DNow!.cpp">
-      <Filter>3DNow!</Filter>
-    </ClCompile>
-    <ClCompile Include="xrMemCopy8_3DNow!.cpp">
-      <Filter>3DNow!</Filter>
-    </ClCompile>
-    <ClCompile Include="xrMemFill32_3DNow!.cpp">
-      <Filter>3DNow!</Filter>
-    </ClCompile>
-    <ClCompile Include="xrSkin1W_3DNow!.cpp">
-      <Filter>3DNow!</Filter>
-    </ClCompile>
-    <ClCompile Include="xrSkin2W_3DNow!.cpp">
-      <Filter>3DNow!</Filter>
-    </ClCompile>
-    <ClCompile Include="xrSkin1W_SSE.cpp">
-      <Filter>SSE</Filter>
-    </ClCompile>
-    <ClCompile Include="xrSkin2W_SSE.cpp">
-      <Filter>SSE</Filter>
-    </ClCompile>
-    <ClCompile Include="xrBoneLerp.cpp">
-      <Filter>Generic x86</Filter>
-    </ClCompile>
-    <ClCompile Include="xrM44mul.cpp">
-      <Filter>Generic x86</Filter>
-    </ClCompile>
-    <ClCompile Include="xrQuatSlerp.cpp">
-      <Filter>Generic x86</Filter>
-    </ClCompile>
-    <ClCompile Include="xrSkin1W.cpp">
-      <Filter>Generic x86</Filter>
-    </ClCompile>
     <ClCompile Include="xrSkin2W.cpp">
-      <Filter>Generic x86</Filter>
+      <Filter>Skinning</Filter>
     </ClCompile>
-    <ClCompile Include="xrTransfer.cpp">
-      <Filter>Generic x86</Filter>
+    <ClCompile Include="PLC.cpp">
+      <Filter>PLC</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StdAfx.h">
-      <Filter>Kernel</Filter>
+      <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="xrCPU_Pipe.h">
-      <Filter>Kernel</Filter>
+      <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="xrCPU_Pipe.rc">
+      <Filter>Resources</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>
