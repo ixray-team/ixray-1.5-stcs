@@ -1022,7 +1022,7 @@ VOID Image_DXTC::DecodePixelFormat( CHAR* strPixelFormat, DDPIXELFORMAT* pddpf )
     {
         case 0:
             // This dds texture isn't compressed so write out ARGB format
-            sprintf( strPixelFormat, "ARGB-%d%d%d%d%s", 
+            xr_sprintf( strPixelFormat, sizeof(string256), "ARGB-%d%d%d%d%s", 
                      GetNumberOfBits( pddpf->dwRGBAlphaBitMask ), 
                      GetNumberOfBits( pddpf->dwRBitMask ),
                      GetNumberOfBits( pddpf->dwGBitMask ),

@@ -59,7 +59,7 @@ void Startup(LPSTR     lpCmdLine)
 	// Show statistic
 	char	stats[256];
 	extern	std::string make_time(u32 sec);
-	sprintf				(stats,"Time elapsed: %s",make_time((dwStartupTime.GetElapsed_ms())/1000).c_str());
+	xr_sprintf				(stats,"Time elapsed: %s",make_time((dwStartupTime.GetElapsed_ms())/1000).c_str());
 
 	if (!strstr(cmd,"-silent"))
 		MessageBox		(logWindow,stats,"Congratulation!",MB_OK|MB_ICONINFORMATION);

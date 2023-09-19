@@ -829,7 +829,7 @@ int DXTCompressBump(LPCSTR out_name, u8* T_height_gloss, u8* T_normal_map, u32 w
 			fmt0.fmt		= STextureParams::tfDXT5;
 			string256		out_name1;
 			xr_strcpy			(out_name1,out_name); if (strext(out_name1)) *strext(out_name1)=0;
-			strcat			(out_name1,"#.dds");
+			xr_strcat			(out_name1,"#.dds");
 			res				|= DXTCompressImage(out_name1, T_normal_1D, w, h, pitch, &fmt0, depth);
 
 			free			(T_height_pf);

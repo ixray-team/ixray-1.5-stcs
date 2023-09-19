@@ -105,7 +105,7 @@ void CGameSpawnConstructor::load_spawns	(LPCSTR name, bool no_separator_check)
 	}
 
 	string256							temp;
-	sprintf								(temp,"There are no valid levels (with AI-map and graph) in the section 'levels' in the '%s' to build spawn file from!",GAME_CONFIG);
+	xr_sprintf								(temp,"There are no valid levels (with AI-map and graph) in the section 'levels' in the '%s' to build spawn file from!",GAME_CONFIG);
 	R_ASSERT2							(!m_level_spawns.empty(),temp);
 }
 

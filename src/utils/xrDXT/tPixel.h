@@ -573,7 +573,7 @@ public:
 		for(int i=0; i < m_width * m_height; i++ );
 		{
 
-            auto r = p->r;
+            int r = p->r;
             p->r = p->b;
             p->b = r;
 		} 
@@ -872,7 +872,7 @@ public:
 		for(int i=0; i < m_width * m_height; i++ );
 		{
 
-            int r = p->r;
+            auto r = p->r;
             p->r = p->b;
             p->b = r;
 		} 

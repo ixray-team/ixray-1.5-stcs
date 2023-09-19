@@ -82,7 +82,7 @@ void CLevelSpawnConstructor::init								()
 
 	// loading patrol paths
 	FS.update_path			(file_name,"$game_levels$",*m_level.name());
-	strcat					(file_name,"\\level.game");
+	xr_strcat					(file_name,"\\level.game");
 	if (FS.exist(file_name)) {
 		IReader				*stream	= FS.r_open(file_name);
 		VERIFY				(stream);
@@ -106,7 +106,7 @@ CSE_Abstract *CLevelSpawnConstructor::create_object						(IReader *chunk)
 	CSE_Abstract			*abstract = F_entity_Create(section_name);
 	if (!abstract) {
 		string256			temp;
-		sprintf				(temp,"Can't create entity '%s' !\n",section_name);
+		xr_sprintf				(temp,"Can't create entity '%s' !\n",section_name);
 		R_ASSERT2			(abstract,temp);
 	}
 	abstract->Spawn_Read	(net_packet);
@@ -314,7 +314,7 @@ void CLevelSpawnConstructor::correct_objects					()
 		}
 	if (dwStart >= dwFinish) {
 		string4096			S;
-		sprintf				(S,"There are no graph vertices in the game graph for the level '%s' !\n",*m_level.name());
+		xr_sprintf				(S,"There are no graph vertices in the game graph for the level '%s' !\n",*m_level.name());
 		R_ASSERT2			(dwStart < dwFinish,S);
 	}
 
@@ -338,10 +338,10 @@ void CLevelSpawnConstructor::correct_objects					()
 		if (game_graph().vertex(dwBest)->level_id() != m_level.id()) {
 			string4096	S1;
 			char		*S = S1;
-			S			+= sprintf(S,"Corresponding graph vertex for the spawn point is located on the ANOTHER level\n",m_spawns[i]->name_replace());
-			S			+= sprintf(S,"Current level  : [%d][%s]\n",m_level.id(),*game_graph().header().level(m_level.id()).name());
-			S			+= sprintf(S,"Conflict level : [%d][%s]\n",game_graph().vertex(dwBest)->level_id(),*game_graph().header().level(game_graph().vertex(dwBest)->level_id()).name());
-			S			+= sprintf(S,"Probably, you filled offsets in \"game_levels.ltx\" incorrect");
+			S			+= xr_sprintf(S,sizeof(S1) - (S1 - &S[0]), "Corresponding graph vertex for the spawn point is located on the ANOTHER level\n",m_spawns[i]->name_replace());
+			S			+= xr_sprintf(S,sizeof(S1) - (S1 - &S[0]),"Current level  : [%d][%s]\n",m_level.id(),*game_graph().header().level(m_level.id()).name());
+			S			+= xr_sprintf(S,sizeof(S1) - (S1 - &S[0]),"Conflict level : [%d][%s]\n",game_graph().vertex(dwBest)->level_id(),*game_graph().header().level(game_graph().vertex(dwBest)->level_id()).name());
+			S			+= xr_sprintf(S,sizeof(S1) - (S1 - &S[0]),"Probably, you filled offsets in \"game_levels.ltx\" incorrect");
 			R_ASSERT2	(game_graph().vertex(dwBest)->level_id() == m_level.id(),S1);
 		}
 
@@ -349,11 +349,11 @@ void CLevelSpawnConstructor::correct_objects					()
 		if (dwBest == u32(-1)) {
 			string4096	S1;
 			char		*S = S1;
-			S			+= sprintf(S,"Can't find a corresponding GRAPH VERTEX for the spawn-point %s\n",m_spawns[i]->name_replace());
-			S			+= sprintf(S,"Level ID    : %d\n",m_level.id());
-			S			+= sprintf(S,"Spawn index : %d\n",i);
-			S			+= sprintf(S,"Spawn node  : %d\n",m_spawns[i]->m_tNodeID);
-			S			+= sprintf(S,"Spawn point : [%7.2f][%7.2f][%7.2f]\n",m_spawns[i]->o_Position.x,m_spawns[i]->o_Position.y,m_spawns[i]->o_Position.z);
+			S			+= xr_sprintf(S,sizeof(S1) - (S1 - &S[0]),"Can't find a corresponding GRAPH VERTEX for the spawn-point %s\n",m_spawns[i]->name_replace());
+			S			+= xr_sprintf(S,sizeof(S1) - (S1 - &S[0]),"Level ID    : %d\n",m_level.id());
+			S			+= xr_sprintf(S,sizeof(S1) - (S1 - &S[0]),"Spawn index : %d\n",i);
+			S			+= xr_sprintf(S,sizeof(S1) - (S1 - &S[0]),"Spawn node  : %d\n",m_spawns[i]->m_tNodeID);
+			S			+= xr_sprintf(S,sizeof(S1) - (S1 - &S[0]),"Spawn point : [%7.2f][%7.2f][%7.2f]\n",m_spawns[i]->o_Position.x,m_spawns[i]->o_Position.y,m_spawns[i]->o_Position.z);
 			R_ASSERT2	(dwBest != -1,S1);
 		}
 		m_spawns[i]->m_tGraphID		= (GameGraph::_GRAPH_ID)dwBest;

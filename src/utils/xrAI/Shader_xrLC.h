@@ -59,7 +59,7 @@ public:
 		if(NULL==fs){
 			string256		inf;
 			extern HWND		logWindow;
-			sprintf			(inf,"Build failed!\nCan't load shaders library: '%s'",name);
+			xr_sprintf			(inf,"Build failed!\nCan't load shaders library: '%s'",name);
 //			clMsg			(inf);
 //			MessageBox		(logWindow,inf,"Error!",MB_OK|MB_ICONERROR);
 			FATAL			(inf);

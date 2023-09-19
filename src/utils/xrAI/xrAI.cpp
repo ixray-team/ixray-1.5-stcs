@@ -74,7 +74,7 @@ void execute	(LPSTR cmd)
 					sscanf	(strstr(cmd,"-verify")+xr_strlen("-verify"),"%s",name);
 
 	if (xr_strlen(name))
-		strcat			(name,"\\");
+		xr_strcat			(name,"\\");
 
 	string_path			prjName;
 	prjName				[0] = 0;
@@ -157,7 +157,7 @@ void Startup(LPSTR     lpCmdLine)
 	extern				std::string make_time(u32 sec);
 	extern				HWND logWindow;
 	u32					dwEndTime = timeGetTime();
-	sprintf				(stats,"Time elapsed: %s",make_time((dwEndTime-dwStartupTime)/1000).c_str());
+	xr_sprintf				(stats,"Time elapsed: %s",make_time((dwEndTime-dwStartupTime)/1000).c_str());
 	MessageBox			(logWindow,stats,"Congratulation!",MB_OK|MB_ICONINFORMATION);
 
 	bClose				= TRUE;

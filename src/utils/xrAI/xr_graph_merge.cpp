@@ -579,16 +579,16 @@ CGraphMerger::CGraphMerger(
 		tLevel.m_id					= (*I).m_id;
 		tLevel.m_section			= (*I).m_section;
 		Msg							("%9s %2d %s","level",tLevel.id(),*tLevel.m_name);
-		string_path					_0, _1;
-		generate_temp_file_name		("local_graph_",*tLevel.m_name,_0);
-		generate_temp_file_name		("raw_cross_table_",*tLevel.m_name,_1);
+		string_path					path0, path1;
+		generate_temp_file_name		("local_graph_",*tLevel.m_name, path0);
+		generate_temp_file_name		("raw_cross_table_",*tLevel.m_name, path1);
 		string_path					level_folder;
 		FS.update_path				(level_folder,"$game_levels$",*tLevel.m_name);
-		strcat						(level_folder,"\\");
-		CGameGraphBuilder().build_graph	(_0,_1,level_folder);
+		xr_strcat						(level_folder,"\\");
+		CGameGraphBuilder().build_graph	(path0, path1,level_folder);
 		::CLevelGameGraph			*tpLevelGraph = xr_new<::CLevelGameGraph>(
-			_0,
-			_1,
+			path0,
+			path1,
 			&tLevel,
 			level_folder,
 			dwOffset,
@@ -645,12 +645,12 @@ CGraphMerger::CGraphMerger(
 	{
 		tGraphHeader.m_edge_count			= 0;
 		tGraphHeader.m_death_point_count	= 0;
-		GRAPH_P_PAIR_IT						I_ = tpGraphs.begin();
-		GRAPH_P_PAIR_IT						E_ = tpGraphs.end();
-		for ( ; I_ != E_; I_++) {
-			VERIFY							((u32(tGraphHeader.m_edge_count) + (*I_).second->dwfGetEdgeCount()) < (u32(1) << (8*sizeof(GameGraph::_GRAPH_ID))));
-			tGraphHeader.m_edge_count		+= (GameGraph::_GRAPH_ID)(*I_).second->dwfGetEdgeCount();
-			tGraphHeader.m_death_point_count+= (*I_).second->dwfGetDeathPointCount();
+		GRAPH_P_PAIR_IT						I__ = tpGraphs.begin();
+		GRAPH_P_PAIR_IT						E__ = tpGraphs.end();
+		for ( ; I__ != E__; I__++) {
+			VERIFY							((u32(tGraphHeader.m_edge_count) + (*I__).second->dwfGetEdgeCount()) < (u32(1) << (8*sizeof(GameGraph::_GRAPH_ID))));
+			tGraphHeader.m_edge_count		+= (GameGraph::_GRAPH_ID)(*I__).second->dwfGetEdgeCount();
+			tGraphHeader.m_death_point_count+= (*I__).second->dwfGetDeathPointCount();
 		}
 	}
 
@@ -670,39 +670,39 @@ CGraphMerger::CGraphMerger(
 	l_dwPointOffset				= dwOffset + tGraphHeader.edge_count()*sizeof(CGameGraph::CEdge);
 	u32							l_dwStartPointOffset = l_dwPointOffset;
 	{
-		GRAPH_P_PAIR_IT			I_ = tpGraphs.begin();
-		GRAPH_P_PAIR_IT			E_ = tpGraphs.end();
-		for ( ; I_ != E_; I_++) {
-			(*I_).second->vfSaveVertices	(F,dwOffset,l_dwPointOffset,&l_tpLevelPoints);
-			vertex_count		+= (*I_).second->m_tpGraph->header().vertex_count();
+		GRAPH_P_PAIR_IT			I__ = tpGraphs.begin();
+		GRAPH_P_PAIR_IT			E__ = tpGraphs.end();
+		for ( ; I__ != E__; I__++) {
+			(*I__).second->vfSaveVertices	(F,dwOffset,l_dwPointOffset,&l_tpLevelPoints);
+			vertex_count		+= (*I__).second->m_tpGraph->header().vertex_count();
 		}
 	}
 	{
-		GRAPH_P_PAIR_IT			I_ = tpGraphs.begin();
-		GRAPH_P_PAIR_IT			E_ = tpGraphs.end();
-		for ( ; I_ != E_; I_++)
-			(*I_).second->vfSaveEdges(F);
+		GRAPH_P_PAIR_IT			I__ = tpGraphs.begin();
+		GRAPH_P_PAIR_IT			E__ = tpGraphs.end();
+		for ( ; I__ != E__; I__++)
+			(*I__).second->vfSaveEdges(F);
 	}
 	{
 		l_tpLevelPoints.clear	();
-		GRAPH_P_PAIR_IT			I_ = tpGraphs.begin();
-		GRAPH_P_PAIR_IT			E_ = tpGraphs.end();
-		for ( ; I_ != E_; I_++)
-			l_tpLevelPoints.insert(l_tpLevelPoints.end(),(*I_).second->m_tpLevelPoints.begin(),(*I_).second->m_tpLevelPoints.end());
+		GRAPH_P_PAIR_IT			I__ = tpGraphs.begin();
+		GRAPH_P_PAIR_IT			E__ = tpGraphs.end();
+		for ( ; I__ != E__; I__++)
+			l_tpLevelPoints.insert(l_tpLevelPoints.end(),(*I__).second->m_tpLevelPoints.begin(),(*I__).second->m_tpLevelPoints.end());
 	}
 	R_ASSERT2						(l_dwStartPointOffset == F.size() - l_dwOffset,"Graph file format is corrupted");
 	{
-		LEVEL_POINT_STORAGE::const_iterator	I_ = l_tpLevelPoints.begin();
-		LEVEL_POINT_STORAGE::const_iterator	E_ = l_tpLevelPoints.end();
-		for ( ; I_ != E_; ++I_)
-			save_data				(*I_,F);
+		LEVEL_POINT_STORAGE::const_iterator	I__ = l_tpLevelPoints.begin();
+		LEVEL_POINT_STORAGE::const_iterator	E__ = l_tpLevelPoints.end();
+		for ( ; I__ != E__; ++I__)
+			save_data				(*I__,F);
 	}
 	{
-		GRAPH_P_PAIR_IT			I_ = tpGraphs.begin();
-		GRAPH_P_PAIR_IT			E_ = tpGraphs.end();
-		for ( ; I_ != E_; I_++) {
+		GRAPH_P_PAIR_IT			I__ = tpGraphs.begin();
+		GRAPH_P_PAIR_IT			E__ = tpGraphs.end();
+		for ( ; I__ != E__; I__++) {
 			Msg					("cross_table offset: %d",F.size());
-			(*I_).second->save_cross_table	(F);
+			(*I__).second->save_cross_table	(F);
 		}
 	}
 	
@@ -713,10 +713,10 @@ CGraphMerger::CGraphMerger(
 	// free all the graphs
 	Phase("Freeing resources being allocated");
 	{
-		GRAPH_P_PAIR_IT				I_ = tpGraphs.begin();
-		GRAPH_P_PAIR_IT				E_ = tpGraphs.end();
-		for ( ; I_ != E_; I_++)
-			xr_free((*I_).second);
+		GRAPH_P_PAIR_IT				I__ = tpGraphs.begin();
+		GRAPH_P_PAIR_IT				E__ = tpGraphs.end();
+		for ( ; I__ != E__; I__++)
+			xr_free((*I__).second);
 	}
 	xr_delete						(Ini);
 }

@@ -38,9 +38,9 @@ void	CThreadManager::wait	(u32	sleep_time)
 			sumPerformance		+= threads[ID]->thPerformance;
 
 			char				P[64];
-			if (ID)				sprintf	(P,"*%3.1f",threads[ID]->thPerformance);
-			else				sprintf	(P," %3.1f",threads[ID]->thPerformance);
-			strcat				(perf,P);
+			if (ID)				xr_sprintf	(P,"*%3.1f",threads[ID]->thPerformance);
+			else				xr_sprintf	(P," %3.1f",threads[ID]->thPerformance);
+			xr_strcat				(perf,P);
 		}
 		if (threads[0]->thMonitor)
 		{

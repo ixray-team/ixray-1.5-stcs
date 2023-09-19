@@ -351,12 +351,12 @@ void xrCompressor::OpenPack(LPCSTR tgt_folder, int num)
 		CInifile::SectCIt it	= S.Data.begin();
 		CInifile::SectCIt it_e	= S.Data.end();
 		string4096				buff;
-		sprintf					(buff,"[%s]",S.Name.c_str());
+		xr_sprintf					(buff,"[%s]",S.Name.c_str());
 		W.w_string				(buff);
 		for(;it!=it_e;++it)
 		{
 			const CInifile::Item& I	= *it;
-			sprintf					(buff, "%s = %s", I.first.c_str(), I.second.c_str());
+			xr_sprintf					(buff, "%s = %s", I.first.c_str(), I.second.c_str());
 			W.w_string				(buff);
 		}
 		W.seek						(0);
@@ -436,7 +436,7 @@ void xrCompressor::PerformWork()
 
 		for (u32 it=0; it<files_list->size(); it++)
 		{
-			sprintf				(caption,"Compress files: %d/%d - %d%%",it,files_list->size(),(it*100)/files_list->size());
+			xr_sprintf				(caption,"Compress files: %d/%d - %d%%",it,files_list->size(),(it*100)/files_list->size());
 			SetWindowText		(GetConsoleWindow(),caption);
 			printf				("\n%-80s   ",(*files_list)[it]);
 
@@ -540,7 +540,7 @@ void xrCompressor::ProcessLTX(CInifile& ltx)
 			LPCSTR _path		= 0==xr_strcmp(if_it->first.c_str(),".\\")?"":if_it->first.c_str();
 			xr_strcpy			(path,_path);
 			u32 path_len		= xr_strlen(path);
-			if ((0!=path_len)&&(path[path_len-1]!='\\')) strcat(path,"\\");
+			if ((0!=path_len)&&(path[path_len-1]!='\\')) xr_strcat(path,"\\");
 
 			Msg					("");
 			Msg					("Processing folder: '%s'",path);

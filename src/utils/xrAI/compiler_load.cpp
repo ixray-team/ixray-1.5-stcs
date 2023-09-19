@@ -56,15 +56,15 @@ void xrLoad(LPCSTR name, bool draft_mode)
 	string256					N;
 	if (!draft_mode)	{
 		// shaders
-		string_path				N_;
-		FS.update_path			(N_,"$game_data$","shaders_xrlc.xr");
+		string_path				N__;
+		FS.update_path			(N__,"$game_data$","shaders_xrlc.xr");
 		g_shaders_xrlc			= xr_new<Shader_xrLC_LIB> ();
-		g_shaders_xrlc->Load	(N_);
+		g_shaders_xrlc->Load	(N__);
 
 		// Load CFORM
 		{
-			strconcat			(sizeof(N_),N_,name,"build.cform");
-			IReader*			fs = FS.r_open(N_);
+			strconcat			(sizeof(N__),N__,name,"build.cform");
+			IReader*			fs = FS.r_open(N__);
 			R_ASSERT			(fs->find_chunk(0));
 
 			hdrCFORM			H;
@@ -87,8 +87,8 @@ void xrLoad(LPCSTR name, bool draft_mode)
 
 		// Load level data
 		{
-			strconcat			(sizeof(N_),N_,name,"build.prj");
-			IReader*	fs		= FS.r_open (N_);
+			strconcat			(sizeof(N__),N__,name,"build.prj");
+			IReader*	fs		= FS.r_open (N__);
 			IReader*	F;
 
 			// Version
@@ -122,25 +122,25 @@ void xrLoad(LPCSTR name, bool draft_mode)
 					CopyMemory		(&BT,&TEX,sizeof(TEX));
 
 					// load thumbnail
-					string128		&N__ = BT.name;
-					LPSTR			extension = strext(N__);
+					string128		&N_ = BT.name;
+					LPSTR			extension = strext(N_);
 					if (extension)
 						*extension	= 0;
 
-					xr_strlwr		(N__);
+					xr_strlwr		(N_);
 
-					if (0==xr_strcmp(N__,"level_lods"))	{
+					if (0==xr_strcmp(N_,"level_lods"))	{
 						// HACK for merged lod textures
 						BT.dwWidth	= 1024;
 						BT.dwHeight	= 1024;
 						BT.bHasAlpha= TRUE;
 						BT.pSurface	= 0;
 					} else {
-						xr_strcat		(N__,".thm");
-						IReader* THM	= FS.r_open("$game_textures$",N__);
+						xr_strcat		(N_,".thm");
+						IReader* THM	= FS.r_open("$game_textures$",N_);
 //						if (!THM)		continue;
 						
-						R_ASSERT2		(THM,	N__);
+						R_ASSERT2		(THM,	N_);
 
 						// version
 						u32 version_				= 0;
@@ -158,7 +158,7 @@ void xrLoad(LPCSTR name, bool draft_mode)
 						BT.THM.width			= THM->r_u32();
 						BT.THM.height           = THM->r_u32();
 						BOOL			bLOD=FALSE;
-						if (N__[0]=='l' && N__[1]=='o' && N__[2]=='d' && N__[3]=='\\') bLOD = TRUE;
+						if (N_[0]=='l' && N_[1]=='o' && N_[2]=='d' && N_[3]=='\\') bLOD = TRUE;
 
 						// load surface if it has an alpha channel or has "implicit lighting" flag
 						BT.dwWidth				= BT.THM.width;
@@ -169,9 +169,9 @@ void xrLoad(LPCSTR name, bool draft_mode)
 						{
 							if (BT.bHasAlpha || BT.THM.flags.test(STextureParams::flImplicitLighted))
 							{
-								clMsg		("- loading: %s",N__);
+								clMsg		("- loading: %s",N_);
 								u32			w=0, h=0;
-								BT.pSurface = Surface_Load(N__,w,h); 
+								BT.pSurface = Surface_Load(N_,w,h); 
 								R_ASSERT2	(BT.pSurface,"Can't load surface");
 								if ((w != BT.dwWidth) || (h != BT.dwHeight))
 									Msg		("! THM doesn't correspond to the texture: %dx%d -> %dx%d", BT.dwWidth, BT.dwHeight, w, h);
