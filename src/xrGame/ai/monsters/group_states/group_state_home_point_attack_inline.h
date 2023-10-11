@@ -32,8 +32,8 @@ namespace dog
 TEMPLATE_SPECIALIZATION
 CStateGroupAttackMoveToHomePointAbstract::CStateGroupAttackMoveToHomePoint(_Object *obj) : inherited(obj) 
 {
-	add_state	(eStateAttack_HomePoint_Hide,			xr_new<CStateMonsterMoveToPointEx<_Object> >	(obj));
-	add_state	(eStateAttack_HomePoint_LookOpenPlace,	xr_new<CStateMonsterLookToPoint<_Object> >		(obj));
+	this->add_state	(eStateAttack_HomePoint_Hide,			xr_new<CStateMonsterMoveToPointEx<_Object> >	(obj));
+	this->add_state	(eStateAttack_HomePoint_LookOpenPlace,	xr_new<CStateMonsterLookToPoint<_Object> >		(obj));
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -51,7 +51,7 @@ TEMPLATE_SPECIALIZATION
 void CStateGroupAttackMoveToHomePointAbstract::finalize()
 {
 	inherited::finalize();
-	CMonsterSquad* squad = monster_squad().get_squad(object);
+	CMonsterSquad* squad = monster_squad().get_squad(this->object);
 	squad->unlock_cover(m_target_node);
 }
 
@@ -60,27 +60,28 @@ void CStateGroupAttackMoveToHomePointAbstract::critical_finalize()
 {
 	inherited::critical_finalize();
 
-	CMonsterSquad *squad = monster_squad().get_squad(object);
+	CMonsterSquad *squad = monster_squad().get_squad(this->object);
 	squad->unlock_cover(m_target_node);
 }
 
 //////////////////////////////////////////////////////////////////////////
 // Check Start Conditions / Completion
 //////////////////////////////////////////////////////////////////////////
+#include "ai_object_location.h"
 
 TEMPLATE_SPECIALIZATION
 bool CStateGroupAttackMoveToHomePointAbstract::check_start_conditions()
 {
-	if ( !object->Home->at_home() )
+	if ( !this->object->Home->at_home() )
 	{
 		return true;
 	}
 
 
-	const CEntityAlive* enemy = object->EnemyMan.get_enemy();
+	const CEntityAlive* enemy = this->object->EnemyMan.get_enemy();
 	const Fvector&  enemy_pos = enemy->Position();
 
-	if ( !object->Home->at_home(enemy_pos) )
+	if ( !this->object->Home->at_home(enemy_pos) )
 	{
 		return true;
 	}
@@ -91,28 +92,28 @@ bool CStateGroupAttackMoveToHomePointAbstract::check_start_conditions()
 TEMPLATE_SPECIALIZATION
 bool CStateGroupAttackMoveToHomePointAbstract::check_completion()
 {
-	const Fvector& enemy_pos = object->EnemyMan.get_enemy()->Position();
+	const Fvector& enemy_pos = this->object->EnemyMan.get_enemy()->Position();
 
-	if ( !object->Home->at_home() ) 
+	if ( !this->object->Home->at_home() ) 
 	{
 		return false;
 	}
 
-	if ( object->Home->at_min_home(enemy_pos) ) 
+	if ( this->object->Home->at_min_home(enemy_pos) ) 
 	{
 		return true;
 	}
 
-	if ( object->ai_location().level_vertex_id() == m_target_node 
+	if ( this->object->ai_location().level_vertex_id() == m_target_node 
 		                          && 
-        !object->control().path_builder().is_moving_on_path() )
+        !this->object->control().path_builder().is_moving_on_path() )
 	{
 		return true;
 	}
 
 	if ( m_skip_camp && 
-		(prev_substate != u32(-1)) && 
-		(prev_substate != eStateAttack_HomePoint_Hide) ) 
+		(this->prev_substate != u32(-1)) &&
+		(this->prev_substate != eStateAttack_HomePoint_Hide) )
 	{
 		return true;
 	}
@@ -127,13 +128,13 @@ bool CStateGroupAttackMoveToHomePointAbstract::check_completion()
 TEMPLATE_SPECIALIZATION
 void CStateGroupAttackMoveToHomePointAbstract::reselect_state()
 {
-	if ( prev_substate == eStateAttack_HomePoint_Hide )
+	if (this->prev_substate == eStateAttack_HomePoint_Hide )
 	{
-		select_state(eStateAttack_HomePoint_LookOpenPlace);
+		this->select_state(eStateAttack_HomePoint_LookOpenPlace);
 		return;
 	}
 
-	select_state(eStateAttack_HomePoint_Hide);
+	this->select_state(eStateAttack_HomePoint_Hide);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -143,27 +144,27 @@ void CStateGroupAttackMoveToHomePointAbstract::reselect_state()
 TEMPLATE_SPECIALIZATION
 void CStateGroupAttackMoveToHomePointAbstract::setup_substates()
 {
-	state_ptr state = get_state_current();
+	state_ptr state = this->get_state_current();
 
-	if ( current_substate == eStateAttack_HomePoint_Hide ) 
+	if (this->current_substate == eStateAttack_HomePoint_Hide )
 	{
-		const CEntityAlive* enemy = object->EnemyMan.get_enemy();
+		const CEntityAlive* enemy = this->object->EnemyMan.get_enemy();
 
-		Fvector enemy2home = object->Home->get_home_point();
+		Fvector enemy2home = this->object->Home->get_home_point();
 		enemy2home.sub(enemy->Position());
 		enemy2home.normalize_safe();
 
-		m_target_node = object->Home->get_place_in_max_home_to_direction(enemy2home);
+		m_target_node = this->object->Home->get_place_in_max_home_to_direction(enemy2home);
 
 		m_skip_camp	  = false;
 
 		if ( m_target_node == u32(-1) )
 		{
-			m_target_node	= object->Home->get_place_in_min_home();
+			m_target_node	= this->object->Home->get_place_in_min_home();
 			m_skip_camp		= true;
 		}
 		
-		CMonsterSquad *squad = monster_squad().get_squad(object);
+		CMonsterSquad *squad = monster_squad().get_squad(this->object);
 		squad->lock_cover(m_target_node);
 		
 		SStateDataMoveToPointEx data;
@@ -178,24 +179,24 @@ void CStateGroupAttackMoveToHomePointAbstract::setup_substates()
 		data.braking			= true;
 		data.accel_type 		= eAT_Aggressive;
 		data.action.sound_type	= MonsterSound::eMonsterSoundAggressive;
-		data.action.sound_delay = object->db().m_dwAttackSndDelay;
+		data.action.sound_delay = this->object->db().m_dwAttackSndDelay;
 
 		state->fill_data_with(&data, sizeof(SStateDataMoveToPointEx));
 		return;
 	}
 
-	if (current_substate == eStateAttack_HomePoint_LookOpenPlace) {
+	if (this->current_substate == eStateAttack_HomePoint_LookOpenPlace) {
 
 		SStateDataLookToPoint	data;
 
 		Fvector dir;
-		object->CoverMan->less_cover_direction(dir);
+		this->object->CoverMan->less_cover_direction(dir);
 	
-		data.point.mad			(object->Position(),dir,10.f);
+		data.point.mad			(this->object->Position(),dir,10.f);
 		data.action.action		= ACT_STAND_IDLE;
 		data.action.time_out	= 2000;		
 		data.action.sound_type	= MonsterSound::eMonsterSoundAggressive;
-		data.action.sound_delay = object->db().m_dwIdleSndDelay;
+		data.action.sound_delay = this->object->db().m_dwIdleSndDelay;
 		data.face_delay			= 0;
 
 		state->fill_data_with(&data, sizeof(SStateDataLookToPoint));

@@ -22,6 +22,7 @@
 #	include "alife_time_manager.h"
 #	include "ef_storage.h"
 #	include "game_graph.h"
+#include "ai_space.h"
 #	include "alife_simulator.h"
 #	include "alife_registry_container.h"
 #	include "ef_primary.h"

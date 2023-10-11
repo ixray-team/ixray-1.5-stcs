@@ -11,7 +11,7 @@ constexpr auto COLOR_BLUE = color_xrgb(0, 0, 255);
 
 class CBlend;
 
-// ����������� ��������� �������� (animation spec params)
+// специальные параметры анимаций (animation spec params)
 #define ASP_MOVE_BKWD			(1 << 0) 
 #define ASP_DRAG_CORPSE			(1 << 1) 
 #define ASP_CHECK_CORPSE		(1 << 2)
@@ -28,8 +28,8 @@ class CBlend;
 #define ASP_UPPER_STATE			(1 << 13)
 #define ASP_MOVE_SMELLING		(1 << 14)
 
-#define AA_FLAG_ATTACK_RAT		(1 << 0)			// ������ ����?
-#define AA_FLAG_FIRE_ANYWAY		(1 << 1)			// ����������� �� �����
+#define AA_FLAG_ATTACK_RAT		(1 << 0)			// аттака крыс?
+#define AA_FLAG_FIRE_ANYWAY		(1 << 1)			// трассировка не нужна
 
 #define CRITICAL_STAND_TIME		1400
 #define TIME_STAND_RECHECK		2000
@@ -457,7 +457,7 @@ enum EAccelValue {
 #define PATH_NEED_REBUILD() m_object->IsPathEnd(2,0.5f)
 
 
-// ��� ������� (�� ���������� ���)
+// тип монстра (по количеству ног)
 #define QUADRUPEDAL		4
 #define BIPEDAL			2
 

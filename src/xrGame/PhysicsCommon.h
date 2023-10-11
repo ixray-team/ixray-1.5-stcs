@@ -1,6 +1,7 @@
 #ifndef PHYSICS_COMMON_H
 #define PHYSICS_COMMON_H
 
+#include "MathUtils.h"
 #include "DisablingParams.h"
 #include "ode_include.h"
 

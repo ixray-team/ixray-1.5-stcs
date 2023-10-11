@@ -59,7 +59,6 @@ public:
 	virtual void	HitEntityInJump		(const CEntity *pEntity);
 	virtual void	TranslateActionToPathParams	();
 
-
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 

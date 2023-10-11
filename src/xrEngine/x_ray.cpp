@@ -41,7 +41,7 @@ XRCORE_API	u32		build_id;
 #endif // #ifdef MASTER_GOLD
 
 
-static LPSTR month_id[12] = {
+static LPCSTR month_id[12] = {
 	"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"
 };
 
@@ -726,7 +726,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 
 LPCSTR _GetFontTexName (LPCSTR section)
 {
-	static char* tex_names[]={"texture800","texture","texture1600"};
+	static const char* tex_names[]={"texture800","texture","texture1600"};
 	int def_idx		= 1;//default 1024x768
 	int idx			= def_idx;
 

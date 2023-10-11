@@ -100,7 +100,7 @@ void CUIKeyBinding::FillUpList(CUIXml& xml_doc_ui, LPCSTR path_ui)
 void CUIKeyBinding::CheckStructure(CUIXml& xml_doc)
 {
 	bool first = true;
-	CUIStatic*	pItem = false;
+	CUIStatic*	pItem = nullptr;
 	
 	for (int i=0; true; i++)
 	{

@@ -12,6 +12,7 @@
 #include "../states/monster_state_panic.h"
 #include "../states/monster_state_eat.h"
 #include "../states/monster_state_hear_int_sound.h"
+#include "../states/monster_state_hear_danger_sound.h"
 #include "../states/monster_state_hitted.h"
 
 #include "bloodsucker_vampire.h"

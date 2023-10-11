@@ -22,13 +22,13 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
 # VS options
 set(CMAKE_EXECUTABLE_ENABLE_EXPORTS ON)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_FLAGS_DEBUG "/MD")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /UMBCS")
 
 # Enable gcc/clang style 
-#add_compile_options(/permissive-)
+add_compile_options(/permissive-)
 
 string(REGEX REPLACE "/EH[a-z]+" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
 add_compile_options("$<$<CONFIG:DEBUG>:/Od>" "/Ob1" "$<$<CONFIG:DEBUG>:/EHsc>"

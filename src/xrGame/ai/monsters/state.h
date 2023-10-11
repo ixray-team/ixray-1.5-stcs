@@ -7,7 +7,7 @@
 #include "debug_text_tree.h"
 #endif
 
-
+#include "../../../ai_space.h"
 template<typename _Object>
 class CState {
 	typedef CState<_Object> CSState;
@@ -76,7 +76,7 @@ public:
 	virtual 			~CStateMove	(){}
 	virtual void initialize() {
 		inherited::initialize();
-		object->path().prepare_builder();
+		this->object->path().prepare_builder();
 	}
 };
 

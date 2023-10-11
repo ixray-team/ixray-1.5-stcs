@@ -237,7 +237,7 @@ void xrServer::ProcessClientDigest(xrClientData* xrCL, NET_Packet* P)
 			STRCONCAT(message_to_user, "You have been banned by ", admin_name.c_str());
 		} else
 		{
-			message_to_user = "";
+			message_to_user = (char*)"";
 		}
 		SendConnectResult(tmp_client, 0, 3, message_to_user);
 		return;

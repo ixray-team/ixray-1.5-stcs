@@ -1,6 +1,14 @@
 #ifndef MATH_UTILS_H
 #define MATH_UTILS_H
+#include "../3rd party/ode/include/ode/common.h"
+#include "../3rd party/ode/include/ode/odemath.h"
+#include "../3rd party/ode/include/ode/objects.h"
+#include "../3rd party/ode/include/ode/rotation.h"
+#include "../3rd party/ode/include/ode/compatibility.h"
+#include "../3rd party/ode/include/ode/collision.h"
+#include "../3rd party/ode/include/ode/matrix.h"
 
+#include "ode_redefine.h"
 
 IC  float* cast_fp(Fvector& fv)
 {
