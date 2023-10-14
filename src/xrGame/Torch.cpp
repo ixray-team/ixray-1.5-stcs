@@ -81,10 +81,10 @@ void CTorch::Load(LPCSTR section)
 	m_bNightVisionEnabled = !!pSettings->r_bool(section,"night_vision");
 	if(m_bNightVisionEnabled)
 	{
-		m_sounds.LoadSound(section,"snd_night_vision_on", "NightVisionOnSnd", SOUND_TYPE_ITEM_USING);
-		m_sounds.LoadSound(section,"snd_night_vision_off", "NightVisionOffSnd", SOUND_TYPE_ITEM_USING);
-		m_sounds.LoadSound(section,"snd_night_vision_idle", "NightVisionIdleSnd", SOUND_TYPE_ITEM_USING);
-		m_sounds.LoadSound(section,"snd_night_vision_broken", "NightVisionBrokenSnd", SOUND_TYPE_ITEM_USING);
+		m_sounds.LoadSound(section,"snd_night_vision_on", "NightVisionOnSnd", false, SOUND_TYPE_ITEM_USING);
+		m_sounds.LoadSound(section,"snd_night_vision_off", "NightVisionOffSnd", false, SOUND_TYPE_ITEM_USING);
+		m_sounds.LoadSound(section,"snd_night_vision_idle", "NightVisionIdleSnd", false, SOUND_TYPE_ITEM_USING);
+		m_sounds.LoadSound(section,"snd_night_vision_broken", "NightVisionBrokenSnd", false, SOUND_TYPE_ITEM_USING);
 	}
 }
 
@@ -245,7 +245,7 @@ BOOL CTorch::net_Spawn(CSE_Abstract* DC)
 	glow_render->set_color	(clr);
 	glow_render->set_radius	(pUserData->r_float					("torch_definition","glow_radius"));
 
-	//âêëþ÷èòü/âûêëþ÷èòü ôîíàðèê
+	//Ð²ÐºÐ»ÑŽÑ‡Ð¸Ñ‚ÑŒ/Ð²Ñ‹ÐºÐ»ÑŽÑ‡Ð¸Ñ‚ÑŒ Ñ„Ð¾Ð½Ð°Ñ€Ð¸Ðº
 	Switch					(torch->m_active);
 	VERIFY					(!torch->m_active || (torch->ID_Parent != 0xffff));
 	
@@ -399,7 +399,7 @@ void CTorch::UpdateCL()
 	if (!lanim)							return;
 
 	int						frame;
-	// âîçâðàùàåò â ôîðìàòå BGR
+	// Ð²Ð¾Ð·Ð²Ñ€Ð°Ñ‰Ð°ÐµÑ‚ Ð² Ñ„Ð¾Ñ€Ð¼Ð°Ñ‚Ðµ BGR
 	u32 clr					= lanim->CalculateBGR(Device.fTimeGlobal,frame); 
 
 	Fcolor					fclr;
