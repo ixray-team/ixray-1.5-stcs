@@ -51,7 +51,7 @@ public		:
 	}
 	virtual void	Execute	(LPCSTR args)	= 0;
 	virtual void	Status	(TStatus& S)	{ S[0]=0; }
-	virtual void	Info	(TInfo& I)		{ xr_strcpy(I,"no arguments"); }
+	virtual void	Info	(TInfo& I)		{ xr_strcpy(I,"(no arguments)"); }
 	virtual void	Save	(IWriter *F)	{
 		TStatus		S;	Status(S);
 		if (S[0])	F->w_printf("%s %s\r\n",cName,S); 
@@ -173,8 +173,8 @@ public		:
 		I[0]=0;
 		xr_token *tok = tokens;
 		while (tok->name) {
-			if (I[0]) strcat(I,"/");
-			strcat(I,tok->name);
+			if (I[0]) xr_strcat(I,"/");
+			xr_strcat(I,tok->name);
 			tok++;
 		}
 	}
@@ -274,7 +274,7 @@ public
 	}
 	virtual void	Status	(TStatus& S)
 	{	
-		xr_sprintf	(S,sizeof(S),"%f,%f,%f",value->x,value->y,value->z);
+		xr_sprintf	(S,sizeof(S),"(%f, %f, %f)",value->x,value->y,value->z);
 	}
 	virtual void	Info	(TInfo& I)
 	{	

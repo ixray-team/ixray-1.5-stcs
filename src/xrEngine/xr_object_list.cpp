@@ -94,8 +94,8 @@ void	CObjectList::SingleUpdate	(CObject* O)
 {
 	if ( Device.dwFrame == O->dwFrame_UpdateCL ) {
 #ifdef DEBUG
-		if (O->getDestroy())
-			Msg					("- !!!processing_enabled ->destroy_queue.push_back %s[%d] frame [%d]",O->cName().c_str(), O->ID(), Device.dwFrame);
+//		if (O->getDestroy())
+//			Msg					("- !!!processing_enabled ->destroy_queue.push_back %s[%d] frame [%d]",O->cName().c_str(), O->ID(), Device.dwFrame);
 #endif // #ifdef DEBUG
 
 		return;
@@ -103,8 +103,8 @@ void	CObjectList::SingleUpdate	(CObject* O)
 
 	if ( !O->processing_enabled() ) {
 #ifdef DEBUG
-		if (O->getDestroy())
-			Msg					("- !!!processing_enabled ->destroy_queue.push_back %s[%d] frame [%d]",O->cName().c_str(), O->ID(), Device.dwFrame);
+//		if (O->getDestroy())
+//			Msg					("- !!!processing_enabled ->destroy_queue.push_back %s[%d] frame [%d]",O->cName().c_str(), O->ID(), Device.dwFrame);
 #endif // #ifdef DEBUG
 
 		return;
@@ -171,8 +171,8 @@ void	CObjectList::SingleUpdate	(CObject* O)
 #endif
 
 #ifdef DEBUG
-	if (O->getDestroy())
-		Msg						("- !!!processing_enabled ->destroy_queue.push_back %s[%d] frame [%d]",O->cName().c_str(), O->ID(), Device.dwFrame);
+//	if (O->getDestroy())
+//		Msg						("- !!!processing_enabled ->destroy_queue.push_back %s[%d] frame [%d]",O->cName().c_str(), O->ID(), Device.dwFrame);
 #endif // #ifdef DEBUG
 }
 
@@ -187,7 +187,7 @@ void CObjectList::clear_crow_vec(Objects& o)
 
 void CObjectList::Update		(bool bForce)
 {
-	if ( ! (Device.Paused() && !bForce) )
+	if ( !Device.Paused() || bForce )
 	{
 		// Clients
 		if (Device.fTimeDelta>EPS_S || bForce)			

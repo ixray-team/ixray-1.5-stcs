@@ -79,13 +79,14 @@ void flares::load	(CInifile& config, shared_str const& section)
 	if (min_flare_count != max_flare_count)
 		Msg					("! flare count for sun [%s] is setup incorrectly. only %d flares are correct", section.c_str(), min_flare_count);
 
-	LPSTR					result = (LPSTR)_alloca(max_string_count*sizeof(char));
+	u32 const buffer_size	= max_string_count*sizeof(char);
+	LPSTR					result = (LPSTR)_alloca(buffer_size);
 	for (u32 i=0; i<min_flare_count; ++i) {
 		flare*				object = xr_new<flare>();
-		object->m_opacity	= (float)atof(_GetItem(flare_opacity  .c_str(), i, result));
-		object->m_position	= (float)atof(_GetItem(flare_position .c_str(), i, result));
-		object->m_radius	= (float)atof(_GetItem(flare_radius   .c_str(), i, result));
-		object->m_texture	=			  _GetItem(flare_textures .c_str(), i, result);
+		object->m_opacity	= (float)atof(_GetItem(flare_opacity  .c_str(), i, result, buffer_size));
+		object->m_position	= (float)atof(_GetItem(flare_position .c_str(), i, result, buffer_size));
+		object->m_radius	= (float)atof(_GetItem(flare_radius   .c_str(), i, result, buffer_size));
+		object->m_texture	=			  _GetItem(flare_textures .c_str(), i, result, buffer_size);
 		object->fill		(m_collection);
 		m_flares.push_back	(object);
 	}

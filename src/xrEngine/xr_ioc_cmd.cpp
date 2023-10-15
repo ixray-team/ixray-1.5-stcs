@@ -207,7 +207,7 @@ public:
 
 		if (strext(cfg_full_name))	
 			*strext(cfg_full_name) = 0;
-		strcat			(cfg_full_name,".ltx");
+		xr_strcat			(cfg_full_name,".ltx");
 		
 		BOOL b_allow = TRUE;
 		if ( FS.exist(cfg_full_name) )
@@ -234,7 +234,7 @@ void CCC_LoadCFG::Execute(LPCSTR args)
 
 		xr_strcpy							(cfg_name, args);
 		if (strext(cfg_name))			*strext(cfg_name) = 0;
-		strcat							(cfg_name,".ltx");
+		xr_strcat							(cfg_name,".ltx");
 
 		string_path						cfg_full_name;
 

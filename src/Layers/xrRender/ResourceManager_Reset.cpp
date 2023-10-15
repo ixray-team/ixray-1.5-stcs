@@ -38,23 +38,26 @@ void	CResourceManager::reset_end				()
 	// create RDStreams
 	RCache.Vertex.reset_end		();
 	RCache.Index.reset_end		();
-	Evict(); RCache.CreateQuadIB();
+	Evict(); 
+	RCache.CreateQuadIB();
 
 	// remark geom's which point to dynamic VB/IB
 	{
 		for (u32 _it=0; _it<v_geoms.size(); _it++)
 		{
 			SGeometry*	_G = v_geoms[_it];
-			if (_G->vb == RCache.Vertex.old_pVB) {
+			if	(_G->vb == RCache.Vertex.old_pVB) 
 				_G->vb = RCache.Vertex.Buffer();
-			}
 
 			// Here we may recover the buffer using one of 
 			// RCache's index buffers.
 			// Do not remove else.
-			if (_G->ib == RCache.Index.old_pIB) {
+			if	(_G->ib == RCache.Index.old_pIB) 
+			{
 				_G->ib = RCache.Index.Buffer();
-			} else if (_G->ib == RCache.old_QuadIB) {
+			}
+			else if	(_G->ib == RCache.old_QuadIB) 
+			{
 				_G->ib = RCache.QuadIB;
 			}
 		}
