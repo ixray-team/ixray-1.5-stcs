@@ -340,10 +340,10 @@ bool	 rendered;
 		//if(rendered) return;
 		if(!fsimilar (dbg_text_current_height_scale,dbg_text_height_scale ) )
 		{
-			HUD().Font().pFontStat->SetHeight(HUD().Font().pFontStat->GetHeight() * dbg_text_height_scale/dbg_text_current_height_scale );
+			UI().Font().pFontStat->SetHeight(UI().Font().pFontStat->GetHeight() * dbg_text_height_scale/dbg_text_current_height_scale );
 			dbg_text_current_height_scale = dbg_text_height_scale;
 		}
-		HUD().Font().pFontStat->OutNext(s);
+		UI().Font().pFontStat->OutNext(s);
 		rendered=true;
 	}
 };
@@ -367,7 +367,7 @@ u32 color;
 	}
 	virtual void render()
 	{
-		HUD().Font().pFontStat->SetColor( color );
+		UI().Font().pFontStat->SetColor( color );
 	}
 };
 
@@ -386,7 +386,7 @@ struct SPHDBGTextOutSet : public SPHDBGDrawAbsract
 	}
 	virtual void render()
 	{
-		HUD().Font().pFontStat->OutSet( x, y );
+		UI().Font().pFontStat->OutSet( x, y );
 	}
 };
 
@@ -559,7 +559,7 @@ void PH_DBG_Render()
 	if(ph_dbg_draw_mask.test(phDbgDrawZDisable))
 		DRender->ZEnable(false);
 		//CHK_DX(HW.pDevice->SetRenderState(D3DRS_ZENABLE,0));
-	HUD().Font().pFontStat->OutSet	(550,250);
+	UI().Font().pFontStat->OutSet	(550,250);
 	DBG_PHAbstructRender();
 
 	if(ph_dbg_draw_mask.test(phDbgDrawZDisable))
@@ -755,7 +755,7 @@ enum
 Flags32	dbg_track_obj_flags	={ u32(-1) & ~dbg_track_obj_blends_dump };
 void DBG_AnimBlend(IKinematicsAnimated &ka, const CBlend &B )
 {
-	//HUD().Font().pFontStat->SetHeight	(20.0f);
+	//UI().Font().pFontStat->SetHeight	(20.0f);
 
 	DBG_OutText("-------------------------------------");
 	if( dbg_track_obj_flags.test(dbg_track_obj_blends_motion_name) )

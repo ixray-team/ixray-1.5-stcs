@@ -164,7 +164,7 @@ void CHUDTarget::Render()
 	//float				di_size = C_SIZE/powf(PT.p.w,.2f);
 	float				di_size = C_SIZE/powf(pt.w,.2f);
 
-	CGameFont* F		= HUD().Font().pFontGraffiti19Russian;
+	CGameFont* F		= UI().Font().pFontGraffiti19Russian;
 	F->SetAligment		(CGameFont::alCenter);
 	F->OutSetI			(0.f,0.05f);
 

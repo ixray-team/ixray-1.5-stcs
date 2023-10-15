@@ -31,7 +31,7 @@ CUILines::CUILines()
 	uFlags.set(flColoringMode,		TRUE);
 	uFlags.set(flCutWordsMode,		FALSE);
 	uFlags.set(flRecognizeNewLine,	TRUE);
-	m_pFont = UI().Font()->pFontLetterica16Russian;
+	m_pFont = UI().Font().pFontLetterica16Russian;
 	m_cursor_pos.set(0,0);
 	m_iCursorPos = 0;
 }
@@ -80,7 +80,7 @@ void CUILines::SetUseNewLineMode(bool mode){
 void CUILines::SetText(const char* text){
 	
 	if (!m_pFont)
-        m_pFont = UI().Font()->pFontLetterica16Russian;
+        m_pFont = UI().Font().pFontLetterica16Russian;
 
 	if (text && text[0] != 0)
 	{

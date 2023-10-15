@@ -10,8 +10,8 @@
 #include "UITextureMaster.h"
 #include "UIScrollView.h"
 
-CFontManager& mngr(){
-	return *(UI().Font());
+CFontManager& mngr() {
+	return UI().Font();
 }
 
 // hud font

@@ -253,7 +253,7 @@ void  CHUDManager::RenderUI()
 	{
 		HitMarker.Render			();
 		bAlready					= ! (pUI && !pUI->Render());
-		Font().Render();
+		UI().RenderFont();
 	}
 
 	if (/* psHUD_Flags.is(HUD_CROSSHAIR|HUD_CROSSHAIR_RT|HUD_CROSSHAIR_RT2) &&*/ !bAlready)	
@@ -261,7 +261,7 @@ void  CHUDManager::RenderUI()
 
 
 	if( Device.Paused() && bShowPauseString){
-		CGameFont* pFont	= Font().pFontGraffiti50Russian;
+		CGameFont* pFont	= UI().Font().pFontGraffiti50Russian;
 		pFont->SetColor		(0x80FF0000	);
 		LPCSTR _str			= CStringTable().translate("st_game_paused").c_str();
 		

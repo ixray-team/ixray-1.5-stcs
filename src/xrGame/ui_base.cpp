@@ -258,12 +258,12 @@ void ui_core::pp_stop()
 
 void ui_core::RenderFont()
 {
-	Font()->Render();
+	Font().Render();
 }
 
 bool ui_core::is_widescreen()
 {
-	return (Device.dwWidth)/float(Device.dwHeight) > (UI_BASE_WIDTH/UI_BASE_HEIGHT +0.01f);
+	return (Device.dwWidth)/float(Device.dwHeight) > (UI_BASE_WIDTH / UI_BASE_HEIGHT +0.01f);
 }
 
 float ui_core::get_current_kx() {

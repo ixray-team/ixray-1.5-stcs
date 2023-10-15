@@ -332,7 +332,7 @@ void hud_draw_adjust_mode()
 		};
 		if(_text)
 		{
-			CGameFont* F		= UI().Font()->pFontDI;
+			CGameFont* F		= UI().Font().pFontDI;
 			F->SetAligment		(CGameFont::alCenter);
 			F->OutSetI			(0.f,-0.8f);
 			F->SetColor			(0xffffffff);

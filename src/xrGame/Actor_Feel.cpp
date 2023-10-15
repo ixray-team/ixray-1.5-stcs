@@ -87,7 +87,7 @@ ICF static BOOL info_trace_callback(collide::rq_result& result, LPVOID params)
 			return			TRUE;
 		}
 	}else{
-		//ïîëó÷èòü òðåóãîëüíèê è óçíàòü åãî ìàòåðèàë
+		//Ð¿Ð¾Ð»ÑƒÑ‡Ð¸Ñ‚ÑŒ Ñ‚Ñ€ÐµÑƒÐ³Ð¾Ð»ÑŒÐ½Ð¸Ðº Ð¸ ÑƒÐ·Ð½Ð°Ñ‚ÑŒ ÐµÐ³Ð¾ Ð¼Ð°Ñ‚ÐµÑ€Ð¸Ð°Ð»
 		CDB::TRI* T		= Level().ObjectSpace.GetStaticTris()+result.element;
 		if (GMLib.GetMaterialByIdx(T->material)->Flags.is(SGameMtl::flPassable)) 
 			return TRUE;
@@ -122,7 +122,7 @@ void CActor::PickupModeUpdate()
 	if(!m_bPickupMode) return;
 	if (GameID() != eGameIDSingle) return;
 
-	//ïîäáèðàíèå îáúåêòà
+	//Ð¿Ð¾Ð´Ð±Ð¸Ñ€Ð°Ð½Ð¸Ðµ Ð¾Ð±ÑŠÐµÐºÑ‚Ð°
 	if(	m_pObjectWeLookingAt									&& 
 		m_pObjectWeLookingAt->cast_inventory_item()				&& 
 		m_pObjectWeLookingAt->cast_inventory_item()->Useful()	&&
@@ -228,7 +228,7 @@ void	CActor::PickupModeUpdate_COD	()
 
 	if (pNearestItem && m_bPickupMode)
 	{
-		//ïîäáèðàíèå îáúåêòà
+		//Ð¿Ð¾Ð´Ð±Ð¸Ñ€Ð°Ð½Ð¸Ðµ Ð¾Ð±ÑŠÐµÐºÑ‚Ð°
 		Game().SendPickUpEvent(ID(), pNearestItem->object().ID());
 		
 		PickupModeOff();
@@ -260,9 +260,9 @@ void CActor::PickupInfoDraw(CObject* object)
 	float x = (1.f + v_res.x)/2.f * (Device.dwWidth);
 	float y = (1.f - v_res.y)/2.f * (Device.dwHeight);
 
-	HUD().Font().pFontLetterica16Russian->SetAligment	(CGameFont::alCenter);
-	HUD().Font().pFontLetterica16Russian->SetColor		(PICKUP_INFO_COLOR);
-	HUD().Font().pFontLetterica16Russian->Out			(x,y,draw_str);
+	UI().Font().pFontLetterica16Russian->SetAligment	(CGameFont::alCenter);
+	UI().Font().pFontLetterica16Russian->SetColor		(PICKUP_INFO_COLOR);
+	UI().Font().pFontLetterica16Russian->Out			(x,y,draw_str);
 }
 
 void CActor::feel_sound_new(CObject* who, int type, CSound_UserDataPtr user_data, const Fvector& Position, float power)

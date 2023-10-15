@@ -623,7 +623,7 @@ void CLevel::OnFrame	()
 	// Draw client/server stats
 	if ( !g_dedicated_server && psDeviceFlags.test(rsStatistic))
 	{
-		CGameFont* F = HUD().Font().pFontDI;
+		CGameFont* F = UI().Font().pFontDI;
 		if (!psNET_direct_connect) 
 		{
 			if ( IsServer() )
@@ -723,7 +723,7 @@ void CLevel::OnFrame	()
 	m_ph_commander_scripts->update		();
 //	autosave_manager().update			();
 
-	//ïðîñ÷èòàòü ïîëåò ïóëü
+	//Ð¿Ñ€Ð¾ÑÑ‡Ð¸Ñ‚Ð°Ñ‚ÑŒ Ð¿Ð¾Ð»ÐµÑ‚ Ð¿ÑƒÐ»ÑŒ
 	Device.Statistic->TEST0.Begin		();
 	BulletManager().CommitRenderSet		();
 	Device.Statistic->TEST0.End			();
@@ -777,11 +777,11 @@ void CLevel::OnRender()
 		return;
 
 	Game().OnRender();
-	//îòðèñîâàòü òðàññû ïóëü
+	//Ð¾Ñ‚Ñ€Ð¸ÑÐ¾Ð²Ð°Ñ‚ÑŒ Ñ‚Ñ€Ð°ÑÑÑ‹ Ð¿ÑƒÐ»ÑŒ
 	//Device.Statistic->TEST1.Begin();
 	BulletManager().Render();
 	//Device.Statistic->TEST1.End();
-	//îòðèñîâàòü èíòåðôåéc ïîëüçîâàòåëÿ
+	//Ð¾Ñ‚Ñ€Ð¸ÑÐ¾Ð²Ð°Ñ‚ÑŒ Ð¸Ð½Ñ‚ÐµÑ€Ñ„ÐµÐ¹c Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»Ñ
 	HUD().RenderUI();
 
 #ifdef DEBUG
@@ -848,14 +848,14 @@ void CLevel::OnRender()
 		ObjectSpace.dbgRender	();
 
 		//---------------------------------------------------------------------
-		HUD().Font().pFontStat->OutSet		(170,630);
-		HUD().Font().pFontStat->SetHeight	(16.0f);
-		HUD().Font().pFontStat->SetColor	(0xffff0000);
+		UI().Font().pFontStat->OutSet		(170,630);
+		UI().Font().pFontStat->SetHeight	(16.0f);
+		UI().Font().pFontStat->SetColor	(0xffff0000);
 
-		if(Server)HUD().Font().pFontStat->OutNext	("Client Objects:      [%d]",Server->GetEntitiesNum());
-		HUD().Font().pFontStat->OutNext	("Server Objects:      [%d]",Objects.o_count());
-		HUD().Font().pFontStat->OutNext	("Interpolation Steps: [%d]", Level().GetInterpolationSteps());
-		HUD().Font().pFontStat->SetHeight	(8.0f);
+		if(Server)UI().Font().pFontStat->OutNext	("Client Objects:      [%d]",Server->GetEntitiesNum());
+		UI().Font().pFontStat->OutNext	("Server Objects:      [%d]",Objects.o_count());
+		UI().Font().pFontStat->OutNext	("Interpolation Steps: [%d]", Level().GetInterpolationSteps());
+		UI().Font().pFontStat->SetHeight	(8.0f);
 		//---------------------------------------------------------------------
 	}
 #endif

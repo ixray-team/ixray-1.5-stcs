@@ -350,12 +350,12 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 		else
 			moving_idx				= STorsoWpn::eWalk;
 	}
-	// анимации
+	// Р°РЅРёРјР°С†РёРё
 	MotionID 						M_legs;
 	MotionID 						M_torso;
 	MotionID 						M_head;
 
-	//если мы просто стоим на месте
+	//РµСЃР»Рё РјС‹ РїСЂРѕСЃС‚Рѕ СЃС‚РѕРёРј РЅР° РјРµСЃС‚Рµ
 	bool is_standing = false;
 
 	// Legs
@@ -531,7 +531,7 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 		else						M_torso = ST->m_torso_idle;
 	}
 	
-	// есть анимация для всего - запустим / иначе запустим анимацию по частям
+	// РµСЃС‚СЊ Р°РЅРёРјР°С†РёСЏ РґР»СЏ РІСЃРµРіРѕ - Р·Р°РїСѓСЃС‚РёРј / РёРЅР°С‡Рµ Р·Р°РїСѓСЃС‚РёРј Р°РЅРёРјР°С†РёСЋ РїРѕ С‡Р°СЃС‚СЏРј
 	if (m_current_torso!=M_torso){
 		if (m_bAnimTorsoPlayed)		m_current_torso_blend = smart_cast<IKinematicsAnimated*>	(Visual())->PlayCycle(M_torso,TRUE,AnimTorsoPlayCallBack,this);
 		else						/**/m_current_torso_blend = /**/smart_cast<IKinematicsAnimated*>	(Visual())->PlayCycle(M_torso);
@@ -566,8 +566,8 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 
 #ifdef _DEBUG
 	if(bDebug){
-		HUD().Font().pFontStat->OutSetI	(0,0);
-		HUD().Font().pFontStat->OutNext("[%s]",mov_state[moving_idx]);
+		UI().Font().pFontStat->OutSetI	(0,0);
+		UI().Font().pFontStat->OutNext("[%s]",mov_state[moving_idx]);
 	}
 #endif
 
@@ -588,7 +588,7 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 		if (mstate_rl&mcLLookout)	strcat(buf,"LLookout ");
 		if (mstate_rl&mcRLookout)	strcat(buf,"RLookout ");
 		if (m_bJumpKeyPressed)		strcat(buf,"+Jumping ");
-		HUD().Font().pFontStat->OutNext	("MSTATE:     [%s]",buf);
+		UI().Font().pFontStat->OutNext	("MSTATE:     [%s]",buf);
 /*
 		switch (m_PhysicMovementControl->Environment())
 		{
@@ -596,10 +596,10 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 		case CPHMovementControl::peInAir:		xr_strcpy(buf,"air");				break;
 		case CPHMovementControl::peAtWall:		xr_strcpy(buf,"wall");				break;
 		}
-		HUD().Font().pFontStat->OutNext	(buf);
-		HUD().Font().pFontStat->OutNext	("Accel     [%3.2f, %3.2f, %3.2f]",VPUSH(NET_SavedAccel));
-		HUD().Font().pFontStat->OutNext	("V         [%3.2f, %3.2f, %3.2f]",VPUSH(m_PhysicMovementControl->GetVelocity()));
-		HUD().Font().pFontStat->OutNext	("vertex ID   %d",ai_location().level_vertex_id());
+		UI().Font().pFontStat->OutNext	(buf);
+		UI().Font().pFontStat->OutNext	("Accel     [%3.2f, %3.2f, %3.2f]",VPUSH(NET_SavedAccel));
+		UI().Font().pFontStat->OutNext	("V         [%3.2f, %3.2f, %3.2f]",VPUSH(m_PhysicMovementControl->GetVelocity()));
+		UI().Font().pFontStat->OutNext	("vertex ID   %d",ai_location().level_vertex_id());
 		
 		Game().m_WeaponUsageStatistic->Draw();
 		*/
