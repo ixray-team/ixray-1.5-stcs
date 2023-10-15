@@ -173,7 +173,7 @@ void *FileDownload		(LPCSTR file_name, u32 *buffer_size)
 
 typedef char MARK[9];
 IC void mk_mark(MARK& M, const char* S)
-{	strncpy(M,S,8); }
+{	strncpy_s(M,sizeof(M),S,8); }
 
 void  FileCompress	(const char *fn, const char* sign, void* data, u32 size)
 {
@@ -310,7 +310,7 @@ void	IWriter::w_printf(const char* format, ...)
 	char buf[1024];
 
 	va_start( mark , format );
-#ifndef __BORLANDC__
+#ifndef	_EDITOR
 		vsprintf_s( buf , format , mark );
 #else
 		vsprintf( buf , format , mark );

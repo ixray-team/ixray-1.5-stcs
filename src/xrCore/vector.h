@@ -29,6 +29,9 @@ const	float		EPS_S		= 0.0000001f;
 const	float		EPS			= 0.0000100f;
 const	float		EPS_L		= 0.0010000f;
 
+#undef M_SQRT1_2
+const	float		M_SQRT1_2	= 0.7071067811865475244008443621048f;//490;
+
 const	float		M_PI		= 3.1415926535897932384626433832795f;
 const	float		PI			= 3.1415926535897932384626433832795f;
 const	float		PI_MUL_2	= 6.2831853071795864769252867665590f;
@@ -41,6 +44,9 @@ const	float		PI_DIV_3	= 1.0471975511965977461542144610932f;
 const	float		PI_DIV_4	= 0.7853981633974483096156608458199f;
 const	float		PI_DIV_6	= 0.5235987755982988730771072305466f;
 const	float		PI_DIV_8	= 0.3926990816987241548078304229099f;
+
+
+
 #endif
 #ifdef M_BORLAND
 #define				EPS_S		0.0000001f
@@ -128,7 +134,9 @@ template <class T> struct _quaternion;
 #include "_plane.h"
 #include "_plane2.h"
 #include "_flags.h"
-
+#ifdef	DEBUG
+#include "dump_string.h"
+#endif
 #pragma pack(pop)
 
 
@@ -178,9 +186,26 @@ ICF float		angle_difference(float a, float b)
 	return _abs	(angle_difference_signed(a,b));
 }
 
+IC bool			are_ordered		( float const value0, float const value1, float const value2 )
+{
+	if ( (value1 >= value0) && (value1 <= value2) )
+		return	true;
+
+	if ( (value1 <= value0) && (value1 >= value2) )
+		return	true;
+
+	return		false;
+}
+
+IC bool			is_between		( float const value, float const left, float const right )
+{
+	return		are_ordered( left, value, right );
+}
+
 // c=current, t=target, s=speed, dt=dt
 IC bool			angle_lerp		(float& c, float t, float s, float dt)
 {
+	float const before = c;
 	float diff	= t - c;
 	if (diff>0) {
 		if (diff>PI)	
@@ -197,6 +222,9 @@ IC bool			angle_lerp		(float& c, float t, float s, float dt)
 	float mot		= s*dt;
 	if (mot>diff_a) mot=diff_a;
 	c				+= (diff/diff_a)*mot;
+
+	if ( is_between(c,before,t) )
+		return		false;
 
 	if (c<0)				
 		c+=PI_MUL_2;

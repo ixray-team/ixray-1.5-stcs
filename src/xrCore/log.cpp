@@ -175,6 +175,7 @@ void InitLog()
 {
 	R_ASSERT			(LogFile==NULL);
 	LogFile				= xr_new< xr_vector<shared_str> >();
+	LogFile->reserve	(1000);
 }
 
 void CreateLog			(BOOL nl)
@@ -191,7 +192,6 @@ void CreateLog			(BOOL nl)
         }
         FS.w_close		(f);
     }
-	LogFile->reserve	(128);
 }
 
 void CloseLog(void)

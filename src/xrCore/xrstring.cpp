@@ -71,6 +71,7 @@ struct str_container_impl
 
 	void			 verify ()
 	{
+		Msg			("strings verify started");
 		for ( u32 i=0; i<buffer_size; ++i )
 		{
 			str_value* value = buffer[i];
@@ -83,9 +84,10 @@ struct str_container_impl
 				value = value->next;
 			}
 		}
+		Msg			("strings verify completed");
 	}
 
-	void			dump (FILE* f)
+	void			dump (FILE* f) const
 	{
 		for ( u32 i=0; i<buffer_size; ++i )
 		{
@@ -94,6 +96,21 @@ struct str_container_impl
 			{
 				fprintf	(f,"ref[%4d]-len[%3d]-crc[%8X] : %s\n",value->dwReference,value->dwLength,value->dwCRC,value->value);
 				value = value->next;
+			}
+		}
+	}
+
+	void			dump (IWriter* f) const
+	{
+		for ( u32 i=0; i<buffer_size; ++i )
+		{
+			str_value* value = buffer[i];
+			string4096		temp;
+			while ( value )
+			{
+				xr_sprintf	(temp, sizeof(temp), "ref[%4d]-len[%3d]-crc[%8X] : %s\n", value->dwReference, value->dwLength, value->dwCRC, value->value);
+				f->w_string	(temp);
+				value		= value->next;
 			}
 		}
 	}
@@ -209,6 +226,13 @@ void		str_container::dump	()
 
  	impl->dump  (F);
  	fclose		(F);
+ 	cs.Leave	();
+}
+
+void		str_container::dump	(IWriter* W)
+{
+ 	cs.Enter	();
+ 	impl->dump  (W);
  	cs.Leave	();
 }
 
@@ -352,7 +376,7 @@ void		str_container::clean	()
 			it++;
 		}
 	}
-	if (impl->container.empty())	container.clear	();
+	if (impl->container.empty())	impl->container.clear	();
 	cs.Leave	();
 }
 

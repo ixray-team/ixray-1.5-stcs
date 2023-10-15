@@ -19,7 +19,14 @@ struct xr_token;
 #endif
 
 XRCORE_API int		    	_GetItemCount			( LPCSTR , char separator=',');
-XRCORE_API LPSTR	    	_GetItem				( LPCSTR, int, LPSTR, char separator=',', LPCSTR ="", bool trim=true );
+XRCORE_API LPSTR	    	_GetItem				( LPCSTR, int, LPSTR, u32 const dst_size, char separator=',', LPCSTR ="", bool trim=true );
+
+template <int count>
+inline LPSTR	    		_GetItem				( LPCSTR src, int index, char (&dst)[count], char separator=',', LPCSTR def="", bool trim=true )
+{
+	return					_GetItem(src,index,dst,count,separator,def,trim);
+}
+
 XRCORE_API LPSTR	    	_GetItems				( LPCSTR, int, int, LPSTR, char separator=',');
 XRCORE_API LPCSTR	    	_SetPos					( LPCSTR src, u32 pos, char separator=',' );
 XRCORE_API LPCSTR	    	_CopyVal				( LPCSTR src, LPSTR dst, char separator=',' );

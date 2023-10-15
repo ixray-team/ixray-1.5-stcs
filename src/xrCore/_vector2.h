@@ -32,6 +32,7 @@ public:
 	IC SelfRef mul(const T s)						{ x*=s; y*=s;					return *this;	}
 	IC SelfRef mul(const Self &p)					{ x*=p.x; y*=p.y;				return *this;	}
 	IC SelfRef div(const T s)						{ x/=s; y/=s;					return *this;	}
+	IC SelfRef div(const Self &p)					{ x/=p.x; y/=p.y;				return *this;	}
 	IC SelfRef rot90(void)							{ float t=-x; x=y; y=t;			return *this;	}
     IC SelfRef cross(const Self &D)						{ x = D.y; y = -D.x;            return *this;	}
 	IC T dot(Self &p)								{ return x*p.x + y*p.y;			}

@@ -102,9 +102,7 @@ private:
 private:
 	pointer							m_begin;
 	pointer							m_end;
-#ifdef DEBUG
 	pointer							m_max_end;
-#endif // DEBUG
 };
 
 	template <typename T>

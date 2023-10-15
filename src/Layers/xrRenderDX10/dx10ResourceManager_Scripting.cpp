@@ -136,36 +136,70 @@ void LuaError(lua_State* L)
 }
 
 #ifndef PURE_ALLOC
-#	ifndef USE_MEMORY_MONITOR
+//#	ifndef USE_MEMORY_MONITOR
 #		define USE_DL_ALLOCATOR
-#	endif // USE_MEMORY_MONITOR
+//#	endif // USE_MEMORY_MONITOR
 #endif // PURE_ALLOC
 
 #ifndef USE_DL_ALLOCATOR
-	static void *lua_alloc	(void *ud, void *ptr, size_t osize, size_t nsize)
-	{
+static void *lua_alloc	(void *ud, void *ptr, size_t osize, size_t nsize) {
 		(void)ud;
 		(void)osize;
 		if (nsize == 0) {
 			xr_free	(ptr);
 			return	NULL;
 		}
-
+	else
 #		ifdef DEBUG_MEMORY_NAME
-			return Memory.mem_realloc	(ptr, nsize, "LUA:Render");
+		return Memory.mem_realloc		(ptr, nsize, "LUA");
 #		else // DEBUG_MEMORY_MANAGER
 			return Memory.mem_realloc	(ptr, nsize);
 #		endif // DEBUG_MEMORY_MANAGER
 	}
 #else // USE_DL_ALLOCATOR
-#	include "../xrRender/doug_lea_memory_allocator.h"
 
-	static void *lua_alloc		(void *ud, void *ptr, size_t osize, size_t nsize)
-	{
+#include "../../xrCore/memory_allocator_options.h"
+
+#ifdef USE_ARENA_ALLOCATOR
+	static const u32	s_arena_size = 8*1024*1024;
+	static char			s_fake_array[s_arena_size];
+	doug_lea_allocator	g_render_lua_allocator( s_fake_array, s_arena_size, "render:lua" );
+#else // #ifdef USE_ARENA_ALLOCATOR
+	doug_lea_allocator	g_render_lua_allocator( 0, 0, "render:lua" );
+#endif // #ifdef USE_ARENA_ALLOCATOR
+
+static void *lua_alloc		(void *ud, void *ptr, size_t osize, size_t nsize) {
+#ifndef USE_MEMORY_MONITOR
 		(void)ud;
 		(void)osize;
-		if (nsize == 0)	{	dlfree			(ptr);	 return	NULL;  }
-		else				return dlrealloc	(ptr, nsize);
+	if ( !nsize )	{
+		g_render_lua_allocator.free_impl	(ptr);
+		return					0;
+	}
+
+	if ( !ptr )
+		return					g_render_lua_allocator.malloc_impl((u32)nsize);
+
+	return g_render_lua_allocator.realloc_impl(ptr, (u32)nsize);
+#else // #ifndef USE_MEMORY_MONITOR
+	if ( !nsize )	{
+		memory_monitor::monitor_free(ptr);
+		g_render_lua_allocator.free_impl		(ptr);
+		return						NULL;
+	}
+
+	if ( !ptr ) {
+		void* const result_			= 
+			g_render_lua_allocator.malloc_impl((u32)nsize);
+		memory_monitor::monitor_alloc (result_,nsize,"render:LUA");
+		return						result_;
+	}
+
+	memory_monitor::monitor_free	(ptr);
+	void* const result_				= g_render_lua_allocator.realloc_impl(ptr, (u32)nsize);
+	memory_monitor::monitor_alloc	(result_,nsize,"render:LUA");
+	return							result_;
+#endif // #ifndef USE_MEMORY_MONITOR
 	}
 #endif // USE_DL_ALLOCATOR
 

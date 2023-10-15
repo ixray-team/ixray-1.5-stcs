@@ -15,20 +15,16 @@
 TEMPLATE_SPECIALIZATION
 inline buffer_vector_specialized::buffer_vector	(void *buffer, size_type const &max_count) :
 	m_begin			((T*)buffer),
-	m_end			((T*)buffer)
-#ifdef DEBUG
-	,m_max_end		((T*)buffer + max_count)
-#endif // DEBUG
+	m_end			((T*)buffer),
+	m_max_end		((T*)buffer + max_count)
 {
 }
 
 TEMPLATE_SPECIALIZATION
 inline buffer_vector_specialized::buffer_vector	(void *buffer, size_type const &max_count, size_type const &count, value_type const &value) :
 	m_begin			((T*)buffer),
-	m_end			((T*)buffer)
-#ifdef DEBUG
-	,m_max_end		((T*)buffer + max_count)
-#endif // DEBUG
+	m_end			((T*)buffer),
+	m_max_end		((T*)buffer + max_count)
 {
 	assign			(count, value);
 }
@@ -36,10 +32,8 @@ inline buffer_vector_specialized::buffer_vector	(void *buffer, size_type const &
 TEMPLATE_SPECIALIZATION
 inline buffer_vector_specialized::buffer_vector	(void *buffer, size_type const &max_count, self_type const &other) :
 	m_begin			((T*)buffer),
-	m_end			((T*)buffer)
-#ifdef DEBUG
-	,m_max_end		((T*)buffer + max_count)
-#endif // DEBUG
+	m_end			((T*)buffer),
+	m_max_end		((T*)buffer + max_count)
 {
 	assign			(other.begin(), other.end());
 }
@@ -48,10 +42,8 @@ TEMPLATE_SPECIALIZATION
 template <typename input_iterator>
 inline buffer_vector_specialized::buffer_vector	(void *buffer, size_type const &max_count, input_iterator const &begin, input_iterator const &end) :
 	m_begin			((T*)buffer),
-	m_end			((T*)buffer)
-#ifdef DEBUG
-	,m_max_end		((T*)buffer + max_count)
-#endif // DEBUG
+	m_end			((T*)buffer),
+	m_max_end		((T*)buffer + max_count)
 {
 	assign			(begin, end);
 }
@@ -98,9 +90,7 @@ inline void buffer_vector_specialized::swap		(self_type &other)
 {
 	std::swap		(m_begin,	other.m_begin);
 	std::swap		(m_end,		other.m_end);
-#ifdef DEBUG
 	std::swap		(m_max_end,	other.m_max_end);
-#endif // DEBUG
 }
 
 TEMPLATE_SPECIALIZATION
@@ -353,21 +343,13 @@ inline typename buffer_vector_specialized::size_type buffer_vector_specialized::
 TEMPLATE_SPECIALIZATION
 inline typename buffer_vector_specialized::size_type buffer_vector_specialized::capacity				() const
 {
-#ifdef DEBUG
 	return			(m_max_end - m_begin);
-#else // DEBUG
-	return			(m_end - m_begin);
-#endif // DEBUG
 }
 
 TEMPLATE_SPECIALIZATION
 inline typename buffer_vector_specialized::size_type buffer_vector_specialized::max_size				() const
 {
-#ifdef DEBUG
 	return			(m_max_end - m_begin);
-#else // DEBUG
-	return			(m_end - m_begin);
-#endif // DEBUG
 }
 
 TEMPLATE_SPECIALIZATION

@@ -41,7 +41,7 @@ void process	(u32 const index, u32 const count, LPCSTR *strings)
 }
 
 template <u32 count>
-static inline void process	(LPCSTR i, LPCSTR e, u32 const index, LPCSTR (&strings)[count])
+static inline void process	(LPSTR& i, LPCSTR e, u32 const index, LPCSTR (&strings)[count])
 {
 	VERIFY		(i <= e);
 	VERIFY		(index < count);
@@ -49,7 +49,11 @@ static inline void process	(LPCSTR i, LPCSTR e, u32 const index, LPCSTR (&string
 	if (i != e)
 		return;
 
+#ifndef MASTER_GOLD
 	process		(index, count, strings);
+#else // #ifndef MASTER_GOLD
+	--i;
+#endif // #ifndef MASTER_GOLD
 }
 
 } // namespace strconcat_error 

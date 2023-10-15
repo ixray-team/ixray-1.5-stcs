@@ -17,7 +17,7 @@
 	#define XRAY_EXCEPTIONS		1	// XRAY
 #else
 	// "release"
-	#if defined(_CPPUNWIND)
+	#if defined(_CPPUNWIND) && !defined __BORLANDC__
 		#error Please disable exceptions...
 	#endif
 	#define _HAS_EXCEPTIONS		1	// STL
@@ -294,6 +294,14 @@ public:
 	void		_initialize	(LPCSTR ApplicationName, LogCallback cb=0, BOOL init_fs=TRUE, LPCSTR fs_fname=0);
 	void		_destroy	();
 };
+
+//Borland class dll interface
+#define	_BCL			__stdcall	
+
+//Borland global function dll interface
+#define	_BGCL			__stdcall
+
+
 extern XRCORE_API xrCore Core;
 
 #endif

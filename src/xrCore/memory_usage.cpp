@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include <malloc.h>
-#include <errno.h>
 
 XRCORE_API void vminfo (size_t *_free, size_t *reserved, size_t *committed) {
 	MEMORY_BASIC_INFORMATION memory_info;
@@ -36,6 +35,10 @@ XRCORE_API void log_vminfo	()
 
 u32	mem_usage_impl	(u32* pBlocksUsed, u32* pBlocksFree)
 {
+	static bool no_memory_usage = !!strstr( GetCommandLine(), "-no_memory_usage");
+	if ( no_memory_usage )
+		return		0;
+
 	_HEAPINFO		hinfo;
 	int				heapstatus;
 	hinfo._pentry	= NULL;
@@ -61,13 +64,25 @@ u32	mem_usage_impl	(u32* pBlocksUsed, u32* pBlocksFree)
 	case _HEAPEND:
 		break;
 	case _HEAPBADPTR:
+#ifndef MASTER_GOLD
 		FATAL			("bad pointer to heap");
+#else // #ifndef MASTER_GOLD
+		Msg				("! bad pointer to heap");
+#endif // #ifndef MASTER_GOLD
 		break;
 	case _HEAPBADBEGIN:
+#ifndef MASTER_GOLD
 		FATAL			("bad start of heap");
+#else // #ifndef MASTER_GOLD
+		Msg				("! bad start of heap");
+#endif // #ifndef MASTER_GOLD
 		break;
 	case _HEAPBADNODE:
+#ifndef MASTER_GOLD
 		FATAL			("bad node in heap");
+#else // #ifndef MASTER_GOLD
+		Msg				("! bad node in heap");
+#endif // #ifndef MASTER_GOLD
 		break;
 	}
 	return (u32) total;

@@ -54,8 +54,8 @@ public:
 		if ((0!=hf) && (0!=count)){
 			const u32 mb_sz = 0x1000000;
 			u8* ptr 		= (u8*)_ptr;
-			int req_size = count;
-			for (; req_size>mb_sz; req_size-=mb_sz, ptr+=mb_sz){
+			int req_size;
+			for (req_size = count; req_size>mb_sz; req_size-=mb_sz, ptr+=mb_sz){
 				size_t W = fwrite(ptr,mb_sz,1,hf);
 				R_ASSERT3(W==1,"Can't write mem block to file. Disk maybe full.",_sys_errlist[errno]);
 			}
@@ -85,7 +85,7 @@ public:
 				CPackReader(void* _base, void* _data, int _size) : IReader(_data,_size){base_address=_base;}
 	virtual		~CPackReader();
 };
-class CFileReader : public IReader
+class XRCORE_API CFileReader : public IReader
 {
 public:
 				CFileReader(const char *name);

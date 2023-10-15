@@ -2,79 +2,88 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Kernel">
-      <UniqueIdentifier>{b8aa1eeb-fc04-42d7-8367-086fad1e1c47}</UniqueIdentifier>
+      <UniqueIdentifier>{026dadd3-63a1-458c-bfe9-44683c0066ed}</UniqueIdentifier>
     </Filter>
     <Filter Include="Math">
-      <UniqueIdentifier>{fadad5ac-c69c-4cbc-a963-f13bb5663ad3}</UniqueIdentifier>
+      <UniqueIdentifier>{bdbebb19-d89c-4c91-b7cc-e4f98208065d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Math\CPU">
-      <UniqueIdentifier>{13b8d6ba-96f0-4132-86a7-9cf8affde3d4}</UniqueIdentifier>
+      <UniqueIdentifier>{ad59dee0-3fa5-4cb9-a421-0c87ce9e2650}</UniqueIdentifier>
     </Filter>
     <Filter Include="Math\STLext">
-      <UniqueIdentifier>{7e279182-6cc3-4718-a32f-d22bc876eeb5}</UniqueIdentifier>
+      <UniqueIdentifier>{e434c22f-e55d-4b17-a1d7-ff558cc016f5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Math\Extensions">
-      <UniqueIdentifier>{50c0b439-5b5b-427b-ad31-ff49bc55ee86}</UniqueIdentifier>
+      <UniqueIdentifier>{fa683b7d-5add-43fd-8da9-3e4bd5bb42fc}</UniqueIdentifier>
     </Filter>
     <Filter Include="Math\Extensions\buffer_vector">
-      <UniqueIdentifier>{0649adb8-de14-4b8c-8405-f78c9792c378}</UniqueIdentifier>
+      <UniqueIdentifier>{e49808be-92f9-4815-8252-e81a6ec90629}</UniqueIdentifier>
     </Filter>
     <Filter Include="FS">
-      <UniqueIdentifier>{b242d5bf-5e68-4199-895e-6cfdba6a7c3b}</UniqueIdentifier>
+      <UniqueIdentifier>{78ab8228-60c1-42e9-a694-56a7b42208e4}</UniqueIdentifier>
     </Filter>
     <Filter Include="FS\stream_reader">
-      <UniqueIdentifier>{f0a6b944-651c-4109-b62a-d450c8cb9ad0}</UniqueIdentifier>
+      <UniqueIdentifier>{903e2a91-04eb-4e0c-bac7-22668a4d4620}</UniqueIdentifier>
     </Filter>
     <Filter Include="FS\file_stream_reader">
-      <UniqueIdentifier>{869a7c14-a06d-4f1a-acb0-c4504af4b305}</UniqueIdentifier>
+      <UniqueIdentifier>{4003ad02-eb75-4dcb-a3c0-69d747ae0984}</UniqueIdentifier>
     </Filter>
     <Filter Include="Memory manager">
-      <UniqueIdentifier>{c0e5b1ef-3ba8-4ebc-9ead-c6fd640ed781}</UniqueIdentifier>
+      <UniqueIdentifier>{779bf169-19bd-4da2-893c-d023b1228c1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Memory manager\dlmalloc">
+      <UniqueIdentifier>{86c493f9-3555-4d9d-aa4c-2e688afdb828}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Memory manager\dlmalloc\allocator">
+      <UniqueIdentifier>{767dfb94-9898-40c5-8066-ea81ac385476}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Memory manager\dlmalloc\wrapper">
+      <UniqueIdentifier>{2f9c7a00-7ed0-446b-9e79-6e9c2b61d08c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Debug core">
-      <UniqueIdentifier>{3c78cbcd-5455-436a-88e8-078ce0dae77f}</UniqueIdentifier>
+      <UniqueIdentifier>{8896c78e-de69-457e-98ae-fc8e3bd48f8f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Debug core\BlackBox">
-      <UniqueIdentifier>{c0269d45-4dbe-4a42-a661-479302ad7a98}</UniqueIdentifier>
+      <UniqueIdentifier>{c13cfb38-091b-4205-8c3a-5df83ee9e521}</UniqueIdentifier>
     </Filter>
     <Filter Include="shared memory/string library">
-      <UniqueIdentifier>{9f54fc22-fedb-4fec-be23-e7f6ad6c8d76}</UniqueIdentifier>
+      <UniqueIdentifier>{0ae164c1-b500-4314-bb2d-6d2147fa322c}</UniqueIdentifier>
     </Filter>
     <Filter Include="intrusive_ptr">
-      <UniqueIdentifier>{a64705de-4f24-421b-8792-c7f5f58992d3}</UniqueIdentifier>
+      <UniqueIdentifier>{98aa0804-c7be-4dad-aca0-d23303afc227}</UniqueIdentifier>
     </Filter>
     <Filter Include="memory_monitor">
-      <UniqueIdentifier>{15d658f2-8d07-4d6d-b46e-48205015d9fd}</UniqueIdentifier>
+      <UniqueIdentifier>{c0da6e6d-2014-48a2-9a60-243009dbfe41}</UniqueIdentifier>
     </Filter>
     <Filter Include="Compression">
-      <UniqueIdentifier>{e4587022-4e16-4b02-b11d-e19d430e378e}</UniqueIdentifier>
+      <UniqueIdentifier>{faac3443-b1b4-4d4e-9b04-847eef015a7e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Compression\ppmd">
-      <UniqueIdentifier>{b629d87c-74a1-4d72-ab5c-91b444a206d3}</UniqueIdentifier>
+      <UniqueIdentifier>{3fe62d77-cd74-44c4-bcae-04ea24303b3a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Compression\ppmd\common">
-      <UniqueIdentifier>{bed37357-5a34-4c61-8596-0d922aa2040e}</UniqueIdentifier>
+      <UniqueIdentifier>{8a07dd93-2b2d-4ec5-8b55-4ad32f764fd7}</UniqueIdentifier>
     </Filter>
     <Filter Include="Compression\ppmd\core">
-      <UniqueIdentifier>{e8b30306-efc5-4dab-8fc3-d01cfe292432}</UniqueIdentifier>
+      <UniqueIdentifier>{23d0ea03-622d-427b-bb0c-7cd9fab9a1c5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Compression\ppmd\core\allocator">
-      <UniqueIdentifier>{6c42c7d5-7b55-41c6-a31f-c0f149dd6d4a}</UniqueIdentifier>
+      <UniqueIdentifier>{dabbb4a5-f235-4f4f-89ff-089de656de2f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Compression\ppmd\stream">
-      <UniqueIdentifier>{23600b59-7760-4788-9946-ceb69524c4e9}</UniqueIdentifier>
+      <UniqueIdentifier>{a71b5437-f078-499e-8050-ded99fbbdf93}</UniqueIdentifier>
     </Filter>
     <Filter Include="Compression\rt">
-      <UniqueIdentifier>{1a9e2442-2108-4662-b659-83051812200a}</UniqueIdentifier>
+      <UniqueIdentifier>{7c06b0f4-eb38-46ff-a88a-89d14e64bd68}</UniqueIdentifier>
     </Filter>
     <Filter Include="Compression\lz">
-      <UniqueIdentifier>{45ae8814-ef7b-4c28-901c-d6dc84703881}</UniqueIdentifier>
+      <UniqueIdentifier>{1212f85e-5469-409a-9fcd-33ff08cc277c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Compression\lzo">
-      <UniqueIdentifier>{581844cb-7cd4-467b-9ad4-1fd4085536fb}</UniqueIdentifier>
+      <UniqueIdentifier>{d2ce6543-eeed-4943-82fb-af3f42d2df68}</UniqueIdentifier>
     </Filter>
     <Filter Include="OS">
-      <UniqueIdentifier>{a8147fbf-a562-4547-9aa1-71aa306fb5c0}</UniqueIdentifier>
+      <UniqueIdentifier>{d2145d1a-aaf3-4479-9299-7b00812c2fa3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -94,6 +103,9 @@
       <Filter>Math</Filter>
     </ClCompile>
     <ClCompile Include="_sphere.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="dump_string.cpp">
       <Filter>Math</Filter>
     </ClCompile>
     <ClCompile Include="cpuid.cpp">
@@ -180,6 +192,15 @@
     <ClCompile Include="xrMemory_subst_msvc.cpp">
       <Filter>Memory manager</Filter>
     </ClCompile>
+    <ClCompile Include="ptmalloc3\malloc.c">
+      <Filter>Memory manager\dlmalloc\allocator</Filter>
+    </ClCompile>
+    <ClCompile Include="ptmalloc3\sysdeps\win32\win32.c">
+      <Filter>Memory manager\dlmalloc\allocator</Filter>
+    </ClCompile>
+    <ClCompile Include="doug_lea_allocator.cpp">
+      <Filter>Memory manager\dlmalloc\wrapper</Filter>
+    </ClCompile>
     <ClCompile Include="xrDebug.cpp">
       <Filter>Debug core</Filter>
     </ClCompile>
@@ -239,6 +260,9 @@
     </ClCompile>
     <ClCompile Include="LzHuf.cpp">
       <Filter>Compression\lz</Filter>
+    </ClCompile>
+    <ClCompile Include="lzo_compressor.cpp">
+      <Filter>Compression\lzo</Filter>
     </ClCompile>
     <ClCompile Include="rt_lzo1x_1.cpp">
       <Filter>Compression\lzo</Filter>
@@ -345,6 +369,9 @@
     <ClInclude Include="_vector4.h">
       <Filter>Math</Filter>
     </ClInclude>
+    <ClInclude Include="dump_string.h">
+      <Filter>Math</Filter>
+    </ClInclude>
     <ClInclude Include="vector.h">
       <Filter>Math</Filter>
     </ClInclude>
@@ -390,6 +417,9 @@
     <ClInclude Include="buffer_vector_inline.h">
       <Filter>Math\Extensions\buffer_vector</Filter>
     </ClInclude>
+    <ClInclude Include="FileSystem.h">
+      <Filter>FS</Filter>
+    </ClInclude>
     <ClInclude Include="FS.h">
       <Filter>FS</Filter>
     </ClInclude>
@@ -403,6 +433,9 @@
       <Filter>FS</Filter>
     </ClInclude>
     <ClInclude Include="LocatorAPI_defs.h">
+      <Filter>FS</Filter>
+    </ClInclude>
+    <ClInclude Include="LocatorAPI_Notifications.h">
       <Filter>FS</Filter>
     </ClInclude>
     <ClInclude Include="log.h">
@@ -443,6 +476,15 @@
     </ClInclude>
     <ClInclude Include="xrMemory_subst_msvc.h">
       <Filter>Memory manager</Filter>
+    </ClInclude>
+    <ClInclude Include="ptmalloc3\malloc-2.8.3.h">
+      <Filter>Memory manager\dlmalloc\allocator</Filter>
+    </ClInclude>
+    <ClInclude Include="doug_lea_allocator.h">
+      <Filter>Memory manager\dlmalloc\wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="memory_allocator_options.h">
+      <Filter>Memory manager\dlmalloc\wrapper</Filter>
     </ClInclude>
     <ClInclude Include="xrDebug.h">
       <Filter>Debug core</Filter>
@@ -521,6 +563,9 @@
     </ClInclude>
     <ClInclude Include="lzhuf.h">
       <Filter>Compression\lz</Filter>
+    </ClInclude>
+    <ClInclude Include="lzo_compressor.h">
+      <Filter>Compression\lzo</Filter>
     </ClInclude>
     <ClInclude Include="rt_config1x.h">
       <Filter>Compression\lzo</Filter>

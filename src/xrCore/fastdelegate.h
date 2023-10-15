@@ -51,15 +51,10 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#pragma warning(push)
-#pragma warning(disable:4995)
 #include <memory.h> // to allow <,> comparisons
-#pragma warning(pop)
 
 //////////////////////////////////////////////////
-//#define xr_stdcall 
 #define xr_stdcall __stdcall
-//#define xr_stdcall __cdecl
 ///////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -297,7 +292,7 @@ const int SINGLE_MEMFUNCPTR_SIZE = sizeof(void (xr_stdcall GenericClass::*)());
 template <int N>
 struct SimplifyMemFunc {
 	template <class X, class XFuncType, class GenericMemFuncType>
-	inline static GenericClass *Convert(X *pthis, XFuncType function_to_bind, 
+	inline static GenericClass * xr_stdcall Convert(X *pthis, XFuncType function_to_bind, 
 		GenericMemFuncType &bound_func) { 
 		// Unsupported member function type -- force a compile failure.
 	    // (it's illegal to have a array with negative size).
@@ -311,7 +306,7 @@ struct SimplifyMemFunc {
 template <>
 struct SimplifyMemFunc<SINGLE_MEMFUNCPTR_SIZE>  {	
 	template <class X, class XFuncType, class GenericMemFuncType>
-	inline static GenericClass *Convert(X *pthis, XFuncType function_to_bind, 
+	inline static GenericClass * xr_stdcall Convert(X *pthis, XFuncType function_to_bind, 
 			GenericMemFuncType &bound_func) {
 #if defined __DMC__  
 		// Digital Mars doesn't allow you to cast between abitrary PMF's, 
@@ -346,7 +341,7 @@ struct SimplifyMemFunc<SINGLE_MEMFUNCPTR_SIZE>  {
 template<>
 struct SimplifyMemFunc< SINGLE_MEMFUNCPTR_SIZE + sizeof(int) >  {
 	template <class X, class XFuncType, class GenericMemFuncType>
-	inline static GenericClass *Convert(X *pthis, XFuncType function_to_bind, 
+	inline static GenericClass * xr_stdcall Convert(X *pthis, XFuncType function_to_bind, 
 		GenericMemFuncType &bound_func) { 
 		// We need to use a horrible_cast to do this conversion.
 		// In MSVC, a multiple inheritance member pointer is internally defined as:
@@ -401,16 +396,18 @@ struct SimplifyMemFunc<SINGLE_MEMFUNCPTR_SIZE + 2*sizeof(int) >
 {
 
 	template <class X, class XFuncType, class GenericMemFuncType>
-	inline static GenericClass *Convert(X *pthis, XFuncType function_to_bind, 
+	inline static GenericClass * xr_stdcall Convert(X *pthis, XFuncType function_to_bind, 
 		GenericMemFuncType &bound_func) {
-#pragma warning(push)
-#pragma warning(disable:4121)
+
+#pragma pack(push)
+#pragma pack(1)
 		union {
 			XFuncType func;
 			GenericClass* (X::*ProbeFunc)();
 			MicrosoftVirtualMFP s;
 		} u;
-#pragma warning(pop)
+#pragma pack(pop)
+
 		u.func = function_to_bind;
 		bound_func = reinterpret_cast<GenericMemFuncType>(u.s.codeptr);
 		union {
@@ -438,7 +435,7 @@ template <>
 struct SimplifyMemFunc<SINGLE_MEMFUNCPTR_SIZE + 3*sizeof(int) >
 {
 	template <class X, class XFuncType, class GenericMemFuncType>
-	inline static GenericClass *Convert(X *pthis, XFuncType function_to_bind, 
+	inline static GenericClass * xr_stdcall Convert(X *pthis, XFuncType function_to_bind, 
 		GenericMemFuncType &bound_func) {
 		// There is an apalling but obscure compiler bug in MSVC6 and earlier:
 		// vtable_index and 'vtordisp' are always set to 0 in the 
@@ -480,7 +477,7 @@ template <>
 struct SimplifyMemFunc<SINGLE_MEMFUNCPTR_SIZE + 3*sizeof(int) >
 {
 	template <class X, class XFuncType, class GenericMemFuncType>
-	inline static GenericClass *Convert(X *pthis, XFuncType function_to_bind, 
+	inline static GenericClass * xr_stdcall Convert(X *pthis, XFuncType function_to_bind, 
 			GenericMemFuncType &bound_func) {
 		// The member function pointer is 16 bytes long. We can't use a normal cast, but
 		// we can use a union to do the conversion.
@@ -866,8 +863,8 @@ template<class RetType=detail::DefaultVoid>
 class FastDelegate0 {
 private:
 	typedef typename detail::DefaultVoidToVoid<RetType>::type DesiredRetType;
-	typedef DesiredRetType (*StaticFunctionPtr)();
-	typedef RetType (*UnvoidStaticFunctionPtr)();
+	typedef DesiredRetType (xr_stdcall *StaticFunctionPtr)();
+	typedef RetType (xr_stdcall *UnvoidStaticFunctionPtr)();
 	typedef RetType (xr_stdcall detail::GenericClass::*GenericMemFn)();
 	typedef detail::ClosurePtr<GenericMemFn, StaticFunctionPtr, UnvoidStaticFunctionPtr> ClosureType;
 	ClosureType m_Closure;
@@ -905,12 +902,12 @@ public:
 						m_Closure.bindconstmemfunc(detail::implicit_cast<const X *>(pthis), function_to_bind);	}
 					// Static functions. We convert them into a member function call.
 					// This constructor also provides implicit conversion
-					FastDelegate0(DesiredRetType (*function_to_bind)() ) {
+					FastDelegate0(DesiredRetType (xr_stdcall *function_to_bind)() ) {
 						bind(function_to_bind);	}
 					// for efficiency, prevent creation of a temporary
-					void operator = (DesiredRetType (*function_to_bind)() ) {
+					void operator = (DesiredRetType (xr_stdcall *function_to_bind)() ) {
 						bind(function_to_bind);	}
-					inline void bind(DesiredRetType (*function_to_bind)()) {
+					inline void bind(DesiredRetType (xr_stdcall *function_to_bind)()) {
 						m_Closure.bindstaticfunc(this, &FastDelegate0::InvokeStaticFunction, 
 							function_to_bind); }
 					// Invoke the delegate
@@ -942,7 +939,7 @@ public:
 	void SetMemento(const DelegateMemento &any) { m_Closure.CopyFrom(this, any); }
 
 private:	// Invoker for static functions
-	RetType InvokeStaticFunction() const {
+	RetType xr_stdcall InvokeStaticFunction() const {
 		return (*(m_Closure.GetStaticFunction()))(); }
 };
 
@@ -951,8 +948,8 @@ template<class Param1, class RetType=detail::DefaultVoid>
 class FastDelegate1 {
 private:
 	typedef typename detail::DefaultVoidToVoid<RetType>::type DesiredRetType;
-	typedef DesiredRetType (*StaticFunctionPtr)(Param1 p1);
-	typedef RetType (*UnvoidStaticFunctionPtr)(Param1 p1);
+	typedef DesiredRetType (xr_stdcall *StaticFunctionPtr)(Param1 p1);
+	typedef RetType (xr_stdcall *UnvoidStaticFunctionPtr)(Param1 p1);
 	typedef RetType (xr_stdcall detail::GenericClass::*GenericMemFn)(Param1 p1);
 	typedef detail::ClosurePtr<GenericMemFn, StaticFunctionPtr, UnvoidStaticFunctionPtr> ClosureType;
 	ClosureType m_Closure;
@@ -990,12 +987,12 @@ public:
 						m_Closure.bindconstmemfunc(detail::implicit_cast<const X *>(pthis), function_to_bind);	}
 					// Static functions. We convert them into a member function call.
 					// This constructor also provides implicit conversion
-					FastDelegate1(DesiredRetType (*function_to_bind)(Param1 p1) ) {
+					FastDelegate1(DesiredRetType (xr_stdcall *function_to_bind)(Param1 p1) ) {
 						bind(function_to_bind);	}
 					// for efficiency, prevent creation of a temporary
-					void operator = (DesiredRetType (*function_to_bind)(Param1 p1) ) {
+					void operator = (DesiredRetType (xr_stdcall *function_to_bind)(Param1 p1) ) {
 						bind(function_to_bind);	}
-					inline void bind(DesiredRetType (*function_to_bind)(Param1 p1)) {
+					inline void bind(DesiredRetType (xr_stdcall *function_to_bind)(Param1 p1)) {
 						m_Closure.bindstaticfunc(this, &FastDelegate1::InvokeStaticFunction, 
 							function_to_bind); }
 					// Invoke the delegate
@@ -1027,7 +1024,9 @@ public:
 	void SetMemento(const DelegateMemento &any) { m_Closure.CopyFrom(this, any); }
 
 private:	// Invoker for static functions
-	RetType InvokeStaticFunction(Param1 p1) const {
+	// this -- parameter, function
+	// p1 - function,     parameter
+	RetType xr_stdcall InvokeStaticFunction(Param1 p1) const {
 		return (*(m_Closure.GetStaticFunction()))(p1); }
 };
 
@@ -1036,8 +1035,8 @@ template<class Param1, class Param2, class RetType=detail::DefaultVoid>
 class FastDelegate2 {
 private:
 	typedef typename detail::DefaultVoidToVoid<RetType>::type DesiredRetType;
-	typedef DesiredRetType (*StaticFunctionPtr)(Param1 p1, Param2 p2);
-	typedef RetType (*UnvoidStaticFunctionPtr)(Param1 p1, Param2 p2);
+	typedef DesiredRetType (xr_stdcall *StaticFunctionPtr)(Param1 p1, Param2 p2);
+	typedef RetType (xr_stdcall *UnvoidStaticFunctionPtr)(Param1 p1, Param2 p2);
 	typedef RetType (xr_stdcall detail::GenericClass::*GenericMemFn)(Param1 p1, Param2 p2);
 	typedef detail::ClosurePtr<GenericMemFn, StaticFunctionPtr, UnvoidStaticFunctionPtr> ClosureType;
 	ClosureType m_Closure;
@@ -1075,12 +1074,12 @@ public:
 						m_Closure.bindconstmemfunc(detail::implicit_cast<const X *>(pthis), function_to_bind);	}
 					// Static functions. We convert them into a member function call.
 					// This constructor also provides implicit conversion
-					FastDelegate2(DesiredRetType (*function_to_bind)(Param1 p1, Param2 p2) ) {
+					FastDelegate2(DesiredRetType (xr_stdcall *function_to_bind)(Param1 p1, Param2 p2) ) {
 						bind(function_to_bind);	}
 					// for efficiency, prevent creation of a temporary
-					void operator = (DesiredRetType (*function_to_bind)(Param1 p1, Param2 p2) ) {
+					void operator = (DesiredRetType (xr_stdcall *function_to_bind)(Param1 p1, Param2 p2) ) {
 						bind(function_to_bind);	}
-					inline void bind(DesiredRetType (*function_to_bind)(Param1 p1, Param2 p2)) {
+					inline void bind(DesiredRetType (xr_stdcall *function_to_bind)(Param1 p1, Param2 p2)) {
 						m_Closure.bindstaticfunc(this, &FastDelegate2::InvokeStaticFunction, 
 							function_to_bind); }
 					// Invoke the delegate
@@ -1112,7 +1111,7 @@ public:
 	void SetMemento(const DelegateMemento &any) { m_Closure.CopyFrom(this, any); }
 
 private:	// Invoker for static functions
-	RetType InvokeStaticFunction(Param1 p1, Param2 p2) const {
+	RetType xr_stdcall InvokeStaticFunction(Param1 p1, Param2 p2) const {
 		return (*(m_Closure.GetStaticFunction()))(p1, p2); }
 };
 
@@ -1121,8 +1120,8 @@ template<class Param1, class Param2, class Param3, class RetType=detail::Default
 class FastDelegate3 {
 private:
 	typedef typename detail::DefaultVoidToVoid<RetType>::type DesiredRetType;
-	typedef DesiredRetType (*StaticFunctionPtr)(Param1 p1, Param2 p2, Param3 p3);
-	typedef RetType (*UnvoidStaticFunctionPtr)(Param1 p1, Param2 p2, Param3 p3);
+	typedef DesiredRetType (xr_stdcall *StaticFunctionPtr)(Param1 p1, Param2 p2, Param3 p3);
+	typedef RetType (xr_stdcall *UnvoidStaticFunctionPtr)(Param1 p1, Param2 p2, Param3 p3);
 	typedef RetType (xr_stdcall detail::GenericClass::*GenericMemFn)(Param1 p1, Param2 p2, Param3 p3);
 	typedef detail::ClosurePtr<GenericMemFn, StaticFunctionPtr, UnvoidStaticFunctionPtr> ClosureType;
 	ClosureType m_Closure;
@@ -1160,12 +1159,12 @@ public:
 						m_Closure.bindconstmemfunc(detail::implicit_cast<const X *>(pthis), function_to_bind);	}
 					// Static functions. We convert them into a member function call.
 					// This constructor also provides implicit conversion
-					FastDelegate3(DesiredRetType (*function_to_bind)(Param1 p1, Param2 p2, Param3 p3) ) {
+					FastDelegate3(DesiredRetType (xr_stdcall *function_to_bind)(Param1 p1, Param2 p2, Param3 p3) ) {
 						bind(function_to_bind);	}
 					// for efficiency, prevent creation of a temporary
-					void operator = (DesiredRetType (*function_to_bind)(Param1 p1, Param2 p2, Param3 p3) ) {
+					void operator = (DesiredRetType (xr_stdcall *function_to_bind)(Param1 p1, Param2 p2, Param3 p3) ) {
 						bind(function_to_bind);	}
-					inline void bind(DesiredRetType (*function_to_bind)(Param1 p1, Param2 p2, Param3 p3)) {
+					inline void bind(DesiredRetType (xr_stdcall *function_to_bind)(Param1 p1, Param2 p2, Param3 p3)) {
 						m_Closure.bindstaticfunc(this, &FastDelegate3::InvokeStaticFunction, 
 							function_to_bind); }
 					// Invoke the delegate
@@ -1197,7 +1196,7 @@ public:
 	void SetMemento(const DelegateMemento &any) { m_Closure.CopyFrom(this, any); }
 
 private:	// Invoker for static functions
-	RetType InvokeStaticFunction(Param1 p1, Param2 p2, Param3 p3) const {
+	RetType xr_stdcall InvokeStaticFunction(Param1 p1, Param2 p2, Param3 p3) const {
 		return (*(m_Closure.GetStaticFunction()))(p1, p2, p3); }
 };
 
@@ -1206,8 +1205,8 @@ template<class Param1, class Param2, class Param3, class Param4, class RetType=d
 class FastDelegate4 {
 private:
 	typedef typename detail::DefaultVoidToVoid<RetType>::type DesiredRetType;
-	typedef DesiredRetType (*StaticFunctionPtr)(Param1 p1, Param2 p2, Param3 p3, Param4 p4);
-	typedef RetType (*UnvoidStaticFunctionPtr)(Param1 p1, Param2 p2, Param3 p3, Param4 p4);
+	typedef DesiredRetType (xr_stdcall *StaticFunctionPtr)(Param1 p1, Param2 p2, Param3 p3, Param4 p4);
+	typedef RetType (xr_stdcall *UnvoidStaticFunctionPtr)(Param1 p1, Param2 p2, Param3 p3, Param4 p4);
 	typedef RetType (xr_stdcall detail::GenericClass::*GenericMemFn)(Param1 p1, Param2 p2, Param3 p3, Param4 p4);
 	typedef detail::ClosurePtr<GenericMemFn, StaticFunctionPtr, UnvoidStaticFunctionPtr> ClosureType;
 	ClosureType m_Closure;
@@ -1245,12 +1244,12 @@ public:
 						m_Closure.bindconstmemfunc(detail::implicit_cast<const X *>(pthis), function_to_bind);	}
 					// Static functions. We convert them into a member function call.
 					// This constructor also provides implicit conversion
-					FastDelegate4(DesiredRetType (*function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4) ) {
+					FastDelegate4(DesiredRetType (xr_stdcall *function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4) ) {
 						bind(function_to_bind);	}
 					// for efficiency, prevent creation of a temporary
-					void operator = (DesiredRetType (*function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4) ) {
+					void operator = (DesiredRetType (xr_stdcall *function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4) ) {
 						bind(function_to_bind);	}
-					inline void bind(DesiredRetType (*function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4)) {
+					inline void bind(DesiredRetType (xr_stdcall *function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4)) {
 						m_Closure.bindstaticfunc(this, &FastDelegate4::InvokeStaticFunction, 
 							function_to_bind); }
 					// Invoke the delegate
@@ -1282,7 +1281,7 @@ public:
 	void SetMemento(const DelegateMemento &any) { m_Closure.CopyFrom(this, any); }
 
 private:	// Invoker for static functions
-	RetType InvokeStaticFunction(Param1 p1, Param2 p2, Param3 p3, Param4 p4) const {
+	RetType xr_stdcall InvokeStaticFunction(Param1 p1, Param2 p2, Param3 p3, Param4 p4) const {
 		return (*(m_Closure.GetStaticFunction()))(p1, p2, p3, p4); }
 };
 
@@ -1291,8 +1290,8 @@ template<class Param1, class Param2, class Param3, class Param4, class Param5, c
 class FastDelegate5 {
 private:
 	typedef typename detail::DefaultVoidToVoid<RetType>::type DesiredRetType;
-	typedef DesiredRetType (*StaticFunctionPtr)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5);
-	typedef RetType (*UnvoidStaticFunctionPtr)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5);
+	typedef DesiredRetType (xr_stdcall *StaticFunctionPtr)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5);
+	typedef RetType (xr_stdcall *UnvoidStaticFunctionPtr)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5);
 	typedef RetType (xr_stdcall detail::GenericClass::*GenericMemFn)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5);
 	typedef detail::ClosurePtr<GenericMemFn, StaticFunctionPtr, UnvoidStaticFunctionPtr> ClosureType;
 	ClosureType m_Closure;
@@ -1330,12 +1329,12 @@ public:
 						m_Closure.bindconstmemfunc(detail::implicit_cast<const X *>(pthis), function_to_bind);	}
 					// Static functions. We convert them into a member function call.
 					// This constructor also provides implicit conversion
-					FastDelegate5(DesiredRetType (*function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5) ) {
+					FastDelegate5(DesiredRetType (xr_stdcall *function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5) ) {
 						bind(function_to_bind);	}
 					// for efficiency, prevent creation of a temporary
-					void operator = (DesiredRetType (*function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5) ) {
+					void operator = (DesiredRetType (xr_stdcall *function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5) ) {
 						bind(function_to_bind);	}
-					inline void bind(DesiredRetType (*function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5)) {
+					inline void bind(DesiredRetType (xr_stdcall *function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5)) {
 						m_Closure.bindstaticfunc(this, &FastDelegate5::InvokeStaticFunction, 
 							function_to_bind); }
 					// Invoke the delegate
@@ -1367,7 +1366,7 @@ public:
 	void SetMemento(const DelegateMemento &any) { m_Closure.CopyFrom(this, any); }
 
 private:	// Invoker for static functions
-	RetType InvokeStaticFunction(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5) const {
+	RetType xr_stdcall InvokeStaticFunction(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5) const {
 		return (*(m_Closure.GetStaticFunction()))(p1, p2, p3, p4, p5); }
 };
 
@@ -1376,8 +1375,8 @@ template<class Param1, class Param2, class Param3, class Param4, class Param5, c
 class FastDelegate6 {
 private:
 	typedef typename detail::DefaultVoidToVoid<RetType>::type DesiredRetType;
-	typedef DesiredRetType (*StaticFunctionPtr)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6);
-	typedef RetType (*UnvoidStaticFunctionPtr)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6);
+	typedef DesiredRetType (xr_stdcall *StaticFunctionPtr)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6);
+	typedef RetType (xr_stdcall *UnvoidStaticFunctionPtr)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6);
 	typedef RetType (xr_stdcall detail::GenericClass::*GenericMemFn)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6);
 	typedef detail::ClosurePtr<GenericMemFn, StaticFunctionPtr, UnvoidStaticFunctionPtr> ClosureType;
 	ClosureType m_Closure;
@@ -1415,12 +1414,12 @@ public:
 						m_Closure.bindconstmemfunc(detail::implicit_cast<const X *>(pthis), function_to_bind);	}
 					// Static functions. We convert them into a member function call.
 					// This constructor also provides implicit conversion
-					FastDelegate6(DesiredRetType (*function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6) ) {
+					FastDelegate6(DesiredRetType (xr_stdcall *function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6) ) {
 						bind(function_to_bind);	}
 					// for efficiency, prevent creation of a temporary
-					void operator = (DesiredRetType (*function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6) ) {
+					void operator = (DesiredRetType (xr_stdcall *function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6) ) {
 						bind(function_to_bind);	}
-					inline void bind(DesiredRetType (*function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6)) {
+					inline void bind(DesiredRetType (xr_stdcall *function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6)) {
 						m_Closure.bindstaticfunc(this, &FastDelegate6::InvokeStaticFunction, 
 							function_to_bind); }
 					// Invoke the delegate
@@ -1452,7 +1451,7 @@ public:
 	void SetMemento(const DelegateMemento &any) { m_Closure.CopyFrom(this, any); }
 
 private:	// Invoker for static functions
-	RetType InvokeStaticFunction(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6) const {
+	RetType xr_stdcall InvokeStaticFunction(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6) const {
 		return (*(m_Closure.GetStaticFunction()))(p1, p2, p3, p4, p5, p6); }
 };
 
@@ -1461,8 +1460,8 @@ template<class Param1, class Param2, class Param3, class Param4, class Param5, c
 class FastDelegate7 {
 private:
 	typedef typename detail::DefaultVoidToVoid<RetType>::type DesiredRetType;
-	typedef DesiredRetType (*StaticFunctionPtr)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7);
-	typedef RetType (*UnvoidStaticFunctionPtr)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7);
+	typedef DesiredRetType (xr_stdcall *StaticFunctionPtr)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7);
+	typedef RetType (xr_stdcall *UnvoidStaticFunctionPtr)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7);
 	typedef RetType (xr_stdcall detail::GenericClass::*GenericMemFn)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7);
 	typedef detail::ClosurePtr<GenericMemFn, StaticFunctionPtr, UnvoidStaticFunctionPtr> ClosureType;
 	ClosureType m_Closure;
@@ -1500,12 +1499,12 @@ public:
 						m_Closure.bindconstmemfunc(detail::implicit_cast<const X *>(pthis), function_to_bind);	}
 					// Static functions. We convert them into a member function call.
 					// This constructor also provides implicit conversion
-					FastDelegate7(DesiredRetType (*function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7) ) {
+					FastDelegate7(DesiredRetType (xr_stdcall *function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7) ) {
 						bind(function_to_bind);	}
 					// for efficiency, prevent creation of a temporary
-					void operator = (DesiredRetType (*function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7) ) {
+					void operator = (DesiredRetType (xr_stdcall *function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7) ) {
 						bind(function_to_bind);	}
-					inline void bind(DesiredRetType (*function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7)) {
+					inline void bind(DesiredRetType (xr_stdcall *function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7)) {
 						m_Closure.bindstaticfunc(this, &FastDelegate7::InvokeStaticFunction, 
 							function_to_bind); }
 					// Invoke the delegate
@@ -1537,7 +1536,7 @@ public:
 	void SetMemento(const DelegateMemento &any) { m_Closure.CopyFrom(this, any); }
 
 private:	// Invoker for static functions
-	RetType InvokeStaticFunction(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7) const {
+	RetType xr_stdcall InvokeStaticFunction(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7) const {
 		return (*(m_Closure.GetStaticFunction()))(p1, p2, p3, p4, p5, p6, p7); }
 };
 
@@ -1546,8 +1545,8 @@ template<class Param1, class Param2, class Param3, class Param4, class Param5, c
 class FastDelegate8 {
 private:
 	typedef typename detail::DefaultVoidToVoid<RetType>::type DesiredRetType;
-	typedef DesiredRetType (*StaticFunctionPtr)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7, Param8 p8);
-	typedef RetType (*UnvoidStaticFunctionPtr)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7, Param8 p8);
+	typedef DesiredRetType (xr_stdcall *StaticFunctionPtr)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7, Param8 p8);
+	typedef RetType (xr_stdcall *UnvoidStaticFunctionPtr)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7, Param8 p8);
 	typedef RetType (xr_stdcall detail::GenericClass::*GenericMemFn)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7, Param8 p8);
 	typedef detail::ClosurePtr<GenericMemFn, StaticFunctionPtr, UnvoidStaticFunctionPtr> ClosureType;
 	ClosureType m_Closure;
@@ -1585,12 +1584,12 @@ public:
 						m_Closure.bindconstmemfunc(detail::implicit_cast<const X *>(pthis), function_to_bind);	}
 					// Static functions. We convert them into a member function call.
 					// This constructor also provides implicit conversion
-					FastDelegate8(DesiredRetType (*function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7, Param8 p8) ) {
+					FastDelegate8(DesiredRetType (xr_stdcall *function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7, Param8 p8) ) {
 						bind(function_to_bind);	}
 					// for efficiency, prevent creation of a temporary
-					void operator = (DesiredRetType (*function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7, Param8 p8) ) {
+					void operator = (DesiredRetType (xr_stdcall *function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7, Param8 p8) ) {
 						bind(function_to_bind);	}
-					inline void bind(DesiredRetType (*function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7, Param8 p8)) {
+					inline void bind(DesiredRetType (xr_stdcall *function_to_bind)(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7, Param8 p8)) {
 						m_Closure.bindstaticfunc(this, &FastDelegate8::InvokeStaticFunction, 
 							function_to_bind); }
 					// Invoke the delegate
@@ -1622,7 +1621,7 @@ public:
 	void SetMemento(const DelegateMemento &any) { m_Closure.CopyFrom(this, any); }
 
 private:	// Invoker for static functions
-	RetType InvokeStaticFunction(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7, Param8 p8) const {
+	RetType xr_stdcall InvokeStaticFunction(Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7, Param8 p8) const {
 		return (*(m_Closure.GetStaticFunction()))(p1, p2, p3, p4, p5, p6, p7, p8); }
 };
 
@@ -1676,7 +1675,7 @@ public:
 			: BaseType(pthis, function_to_bind)
 		{  }
 
-		FastDelegate(R (*function_to_bind)(  ))
+		FastDelegate(R (xr_stdcall *function_to_bind)(  ))
 			: BaseType(function_to_bind)  { }
 			void operator = (const BaseType &x)  {	  
 				*static_cast<BaseType*>(this) = x; }
@@ -1713,7 +1712,7 @@ public:
 			: BaseType(pthis, function_to_bind)
 		{  }
 
-		FastDelegate(R (*function_to_bind)( Param1 p1 ))
+		FastDelegate(R (xr_stdcall *function_to_bind)( Param1 p1 ))
 			: BaseType(function_to_bind)  { }
 			void operator = (const BaseType &x)  {	  
 				*static_cast<BaseType*>(this) = x; }
@@ -1750,7 +1749,7 @@ public:
 			: BaseType(pthis, function_to_bind)
 		{  }
 
-		FastDelegate(R (*function_to_bind)( Param1 p1, Param2 p2 ))
+		FastDelegate(R (xr_stdcall *function_to_bind)( Param1 p1, Param2 p2 ))
 			: BaseType(function_to_bind)  { }
 			void operator = (const BaseType &x)  {	  
 				*static_cast<BaseType*>(this) = x; }
@@ -1787,7 +1786,7 @@ public:
 			: BaseType(pthis, function_to_bind)
 		{  }
 
-		FastDelegate(R (*function_to_bind)( Param1 p1, Param2 p2, Param3 p3 ))
+		FastDelegate(R (xr_stdcall *function_to_bind)( Param1 p1, Param2 p2, Param3 p3 ))
 			: BaseType(function_to_bind)  { }
 			void operator = (const BaseType &x)  {	  
 				*static_cast<BaseType*>(this) = x; }
@@ -1824,7 +1823,7 @@ public:
 			: BaseType(pthis, function_to_bind)
 		{  }
 
-		FastDelegate(R (*function_to_bind)( Param1 p1, Param2 p2, Param3 p3, Param4 p4 ))
+		FastDelegate(R (xr_stdcall *function_to_bind)( Param1 p1, Param2 p2, Param3 p3, Param4 p4 ))
 			: BaseType(function_to_bind)  { }
 			void operator = (const BaseType &x)  {	  
 				*static_cast<BaseType*>(this) = x; }
@@ -1861,7 +1860,7 @@ public:
 			: BaseType(pthis, function_to_bind)
 		{  }
 
-		FastDelegate(R (*function_to_bind)( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5 ))
+		FastDelegate(R (xr_stdcall *function_to_bind)( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5 ))
 			: BaseType(function_to_bind)  { }
 			void operator = (const BaseType &x)  {	  
 				*static_cast<BaseType*>(this) = x; }
@@ -1898,7 +1897,7 @@ public:
 			: BaseType(pthis, function_to_bind)
 		{  }
 
-		FastDelegate(R (*function_to_bind)( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6 ))
+		FastDelegate(R (xr_stdcall *function_to_bind)( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6 ))
 			: BaseType(function_to_bind)  { }
 			void operator = (const BaseType &x)  {	  
 				*static_cast<BaseType*>(this) = x; }
@@ -1935,7 +1934,7 @@ public:
 			: BaseType(pthis, function_to_bind)
 		{  }
 
-		FastDelegate(R (*function_to_bind)( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7 ))
+		FastDelegate(R (xr_stdcall *function_to_bind)( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7 ))
 			: BaseType(function_to_bind)  { }
 			void operator = (const BaseType &x)  {	  
 				*static_cast<BaseType*>(this) = x; }
@@ -1972,7 +1971,7 @@ public:
 			: BaseType(pthis, function_to_bind)
 		{  }
 
-		FastDelegate(R (*function_to_bind)( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7, Param8 p8 ))
+		FastDelegate(R (xr_stdcall *function_to_bind)( Param1 p1, Param2 p2, Param3 p3, Param4 p4, Param5 p5, Param6 p6, Param7 p7, Param8 p8 ))
 			: BaseType(function_to_bind)  { }
 			void operator = (const BaseType &x)  {	  
 				*static_cast<BaseType*>(this) = x; }
@@ -2123,4 +2122,3 @@ template <typename A,typename B,typename C>
 } // namespace fastdelegate
 
 #endif // !defined(FASTDELEGATE_H)
-

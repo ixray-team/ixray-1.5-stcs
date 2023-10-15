@@ -33,10 +33,11 @@ void Group::construct( const shared_str& group_id, UpgradeBase& parent_upgrade, 
 	LPCSTR	upgrades_str = pSettings->r_string(m_id, "elements");
 	VERIFY2( upgrades_str, make_string( "in upgrade group <%s> elements are empty!", m_id.c_str() ) );
 
-	PSTR	temp  = (PSTR)_alloca( (xr_strlen(upgrades_str) + 1) * sizeof(char) );
+	u32 const buffer_size	= (xr_strlen(upgrades_str) + 1) * sizeof(char);
+	PSTR	temp  = (PSTR)_alloca( buffer_size );
 	for ( int n = _GetItemCount(upgrades_str), i = 0; i < n; ++i )
 	{
-		UpgradeBase* upgrade_p = (UpgradeBase*)manager_r.add_upgrade( _GetItem( upgrades_str, i, temp ), *this );
+		UpgradeBase* upgrade_p = (UpgradeBase*)manager_r.add_upgrade( _GetItem( upgrades_str, i, temp, buffer_size ), *this );
 		m_included_upgrades.push_back( upgrade_p );
 	}
 }
@@ -56,7 +57,7 @@ void Group::log_hierarchy( LPCSTR nest )
 	u32 sz = (xr_strlen(nest) + 4) * sizeof(char);
 	PSTR	nest2 = (PSTR)_alloca( sz );
 	xr_strcpy( nest2, sz, nest );
-	strcat( nest2, "   " );
+	xr_strcat( nest2, sz, "   " );
 	Msg( "%s(g) %s", nest2, m_id.c_str() );
 
 	Upgrades_type::iterator ib = m_included_upgrades.begin();

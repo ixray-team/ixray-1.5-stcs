@@ -8,10 +8,6 @@
 #define BACKUP_FILE_LEVEL 5
 
 class XRCORE_API EFS_Utils {
-	using HANDLEMap = xr_map<xr_string, void*>;
-	using HANDLEPairIt = HANDLEMap::iterator;
-
-    HANDLEMap 	m_LockFiles;
 protected:
 	bool 		GetOpenNameInternal		(LPCSTR initial, LPSTR buffer, int sz_buf, bool bMulti=false, LPCSTR offset=0, int start_flt_ext=-1 );
 public:
@@ -20,7 +16,7 @@ public:
 	void 		_initialize		(){}
     void 		_destroy		(){}
 
-	LPCSTR		GenerateName	(LPCSTR base_path, LPCSTR base_name, LPCSTR def_ext, LPSTR out_name);
+	LPCSTR		GenerateName	(LPCSTR base_path, LPCSTR base_name, LPCSTR def_ext, LPSTR out_name, u32 const out_name_size);
 
 	bool 		GetOpenName		(LPCSTR initial, string_path& buffer, int sz_buf, bool bMulti=false, LPCSTR offset=0, int start_flt_ext=-1 );
 	bool 		GetOpenName		(LPCSTR initial, xr_string& buf, bool bMulti=false, LPCSTR offset=0, int start_flt_ext=-1 );
@@ -32,12 +28,8 @@ public:
 
 	xr_string 	AppendFolderToName(xr_string& tex_name, int depth, BOOL full_name);
 
-	LPCSTR		AppendFolderToName(LPSTR tex_name, int depth, BOOL full_name);
-	LPCSTR		AppendFolderToName(LPCSTR src_name, LPSTR dest_name, int depth, BOOL full_name);
-
-	BOOL		LockFile		(LPCSTR fn, bool bLog=true);
-	BOOL		UnlockFile		(LPCSTR fn, bool bLog=true);
-	BOOL		CheckLocking	(LPCSTR fn, bool bOnlySelf, bool bMsg);
+	LPCSTR		AppendFolderToName(LPSTR tex_name, u32 const tex_name_size, int depth, BOOL full_name);
+	LPCSTR		AppendFolderToName(LPCSTR src_name, LPSTR dest_name, u32 const dest_name_size, int depth, BOOL full_name);
 
     xr_string	ChangeFileExt	(LPCSTR src, LPCSTR ext);
     xr_string	ChangeFileExt	(const xr_string& src, LPCSTR ext);

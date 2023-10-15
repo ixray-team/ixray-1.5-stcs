@@ -1000,10 +1000,11 @@ bool game_sv_CaptureTheArtefact::LoadAnomaliesItems(
 	if (!items_count)
 		return	false;
 
-	u32			str_size = xr_strlen(anomaly_string);
-	PSTR		temp_str = static_cast<PSTR>(_alloca((str_size + 1)*sizeof(char)));
+	u32	const str_size = xr_strlen(anomaly_string);
+	u32 const buffer_size	= (str_size + 1)*sizeof(char);
+	PSTR		temp_str = static_cast<PSTR>(_alloca(buffer_size));
 	for (u32 i = 0; i < items_count; ++i) {
-		_GetItem				(anomaly_string, i, temp_str);
+		_GetItem				(anomaly_string, i, temp_str, buffer_size);
 		u16 anomaly_id			= GetMinUsedAnomalyID(temp_str);
 		if (anomaly_id)
 			destination.push_back	(std::make_pair(temp_str, anomaly_id));

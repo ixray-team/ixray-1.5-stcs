@@ -115,6 +115,7 @@ using PHABS_DBG_I = PHABS_DBG_V::iterator;
 
 extern PHABS_DBG_V	dbg_draw_abstruct0;
 extern PHABS_DBG_V	dbg_draw_abstruct1;
+
 void DBG_DrawStatBeforeFrameStep( );
 void DBG_DrawStatAfterFrameStep( );
 void DBG_RenderUpdate( ); 
@@ -144,10 +145,7 @@ void PH_DBG_Render( );
 void PH_DBG_Clear( );
 LPCSTR PH_DBG_ObjectTrackName( );
 ////////////////////////////////////////////////
-std::string dump_string( LPCSTR name, const Fvector &v );
-std::string dump_string( LPCSTR name, const Fmatrix &form );
-void dump( LPCSTR name, const Fmatrix &form );
-void dump( LPCSTR name, const Fvector &v );
+
 
 /////////////////////////////////////////////////
 void DBG_PH_NetRelcase( CObject* obj );

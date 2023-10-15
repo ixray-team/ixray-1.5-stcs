@@ -48,8 +48,7 @@ public:
 	void						LoadArchive		(archive& A, LPCSTR entrypoint=NULL);
 
 private:
-	struct file_pred
-	{	
+	struct file_pred {
 		IC bool operator()	(const file& x, const file& y) const
 		{	return xr_strcmp(x.name,y.name)<0;	}
 	};
@@ -178,7 +177,7 @@ public:
 	bool						load_all_unloaded_archives();
 	void						unload_archive		(archive& A);
 
-	void						auth_generate		(xr_vector<xr_string>&	ignore, xr_vector<xr_string>&	important);
+	void						auth_generate		(xr_vector<shared_str>&	ignore, xr_vector<shared_str>&	important);
 	u64							auth_get			();
 	void						auth_runtime		(void*);
 

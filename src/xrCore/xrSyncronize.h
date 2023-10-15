@@ -1,6 +1,5 @@
 #ifndef xrSyncronizeH
 #define xrSyncronizeH
-#pragma once
 
 #if 0//def DEBUG
 #	define PROFILE_CRITICAL_SECTIONS
@@ -33,6 +32,7 @@ public:
 	};
 
 private:
+	xrCriticalSection(xrCriticalSection const & copy) {}; //noncopyable
 	void*				pmutex;
 #ifdef PROFILE_CRITICAL_SECTIONS
 	LPCSTR				m_id;

@@ -366,7 +366,7 @@
     <ClInclude Include="cpuid.h" />
     <ClInclude Include="ELocatorAPI.h" />
     <ClInclude Include="fastdelegate.h" />
-    <CustomBuild Include="FileSystem.h" />
+    <ClInclude Include="FileSystem.h" />
     <ClInclude Include="file_stream_reader.h" />
     <ClInclude Include="FixedMap.h" />
     <ClInclude Include="FixedSet.h" />
@@ -377,11 +377,11 @@
     <ClInclude Include="intrusive_ptr.h" />
     <ClInclude Include="intrusive_ptr_inline.h" />
     <ClInclude Include="LocatorAPI_defs.h" />
-    <CustomBuild Include="LocatorAPI_Notifications.h">
+    <ClInclude Include="LocatorAPI_Notifications.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </CustomBuild>
+    </ClInclude>
     <ClInclude Include="log.h" />
     <ClInclude Include="lzhuf.h" />
     <ClInclude Include="memory_monitor.h" />
@@ -446,7 +446,6 @@
     <ClInclude Include="_std_extensions.h" />
     <ClInclude Include="_stl_extensions.h" />
     <ClInclude Include="_types.h" />
-    <ClInclude Include="_type_traits.h" />
     <ClInclude Include="_vector2.h" />
     <ClInclude Include="_vector3d.h" />
     <ClInclude Include="_vector4.h" />

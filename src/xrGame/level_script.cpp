@@ -521,21 +521,20 @@ Fbox get_bounding_volume()
 	return Level().ObjectSpace.GetBoundingVolume();
 }
 
-void iterate_sounds					(LPCSTR prefix, u32 max_count, const CScriptCallbackEx<void> &callback)
-{
-	for (int j=0, N = _GetItemCount(prefix); j<N; ++j) {
+void iterate_sounds(LPCSTR prefix, u32 max_count, const CScriptCallbackEx<void>& callback) {
+	for (int j = 0, N = _GetItemCount(prefix); j < N; ++j) {
 		string_path					fn, s;
 		LPSTR						S = (LPSTR)&s;
-		_GetItem					(prefix,j,S);
-		if (FS.exist(fn,"$game_sounds$",S,".ogg"))
-			callback				(prefix);
+		_GetItem(prefix, j, s);
+		if (FS.exist(fn, "$game_sounds$", S, ".ogg"))
+			callback(prefix);
 
-		for (u32 i=0; i<max_count; ++i)
+		for (u32 i = 0; i < max_count; ++i)
 		{
 			string_path					name;
-			xr_sprintf					(name,"%s%d",S,i);
-			if (FS.exist(fn,"$game_sounds$",name,".ogg"))
-				callback			(name);
+			xr_sprintf(name, "%s%d", S, i);
+			if (FS.exist(fn, "$game_sounds$", name, ".ogg"))
+				callback(name);
 		}
 	}
 }

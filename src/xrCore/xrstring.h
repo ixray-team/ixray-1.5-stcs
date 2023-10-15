@@ -28,7 +28,7 @@ struct		XRCORE_API	str_hash_function {
 #pragma warning(default : 4200)
 
 struct str_container_impl;
-
+class IWriter;
 //////////////////////////////////////////////////////////////////////////
 class		XRCORE_API	str_container
 {
@@ -42,6 +42,7 @@ public:
 	str_value*			dock			(str_c value);
 	void				clean			();
 	void				dump			();
+	void				dump			(IWriter* W);
 	void				verify			();
 	u32					stat_economy	();
 #ifdef PROFILE_CRITICAL_SECTIONS
@@ -85,7 +86,7 @@ public:
 	u32					size		()						const	{	if (0==p_) return 0; else return p_->dwLength;	}
 	void				swap		(shared_str & rhs)				{	str_value* tmp = p_; p_ = rhs.p_; rhs.p_ = tmp;	}
 	bool				equal		(const shared_str & rhs) const	{	return (p_ == rhs.p_);							}
-    shared_str& __cdecl	sprintf		(const char* format, ...)		{
+	shared_str& __cdecl	printf		(const char* format, ...)		{
 		string4096 	buf;
 		va_list		p;
 		va_start	(p,format);

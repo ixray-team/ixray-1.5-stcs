@@ -660,25 +660,25 @@ void	game_sv_mp::SetSkin					(CSE_Abstract* E, u16 Team, u16 ID)
 	//-------------------------------------------
 	string256 SkinName;
 	xr_strcpy(SkinName, pSettings->r_string("mp_skins_path", "skin_path"));
-	//çàãðóæåíû ëè ñêèíû äëÿ ýòîé êîììàíäû
+	//Ð·Ð°Ð³Ñ€ÑƒÐ¶ÐµÐ½Ñ‹ Ð»Ð¸ ÑÐºÐ¸Ð½Ñ‹ Ð´Ð»Ñ ÑÑ‚Ð¾Ð¹ ÐºÐ¾Ð¼Ð¼Ð°Ð½Ð´Ñ‹
 
 	if (!TeamList.empty()	&&
 		TeamList.size() > Team	&&
 		!TeamList[Team].aSkins.empty())
 	{
-		//çàãðóæåíî ëè äîñòàòî÷íî ñêèíîâ äëÿ ýòîé êîììàíäû
+		//Ð·Ð°Ð³Ñ€ÑƒÐ¶ÐµÐ½Ð¾ Ð»Ð¸ Ð´Ð¾ÑÑ‚Ð°Ñ‚Ð¾Ñ‡Ð½Ð¾ ÑÐºÐ¸Ð½Ð¾Ð² Ð´Ð»Ñ ÑÑ‚Ð¾Ð¹ ÐºÐ¾Ð¼Ð¼Ð°Ð½Ð´Ñ‹
 		if (TeamList[Team].aSkins.size() > ID)
 		{
-			std::strcat(SkinName, TeamList[Team].aSkins[ID].c_str());
+			xr_strcat(SkinName, TeamList[Team].aSkins[ID].c_str());
 		}
 		else
-			std::strcat(SkinName, TeamList[Team].aSkins[0].c_str());
+			xr_strcat(SkinName, TeamList[Team].aSkins[0].c_str());
 	}
 	else
 	{
 		R_ASSERT2(0,"Skin not loaded");
 	};
-	std::strcat(SkinName, ".ogf");
+	xr_strcat(SkinName, ".ogf");
 	Msg("* Skin - %s", SkinName);
 	int len = xr_strlen(SkinName);
 	R_ASSERT2(len < 64, "Skin Name is too LONG!!!");
@@ -709,10 +709,11 @@ bool	game_sv_mp::GetPosAngleFromActor				(ClientID id, Fvector& Pos, Fvector &An
 TeamStruct* game_sv_mp::GetTeamData				(u32 Team)
 {
 	VERIFY(TeamList.size());
-	if (TeamList.empty()) return NULL;
+	if (TeamList.empty())
+		return NULL;
 	
-	VERIFY(TeamList.size()>Team);
-	if (TeamList.size()<=Team) return NULL;
+	if (TeamList.size()<=Team)
+		return NULL;
 
 	return &(TeamList[Team]);
 };
@@ -979,8 +980,8 @@ s32 game_sv_mp::ExcludeBanTimeFromVoteStr(char const * vote_string, char* new_vo
 		return 0;
 	
 	s32 ret_time = 0;
-	strncpy(new_vote_str, vote_string, new_vote_str_size - 1);
-	new_vote_str[new_vote_str_size - 1] = 0;
+	strncpy_s(new_vote_str, new_vote_str_size, vote_string, new_vote_str_size - 1);
+	new_vote_str[xr_strlen(vote_string)] = 0;
 	char * start_time_str = strrchr(new_vote_str, ' ');
 	if (!start_time_str || !xr_strlen(++start_time_str))
 		return 0;
@@ -994,9 +995,9 @@ struct SearcherClientByName
 	string128 player_name;
 	SearcherClientByName(LPCSTR name)
 	{
-		strncpy_s(player_name, sizeof(player_name), name, sizeof(player_name) - 1);
+		strncpy_s(player_name, name, sizeof(player_name) - 1);
 		xr_strlwr(player_name);
-		player_name[sizeof(player_name) - 1] = 0;
+		player_name[xr_strlen(name)] = 0;
 	}
 	bool operator()(IClient* client)
 	{
@@ -1052,7 +1053,7 @@ void game_sv_mp::OnVoteStart				(LPCSTR VoteCommand, ClientID sender)
 			string256 WeatherTime = "", WeatherName = "";
 			sscanf(CommandParams, "%s %s", WeatherName, WeatherTime );
 
-			m_pVoteCommand.sprintf("%s %s", votecommands[i].command, WeatherTime);
+			m_pVoteCommand.printf("%s %s", votecommands[i].command, WeatherTime);
 			xr_sprintf(resVoteCommand, "%s %s", votecommands[i].name, WeatherName);
 		} else if (!_stricmp(votecommands[i].name, "changemap"))
 		{
@@ -1083,10 +1084,10 @@ void game_sv_mp::OnVoteStart				(LPCSTR VoteCommand, ClientID sender)
 			IClient*	tmp_client = m_server->FindClient(tmp_predicate);
 			if (tmp_client)
 			{
-				m_pVoteCommand.sprintf("sv_kick_id %u", tmp_client->ID.value());
+				m_pVoteCommand.printf("sv_kick_id %u", tmp_client->ID.value());
 			} else
 			{
-				m_pVoteCommand.sprintf("%s %s", votecommands[i].command, CommandParams);	//backward compatibility
+				m_pVoteCommand.printf("%s %s", votecommands[i].command, CommandParams);	//backward compatibility
 			}
 			xr_strcpy(resVoteCommand, VoteCommand);
 		} else if (!_stricmp(votecommands[i].name, "ban"))
@@ -1099,7 +1100,7 @@ void game_sv_mp::OnVoteStart				(LPCSTR VoteCommand, ClientID sender)
 			IClient*	tmp_client = m_server->FindClient(tmp_predicate);
 			if (tmp_client)
 			{
-				m_pVoteCommand.sprintf("sv_banplayer %u %d", tmp_client->ID.value(), ban_time);
+				m_pVoteCommand.printf("sv_banplayer %u %d", tmp_client->ID.value(), ban_time);
 			} else
 			{
 				Msg("! ERROR: can't find player with name %s", tmp_victim_name);
@@ -1111,13 +1112,13 @@ void game_sv_mp::OnVoteStart				(LPCSTR VoteCommand, ClientID sender)
 			xr_strcpy(resVoteCommand, VoteCommand);
 		} else
 		{
-			m_pVoteCommand.sprintf("%s %s", votecommands[i].command, CommandParams);
+			m_pVoteCommand.printf("%s %s", votecommands[i].command, CommandParams);
 			xr_strcpy(resVoteCommand, VoteCommand);
 		}		
 	}
 	else
 	{
-		m_pVoteCommand.sprintf("%s", VoteCommand+1);
+		m_pVoteCommand.printf("%s", VoteCommand+1);
 	};
 
 	struct vote_status_setter

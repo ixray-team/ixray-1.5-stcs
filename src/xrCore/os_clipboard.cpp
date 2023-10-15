@@ -6,6 +6,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#pragma hdrstop
 #include "os_clipboard.h"
 
 void os_clipboard::copy_to_clipboard	( LPCSTR buf )
@@ -41,8 +42,8 @@ void os_clipboard::paste_from_clipboard	( LPSTR buffer, u32 const& buffer_size )
 		return;
 
 	LPCSTR clipdata			= (LPCSTR)GlobalLock( hmem );
-	strncpy					( buffer, clipdata, buffer_size );
-	buffer[buffer_size]		= 0;
+	strncpy_s				( buffer, buffer_size, clipdata, buffer_size - 1 );
+	buffer[buffer_size - 1]	= 0;
 	for ( u32 i = 0; i < strlen( buffer ); ++i )
 	{
 		char c = buffer[i];
@@ -80,7 +81,7 @@ void os_clipboard::update_clipboard		( LPCSTR string )
 	xr_strcpy				(buffer, buffer_size, memory);
 	GlobalUnlock			(handle);
 
-	strcat					(buffer, string);
+	xr_strcat				(buffer, buffer_size, string);
 	CloseClipboard			();
 	copy_to_clipboard		(buffer);
 #ifdef _EDITOR

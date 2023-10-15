@@ -69,12 +69,12 @@ int	_GetItemCount ( LPCSTR src, char separator )
 	return		cnt;
 }
 
-LPSTR _GetItem ( LPCSTR src, int index, LPSTR dst, char separator, LPCSTR def, bool trim )
+LPSTR _GetItem ( LPCSTR src, int index, LPSTR dst, u32 const dst_size, char separator, LPCSTR def, bool trim )
 {
 	LPCSTR	ptr;
 	ptr			= _SetPos	( src, index, separator );
 	if( ptr )	_CopyVal	( ptr, dst, separator );
-		else	strcpy		( dst, def );
+		else	xr_strcpy	( dst, dst_size, def );
 	if (trim)	_Trim		( dst );
 	return		dst;
 }

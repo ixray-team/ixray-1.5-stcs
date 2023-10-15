@@ -237,7 +237,7 @@ void CLocatorAPI::Register		(LPCSTR name, u32 vfs, u32 crc, u32 ptr, u32 size_re
 	while (temp[0]) 
 	{
 		_splitpath		(temp, path, folder, 0, 0 );
-        strcat			(path,folder);
+        xr_strcat			(path,folder);
 		if (!exist(path))	
 		{
 			desc.name			= xr_strdup(path);
@@ -299,6 +299,7 @@ void CLocatorAPI::LoadArchive(archive& A, LPCSTR entrypoint)
 {
 	// Create base path
 	string_path					fs_entry_point;
+	fs_entry_point[0]			= 0;
 	if(A.header)
 	{
 
@@ -306,10 +307,14 @@ void CLocatorAPI::LoadArchive(archive& A, LPCSTR entrypoint)
 		if(0==_stricmp(read_path.c_str(),"gamedata"))
 		{
 			read_path				= "$fs_root$";
-			FS_Path* root			= FS.get_path(read_path.c_str());
-			R_ASSERT3				(root, "path not found ", read_path.c_str());
+			PathPairIt P			= pathes.find(read_path.c_str()); 
+			if(P!=pathes.end())
+			{
+				FS_Path* root			= P->second;
+//				R_ASSERT3				(root, "path not found ", read_path.c_str());
 			xr_strcpy				(fs_entry_point, sizeof(fs_entry_point), root->m_Path);
-			strcat					(fs_entry_point,"gamedata\\");
+			}
+			xr_strcat					(fs_entry_point,"gamedata\\");
 		}else
 		{
 			string256			alias_name;
@@ -319,11 +324,14 @@ void CLocatorAPI::LoadArchive(archive& A, LPCSTR entrypoint)
 			int count			= sscanf(read_path.c_str(),"%[^\\]s", alias_name);
 			R_ASSERT2			(count==1,read_path.c_str());
 
-			FS_Path* root		= FS.get_path(alias_name);
-			R_ASSERT3			(root, "path not found ", alias_name);
+			PathPairIt P		= pathes.find(alias_name); 
 
+			if(P!=pathes.end())
+			{
+				FS_Path* root		= P->second;
+	//			R_ASSERT3			(root, "path not found ", alias_name);
 			xr_strcpy			(fs_entry_point, sizeof(fs_entry_point), root->m_Path);
-
+			}
 			xr_strcat			(fs_entry_point, sizeof(fs_entry_point), read_path.c_str()+xr_strlen(alias_name)+1);
 		}
 
@@ -442,7 +450,7 @@ void CLocatorAPI::ProcessArchive(LPCSTR _path)
 	}
 //	g_temporary_stuff			= g_temporary_stuff_subst;
 	
-	if(bProcessArchiveLoading)
+	if(bProcessArchiveLoading || strstr(Core.Params, "-auto_load_arch"))
 		LoadArchive				(A);
 	else
 		A.close					();
@@ -501,7 +509,7 @@ void CLocatorAPI::ProcessOne(LPCSTR path, void* _F)
 		if (bNoRecurse)					return;
 		if (0==xr_strcmp(F.name,"."))	return;
 		if (0==xr_strcmp(F.name,".."))	return;
-		strcat		(N,"\\");
+		xr_strcat		(N,"\\");
 		Register	(N,0xffffffff,0,0,F.size,F.size,(u32)F.time_write);
 		Recurse		(N);
 	} else {
@@ -554,9 +562,9 @@ bool CLocatorAPI::Recurse		(const char* path)
 
 	string_path		N;
 	xr_strcpy		(N,sizeof(N),path);
-	strcat			(N,"*.*");
+	xr_strcat			(N,"*.*");
 
-	rec_files.reserve(256);
+	rec_files.reserve(1224);
 
 	// find all files    
 	if (-1==(hFile=_findfirst(N, &sFile)))
@@ -569,7 +577,7 @@ bool CLocatorAPI::Recurse		(const char* path)
 	if (m_Flags.test(flNeedCheck))
 	{
 		xr_strcpy(full_path,sizeof(full_path), path);
-		strcat(full_path, sFile.name);
+		xr_strcat(full_path, sFile.name);
 
 		// загоняем в вектор для того *.db* приходили в сортированном порядке
 		if(!ignore_name(sFile.name) && !ignore_path(full_path))
@@ -578,7 +586,7 @@ bool CLocatorAPI::Recurse		(const char* path)
 		while ( _findnext( hFile, &sFile ) == 0 )
 		{
 			xr_strcpy(full_path,sizeof(full_path), path);
-			strcat(full_path, sFile.name);
+			xr_strcat(full_path, sFile.name);
 			if(!ignore_name(sFile.name) && !ignore_path(full_path)) 
 				rec_files.push_back(sFile);
 		}
@@ -1196,11 +1204,18 @@ void CLocatorAPI::copy_file_to_build	(T *&r, LPCSTR source_name)
 	string_path	cpy_name;
 	string_path	e_cpy_name;
 	FS_Path* 	P; 
-	if (!(source_name==strstr(source_name,(P=get_path("$server_root$"))->m_Path)||
-        source_name==strstr(source_name,(P=get_path("$server_data_root$"))->m_Path)))
-		return;
+	//if (!(source_name==strstr(source_name,(P=get_path("$server_root$"))->m_Path)||
+ //       source_name==strstr(source_name,(P=get_path("$server_data_root$"))->m_Path)))
+	//	return;
 
-	update_path				(cpy_name,"$build_copy$",source_name+xr_strlen(P->m_Path));
+	string_path				fs_root;
+	update_path				(fs_root,"$fs_root$","");
+	LPCSTR const position	= strstr(source_name, fs_root);
+	if ( position == source_name )
+		update_path			(cpy_name,"$build_copy$",source_name + xr_strlen(fs_root));
+	else
+		update_path			(cpy_name,"$build_copy$",source_name);
+
 	IWriter* W = w_open		(cpy_name);
     if (!W) {
         Log					("!Can't build:",source_name);
@@ -1223,11 +1238,11 @@ void CLocatorAPI::copy_file_to_build	(T *&r, LPCSTR source_name)
         update_path	(e_cpy_name,"$textures$",source_name+xr_strlen(P->m_Path));
         // tga
         *strext		(e_cpy_name) = 0;
-        strcat		(e_cpy_name,".tga");
+        xr_strcat		(e_cpy_name,".tga");
         r_close		(R=r_open(e_cpy_name));
         // thm
         *strext		(e_cpy_name) = 0;
-        strcat		(e_cpy_name,".thm");
+        xr_strcat		(e_cpy_name,".thm");
         r_close		(R=r_open(e_cpy_name));
 		return;
     }
@@ -1237,11 +1252,11 @@ void CLocatorAPI::copy_file_to_build	(T *&r, LPCSTR source_name)
         update_path	(e_cpy_name,"$sounds$",source_name+xr_strlen(P->m_Path));
         // wav
         *strext		(e_cpy_name) = 0;
-        strcat		(e_cpy_name,".wav");
+        xr_strcat		(e_cpy_name,".wav");
         r_close		(R=r_open(e_cpy_name));
         // thm
         *strext		(e_cpy_name) = 0;
-        strcat		(e_cpy_name,".thm");
+        xr_strcat		(e_cpy_name,".thm");
         r_close		(R=r_open(e_cpy_name));
 		return;
     }
@@ -1250,7 +1265,7 @@ void CLocatorAPI::copy_file_to_build	(T *&r, LPCSTR source_name)
         xr_strcpy		(e_cpy_name,sizeof(e_cpy_name),source_name);
         // object thm
         *strext		(e_cpy_name) = 0;
-        strcat		(e_cpy_name,".thm");
+        xr_strcat		(e_cpy_name,".thm");
         R			= r_open(e_cpy_name);
         if (R)		r_close	(R);
     }

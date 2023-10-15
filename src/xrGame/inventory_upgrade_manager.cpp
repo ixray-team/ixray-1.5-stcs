@@ -387,11 +387,12 @@ void Manager::init_install( CInventoryItem& item )
 		LPCSTR	installed_upgrades_str = pSettings->r_string( item.m_section_id, "installed_upgrades" );
 		if ( installed_upgrades_str )
 		{
-			PSTR	temp = (PSTR)_alloca( (xr_strlen(installed_upgrades_str) + 1) * sizeof(char) );
+			u32 const buffer_size	= (xr_strlen(installed_upgrades_str) + 1) * sizeof(char);
+			PSTR	temp = (PSTR)_alloca( buffer_size );
 
 			for ( int n = _GetItemCount(installed_upgrades_str), i = 0; i < n; ++i )
 			{
-				upgrade_install( item, _GetItem( installed_upgrades_str, i, temp ), true );
+				upgrade_install( item, _GetItem( installed_upgrades_str, i, temp, buffer_size ), true );
 			}
 		}
 	}//if exist

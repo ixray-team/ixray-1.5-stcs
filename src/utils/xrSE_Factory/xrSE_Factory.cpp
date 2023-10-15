@@ -76,7 +76,8 @@ BOOL APIENTRY DllMain		(HANDLE module_handle, DWORD call_reason, LPVOID reserved
 
 
 			xr_delete					(g_object_factory);
-			xr_delete					(pSettings);
+			CInifile** s				= (CInifile**)(&pSettings);
+			xr_delete					(*s);
 			xr_delete					(g_property_list_helper);
 			xr_delete					(g_ai_space);
 			xr_delete					(g_object_factory);

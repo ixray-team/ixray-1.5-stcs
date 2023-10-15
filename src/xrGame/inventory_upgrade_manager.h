@@ -33,7 +33,8 @@ struct shared_str_predicate
 	}
 };
 
-class Manager {
+class Manager final
+{
 public:
 	typedef associative_vector<shared_str, Property*, shared_str_predicate>  Properties_type;
 
@@ -45,7 +46,6 @@ private:
 public:
 	Manager(const Manager& other) = delete;
 	Manager& operator =(const Manager& other) = delete;
-
 						Manager			();
 	virtual				~Manager		(); // change this to debug_make_final<Manager>();
 

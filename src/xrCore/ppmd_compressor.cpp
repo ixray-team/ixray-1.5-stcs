@@ -41,19 +41,6 @@ void ppmd_initialize		()
 	if (initialized)
 		return;
 
-	string_path			file_name;
-
-	FS.update_path		(file_name,"$game_config$","mp\\!PPMd.mdl");
-	if (FS.exist(file_name)) {
-		IReader			*reader = FS.r_open(file_name);
-		R_ASSERT		(reader);
-		u32				buffer_size = reader->length();
-		u8				*buffer = (u8*)xr_malloc(buffer_size);
-		reader->r		(buffer,buffer_size);
-		FS.r_close		(reader);
-		trained_model	= xr_new<stream>(buffer,buffer_size);
-	}
-
 	initialized		= true;
 	if (StartSubAllocator(suballocator_size))
 		return;
@@ -74,6 +61,26 @@ u32 ppmd_compress	(void *dest_buffer, const u32 &dest_buffer_size, const void *s
 	return			(dest.tell() + 1);
 }
 
+u32 ppmd_trained_compress(void *dest_buffer, const u32 &dest_buffer_size, const void *source_buffer, const u32 &source_buffer_size,
+						  compression::ppmd::stream * tmodel)
+{
+	PPMd_Lock();
+	
+	stream*	old_stream	= trained_model;
+	trained_model		= tmodel;
+
+	ppmd_initialize();
+
+	stream			source(source_buffer,source_buffer_size);
+	stream			dest(dest_buffer,dest_buffer_size);
+	EncodeFile		(&dest,&source,order_model,restoration_method_cut_off);
+
+	trained_model		= old_stream;
+
+	PPMd_Unlock();
+	return			(dest.tell() + 1);
+}
+
 u32 ppmd_decompress	(void *dest_buffer, const u32 &dest_buffer_size, const void *source_buffer, const u32 &source_buffer_size)
 {
     PPMd_Lock();
@@ -85,6 +92,29 @@ u32 ppmd_decompress	(void *dest_buffer, const u32 &dest_buffer_size, const void 
 
 	PPMd_Unlock();
 	return			(dest.tell());
+}
+
+u32 ppmd_trained_decompress(void *dest_buffer, const u32 &dest_buffer_size, const void *source_buffer, const u32 &source_buffer_size,
+							compression::ppmd::stream * tmodel)
+{
+	PPMd_Lock();
+	
+	stream*	old_stream	= trained_model;
+	trained_model		= tmodel;
+
+	ppmd_initialize	();
+
+	
+
+	stream			source(source_buffer,source_buffer_size);
+	stream			dest(dest_buffer,dest_buffer_size);
+	DecodeFile		(&dest,&source,order_model,restoration_method_cut_off);
+
+	trained_model		= old_stream;
+
+	PPMd_Unlock();
+	return			(dest.tell());
+
 }
 
 static const u32 compress_chunk_size = 100 * 1024; //100 kb

@@ -573,9 +573,9 @@ public:
 		return *this; 
     }
 	IC	SelfRef	setXYZ	(T x, T y, T z)	{return setHPB(y,x,z);}
-	IC	SelfRef	setXYZ	(Tvector& xyz)	{return setHPB(xyz.y,xyz.x,xyz.z);}
+	IC	SelfRef	setXYZ	(Tvector const& xyz)	{return setHPB(xyz.y,xyz.x,xyz.z);}
 	IC	SelfRef	setXYZi	(T x, T y, T z)	{return setHPB(-y,-x,-z);}
-	IC	SelfRef	setXYZi	(Tvector& xyz)	{return setHPB(-xyz.y,-xyz.x,-xyz.z);}
+	IC	SelfRef	setXYZi	(Tvector const& xyz)	{return setHPB(-xyz.y,-xyz.x,-xyz.z);}
 	//
 	IC	void	getHPB	(T& h, T& p, T& b) const
 	{

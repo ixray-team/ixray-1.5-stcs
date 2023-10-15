@@ -99,44 +99,6 @@ xr_string IBannedClient::BannedTimeTo() const
 	return res;
 }
 
-
-void gen_auth_code()
-{
-		xr_vector<xr_string>	ignore, test	;
-
-		string_path				config;
-		LPCSTR pth				= FS.get_path("$app_data_root$")->m_Path;
-		ignore.push_back		(xr_string(pth));
-		ignore.push_back		(xr_string(FS.update_path(config, "$game_config$", "localization.ltx")));
-		ignore.push_back		(xr_string(FS.update_path(config, "$game_config$", "fonts.ltx")));
-		ignore.push_back		(xr_string(FS.update_path(config, "$game_config$", "items.ltx")));
-		ignore.push_back		(xr_string(FS.update_path(config, "$game_config$", "text")));
-		ignore.push_back		(xr_string(FS.update_path(config, "$game_config$", "gameplay")));
-		ignore.push_back		(xr_string(FS.update_path(config, "$game_config$", "ui")));
-
-		test.push_back			(xr_string(FS.update_path(config, "$game_config$", "")));
-//.		test.push_back			(xr_string(FS.update_path(config, "$game_scripts$", "")));
-		test.push_back			(xr_string(FS.update_path(config, "$game_shaders$", "")));
-
-		test.push_back			(xr_string("xrd3d9-null.dll"));
-		test.push_back			(xr_string("ode.dll"));
-		test.push_back			(xr_string("xrcdb.dll"));
-		test.push_back			(xr_string("xrcore.dll"));
-//		test.push_back			(xr_string("xrcpu_pipe.dll"));
-//		test.push_back			(xr_string("xrgame.dll"));
-		test.push_back			(xr_string("xrgamespy.dll"));
-		test.push_back			(xr_string("xrlua.dll"));
-		test.push_back			(xr_string("xrnetserver.dll"));
-		test.push_back			(xr_string("xrparticles.dll"));
-		test.push_back			(xr_string("xrrender_r1.dll"));
-		test.push_back			(xr_string("xrrender_r2.dll"));
-		test.push_back			(xr_string("xrsound.dll"));
-		test.push_back			(xr_string("xrxmlparser.dll"));
-//		test.push_back			(xr_string("xrEngine.exe"));
-
-		FS.auth_generate		(ignore,test);
-}
-
 IClient::IClient( CTimer* timer )
   : stats(timer),
     server(NULL)
@@ -285,9 +247,6 @@ IPureServer::EConnect IPureServer::Connect(LPCSTR options, GameDescriptionData &
 
 	if(strstr(options, "/single"))
 		psNET_direct_connect	=	TRUE;
-	else{
-		gen_auth_code	();
-	}
 
 	// Parse options
 	string4096				session_name;

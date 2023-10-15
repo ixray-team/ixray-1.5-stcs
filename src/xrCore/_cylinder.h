@@ -16,7 +16,8 @@ public:
 	T			m_radius;
 public:
 	IC SelfRef	invalidate	()	{ m_center.set(0,0,0); m_direction.set(0,0,0); m_height=0; m_radius=0; return *this; }
-    IC int		intersect	(const _vector3<T>& start, const _vector3<T>& dir, T afT[2]) const
+	enum ecode { cyl_cap, cyl_wall, cyl_none };
+    IC int		intersect	(const _vector3<T>& start, const _vector3<T>& dir, T afT[2], ecode code[2] ) const
     {
         T fEpsilon = 1e-12f;
 
@@ -49,6 +50,8 @@ public:
                 fTmp0 = fInvDLength/kD.z;
                 afT[0] = (+fHalfHeight - kP.z)*fTmp0;
                 afT[1] = (-fHalfHeight - kP.z)*fTmp0;
+				code[0] = cyl_cap;
+				code[1] = cyl_cap;
                 return 2;
             }
             else{
@@ -76,10 +79,13 @@ public:
                 fTmp0 = fInvDLength/fA;
                 afT[0] = (-fB - fRoot)*fTmp0;
                 afT[1] = (-fB + fRoot)*fTmp0;
-                return 2;
+				code[0] = cyl_wall;
+				code[1] = cyl_wall;
+                return 2;	//wall
             }else{
                 afT[0] = -fB*fInvDLength/fA;
-                return 1;
+				code[0] = cyl_wall;
+                return 1; //wall
             }
         }
 
@@ -90,17 +96,24 @@ public:
         fTmp0 = kP.x + fT0*kD.x;
         fTmp1 = kP.y + fT0*kD.y;
         if ( fTmp0*fTmp0 + fTmp1*fTmp1 <= fRadiusSqr )
+		{
+            code[iQuantity]	= cyl_cap;
             afT[iQuantity++] = fT0*fInvDLength;
+
+		}
 
         fT1 = (-fHalfHeight - kP.z)*fInv;
         fTmp0 = kP.x + fT1*kD.x;
         fTmp1 = kP.y + fT1*kD.y;
         if ( fTmp0*fTmp0 + fTmp1*fTmp1 <= fRadiusSqr )
+		{
+            code[iQuantity]	= cyl_cap;
             afT[iQuantity++] = fT1*fInvDLength;
+		}
 
         if ( iQuantity == 2 ){
             // line intersects both top and bottom
-            return 2;
+            return 2;//both caps
         }
 
         // If iQuantity == 1, then line must intersect cylinder wall
@@ -122,10 +135,18 @@ public:
             fT = (-fB - fRoot)*fInv;
             if ( fT0 <= fT1 ){
                 if ( fT0 <= fT && fT <= fT1 )
+				{
+					code[iQuantity]	= cyl_wall;                    
                     afT[iQuantity++] = fT*fInvDLength;
+
+				}
             }else{
                 if ( fT1 <= fT && fT <= fT0 )
+				{
+					code[iQuantity]	= cyl_wall;
                     afT[iQuantity++] = fT*fInvDLength;
+
+				}
             }
 
             if ( iQuantity == 2 ){
@@ -137,20 +158,32 @@ public:
             fT = (-fB + fRoot)*fInv;
             if ( fT0 <= fT1 ){
                 if ( fT0 <= fT && fT <= fT1 )
+				{
+                    code[iQuantity]	= cyl_wall;
                     afT[iQuantity++] = fT*fInvDLength;
+				}
             }else{
                 if ( fT1 <= fT && fT <= fT0 )
+				{
+                    code[iQuantity]	= cyl_wall;
                     afT[iQuantity++] = fT*fInvDLength;
+            }
             }
         }else{
             fT = -fB/fA;
             if ( fT0 <= fT1 ){
                 if ( fT0 <= fT && fT <= fT1 )
+				{
+                    code[iQuantity]	= cyl_wall;
                     afT[iQuantity++] = fT*fInvDLength;
+				}
             }else{
                 if ( fT1 <= fT && fT <= fT0 )
+				{
+					code[iQuantity]	= cyl_wall;
                     afT[iQuantity++] = fT*fInvDLength;
             }
+        }
         }
 
         return iQuantity;
@@ -164,8 +197,9 @@ public:
     IC ERP_Result	intersect	(const _vector3<T>& start, const _vector3<T>& dir, T& dist) const
     {
     	T				afT[2];
+		ecode 			code[2];
         int cnt;
-		if (0!=(cnt=intersect(start,dir,afT))){
+		if (0!=(cnt=intersect(start,dir,afT,code))){
 			bool		o_inside	= false;
 			bool		b_result	= false;
 			for (int k=0; k<cnt; k++){

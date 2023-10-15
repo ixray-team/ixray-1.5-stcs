@@ -125,3 +125,41 @@ u32 CStreamReader::find_chunk				(u32 ID, BOOL* bCompressed)
 {
 	return inherited::find_chunk(ID, bCompressed);
 }
+
+void CStreamReader::r_stringZ				(shared_str& dest)
+{
+	char*	dest_str		= NULL;
+	u32	current_str_size	= 0;
+	u8*	end_str				= NULL;
+	do
+	{
+		u8*	end_ptr	= m_start_pointer + m_current_window_size;
+		end_str = m_current_pointer;
+		while (end_str < end_ptr)
+		{
+			if ((*end_str == 0) && (!dest_str))
+			{
+				dest = reinterpret_cast<char*>(m_current_pointer);
+				m_current_pointer = ++end_str;
+				return;
+			} else if (*end_str == 0)
+			{
+				++end_str;	//copying with ending zero
+				break;
+			}
+			++end_str;
+		}
+		if (!dest_str)	//first iteration 
+			dest_str = static_cast<char*>(_alloca(4096));
+
+		u32	current_chunk_size = static_cast<u32>(end_ptr - m_current_pointer);
+		R_ASSERT(current_str_size + current_chunk_size <= 4096);
+		
+		CopyMemory(dest_str, m_current_pointer, current_chunk_size);
+		current_str_size += current_chunk_size;
+		remap(m_current_offset_from_start + current_chunk_size);
+		VERIFY(m_current_pointer == m_start_pointer);
+	} while (*(end_str - 1) == 0);
+	dest				= dest_str;
+	m_current_pointer	= end_str;
+}

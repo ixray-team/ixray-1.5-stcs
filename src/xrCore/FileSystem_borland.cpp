@@ -10,12 +10,43 @@
 #include <io.h>
 #include <fcntl.h>
 #include <sys\stat.h>
+//#include "commdlg.h"
+
+#include <Shlobj.h>
+//#include "OSDialog.h"
+//#pragma comment(lib, "OSDialogB.lib")
+
+int CALLBACK BrowseCallbackProc( HWND hWnd, UINT uMsg, LPARAM lParam,
+  LPARAM lpData )
+{
+  if (uMsg == BFFM_INITIALIZED)
+    SendMessage(hWnd, BFFM_SETSELECTION,TRUE, lpData);
+  return 0;
+}
 
 bool EFS_Utils::GetOpenName(LPCSTR initial, xr_string& buffer, bool bMulti, LPCSTR offset, int start_flt_ext )
 {
 	char			buf	[255*255]; //max files to select
 	xr_strcpy			(buf, buffer.c_str());
 
+/*
+char* g_SHBF_Folder =("C:\\Program Files");
+TCHAR path[_MAX_PATH];
+BROWSEINFO info={NULL,NULL,path,"title",BIF_USENEWUI,BrowseCallbackProc, (LPARAM)g_SHBF_Folder };
+SHBrowseForFolder       (&info);
+*/
+/*
+	{
+		HANDLE hDialog = OSDInit(true, "SDITEST", 0, 0, 0, 0, 0, 0);
+		if(hDialog)
+		{
+			OSDRET osResult=OSDDoModal(hDialog, 0);
+			OSDRelease(hDialog);
+		}
+
+	}
+*/
+//	bool bRes = false;
 	bool bRes		= GetOpenNameInternal(initial, buf, sizeof(buf), bMulti, offset, start_flt_ext);
 
 	if (bRes)
@@ -53,54 +84,6 @@ xr_string	EFS_Utils::AppendFolderToName(xr_string& tex_name, int depth, BOOL ful
 {
 	string1024 nm;
 	xr_strcpy(nm,tex_name.c_str());
-	tex_name = AppendFolderToName(nm,depth,full_name);
+	tex_name = AppendFolderToName(nm,sizeof(nm),depth,full_name);
 	return tex_name;
-}
-
-BOOL EFS_Utils::CheckLocking(LPCSTR fname, bool bOnlySelf, bool bMsg)//, shared_str* owner)
-{
-	string256 fn; xr_strcpy(fn,fname);
-
-	if (bOnlySelf) return (m_LockFiles.find(fn)!=m_LockFiles.end());
-	if (FS.exist(fn)){
-		HANDLE handle=CreateFile(fn,GENERIC_READ|GENERIC_WRITE,FILE_SHARE_READ,0,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,0);
-		CloseHandle(handle);
-        if (INVALID_HANDLE_VALUE==handle){
-			if (bMsg)	Msg("#!Access denied. File: '%s' currently locked by any user.",fn);
-//.            if (owner) 	*owner = GetLockOwner(initial,fname);
-        }
-		return (INVALID_HANDLE_VALUE==handle);
-	}
-    return FALSE;
-}
-
-BOOL EFS_Utils::LockFile(LPCSTR fname, bool bLog)
-{
-	string256 fn; xr_strcpy(fn,fname);
-
-	BOOL bRes=false;
-	if (m_LockFiles.find(fn)==m_LockFiles.end()){
-		HANDLE handle=CreateFile(fn,GENERIC_READ|GENERIC_WRITE,FILE_SHARE_READ,0,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,0);
-		if (INVALID_HANDLE_VALUE!=handle){
-			LPSTR lp_fn			= fn;
-			std::pair<HANDLEPairIt, bool> I=m_LockFiles.insert(std::make_pair(lp_fn,handle));
-			R_ASSERT(			I.second);
-
-			bRes				= true;
-		}
-	}
-	return bRes;
-}
-
-BOOL EFS_Utils::UnlockFile(LPCSTR fname, bool bLog)
-{
-	string256 fn; xr_strcpy(fn,fname);
-
-	HANDLEPairIt it 			= m_LockFiles.find(fn);
-	if (it!=m_LockFiles.end()){
-    	void* handle 			= it->second;
-		m_LockFiles.erase		(it);
-		return CloseHandle		(handle);
-	}
-	return false;
 }

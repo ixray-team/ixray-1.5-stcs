@@ -30,27 +30,37 @@
 #endif
 
 #ifdef  _EDITOR
-IC void xr_strcpy(char* strDestination,   size_t sizeInBytes,   const char *strSource)
+IC char* strncpy_s(char* strDestination, size_t sizeInBytes, const char *strSource, size_t count)
 {
-	strcpy(strDestination, strSource);
+    return strncpy(strDestination, strSource, count);
 }
 
-IC void xr_strcpy(char* strDestination,   const char *strSource)
+IC char* xr_strcpy(char* strDestination,   size_t sizeInBytes,   const char *strSource)
 {
-	strcpy(strDestination, strSource);
+	return strcpy(strDestination, strSource);
 }
 
-IC void _strlwr_s(char* strDestination, size_t sizeInBytes)
+IC char* xr_strcpy(char* strDestination,   const char *strSource)
 {
-    _strlwr(strDestination);
+	return strcpy(strDestination, strSource);
 }
 
-IC void xr_strcat(char* strDestination,   size_t sizeInBytes,   const char *strSource)
+IC char* _strlwr_s(char* strDestination, size_t sizeInBytes)
 {
-	strcat(strDestination, strSource);
+    return strlwr(strDestination);
 }
 
-IC int sprintf_s(char* dest, size_t sizeOfBuffer, const char* format, ...)
+IC char* xr_strcat(char* strDestination,   size_t sizeInBytes,   const char *strSource)
+{
+	return strncat(strDestination, strSource, sizeInBytes);
+}
+
+IC char* xr_strcat(char* strDestination,  const char *strSource)
+{
+	return strcat(strDestination, strSource);
+}
+
+IC int xr_sprintf(char* dest, size_t sizeOfBuffer, const char* format, ...)
 {
 	va_list 	mark;
 	va_start	(mark, format );
@@ -188,11 +198,13 @@ IC int							xr_strcmp				( const char* S1, const char* S2 )
 #ifndef  _EDITOR
 #ifndef MASTER_GOLD
 
-inline errno_t xr_strcpy(LPSTR destination, size_t const destination_size, LPCSTR source) {
+inline errno_t xr_strcpy		( LPSTR destination, size_t const destination_size, LPCSTR source )
+{
 	return						strcpy_s(destination, destination_size, source);
 }
 
-inline errno_t xr_strcat(LPSTR destination, size_t const buffer_size, LPCSTR source) {
+inline errno_t xr_strcat		( LPSTR destination, size_t const buffer_size, LPCSTR source )
+{
 	return strcat_s(destination, buffer_size, source);
 }
 
@@ -268,5 +280,3 @@ extern XRCORE_API u32			crc32					(const void* P, u32 len, u32 starting_crc);
 extern XRCORE_API u32			path_crc32				(const char* path, u32 len); // ignores '/' and '\'
 
 #endif // _STD_EXT_internal
-
-

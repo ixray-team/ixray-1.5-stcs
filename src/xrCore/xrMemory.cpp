@@ -10,6 +10,9 @@ xrMemory	Memory;
 BOOL		mem_initialized	= FALSE;
 bool		shared_str_initialized	= false;
 
+//fake fix of memory corruptions in multiplayer game :(
+XRCORE_API	bool	g_allow_heap_min = true;
+
 // Processor specific implementations
 extern		pso_MemCopy		xrMemCopy_MMX;
 extern		pso_MemCopy		xrMemCopy_x86;
@@ -62,7 +65,7 @@ void	xrMemory::_initialize	(BOOL bDebug)
 	stat_calls				= 0;
 	stat_counter			= 0;
 
-	u32	features		= CPU::ID.feature & CPU::ID.os_support;
+	u32	features		= CPU::ID.feature;
 	if (features & _CPU_FEATURE_MMX)
 	{
 		mem_copy	= xrMemCopy_MMX;
@@ -138,7 +141,8 @@ void	xrMemory::mem_compact	()
 {
 	RegFlushKey						( HKEY_CLASSES_ROOT );
 	RegFlushKey						( HKEY_CURRENT_USER );
-	_heapmin						( );
+	if (g_allow_heap_min)
+		_heapmin						( );
 	HeapCompact						(GetProcessHeap(),0);
 	if (g_pStringContainer)			g_pStringContainer->clean		();
 	if (g_pSharedMemoryContainer)	g_pSharedMemoryContainer->clean	();

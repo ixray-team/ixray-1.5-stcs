@@ -368,16 +368,10 @@ IPureClient::~IPureClient	()
 	psNET_direct_connect = FALSE;
 }
 
-void gen_auth_code();
 BOOL IPureClient::Connect	(LPCSTR options)
 {
 	R_ASSERT						(options);
 	net_Disconnected				= FALSE;
-
-	if(!psNET_direct_connect && !strstr(options,"localhost") )
-	{
-		gen_auth_code	();
-	}
 
 if(!psNET_direct_connect)
 {

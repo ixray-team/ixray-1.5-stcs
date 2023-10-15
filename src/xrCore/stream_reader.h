@@ -59,7 +59,7 @@ public:
 //.			void			r_string			(xr_string& dest);
 //.			void			skip_stringZ		();
 //.			void			r_stringZ			(char *dest, u32 tgt_sz);
-//.			void			r_stringZ			(shared_str& dest);
+			void			r_stringZ			(shared_str& dest);
 //.			void			r_stringZ			(xr_string& dest);
 private:
 	typedef IReaderBase<CStreamReader>			inherited;

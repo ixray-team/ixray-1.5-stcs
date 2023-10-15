@@ -175,7 +175,8 @@ void destroySound	()
 }
 void destroySettings()
 {
-	xr_delete					( pSettings		);
+	CInifile** s				= (CInifile**)(&pSettings);
+	xr_delete					( *s		);
 	xr_delete					( pGameIni		);
 }
 void destroyConsole	()

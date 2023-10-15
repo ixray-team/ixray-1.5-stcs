@@ -169,7 +169,8 @@ void initialize_core()
 }
 void deinitialize_core()
 {
-	xr_delete		(pSettings);
+	CInifile** s	= (CInifile**)(&pSettings);
+	xr_delete		(*s);
 	Core._destroy	();
 }
 
