@@ -6,9 +6,10 @@ struct anim_bone_fix
 	CBoneInstance *bone;
 	CBoneInstance *parent;
 	Fmatrix		  matrix;
+
 				anim_bone_fix();
 				~anim_bone_fix();
-static	void	callback	( CBoneInstance *BI );
+static	void	_BCL	callback	( CBoneInstance *BI );
 		void	fix			( u16 bone_id, IKinematics &K );
 		void	refix		();
 		void	release		();

@@ -51,7 +51,7 @@ public:
 	// Bones
 	//--------------------------------------------------------------------
 private:
-	static	void			BoneCallback			(CBoneInstance *B);
+	static	void	_BCL	BoneCallback			(CBoneInstance *B);
 			void			vfAssignBones			();
 			void			LookDirection			(Fvector to_dir, float bone_turn_speed);
 

@@ -1031,7 +1031,7 @@ public:
 	ssaved_callback(const ssaved_callback& other) = delete;
 	ssaved_callback& operator =(const ssaved_callback& other) = delete;
 };
-static void get_matrix( CBoneInstance* P )
+static void _BCL get_matrix( CBoneInstance* P )
 {
 	VERIFY( _valid(  P->mTransform ) );
 	*((Fmatrix*)P->callback_param()) = P->mTransform;

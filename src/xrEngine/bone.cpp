@@ -1,35 +1,24 @@
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "bone.h"
+#include "gamemtllib.h"
 
 
+u16	CBone::get_game_mtl_idx	( )			const	
+{	
+	return GMLib.GetMaterialIdx(game_mtl.c_str());
+}
 
-
-
-
+static const Fobb	dummy = Fobb().identity();
+const	Fobb&		CBone::	get_obb				( )			const
+{
+	return dummy;
+}
 //////////////////////////////////////////////////////////////////////////
 // BoneInstance methods
-void	ENGINE_API	CBoneInstance::construct	()
-{
-	ZeroMemory					(this,sizeof(*this));
-	mTransform.identity			();
 
-	mRenderTransform.identity	();
-	Callback_overwrite			= FALSE;
-}
-void	ENGINE_API	CBoneInstance::set_callback	(u32 Type, BoneCallback C, void* Param, BOOL overwrite)
-{	
-	Callback			= C; 
-	Callback_Param		= Param; 
-	Callback_overwrite	= overwrite;
-	Callback_type		= Type;
-}
-void	ENGINE_API	CBoneInstance::reset_callback()
-{
-	Callback			= 0; 
-	Callback_Param		= 0; 
-	Callback_overwrite	= FALSE;
-	Callback_type		= 0;
-}
+
 
 void	ENGINE_API	CBoneInstance::set_param	(u32 idx, float data)
 {
@@ -64,4 +53,17 @@ void ENGINE_API	CBoneData::CalculateM2B(const Fmatrix& parent)
 		(*C)->CalculateM2B	(m2b_transform);
 
 	m2b_transform.invert	();            
+}
+
+u16	CBoneData::GetNumChildren	( )const
+{
+	return (u16)children.size();
+}
+IBoneData&	CBoneData::GetChild		( u16 id )
+{
+	return *children[id];
+}
+const IBoneData&	CBoneData::GetChild		( u16 id )const
+{
+	return *children[id];
 }
