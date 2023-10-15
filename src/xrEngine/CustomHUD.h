@@ -1,7 +1,5 @@
 #pragma once
 
-#include "iinputreceiver.h"
-
 ENGINE_API extern Flags32		psHUD_Flags;
 #define HUD_CROSSHAIR			(1<<0)
 #define HUD_CROSSHAIR_DIST		(1<<1)
@@ -20,22 +18,21 @@ class CUI;
 
 class ENGINE_API CCustomHUD:
 	public DLL_Pure,
-	public IEventReceiver	
+	public IEventReceiver,
+	public pureScreenResolutionChanged
 {
 public:
 					CCustomHUD				();
 	virtual			~CCustomHUD				();
 
-	virtual		void		Load					(){;}
-	
 	virtual		void		Render_First			(){;}
 	virtual		void		Render_Last				(){;}
 	
 	virtual		void		OnFrame					(){;}
 	virtual		void		OnEvent					(EVENT E, u64 P1, u64 P2){;}
 
-	virtual IC	CUI*		GetUI					()=0;
-	virtual void			OnScreenResolutionChanged()=0;
+	virtual IC	CUI*		GetUI					()=0;			
+	virtual		void		Load					(){;}
 	virtual void			OnDisconnected			()=0;
 	virtual void			OnConnected				()=0;
 	virtual	void			RenderActiveItemUI		()=0;

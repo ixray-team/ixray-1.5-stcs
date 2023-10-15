@@ -59,7 +59,7 @@ Fbox get_level_screenshot_bound()
 
 	return res;
 }
-
+void _InitializeFont(CGameFont*& F, LPCSTR section, u32 flags);
 CDemoRecord::CDemoRecord(const char *name,float life_time) : CEffectorCam(cefDemo,life_time/*,FALSE*/)
 {
 	stored_red_text = g_bDisableRedText;
@@ -123,11 +123,9 @@ CDemoRecord::~CDemoRecord()
 		IR_Release	();	// release input
 		FS.w_close	(file);
 	}
-/*
-	psHUD_Flags.set(HUD_WEAPON, stored_weapon);
-	psHUD_Flags.set(HUD_CROSSHAIR, stored_cross);
-*/
 	g_bDisableRedText	= stored_red_text;
+
+	Device.seqRender.Remove		( this		);
 }
 
 //								+X,				-X,				+Y,				-Y,			+Z,				-Z
@@ -528,4 +526,9 @@ void CDemoRecord::MakeLevelMapScreenshot(BOOL bHQ)
 
 	m_bMakeLevelMap		= TRUE;
 	m_Stage				= 0;
+}
+
+void CDemoRecord::OnRender()
+{
+	pApp->pFontSystem->OnRender();
 }

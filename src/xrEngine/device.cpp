@@ -264,6 +264,8 @@ void CRenderDevice::on_idle		()
 
 	vCameraPosition_saved = vCameraPosition;
 	mFullTransform_saved = mFullTransform;
+	mView_saved				= mView;
+	mProject_saved			= mProject;
 
 	// *** Resume threads
 	// Capture end point - thread must run only ONE cycle
@@ -536,3 +538,19 @@ void CRenderDevice::OnWM_Activate(WPARAM wParam, LPARAM lParam)
 		}
 	}
 }
+
+void	CRenderDevice::AddSeqFrame			( pureFrame* f, bool mt )
+{
+		if ( mt )	
+		seqFrameMT.Add	(f,REG_PRIORITY_HIGH);
+	else								
+		seqFrame.Add		(f,REG_PRIORITY_LOW);
+
+}
+
+void	CRenderDevice::RemoveSeqFrame	( pureFrame* f )
+{
+	seqFrameMT.Remove	( f );
+	seqFrame.Remove		( f );
+}
+

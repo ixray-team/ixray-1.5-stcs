@@ -7,9 +7,6 @@
 #include "../Include/xrRender/FontRender.h"
 
 class ENGINE_API CGameFont
-#ifndef M_BORLAND
-	: public pureRender
-#endif
 {
 	friend class dxFontRender;
 public:
@@ -45,8 +42,6 @@ protected:
 	xr_vector<String>		strings;
 
 	IFontRender				*pFontRender;
-	//ref_shader			pShader;
-	//ref_geom				pGeom;
 
 	u32						nNumChars;
 
@@ -105,11 +100,10 @@ public:
 	void  					OutI			( float _x , float _y , LPCSTR fmt , ... );
 	void  					Out				( float _x , float _y , LPCSTR fmt , ... );
 	void             		OutNext			( LPCSTR fmt , ... );
-	void             		OutPrev			( LPCSTR fmt , ... );
 
 	void					OutSkip			(float val=1.f);
 
-	virtual void			OnRender		();
+	void					OnRender		();
 
 	IC	void				Clear			()  { strings.clear(); };
 

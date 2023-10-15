@@ -29,8 +29,86 @@
 
 class engine_impl;
 
+#pragma pack(push,4)
+
+class IRenderDevice
+{
+public:
+	virtual		CStatsPhysics*	_BCL		StatPhysics		()							= 0;								
+	virtual				void	_BCL		AddSeqFrame		( pureFrame* f, bool mt )	= 0;
+	virtual				void	_BCL		RemoveSeqFrame	( pureFrame* f )			= 0;
+};
+
+class ENGINE_API CRenderDeviceData
+{
+
+public:
+	u32										dwWidth;
+	u32										dwHeight;
+	
+	u32										dwPrecacheFrame;
+	BOOL									b_is_Ready;
+	BOOL									b_is_Active;
+public:
+
+		// Engine flow-control
+	u32										dwFrame;
+
+	float									fTimeDelta;
+	float									fTimeGlobal;
+	u32										dwTimeDelta;
+	u32										dwTimeGlobal;
+	u32										dwTimeContinual;
+
+	Fvector									vCameraPosition;
+	Fvector									vCameraDirection;
+	Fvector									vCameraTop;
+	Fvector									vCameraRight;
+
+	Fmatrix									mView;
+	Fmatrix									mProject;
+	Fmatrix									mFullTransform;
+
+	// Copies of corresponding members. Used for synchronization.
+	Fvector									vCameraPosition_saved;
+
+	Fmatrix									mView_saved;
+	Fmatrix									mProject_saved;
+	Fmatrix									mFullTransform_saved;
+
+	float									fFOV;
+	float									fASPECT;
+protected:
+
+	u32										Timer_MM_Delta;
+	CTimer_paused							Timer;
+	CTimer_paused							TimerGlobal;
+public:
+
+// Registrators
+	CRegistrator	<pureRender			>			seqRender;
+	CRegistrator	<pureAppActivate	>			seqAppActivate;
+	CRegistrator	<pureAppDeactivate	>			seqAppDeactivate;
+	CRegistrator	<pureAppStart		>			seqAppStart;
+	CRegistrator	<pureAppEnd			>			seqAppEnd;
+	CRegistrator	<pureFrame			>			seqFrame;
+	CRegistrator	<pureScreenResolutionChanged>	seqResolutionChanged;
+
+	HWND									m_hWnd;
+//	CStats*									Statistic;
+
+};
+
+class	ENGINE_API CRenderDeviceBase :
+	public IRenderDevice,
+	public CRenderDeviceData
+{
+public:
+};
+
+#pragma pack(pop)
 // refs
-class ENGINE_API CRenderDevice 
+class ENGINE_API CRenderDevice: public CRenderDeviceBase
 {
 private:
     // Main objects used for creating and rendering the 3D scene
@@ -38,26 +116,25 @@ private:
     RECT									m_rcWindowBounds;
     RECT									m_rcWindowClient;
 
-	u32										Timer_MM_Delta;
-	CTimer_paused							Timer;
-	CTimer_paused							TimerGlobal;
+	//u32										Timer_MM_Delta;
+	//CTimer_paused							Timer;
+	//CTimer_paused							TimerGlobal;
 	CTimer									TimerMM;
 
 	void									_Create		(LPCSTR shName);
 	void									_Destroy	(BOOL	bKeepTextures);
 	void									_SetupStates();
 public:
-    HWND									m_hWnd;
+ //   HWND									m_hWnd;
 	LRESULT									MsgProc		(HWND,UINT,WPARAM,LPARAM);
 
-	u32										dwFrame;
-	u32										dwPrecacheFrame;
+//	u32										dwPrecacheFrame;
 	u32										dwPrecacheTotal;
 
-	u32										dwWidth, dwHeight;
+//	u32										dwWidth, dwHeight;
 	float									fWidth_2, fHeight_2;
-	BOOL									b_is_Ready;
-	BOOL									b_is_Active;
+//	BOOL									b_is_Ready;
+//	BOOL									b_is_Active;
 	void									OnWM_Activate(WPARAM wParam, LPARAM lParam);
 public:
 	//ref_shader								m_WireShader;
@@ -84,43 +161,42 @@ public:
 	void									DumpResourcesMemoryUsage() { m_pRender->ResourcesDumpMemoryUsage();}
 public:
 	// Registrators
-	CRegistrator	<pureRender			>			seqRender;
-	CRegistrator	<pureAppActivate	>			seqAppActivate;
-	CRegistrator	<pureAppDeactivate	>			seqAppDeactivate;
-	CRegistrator	<pureAppStart		>			seqAppStart;
-	CRegistrator	<pureAppEnd			>			seqAppEnd;
-	CRegistrator	<pureFrame			>			seqFrame;
+	//CRegistrator	<pureRender			>			seqRender;
+//	CRegistrator	<pureAppActivate	>			seqAppActivate;
+//	CRegistrator	<pureAppDeactivate	>			seqAppDeactivate;
+//	CRegistrator	<pureAppStart		>			seqAppStart;
+//	CRegistrator	<pureAppEnd			>			seqAppEnd;
+	//CRegistrator	<pureFrame			>			seqFrame;
 	CRegistrator	<pureFrame			>			seqFrameMT;
 	CRegistrator	<pureDeviceReset	>			seqDeviceReset;
 	xr_vector		<fastdelegate::FastDelegate0<> >	seqParallel;
 
 	// Dependent classes
 	//CResourceManager*						Resources;	  
+
 	CStats*									Statistic;
 
 	// Engine flow-control
-	float									fTimeDelta;
-	float									fTimeGlobal;
-	u32										dwTimeDelta;
-	u32										dwTimeGlobal;
-	u32										dwTimeContinual;
+	//float									fTimeDelta;
+	//float									fTimeGlobal;
+	//u32										dwTimeDelta;
+	//u32										dwTimeGlobal;
+	//u32										dwTimeContinual;
 
 	// Cameras & projection
-	Fvector									vCameraPosition;
-	Fvector									vCameraDirection;
-	Fvector									vCameraTop;
-	Fvector									vCameraRight;
-	Fmatrix									mView;
-	Fmatrix									mProject;
-	Fmatrix									mFullTransform;
+	//Fvector									vCameraPosition;
+	//Fvector									vCameraDirection;
+	//Fvector									vCameraTop;
+	//Fvector									vCameraRight;
+
+	//Fmatrix									mView;
+	//Fmatrix									mProject;
+	//Fmatrix									mFullTransform;
+
 	Fmatrix									mInvFullTransform;
 
-	// Copies of corresponding members. Used for synchronization.
-	Fvector									vCameraPosition_saved;
-	Fmatrix									mFullTransform_saved;
-
-	float									fFOV;
-	float									fASPECT;
+	//float									fFOV;
+	//float									fASPECT;
 	
 	CRenderDevice			()
 		:
@@ -208,7 +284,9 @@ public:
 
 private:
 			void				message_loop		();
-
+virtual		void			_BCL	AddSeqFrame			( pureFrame* f, bool mt );
+virtual		void			_BCL	RemoveSeqFrame		( pureFrame* f );
+virtual		CStatsPhysics*	_BCL	StatPhysics			()	{ return  Statistic ;}
 #ifdef INGAME_EDITOR
 public:
 	IC		editor::ide			*editor				() const { return m_editor; }

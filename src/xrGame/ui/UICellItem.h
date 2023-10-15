@@ -104,7 +104,7 @@ public:
 	virtual		bool		OnMouseAction			(float x, float y, EUIMessages mouse_action);
 	virtual		void		Draw					();
 	virtual		void		OnRender				();
-	virtual		void		OnFrame					();
+	virtual		void		_BCL OnFrame					();
 		CUICellItem*		ParentItem				()							{return m_pParent;}
 				void		SetBackList				(CUIDragDropListEx*l);
 	CUIDragDropListEx*		BackList				()							{return m_back_list;}

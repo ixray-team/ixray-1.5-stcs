@@ -43,7 +43,7 @@ public:
 	virtual	void	Destroy		();
 
 	virtual void	OnRender	();
-	virtual void	OnFrame		();
+	virtual void	_BCL OnFrame		();
 
 //	virtual void	IR_OnKeyboardPress		(int dik);
 

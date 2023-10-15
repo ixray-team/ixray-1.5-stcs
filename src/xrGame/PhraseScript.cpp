@@ -43,14 +43,6 @@ bool  CDialogScriptHelper::CheckInfo		(const CInventoryOwner* pOwner) const
 
 	for(u32 i=0; i<m_HasInfo.size(); ++i) 
 	{
-#pragma todo("Andy->Andy how to check infoportion existence in XML ?")
-/*		INFO_INDEX	result = CInfoPortion::IdToIndex(m_HasInfo[i],NO_INFO_INDEX,true);
-		if (result == NO_INFO_INDEX) {
-			ai().script_engine().script_log(eLuaMessageTypeError,"XML item not found : \"%s\"",*m_HasInfo[i]);
-			break;
-		}
-*/
-//.		if (!pOwner->HasInfo(m_HasInfo[i])) {
 		if (!Actor()->HasInfo(m_HasInfo[i])) {
 #ifdef DEBUG
 			if(psAI_Flags.test(aiDialogs) )
@@ -61,13 +53,6 @@ bool  CDialogScriptHelper::CheckInfo		(const CInventoryOwner* pOwner) const
 	}
 
 	for(u32 i=0; i<m_DontHasInfo.size(); i++) {
-/*		INFO_INDEX	result = CInfoPortion::IdToIndex(m_DontHasInfo[i],NO_INFO_INDEX,true);
-		if (result == NO_INFO_INDEX) {
-			ai().script_engine().script_log(eLuaMessageTypeError,"XML item not found : \"%s\"",*m_DontHasInfo[i]);
-			break;
-		}
-*/
-//.		if (pOwner->HasInfo(m_DontHasInfo[i])) {
 		if (Actor()->HasInfo(m_DontHasInfo[i])) {
 #ifdef DEBUG
 			if(psAI_Flags.test(aiDialogs) )
@@ -85,11 +70,9 @@ void  CDialogScriptHelper::TransferInfo	(const CInventoryOwner* pOwner) const
 	THROW(pOwner);
 
 	for(u32 i=0; i<m_GiveInfo.size(); ++i)
-//.		pOwner->TransferInfo(m_GiveInfo[i], true);
 		Actor()->TransferInfo(m_GiveInfo[i], true);
 
 	for(u32 i=0; i<m_DisableInfo.size(); ++i)
-//.		pOwner->TransferInfo(m_DisableInfo[i],false);
 		Actor()->TransferInfo(m_DisableInfo[i], false);
 }
 

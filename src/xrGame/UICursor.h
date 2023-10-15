@@ -1,11 +1,10 @@
 #pragma once
 
 #include "ui_base.h"
-//.#include "../Include/xrRender/FactoryPtr.h"
-//. class IUIShader;
 class CUIStatic;
 
-class CUICursor:public pureRender
+class CUICursor:	public pureRender, 
+					public pureScreenResolutionChanged
 {
 	bool			bVisible;
 	Fvector2		vPos;
@@ -23,7 +22,7 @@ public:
 	Fvector2		GetCursorPosition		();
 	void			SetUICursorPosition		(Fvector2 pos);
 	void			UpdateCursorPosition	();
-	void			OnScreenResolutionChanged();
+	virtual void	OnScreenResolutionChanged	();
 
 	bool			IsVisible		() {return bVisible;}
 	void			Show			() {bVisible = true;}

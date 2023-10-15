@@ -84,7 +84,7 @@ void compute_build_id	()
 //////////////////////////////////////////////////////////////////////////
 struct _SoundProcessor	: public pureFrame
 {
-	virtual void OnFrame	( )
+	virtual void	_BCL	OnFrame	( )
 	{
 		//Msg							("------------- sound: %d [%3.2f,%3.2f,%3.2f]",u32(Device.dwFrame),VPUSH(Device.vCameraPosition));
 		Device.Statistic->Sound.Begin();
@@ -797,20 +797,19 @@ void _InitializeFont(CGameFont*& F, LPCSTR section, u32 flags)
 	LPCSTR font_tex_name = _GetFontTexName(section);
 	R_ASSERT(font_tex_name);
 
-	if(!F){
-		F = xr_new<CGameFont> ("font", font_tex_name, flags);
-		Device.seqRender.Add( F, REG_PRIORITY_LOW-1000 );
+	LPCSTR sh_name = pSettings->r_string(section, "shader");
+	if (!F) {
+		F = xr_new<CGameFont>(sh_name, font_tex_name, flags);
 	}else
-		F->Initialize("font",font_tex_name);
+		F->Initialize(sh_name, font_tex_name);
 
-	if (pSettings->line_exist(section,"size")){
-		float sz = pSettings->r_float(section,"size");
-		if (flags&CGameFont::fsDeviceIndependent)	F->SetHeightI(sz);
+	if (pSettings->line_exist(section, "size")) {
+		float sz = pSettings->r_float(section, "size");
+		if (flags & CGameFont::fsDeviceIndependent)	F->SetHeightI(sz);
 		else										F->SetHeight(sz);
 	}
-	if (pSettings->line_exist(section,"interval"))
-		F->SetInterval(pSettings->r_fvector2(section,"interval"));
-
+	if (pSettings->line_exist(section, "interval"))
+		F->SetInterval(pSettings->r_fvector2(section, "interval"));
 }
 
 CApplication::CApplication()
@@ -850,7 +849,6 @@ CApplication::~CApplication()
 	Console->Hide				( );
 
 	// font
-	Device.seqRender.Remove		( pFontSystem		);
 	xr_delete					( pFontSystem		);
 
 	Device.seqFrameMT.Remove	(&SoundProcessor);
@@ -939,7 +937,7 @@ void CApplication::LoadBegin	()
 		g_appLoaded			= FALSE;
 
 #ifndef DEDICATED_SERVER
-		_InitializeFont		(pFontSystem,"ui_font_graffiti19_russian",0);
+		_InitializeFont		(pFontSystem,"ui_font_letterica18_russian",0);
 
 		m_pRender->LoadBegin();
 #endif

@@ -48,6 +48,6 @@ public:
 	virtual void			StartStopMenu					(CUIDialogWnd* pDialog, bool bDoHideIndicators);
 	void					AddDialogToRender				(CUIWindow* pDialog);
 	void					RemoveDialogToRender			(CUIWindow* pDialog);
-	virtual void			OnFrame							();
+	virtual void			_BCL OnFrame							();
 	virtual bool			UseIndicators					()						{return true;}
 };

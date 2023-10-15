@@ -94,7 +94,7 @@ public:
 	virtual BOOL				Load_GameSpecific_After	( )										{ return TRUE; };		// after object loading
 	virtual void				Load_GameSpecific_CFORM	( CDB::TRI* T, u32 count )				= 0;
 
-	virtual void				OnFrame					( void );
+	virtual void	_BCL		OnFrame					( void );
 	virtual void				OnRender				( void );
 
 	// Main interface

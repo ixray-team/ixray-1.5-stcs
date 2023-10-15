@@ -49,7 +49,8 @@ struct TipString {
 
 class ENGINE_API CConsole :
 	public pureRender,
-	public pureFrame
+	public pureFrame,
+	public pureScreenResolutionChanged
 {
 public:
 	struct str_pred {
@@ -101,8 +102,8 @@ public:
 	virtual void	Destroy				();
 
 	virtual void	OnRender			();
-	virtual void	OnFrame				();
-	
+	virtual void _BCL	OnFrame				();
+	virtual void	OnScreenResolutionChanged();
 	string64		ConfigFile;
 	bool			bVisible;
 	vecCMD			Commands;

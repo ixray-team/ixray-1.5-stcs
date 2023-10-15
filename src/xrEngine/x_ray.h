@@ -60,9 +60,9 @@ public:
 
 	// Other
 							CApplication		();
-							~CApplication		();
+	virtual					~CApplication		();
 
-	virtual void			OnFrame				();
+	virtual void	_BCL	OnFrame				();
 			void			load_draw_internal	();
 			void			destroy_loading_shaders();
 };

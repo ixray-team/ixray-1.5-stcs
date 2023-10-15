@@ -125,7 +125,7 @@ public:
 	void			OnRenderPPUI_PP					();
 
 	virtual void	OnRender						();
-	virtual void	OnFrame							(void);
+	virtual void	_BCL OnFrame							(void);
 	virtual void	StartStopMenu					(CUIDialogWnd* pDialog, bool bDoHideIndicators);
 	virtual bool	UseIndicators					()						{return false;}
 
