@@ -66,11 +66,11 @@ public:
 				void		net_Relcase			( CObject* obj );
 
 	CFontManager&			Font				()							{return *(UI()->Font());}
-	//текущий предмет на который смотрит HUD
+	//С‚РµРєСѓС‰РёР№ РїСЂРµРґРјРµС‚ РЅР° РєРѕС‚РѕСЂС‹Р№ СЃРјРѕС‚СЂРёС‚ HUD
 	collide::rq_result&		GetCurrentRayQuery	();
 
 
-	//устанвка внешнего вида прицела в зависимости от текущей дисперсии
+	//СѓСЃС‚Р°РЅРІРєР° РІРЅРµС€РЅРµРіРѕ РІРёРґР° РїСЂРёС†РµР»Р° РІ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ С‚РµРєСѓС‰РµР№ РґРёСЃРїРµСЂСЃРёРё
 	void					SetCrosshairDisp	(float dispf, float disps = 0.f);
 #ifdef DEBUG
 	void					SetFirstBulletCrosshairDisp(float fbdispf);
@@ -79,7 +79,7 @@ public:
 
 	void					SetHitmarkType		( LPCSTR tex_name );
 	void					SetGrenadeMarkType	( LPCSTR tex_name );
-	virtual void			OnScreenRatioChanged();
+	virtual void			OnScreenResolutionChanged();
 	virtual void			OnDisconnected		();
 	virtual void			OnConnected			();
 	virtual	void			RenderActiveItemUI	();

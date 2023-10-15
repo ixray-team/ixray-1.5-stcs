@@ -1273,7 +1273,7 @@ public:
 	virtual void Execute(LPCSTR args)
 	{
 		if (g_pGamePersistent && g_pGameLevel && Level().game)
-			HUD().OnScreenRatioChanged();// перезагружаем UI через эту команду
+			HUD().OnScreenResolutionChanged();
 	}
 };
 

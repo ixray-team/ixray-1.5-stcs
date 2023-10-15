@@ -92,6 +92,6 @@ void CRenderDevice::Reset		(bool precache)
 	if(b_16_after!=b_16_before) 
 	{
 		if(g_pGameLevel && g_pGameLevel->pHUD) 
-			g_pGameLevel->pHUD->OnScreenRatioChanged();
+			g_pGameLevel->pHUD->OnScreenResolutionChanged();
 	}
 }

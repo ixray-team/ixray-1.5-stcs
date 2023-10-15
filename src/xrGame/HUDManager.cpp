@@ -237,7 +237,7 @@ void   CHUDManager::RenderActiveItemUI()
 }
 
 extern ENGINE_API BOOL bShowPauseString;
-//îòðèñîâêà ýëåìåíòîâ èíòåðôåéñà
+//Ð¾Ñ‚Ñ€Ð¸ÑÐ¾Ð²ÐºÐ° ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð² Ð¸Ð½Ñ‚ÐµÑ€Ñ„ÐµÐ¹ÑÐ°
 #include "string_table.h"
 void  CHUDManager::RenderUI()
 {
@@ -333,7 +333,7 @@ void CHUDManager::SetGrenadeMarkType( LPCSTR tex_name )
 #include "ui\UIMainInGameWnd.h"
 extern CUIXml*			pWpnScopeXml;
 
-void CHUDManager::OnScreenRatioChanged()
+void CHUDManager::OnScreenResolutionChanged()
 {
 	if(pUI->UIGame())
 		pUI->UIGame()->HideShownDialogs	();
@@ -346,7 +346,7 @@ void CHUDManager::OnScreenRatioChanged()
 	pUI->UnLoad							();
 	pUI->Load							(pUI->UIGame());
 	pUI->OnConnected					();
-	GetUICursor()->OnScreenRatioChanged	();
+	GetUICursor()->OnScreenResolutionChanged();
 }
 
 void CHUDManager::OnDisconnected()
