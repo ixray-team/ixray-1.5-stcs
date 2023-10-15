@@ -407,11 +407,11 @@ void CUIListWnd::Draw()
 			if (pListItem2->GetGroupID() == -1) continue;
 			if (pListItem2->GetIndex() == m_iSelectedItem) 
 			{
-				UI()->PushScissor(rect);
+				UI().PushScissor(rect);
 
 				DrawActiveBackFrame(rect, pListItem2);
 
-				UI()->PopScissor();
+				UI().PopScissor();
 			}
 		}
 	}

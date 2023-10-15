@@ -147,7 +147,7 @@ void CMainMenu::Activate	(bool bActivate)
 		Device.Pause				(TRUE, FALSE, TRUE, "mm_activate1");
 		m_Flags.set					(flActive|flNeedChangeCapture,TRUE);
 
-		m_Flags.set					(flRestoreCursor,GetUICursor()->IsVisible());
+		m_Flags.set					(flRestoreCursor,GetUICursor().IsVisible());
 
 		if(!ReloadUI())				return;
 
@@ -218,7 +218,7 @@ void CMainMenu::Activate	(bool bActivate)
 		}	
 
 		if(m_Flags.test(flRestoreCursor))
-			GetUICursor()->Show			();
+			GetUICursor().Show			();
 
 		Device.Pause					(FALSE, TRUE, TRUE, "mm_deactivate2");
 
@@ -364,7 +364,7 @@ void CMainMenu::OnRender	()
 	if(!OnRenderPPUI_query())
 	{
 		DoRenderDialogs();
-		UI()->RenderFont();
+		UI().RenderFont();
 		draw_wnds_rects();
 	}
 }
@@ -376,15 +376,15 @@ void CMainMenu::OnRenderPPUI_main	()
 	if(m_Flags.test(flGameSaveScreenshot))
 		return;
 
-	UI()->pp_start();
+	UI().pp_start();
 
 	if(OnRenderPPUI_query())
 	{
 		DoRenderDialogs();
-		UI()->RenderFont();
+		UI().RenderFont();
 	}
 
-	UI()->pp_stop();
+	UI().pp_stop();
 }
 
 void CMainMenu::OnRenderPPUI_PP	()
@@ -393,14 +393,14 @@ void CMainMenu::OnRenderPPUI_PP	()
 
 	if(m_Flags.test(flGameSaveScreenshot))	return;
 
-	UI()->pp_start();
+	UI().pp_start();
 	
 	xr_vector<CUIWindow*>::iterator it = m_pp_draw_wnds.begin();
 	for(; it!=m_pp_draw_wnds.end();++it)
 	{
 		(*it)->Draw();
 	}
-	UI()->pp_stop();
+	UI().pp_stop();
 }
 
 void CMainMenu::StartStopMenu(CUIDialogWnd* pDialog, bool bDoHideIndicators)

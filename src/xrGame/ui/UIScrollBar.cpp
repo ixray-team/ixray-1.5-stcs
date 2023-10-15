@@ -222,7 +222,7 @@ bool CUIScrollBar::OnMouseDown( int mouse_btn )
 }
 bool CUIScrollBar::OnMouseDownEx()
 {
-	Fvector2 cursor_pos_ = GetUICursor()->GetCursorPosition();
+	Fvector2 cursor_pos_ = GetUICursor().GetCursorPosition();
 	Frect    box_rect, dec_rect, inc_rect;
 	m_ScrollBox->GetAbsoluteRect(box_rect);
 	m_DecButton->GetAbsoluteRect(dec_rect);

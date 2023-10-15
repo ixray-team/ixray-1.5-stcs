@@ -4,8 +4,9 @@
 #include "UICursor.h"
 #include "HUDManager.h"
 
-CUICursor*	GetUICursor		()	{return UI()->GetUICursor();};
-ui_core*	UI				()	{return GamePersistent().m_pUI_core;};
+CUICursor& GetUICursor() { return UI().GetUICursor(); };
+ui_core& UI() { return *GamePersistent().m_pUI_core; };
+
 extern ENGINE_API Fvector2		g_current_font_scale;
 
 void S2DVert::rotate_pt(const Fvector2& pivot, const float cosA, const float sinA, const float kx)
@@ -148,7 +149,7 @@ Frect ui_core::ScreenRect()
 
 void ui_core::PushScissor(const Frect& r_tgt, bool overlapped)
 {
-	if(UI()->m_currentPointType==IUIRender::pttLIT)
+	if(UI().m_currentPointType==IUIRender::pttLIT)
 		return;
 
 //	return;
@@ -183,7 +184,7 @@ void ui_core::PushScissor(const Frect& r_tgt, bool overlapped)
 
 void ui_core::PopScissor()
 {
-	if(UI()->m_currentPointType==IUIRender::pttLIT)
+	if(UI().m_currentPointType==IUIRender::pttLIT)
 		return;
 
 //	return;

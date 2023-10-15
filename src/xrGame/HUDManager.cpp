@@ -267,7 +267,7 @@ void  CHUDManager::RenderUI()
 		
 		Fvector2			_pos;
 		_pos.set			(UI_BASE_WIDTH/2.0f, UI_BASE_HEIGHT/2.0f);
-		UI()->ClientToScreenScaled(_pos);
+		UI().ClientToScreenScaled(_pos);
 		pFont->SetAligment	(CGameFont::alCenter);
 		pFont->Out			(_pos.x, _pos.y, _str);
 		pFont->OnRender		();
@@ -346,7 +346,7 @@ void CHUDManager::OnScreenResolutionChanged()
 	pUI->UnLoad							();
 	pUI->Load							(pUI->UIGame());
 	pUI->OnConnected					();
-	GetUICursor()->OnScreenResolutionChanged();
+	GetUICursor().OnScreenResolutionChanged();
 }
 
 void CHUDManager::OnDisconnected()

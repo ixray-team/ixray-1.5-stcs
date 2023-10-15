@@ -35,7 +35,7 @@ public:
 				void		Update_GrenadeView	( Fvector& pos_actor );
 				void		net_Relcase			( CObject* obj );
 
-	CFontManager&			Font				()							{return *(UI()->Font());}
+	CFontManager&			Font				()							{return *(UI().Font());}
 	//текущий предмет на который смотрит HUD
 	collide::rq_result&		GetCurrentRayQuery	();
 

@@ -120,7 +120,7 @@ void CUISequenceSimpleItem::Load(CUIXml* xml, int idx)
 		_si->m_wnd					= smart_cast<CUIStatic*>(find_child_window(m_UIWindow, sname)); VERIFY(_si->m_wnd);
 		_si->m_wnd->SetTextComplexMode(true);
 		_si->m_wnd->Show			(false);
-		if(UI()->is_widescreen())
+		if(UI().is_widescreen())
 			_si->m_wnd->SetWidth(_si->m_wnd->GetWidth()/1.2f);
 
 		xml->SetLocalRoot			(_sr);
@@ -170,7 +170,7 @@ void CUISequenceSimpleItem::Update			()
 		}
 	}
 	if(m_desired_cursor_pos.x && m_desired_cursor_pos.y)
-		GetUICursor()->SetUICursorPosition(m_desired_cursor_pos);
+		GetUICursor().SetUICursorPosition(m_desired_cursor_pos);
 }
 
 void CUISequenceSimpleItem::Start()
@@ -190,7 +190,7 @@ void CUISequenceSimpleItem::Start()
 		Device.Pause			(TRUE, FALSE, TRUE, "simpleitem_start");
 
 	if(m_desired_cursor_pos.x && m_desired_cursor_pos.y)
-		GetUICursor()->SetUICursorPosition(m_desired_cursor_pos);
+		GetUICursor().SetUICursorPosition(m_desired_cursor_pos);
 
 	m_time_start				= float(Device.dwTimeContinual)/1000.0f;
 	m_owner->MainWnd()->AttachChild	(m_UIWindow);

@@ -385,7 +385,7 @@ void CUIWeaponCellItem::InitAddon(CUIStatic* s, LPCSTR section, Fvector2 addon_o
 			new_offset.x		= addon_offset.y*base_scale.x;
 			new_offset.y		= GetHeight() - addon_offset.x*base_scale.x - cell_size.x;
 			addon_offset		= new_offset;
-			addon_offset.x		*= UI()->get_current_kx();
+			addon_offset.x		*= UI().get_current_kx();
 		}else
 		{
 			s->SetWndSize		(cell_size);
@@ -469,7 +469,7 @@ void CBuyItemCustomDrawCell::OnDraw(CUICellItem* cell)
 {
 	Fvector2							pos;
 	cell->GetAbsolutePos				(pos);
-	UI()->ClientToScreenScaled			(pos, pos.x, pos.y);
+	UI().ClientToScreenScaled			(pos, pos.x, pos.y);
 	m_pFont->Out						(pos.x, pos.y, m_string);
 	m_pFont->OnRender					();
 }

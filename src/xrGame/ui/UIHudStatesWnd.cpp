@@ -265,11 +265,11 @@ void CUIHudStatesWnd::UpdateActiveItemInfo( CActor* actor )
 		
 		// hack ^ begin
 
-		CGameFont* pFont32 = UI()->Font()->pFontGraffiti32Russian;
-		CGameFont* pFont22 = UI()->Font()->pFontGraffiti22Russian;
+		CGameFont* pFont32 = UI().Font()->pFontGraffiti32Russian;
+		CGameFont* pFont22 = UI().Font()->pFontGraffiti22Russian;
 		CGameFont* pFont   = pFont32;
 
-		if ( UI()->is_widescreen() )
+		if ( UI().is_widescreen() )
 		{
 			pFont = pFont22;
 		}
@@ -341,7 +341,7 @@ void CUIHudStatesWnd::SetAmmoIcon( const shared_str& sect_name )
 				w = INV_GRID_WIDTH(GameConstants::GetUseHQ_Icons()) * 1.5f;
 		}
 
-		bool is_16x10 = UI()->is_widescreen();
+		bool is_16x10 = UI().is_widescreen();
 		if ( gridWidth < 1.01f )
 		{
 			m_ui_weapon_icon->SetTextureOffset( (is_16x10)? posx_16 : posx, 0.0f);

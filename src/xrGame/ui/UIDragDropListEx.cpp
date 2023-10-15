@@ -314,12 +314,12 @@ void CUIDragDropListEx::Draw()
 	inherited::Draw				();
 
 	if(0 && bDebug){
-		CGameFont* F		= UI()->Font()->pFontDI;
+		CGameFont* F		= UI().Font()->pFontDI;
 		F->SetAligment		(CGameFont::alCenter);
 		F->SetHeightI		(0.02f);
 		F->OutSetI			(0.f,-0.5f);
 		F->SetColor			(0xffffffff);
-		Ivector2			pt = m_container->PickCell(GetUICursor()->GetCursorPosition());
+		Ivector2			pt = m_container->PickCell(GetUICursor().GetCursorPosition());
 		F->OutNext			("%d-%d",pt.x, pt.y);
 	};
 
@@ -332,7 +332,7 @@ void CUIDragDropListEx::Update()
 	if( m_drag_item ){
 		Frect	wndRect;
 		GetAbsoluteRect(wndRect);
-		Fvector2 cp			= GetUICursor()->GetCursorPosition();
+		Fvector2 cp			= GetUICursor().GetCursorPosition();
 		if(wndRect.in(cp)){
 			if(NULL==m_drag_item->BackList())
 				m_drag_item->SetBackList(this);
@@ -842,7 +842,7 @@ void CUICellContainer::Draw()
 
 	Fvector2					drawLT;
 	drawLT.set					(lt_abs_pos.x+tgt_cells.lt.x*(cell_sz.x+m_cellSpacing.x), lt_abs_pos.y+tgt_cells.lt.y*(cell_sz.y+m_cellSpacing.y));
-	UI()->ClientToScreenScaled	(drawLT, drawLT.x, drawLT.y);
+	UI().ClientToScreenScaled	(drawLT, drawLT.x, drawLT.y);
 
 	const Fvector2 pts[6] =		{{0.0f,0.0f},{1.0f,0.0f},{1.0f,1.0f},
 								 {0.0f,0.0f},{1.0f,1.0f},{0.0f,1.0f}};
@@ -853,14 +853,14 @@ void CUICellContainer::Draw()
 
 	// calculate cell size in screen pixels
 	Fvector2 f_len, sp_len;
-	UI()->ClientToScreenScaled(f_len, float(CellSize().x), float(CellSize().y) );
-	UI()->ClientToScreenScaled(sp_len, float(CellsSpacing().x), float(CellsSpacing().y) );
+	UI().ClientToScreenScaled(f_len, float(CellSize().x), float(CellSize().y) );
+	UI().ClientToScreenScaled(sp_len, float(CellsSpacing().x), float(CellsSpacing().y) );
 
 	GetCellsInRange(tgt_cells,m_cells_to_draw);
 
 	// fill cell buffer
 	u32 max_prim_cnt = ((tgt_cells.width()+1)*(tgt_cells.height()+1)*6);
-	UIRender->StartPrimitive	(max_prim_cnt, IUIRender::ptTriList, UI()->m_currentPointType);
+	UIRender->StartPrimitive	(max_prim_cnt, IUIRender::ptTriList, UI().m_currentPointType);
 
 //	u32 cell_i = 0;
 	for ( int x = 0; x <= tgt_cells.width(); ++x )
@@ -909,7 +909,7 @@ void CUICellContainer::Draw()
 			}//for k
 		}//for y
 	}// for x
-	UI()->PushScissor				(clientArea);
+	UI().PushScissor				(clientArea);
 
 	UIRender->SetShader( *hShader );
 	UIRender->FlushPrimitive();
@@ -927,7 +927,7 @@ void CUICellContainer::Draw()
 		}
 	}
 
-	UI()->PopScissor			();
+	UI().PopScissor			();
 }
 
 void CUIDragDropListEx::SetCellsVertAlignment(xr_string alignment)

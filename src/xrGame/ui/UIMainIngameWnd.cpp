@@ -709,7 +709,7 @@ void CUIMainIngameWnd::UpdatePickUpItem	()
 
 	UIPickUpItemIcon->GetStaticItem()->SetOriginalRect(texture_rect);
 	UIPickUpItemIcon->SetStretchTexture(true);
-	UIPickUpItemIcon->SetWidth(m_iGridWidth * INV_GRID_WIDTH(GameConstants::GetUseHQ_Icons()) * scale * UI()->get_current_kx());
+	UIPickUpItemIcon->SetWidth(m_iGridWidth * INV_GRID_WIDTH(GameConstants::GetUseHQ_Icons()) * scale * UI().get_current_kx());
 	UIPickUpItemIcon->SetHeight(m_iGridHeight * INV_GRID_HEIGHT(GameConstants::GetUseHQ_Icons()) * scale);
 	UIPickUpItemIcon->SetWndPos(Fvector2().set(m_iPickUpItemIconX + (m_iPickUpItemIconWidth - UIPickUpItemIcon->GetWidth()) / 2.0f,
 		m_iPickUpItemIconY + (m_iPickUpItemIconHeight - UIPickUpItemIcon->GetHeight()) / 2.0f));

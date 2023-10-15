@@ -51,7 +51,7 @@ void draw_rect(Frect& r, u32 color)
 	DRender->SetDebugShader(IDebugRender::dbgShaderWindow);
 
 //.	UIRender->StartLineStrip	(5);
-	UIRender->StartPrimitive	(5, IUIRender::ptLineStrip, UI()->m_currentPointType);
+	UIRender->StartPrimitive	(5, IUIRender::ptLineStrip, UI().m_currentPointType);
 
 	UIRender->PushPoint(r.lt.x, r.lt.y, 0, color, 0,0);
 	UIRender->PushPoint(r.rb.x, r.lt.y, 0, color, 0,0);
@@ -74,8 +74,8 @@ void draw_wnds_rects()
 	for(;it!=it_e;++it)
 	{
 		Frect& r = *it;
-		UI()->ClientToScreenScaled(r.lt, r.lt.x, r.lt.y);
-		UI()->ClientToScreenScaled(r.rb, r.rb.x, r.rb.y);
+		UI().ClientToScreenScaled(r.lt, r.lt.x, r.lt.y);
+		UI().ClientToScreenScaled(r.rb, r.rb.x, r.rb.y);
 		draw_rect				(r,color_rgba(255,0,0,255));
 	};
 
@@ -182,11 +182,11 @@ void CUIWindow::Draw(float x, float y)
 
 void CUIWindow::Update()
 {
-	if (GetUICursor()->IsVisible())
+	if (GetUICursor().IsVisible())
 	{
 		bool cursor_on_window;
 
-		Fvector2			temp = GetUICursor()->GetCursorPosition();
+		Fvector2			temp = GetUICursor().GetCursorPosition();
 		Frect				r;
 		GetAbsoluteRect		(r);
 		cursor_on_window	= !!r.in(temp);
@@ -632,8 +632,8 @@ static bool is_in( Frect const& a, Frect const& b ) //b in a
 bool fit_in_rect(CUIWindow* w, Frect const& vis_rect, float border, float dx16pos ) //this = hint wnd
 {
 	float const cursor_height = 43.0f;
-	Fvector2 cursor_pos_	= GetUICursor()->GetCursorPosition();
-	if ( UI()->is_widescreen() )
+	Fvector2 cursor_pos_	= GetUICursor().GetCursorPosition();
+	if ( UI().is_widescreen() )
 	{
 		cursor_pos_.x -= dx16pos;
 	}
