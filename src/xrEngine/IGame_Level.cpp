@@ -23,7 +23,6 @@ IGame_Level::IGame_Level	()
 	bReady						= false;
 	pCurrentEntity				= NULL;
 	pCurrentViewEntity			= NULL;
-	pHUD						= NULL;
 }
 
 //#include "resourcemanager.h"
@@ -106,11 +105,8 @@ BOOL IGame_Level::Load			(u32 dwNum)
 
 
 	// HUD + Environment
-//.	pHUD						= (CCustomHUD*)NEW_INSTANCE	(CLSID_HUDMANAGER);
-	if(g_hud)
-		pHUD					= g_hud;
-	else
-		pHUD					= (CCustomHUD*)NEW_INSTANCE	(CLSID_HUDMANAGER);
+	if(!g_hud)
+		g_hud = (CCustomHUD*)NEW_INSTANCE(CLSID_HUDMANAGER);
 
 	// Render-level Load
 	Render->level_Load			(LL_Stream);
@@ -164,7 +160,7 @@ void	IGame_Level::OnFrame		( )
 	// Update all objects
 	VERIFY						(bReady);
 	Objects.Update				( false );
-	pHUD->OnFrame				( );
+	g_hud->OnFrame				( );
 
 	// Ambience
 	if (Sounds_Random.size() && (Device.dwTimeGlobal > Sounds_Random_dwNextTime))

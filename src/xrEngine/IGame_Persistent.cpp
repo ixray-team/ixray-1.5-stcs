@@ -124,7 +124,8 @@ void IGame_Persistent::Disconnect	()
 	destroy_particles					(true);
 
 	if(g_hud)
-		g_hud->OnDisconnected			();
+			DEL_INSTANCE			(g_hud);
+//.		g_hud->OnDisconnected			();
 #endif
 }
 

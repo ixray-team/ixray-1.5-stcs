@@ -132,12 +132,12 @@ void CRender::render_main	(Fmatrix&	m_ViewProjection, bool _fportals)
 				break;	// exit loop on frustums
 			}
 		}
-		if (g_pGameLevel && (phase==PHASE_NORMAL))	g_pGameLevel->pHUD->Render_Last();		// HUD
+		if (g_pGameLevel && (phase==PHASE_NORMAL))	g_hud->Render_Last();		// HUD
 	}
 	else
 	{
 		set_Object									(0);
-		if (g_pGameLevel && (phase==PHASE_NORMAL))	g_pGameLevel->pHUD->Render_Last();		// HUD
+		if (g_pGameLevel && (phase==PHASE_NORMAL))	g_hud->Render_Last();		// HUD
 	}
 }
 
@@ -199,7 +199,7 @@ void CRender::Render		()
 	IMainMenu*	pMainMenu = g_pGamePersistent?g_pGamePersistent->m_pMainMenu:0;
 	bool	bMenu = pMainMenu?pMainMenu->CanSkipSceneRendering():false;
 
-	if( !(g_pGameLevel && g_pGameLevel->pHUD) || bMenu)	return;
+	if( !(g_pGameLevel && g_hud) || bMenu)	return;
 
 	if (m_bFirstFrameAfterReset) {
 		m_bFirstFrameAfterReset = false;

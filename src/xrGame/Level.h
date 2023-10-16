@@ -402,9 +402,6 @@ IC CLevel&				Level()		{ return *((CLevel*) g_pGameLevel);			}
 IC game_cl_GameState&	Game()		{ return *Level().game;					}
 	u32					GameID();
 
-
-IC CHUDManager&			HUD()		{ return *((CHUDManager*)Level().pHUD);	}
-
 #ifdef DEBUG
 IC CLevelDebug&			DBG()		{return *((CLevelDebug*)Level().m_level_debug);}
 #endif

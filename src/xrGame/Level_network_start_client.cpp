@@ -1,6 +1,4 @@
 #include "stdafx.h"
-//#include "../xrEngine/resourcemanager.h"
-//#include "../xrEngine/resourcemanager.h"
 #include "HUDmanager.h"
 #include "PHdynamicdata.h"
 #include "Physics.h"
@@ -12,6 +10,7 @@
 #include "game_cl_base.h"
 #include "NET_Queue.h"
 #include "file_transfer.h"
+#include "hudmanager.h"
 
 extern	pureFrame*				g_pNetProcessor;
 
@@ -169,7 +168,6 @@ bool	CLevel::net_start_client5				()
 		// Textures
 		if	(!g_dedicated_server)
 		{
-			//pHUD->Load							();
 			g_pGamePersistent->LoadTitle				("st_loading_textures");
 			//Device.Resources->DeferredLoad		(FALSE);
 			Device.m_pRender->DeferredLoad(FALSE);
@@ -196,14 +194,11 @@ bool	CLevel::net_start_client6				()
 			return true;
 		}
 		
-		if	(!g_dedicated_server)
+		if (!g_dedicated_server)
 		{
-			pHUD->Load							();
-			//g_pGamePersistent->LoadTitle				("st_loading_textures");
+			g_hud->Load();
+			g_hud->OnConnected();
 		}
-
-		if(g_hud)
-			g_hud->OnConnected				();
 
 #ifdef DEBUG
 		Msg("--- net_start_client6");

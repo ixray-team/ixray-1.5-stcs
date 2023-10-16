@@ -60,3 +60,6 @@ public:
 private:
 	bool					m_Renderable;
 };
+
+IC CHUDManager& HUD() { return *((CHUDManager*)g_hud); }
+

@@ -70,7 +70,7 @@ void CLevel::IR_OnMouseHold(int btn)
 void CLevel::IR_OnMouseMove( int dx, int dy )
 {
 	if(g_bDisableAllInput)							return;
-	if (pHUD->GetUI()->IR_OnMouseMove(dx,dy))		return;
+	if (g_hud->GetUI()->IR_OnMouseMove(dx,dy))		return;
 	if (Device.Paused() && !IsDemoPlay() )	return;
 	if (CURRENT_ENTITY())		{
 		IInputReceiver*		IR	= smart_cast<IInputReceiver*>	(smart_cast<CGameObject*>(CURRENT_ENTITY()));
@@ -78,7 +78,7 @@ void CLevel::IR_OnMouseMove( int dx, int dy )
 	}
 }
 
-// Îáðàáîòêà íàæàòèÿ êëàâèø
+// ÐžÐ±Ñ€Ð°Ð±Ð¾Ñ‚ÐºÐ° Ð½Ð°Ð¶Ð°Ñ‚Ð¸Ñ ÐºÐ»Ð°Ð²Ð¸Ñˆ
 extern bool g_block_pause;
 
 // Lain: added TEMP!!!
@@ -106,7 +106,7 @@ void CLevel::IR_OnKeyboardPress	(int key)
 		return;
 #endif // #ifdef INGAME_EDITOR
 
-	bool b_ui_exist = (pHUD && pHUD->GetUI());
+	bool b_ui_exist = (g_hud && g_hud->GetUI());
 
 	if(_curr==kPAUSE)
 	{
@@ -153,7 +153,7 @@ void CLevel::IR_OnKeyboardPress	(int key)
 
 	if ( !bReady || !b_ui_exist )			return;
 
-	if ( b_ui_exist && pHUD->GetUI()->IR_OnKeyboardPress(key)) return;
+	if ( b_ui_exist && g_hud->GetUI()->IR_OnKeyboardPress(key)) return;
 
 	if ( Device.Paused() && !IsDemoPlay() )	return;
 
@@ -424,10 +424,10 @@ void CLevel::IR_OnKeyboardRelease(int key)
 		}
 	}
 
-	bool b_ui_exist = (pHUD && pHUD->GetUI());
+	bool b_ui_exist = (g_hud && g_hud->GetUI());
 
 	if (!bReady || g_bDisableAllInput	) return;
-	if ( b_ui_exist && pHUD->GetUI()->IR_OnKeyboardRelease(key)) return;
+	if ( b_ui_exist && g_hud->GetUI()->IR_OnKeyboardRelease(key)) return;
 	if (Device.Paused()		) return;
 	if (game && Game().OnKeyboardRelease(get_binded_action(key)) ) return;
 
@@ -479,9 +479,9 @@ void CLevel::IR_OnKeyboardHold(int key)
 
 #endif // DEBUG
 
-	bool b_ui_exist = (pHUD && pHUD->GetUI());
+	bool b_ui_exist = (g_hud && g_hud->GetUI());
 
-	if (b_ui_exist && pHUD->GetUI()->IR_OnKeyboardHold(key)) return;
+	if (b_ui_exist && g_hud->GetUI()->IR_OnKeyboardHold(key)) return;
 	if ( b_ui_exist && HUD().GetUI()->MainInputReceiver() )return;
 	if ( Device.Paused() && !Level().IsDemoPlay()) return;
 	if (CURRENT_ENTITY())		{

@@ -208,7 +208,8 @@ void CLightR_Manager::render_point	()
 
 		//		5. Dump sorting tree
 		RCache.set_Constants((R_constant_table*)0);
-		if (bHUD)			g_pGameLevel->pHUD->Render_Last		();	
+		if (bHUD)
+			g_hud->Render_Last();
 		RImplementation.r_dsgraph_render_graph					(0);
 		if (bHUD)			RImplementation.r_dsgraph_render_hud();	
 	}
@@ -283,7 +284,8 @@ void CLightR_Manager::render_spot	()
 		//		4. Dump sorting tree
 		//	RCache.set_ClipPlanes					(true,	&L_combine);
 		RCache.set_Constants	((R_constant_table*)0);
-		if (bHUD)	g_pGameLevel->pHUD->Render_Last		();	
+		if (bHUD)
+			g_hud->Render_Last();
 		RImplementation.r_dsgraph_render_graph			(0);
 		if (bHUD)	RImplementation.r_dsgraph_render_hud();	
 		//	RCache.set_ClipPlanes					(false,	&L_combine);

@@ -751,7 +751,7 @@ void game_cl_mp::OnSwitchPhase			(u32 old_phase, u32 new_phase)
 		{
 			m_bSpectatorSelected = FALSE;
 
-			if (Level().pHUD && HUD().GetUI())
+			if (g_hud && HUD().GetUI())
 			{
 				CUIMessagesWindow*	messages_window = NULL;
 				CUI*				ui_window = HUD().GetUI();
@@ -794,7 +794,7 @@ void game_cl_mp::OnSwitchPhase			(u32 old_phase, u32 new_phase)
 
 	default:
 		{
-			if (Level().pHUD && HUD().GetUI())
+			if (g_hud && HUD().GetUI())
 				HUD().GetUI()->ShowGameIndicators(false);
 			HideMessageMenus();
 		}break;
