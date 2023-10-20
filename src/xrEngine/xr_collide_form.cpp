@@ -124,7 +124,7 @@ void CCF_Skeleton::BuildState()
 			SBoneShape&	shape	= K->LL_GetData(i).shape;
 			if (SBoneShape::stNone==shape.type)				continue;
 			if (shape.flags.is(SBoneShape::sfNoPickable))	continue;
-			elements.push_back	(SElement(i,shape.type));
+			elements.emplace_back(i,shape.type);
 		}
 	}
 

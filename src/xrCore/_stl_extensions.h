@@ -37,7 +37,7 @@ public:
 							void					deallocate		(void* p, size_type n) const			{	xr_free	(p);				}
 							void					construct		(pointer p, const T& _Val)				{	::new(p) T(_Val);	}
 							void					destroy			(pointer p)								{	p->~T();			}
-							size_type				max_size		() const								{	size_type _Count = (size_type)(-1) / sizeof (T);	return (0 < _Count ? _Count : 1);	}
+							size_type				max_size		() const								{	size_type _Count = (size_type)(-1) / sizeof (T);	return _Count;	}
 };
 
 struct xr_allocator {
@@ -208,7 +208,7 @@ using U8Vec = xr_vector<u8>;
 using U8It = U8Vec::iterator;
 
 using LPU32Vec = xr_vector<u32*>;
-using LPU32It = PlaneVec::iterator;
+using LPU32It = LPU32Vec::iterator;
 
 using AStringVec = xr_vector<AnsiString>;
 using AStringIt = AStringVec::iterator;

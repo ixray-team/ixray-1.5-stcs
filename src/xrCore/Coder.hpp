@@ -69,7 +69,7 @@ static SUBRANGE SubRange = {0,0,0};
 static DWORD    low=0, code=0, range=0;
 
 
-inline void
+inline void 
 rcEncNormalize(_PPMD_FILE* stream)
 {
     while ((low ^ (low + range)) < TOP

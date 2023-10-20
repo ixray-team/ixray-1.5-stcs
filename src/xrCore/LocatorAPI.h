@@ -37,6 +37,7 @@ public:
 		CInifile*				header;
 		u32						size;
 		u32						vfs_idx;
+
 		archive():hSrcFile(NULL),hSrcMap(NULL),header(NULL),size(0),vfs_idx(u32(-1)){}
 		void					open();
 		void					close();
