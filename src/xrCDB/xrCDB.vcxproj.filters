@@ -102,33 +102,15 @@
     <ClCompile Include="Opcode.cpp">
       <Filter>Opcode</Filter>
     </ClCompile>
-    <ClCompile Include="ISpatial.cpp">
-      <Filter>engine</Filter>
-    </ClCompile>
-    <ClCompile Include="ISpatial_q_box.cpp">
-      <Filter>engine</Filter>
-    </ClCompile>
-    <ClCompile Include="ISpatial_q_frustum.cpp">
-      <Filter>engine</Filter>
-    </ClCompile>
-    <ClCompile Include="ISpatial_q_ray.cpp">
-      <Filter>engine</Filter>
-    </ClCompile>
-    <ClCompile Include="ISpatial_verify.cpp">
-      <Filter>engine</Filter>
-    </ClCompile>
-    <ClCompile Include="xr_area.cpp">
-      <Filter>engine</Filter>
-    </ClCompile>
-    <ClCompile Include="xr_area_query.cpp">
-      <Filter>engine</Filter>
-    </ClCompile>
-    <ClCompile Include="xr_area_raypick.cpp">
-      <Filter>engine</Filter>
-    </ClCompile>
-    <ClCompile Include="xrXRC.cpp">
-      <Filter>engine</Filter>
-    </ClCompile>
+    <ClCompile Include="ISpatial.cpp" />
+    <ClCompile Include="ISpatial_q_box.cpp" />
+    <ClCompile Include="ISpatial_q_frustum.cpp" />
+    <ClCompile Include="ISpatial_q_ray.cpp" />
+    <ClCompile Include="ISpatial_verify.cpp" />
+    <ClCompile Include="xrXRC.cpp" />
+    <ClCompile Include="xr_area.cpp" />
+    <ClCompile Include="xr_area_query.cpp" />
+    <ClCompile Include="xr_area_raypick.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Frustum.h">
@@ -257,18 +239,10 @@
     <ClInclude Include="Opcode.h">
       <Filter>Opcode</Filter>
     </ClInclude>
-    <ClInclude Include="ISpatial.h">
-      <Filter>engine</Filter>
-    </ClInclude>
-    <ClInclude Include="xr_area.h">
-      <Filter>engine</Filter>
-    </ClInclude>
-    <ClInclude Include="xr_collide_defs.h">
-      <Filter>engine</Filter>
-    </ClInclude>
-    <ClInclude Include="xrXRC.h">
-      <Filter>engine</Filter>
-    </ClInclude>
+    <ClInclude Include="ISpatial.h" />
+    <ClInclude Include="xrXRC.h" />
+    <ClInclude Include="xr_area.h" />
+    <ClInclude Include="xr_collide_defs.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt">

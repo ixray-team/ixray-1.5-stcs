@@ -605,14 +605,6 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="FileSystem.h">
-      <Filter>FS</Filter>
-    </CustomBuild>
-    <CustomBuild Include="LocatorAPI_Notifications.h">
-      <Filter>FS</Filter>
-    </CustomBuild>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
 </Project>

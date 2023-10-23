@@ -5,6 +5,9 @@
 #include "file_compress.h"
 #include "serialize.h"
 #include "net_execution_factory.h"
+#include <random>
+
+
 
 namespace	lc_net{
 
@@ -183,7 +186,8 @@ namespace	lc_net{
 	{
 		FPU::m64r			();
 		Memory.mem_compact	();
-		std::random_shuffle	(inlc_global_data()->g_deflectors().begin(),inlc_global_data()->g_deflectors().end());
+		static thread_local std::mt19937 rng = std::mt19937(std::random_device()());
+		std::shuffle(inlc_global_data()->g_deflectors().begin(), inlc_global_data()->g_deflectors().end(), rng);
 		clMsg( "create_global_data_write:  start" );
 		string_path			 global_data_file_name ;
 		FS.update_path		( global_data_file_name, "$app_root$", gl_data_net_file_name  );

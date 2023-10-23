@@ -1,4 +1,5 @@
 #include "stdafx.h"
+
 #include "build.h"
 
 #include "../xrLC_Light/light_point.h"
@@ -17,6 +18,9 @@ xrCriticalSection	task_CS
 #endif // PROFILE_CRITICAL_SECTIONS
 ;
 
+#include <random>
+
+thread_local std::mt19937 rng = std::mt19937(std::random_device()());
 xr_vector<int>		task_pool;
 
 class CLMThread		: public CThread
@@ -76,7 +80,7 @@ void	CBuild::LMapsLocal				()
 
 		// Randomize deflectors
 #ifndef NET_CMP
-		std::random_shuffle	(lc_global_data()->g_deflectors().begin(),lc_global_data()->g_deflectors().end());
+		std::shuffle(lc_global_data()->g_deflectors().begin(), lc_global_data()->g_deflectors().end(), rng);
 #endif
 
 #ifndef NET_CMP	

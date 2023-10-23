@@ -358,9 +358,6 @@
     <ClInclude Include="_stl_extensions.h">
       <Filter>Math\Extensions</Filter>
     </ClInclude>
-    <ClInclude Include="_type_traits.h">
-      <Filter>Math\Extensions</Filter>
-    </ClInclude>
     <ClInclude Include="clsid.h">
       <Filter>Math\Extensions</Filter>
     </ClInclude>
@@ -537,18 +534,12 @@
     </ClInclude>
     <ClInclude Include="os_clipboard.h" />
     <ClInclude Include="xrSyncronize.h" />
+    <ClInclude Include="FileSystem.h" />
+    <ClInclude Include="LocatorAPI_Notifications.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="xrCore.rc">
       <Filter>Kernel</Filter>
     </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="FileSystem.h">
-      <Filter>FS</Filter>
-    </CustomBuild>
-    <CustomBuild Include="LocatorAPI_Notifications.h">
-      <Filter>FS</Filter>
-    </CustomBuild>
   </ItemGroup>
 </Project>
