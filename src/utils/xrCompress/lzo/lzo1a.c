@@ -130,15 +130,15 @@ lzo1a_decompress ( const lzo_byte *in , lzo_uint  in_len,
                          lzo_voidp wrkmem )
 {
 #if defined(LZO_OPTIMIZE_GNUC_i386)
-	register lzo_byte *op __asm__("%edi");
-	register const lzo_byte *ip __asm__("%esi");
-	register lzo_uint t __asm__("%ecx");
-	register const lzo_byte *m_pos __asm__("%ebx");
+	lzo_byte *op __asm__("%edi");
+	const lzo_byte *ip __asm__("%esi");
+	lzo_uint t __asm__("%ecx");
+	const lzo_byte *m_pos __asm__("%ebx");
 #else
-	register lzo_byte *op;
-	register const lzo_byte *ip;
-	register lzo_uint t;
-	register const lzo_byte *m_pos;
+	lzo_byte *op;
+	const lzo_byte *ip;
+	lzo_uint t;
+	const lzo_byte *m_pos;
 #endif
 	const lzo_byte * const ip_end = in + in_len;
 
@@ -264,9 +264,9 @@ do_compress    ( const lzo_byte *in , lzo_uint  in_len,
                        lzo_voidp wrkmem )
 {
 #if defined(LZO_OPTIMIZE_GNUC_i386)
-	register const lzo_byte *ip __asm__("%esi");
+	const lzo_byte *ip __asm__("%esi");
 #else
-	register const lzo_byte *ip;
+	const lzo_byte *ip;
 #endif
 #if defined(__LZO_HASH_INCREMENTAL)
 	lzo_uint32 dv;

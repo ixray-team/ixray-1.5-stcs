@@ -37,10 +37,10 @@ DO_DECOMPRESS  ( const lzo_byte *in , lzo_uint  in_len,
                        lzo_byte *out, lzo_uintp out_len,
                        lzo_voidp wrkmem )
 {
-	register lzo_byte *op;
-	register const lzo_byte *ip;
-	register lzo_uint t;
-	register const lzo_byte *m_pos;
+	lzo_byte *op;
+	const lzo_byte *ip;
+	lzo_uint t;
+	const lzo_byte *m_pos;
 
 	const lzo_byte * const ip_end = in + in_len;
 #if defined(HAVE_ANY_OP)

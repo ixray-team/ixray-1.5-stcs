@@ -454,9 +454,9 @@ static
 void swd_search(lzo_swd_t *s, lzo_uint node, lzo_uint cnt)
 {
 #if 0 && defined(__GNUC__) && defined(__i386__)
-	register const unsigned char *p1 __asm__("%edi");
-	register const unsigned char *p2 __asm__("%esi");
-	register const unsigned char *px __asm__("%edx");
+	const unsigned char *p1 __asm__("%edi");
+	const unsigned char *p2 __asm__("%esi");
+	const unsigned char *px __asm__("%edx");
 #else
 	const unsigned char *p1;
 	const unsigned char *p2;

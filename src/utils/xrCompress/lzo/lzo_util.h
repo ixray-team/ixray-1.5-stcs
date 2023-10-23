@@ -83,7 +83,7 @@ extern "C" {
 #if !defined(MEMCPY8_DS)
 
 #define MEMCPY8_DS(dest,src,len) \
-	{ register lzo_uint __l = (len) / 8; \
+	{ lzo_uint __l = (len) / 8; \
 	do { \
 		*dest++ = *src++; \
 		*dest++ = *src++; \

@@ -47,13 +47,13 @@ DO_DECOMPRESS    ( const lzo_byte *in , lzo_uint  in_len,
                          lzo_voidp wrkmem )
 {
 #if defined(LZO_OPTIMIZE_GNUC_i386)
-	register lzo_byte *op __asm__("%edi");
-	register const lzo_byte *ip __asm__("%esi");
-	register const lzo_byte *m_pos __asm__("%ebx");
+	lzo_byte *op __asm__("%edi");
+	const lzo_byte *ip __asm__("%esi");
+	const lzo_byte *m_pos __asm__("%ebx");
 #else
-	register lzo_byte *op;
-	register const lzo_byte *ip;
-	register const lzo_byte *m_pos;
+	lzo_byte *op;
+	const lzo_byte *ip;
+	const lzo_byte *m_pos;
 #endif
 
 	lzo_uint t;

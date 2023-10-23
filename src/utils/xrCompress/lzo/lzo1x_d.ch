@@ -50,14 +50,14 @@ DO_DECOMPRESS  ( const lzo_byte *in , lzo_uint  in_len,
                        lzo_voidp wrkmem )
 #endif
 {
-	register lzo_byte *op;
-	register const lzo_byte *ip;
-	register lzo_uint t;
+	lzo_byte *op;
+	const lzo_byte *ip;
+	lzo_uint t;
 #if defined(COPY_DICT)
 	lzo_uint m_off;
 	const lzo_byte *dict_end;
 #else
-	register const lzo_byte *m_pos;
+	const lzo_byte *m_pos;
 #endif
 
 	const lzo_byte * const ip_end = in + in_len;

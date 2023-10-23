@@ -66,9 +66,9 @@ do_compress    ( const lzo_byte *in , lzo_uint  in_len,
 /* this seems to work with buggy gcc */
 /* #if defined(LZO_OPTIMIZE_GNUC_i386) */
 #if 0 && defined(__GNUC__) && defined(__i386__)
-	register const lzo_byte *ip __asm__("%esi");
+	const lzo_byte *ip __asm__("%esi");
 #else
-	register const lzo_byte *ip;
+	const lzo_byte *ip;
 #endif
 #if (DD_BITS > 0)
 #if defined(__LZO_HASH_INCREMENTAL)

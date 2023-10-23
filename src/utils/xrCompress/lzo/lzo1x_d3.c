@@ -64,7 +64,7 @@
 
 #define COPY_DICT_DICT(m_len,m_off) \
 	{ \
-		register const lzo_byte *m_pos; \
+		const lzo_byte *m_pos; \
 		m_off -= (lzo_moff_t) (op - out); assert(m_off > 0); \
 		if (m_off > dict_len) goto lookbehind_overrun; \
 		m_pos = dict_end - m_off; \
@@ -83,7 +83,7 @@
 	assert(m_len >= 2); assert(m_off > 0); assert(op > out); \
 	if (m_off <= (lzo_moff_t) (op - out)) \
 	{ \
-		register const lzo_byte *m_pos = op - m_off; \
+		const lzo_byte *m_pos = op - m_off; \
 		DICT_MEMMOVE(op,m_pos,m_len,m_off) \
 	} \
 	else \
