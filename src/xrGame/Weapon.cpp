@@ -1799,10 +1799,12 @@ u32 CWeapon::Cost() const
 	return res;
 }
 
+extern bool hud_adj_crosshair;
 bool CWeapon::show_crosshair()
 {
-	return !IsPending() && ( !IsZoomed() || !ZoomHideCrosshair() );
+	return !IsPending() && ((!IsZoomed() || !ZoomHideCrosshair()) || hud_adj_mode != 0 && hud_adj_crosshair);
 }
+
 
 bool CWeapon::show_indicators()
 {
