@@ -11,6 +11,7 @@
 #include "blender_luminance.h"
 #include "blender_ssao.h"
 #include "../xrRender/blender_fxaa.h"
+#include "../xrRender/blender_smaa.h"
 
 #include "../xrRender/dxRenderDeviceRender.h"
 
@@ -363,6 +364,17 @@ CRenderTarget::CRenderTarget		()
 	s_fxaa.create(b_fxaa, "r2\\fxaa");
 	g_fxaa.create(FVF::F_V, RCache.Vertex.Buffer(), RCache.QuadIB);
 
+	// SMAA
+	{
+		u32 w = Device.dwWidth, h = Device.dwHeight;
+
+		b_smaa = xr_new<CBlender_SMAA>();
+		s_smaa.create(b_smaa);
+
+		rt_smaa_edgetex.create(r2_RT_smaa_edgetex, w, h, D3DFMT_A8R8G8B8);
+		rt_smaa_blendtex.create(r2_RT_smaa_blendtex, w, h, D3DFMT_A8R8G8B8);
+	}
+
 	// TONEMAP
 	{
 		rt_LUM_64.create			(r2_RT_luminance_t64,	64, 64,	D3DFMT_A16B16G16R16F	);
@@ -376,7 +388,7 @@ CRenderTarget::CRenderTarget		()
 		// create pool
 		for (u32 it=0; it<HW.Caps.iGPUNum*2; it++)	{
 			string256					name;
-			sprintf						(name,"%s_%d",	r2_RT_luminance_pool,it	);
+			xr_sprintf						(name,"%s_%d",	r2_RT_luminance_pool,it	);
 			rt_LUM_pool[it].create		(name,	1,	1,	D3DFMT_R32F				);
 			u_setrt						(rt_LUM_pool[it],	0,	0,	0			);
 			CHK_DX						(HW.pDevice->Clear( 0L, NULL, D3DCLEAR_TARGET,	0x7f7f7f7f,	1.0f, 0L));
@@ -483,7 +495,7 @@ CRenderTarget::CRenderTarget		()
 			for (int it1=0; it1<TEX_jitter_count-1; it1++)
 			{
 				string_path					name;
-				sprintf						(name,"%s%d",r2_jitter,it1);
+				xr_sprintf						(name,"%s%d",r2_jitter,it1);
 				R_CHK	(D3DXCreateTexture	(HW.pDevice,TEX_jitter,TEX_jitter,1,0,D3DFMT_Q8W8V8U8,D3DPOOL_MANAGED,&t_noise_surf[it1]));
 				t_noise[it1]					= dxRenderDeviceRender::Instance().Resources->_CreateTexture	(name);
 				t_noise[it1]->surface_set	(t_noise_surf[it1]);
@@ -512,7 +524,7 @@ CRenderTarget::CRenderTarget		()
 			// generate HBAO jitter texture (last)
 			int it = TEX_jitter_count - 1;
 			string_path					name;
-			sprintf						(name,"%s%d",r2_jitter,it);
+			xr_sprintf						(name,"%s%d",r2_jitter,it);
 			R_CHK	(D3DXCreateTexture	(HW.pDevice,TEX_jitter,TEX_jitter,1,0,D3DFMT_A32B32G32R32F,D3DPOOL_MANAGED,&t_noise_surf[it]));
 			t_noise[it]					= dxRenderDeviceRender::Instance().Resources->_CreateTexture	(name);
 			t_noise[it]->surface_set	(t_noise_surf[it]);
@@ -625,6 +637,7 @@ CRenderTarget::~CRenderTarget	()
 	xr_delete					(b_bloom				);
 	xr_delete					(b_ssao					);
 	xr_delete(b_fxaa);
+	xr_delete(b_smaa);
 	xr_delete					(b_accum_reflected		);
 	xr_delete					(b_accum_spot			);
 	xr_delete					(b_accum_point			);
