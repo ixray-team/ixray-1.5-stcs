@@ -597,6 +597,9 @@
     <ClInclude Include="..\xrRender\ColorMapManager.h">
       <Filter>Core\ColorMap</Filter>
     </ClInclude>
+    <ClInclude Include="..\xrRender\blender_fxaa.h">
+      <Filter>Shading templates</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -994,6 +997,9 @@
     </ClCompile>
     <ClCompile Include="..\xrRender\ColorMapManager.cpp">
       <Filter>Core\ColorMap</Filter>
+    </ClCompile>
+    <ClCompile Include="blender_fxaa.cpp">
+      <Filter>Shading templates</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
