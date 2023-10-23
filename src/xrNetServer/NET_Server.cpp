@@ -302,14 +302,17 @@ IPureServer::EConnect IPureServer::Connect(LPCSTR options, GameDescriptionData &
 if(!psNET_direct_connect)
 {
 	//---------------------------
-	string1024 tmp;
+
+	string1024 tmp = "";
+
 	//---------------------------
     // Create the IDirectPlay8Client object.
 	HRESULT CoCreateInstanceRes = CoCreateInstance	(CLSID_DirectPlay8Server, NULL, CLSCTX_INPROC_SERVER, IID_IDirectPlay8Server, (LPVOID*) &NET);
 	//---------------------------	
 	if (CoCreateInstanceRes != S_OK)
 	{
-		FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_ALLOCATE_BUFFER, nullptr, CoCreateInstanceRes, 0, tmp, 0, nullptr);
+		static char desc_storage[1024] = {};
+		FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM, nullptr, CoCreateInstanceRes, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), desc_storage, 0, nullptr);
 		CHK_DX(CoCreateInstanceRes );
 	}	
 	//---------------------------
@@ -475,11 +478,11 @@ HRESULT	IPureServer::net_Handler(u32 dwMessageType, PVOID pMessage)
 
 			CHK_DX(hr);
 			
-			string64			cname;
-			CHK_DX( WideCharToMultiByte( CP_ACP, 0, Pinfo->pwszName, -1, cname, sizeof(cname) , 0, 0 ) );
+			//string64			cname;
+			//CHK_DX( WideCharToMultiByte( CP_ACP, 0, Pinfo->pwszName, -1, cname, sizeof(cname) , 0, 0 ) );
 
 			SClientConnectData	cl_data;
-			xr_strcpy( cl_data.name, cname );
+			//xr_strcpy( cl_data.name, cname );
 
 			if( Pinfo->pvData && Pinfo->dwDataSize == sizeof(cl_data) )
 			{
