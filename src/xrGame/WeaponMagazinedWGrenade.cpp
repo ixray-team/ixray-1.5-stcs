@@ -242,7 +242,7 @@ void CWeaponMagazinedWGrenade::state_Fire(float dt)
 {
 	VERIFY(fOneShotTime>0.f);
 
-	//режим стрельбы подствольника
+	//СЂРµР¶РёРј СЃС‚СЂРµР»СЊР±С‹ РїРѕРґСЃС‚РІРѕР»СЊРЅРёРєР°
 	if(m_bGrenadeMode)
 	{
 		/*
@@ -267,7 +267,7 @@ void CWeaponMagazinedWGrenade::state_Fire(float dt)
 			FireEnd();
 		*/
 	} 
-	//режим стрельбы очередями
+	//СЂРµР¶РёРј СЃС‚СЂРµР»СЊР±С‹ РѕС‡РµСЂРµРґСЏРјРё
 	else 
 		inherited::state_Fire(dt);
 }
@@ -425,7 +425,7 @@ void CWeaponMagazinedWGrenade::ReloadMagazine()
 	auto last_bMisfire = bMisfire;
 	inherited::ReloadMagazine();
 	
-	//перезарядка подствольного гранатомета
+	//РїРµСЂРµР·Р°СЂСЏРґРєР° РїРѕРґСЃС‚РІРѕР»СЊРЅРѕРіРѕ РіСЂР°РЅР°С‚РѕРјРµС‚Р°
 	if(m_bGrenadeMode)
 	{
 		bMisfire = last_bMisfire;
@@ -508,7 +508,7 @@ bool CWeaponMagazinedWGrenade::Attach(PIItem pIItem, bool b_send_event)
 
 		CRocketLauncher::m_fLaunchSpeed = pGrenadeLauncher->GetGrenadeVel();
 
- 		//уничтожить подствольник из инвентаря
+ 		//СѓРЅРёС‡С‚РѕР¶РёС‚СЊ РїРѕРґСЃС‚РІРѕР»СЊРЅРёРє РёР· РёРЅРІРµРЅС‚Р°СЂСЏ
 		if(b_send_event)
 		{
 			if (OnServer()) 
@@ -576,7 +576,7 @@ float	CWeaponMagazinedWGrenade::CurrentZoomFactor	()
 	return inherited::CurrentZoomFactor();
 }
 
-//виртуальные функции для проигрывания анимации HUD
+//РІРёСЂС‚СѓР°Р»СЊРЅС‹Рµ С„СѓРЅРєС†РёРё РґР»СЏ РїСЂРѕРёРіСЂС‹РІР°РЅРёСЏ Р°РЅРёРјР°С†РёРё HUD
 void CWeaponMagazinedWGrenade::PlayAnimShow()
 {
 	VERIFY(GetState()==eShowing);
@@ -723,11 +723,18 @@ void CWeaponMagazinedWGrenade::PlayAnimBore()
 
 void CWeaponMagazinedWGrenade::UpdateSounds	()
 {
-	inherited::UpdateSounds			();
-	Fvector P						= get_LastFP();
-	m_sounds.SetPosition("sndShotG", P);
-	m_sounds.SetPosition("sndReloadG", P);
-	m_sounds.SetPosition("sndSwitch", P);
+	if (Device.dwFrame == dwUpdateSounds_Frame)
+		return;
+
+	inherited::UpdateSounds();
+
+	Fvector P = get_LastFP();
+	if (Device.dwFrame % 3 == 0)
+		m_sounds.SetPosition("sndShotG", P);
+	else if (Device.dwFrame % 3 == 1)
+		m_sounds.SetPosition("sndReloadG", P);
+	else if (Device.dwFrame % 3 == 2)
+		m_sounds.SetPosition("sndSwitch", P);
 }
 
 void CWeaponMagazinedWGrenade::UpdateGrenadeVisibility(bool visibility)
