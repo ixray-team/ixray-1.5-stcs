@@ -14,7 +14,7 @@
 #include "d3d10_1.h"
 #include <D3Dx10core.h>
 
-#include "../xrRender/xrD3DDefs.h"
+#include "../xrRenderDX9/xrD3DDefs.h"
 
 #include "../xrRender/Debug/dxPixEventWrapper.h"
 
