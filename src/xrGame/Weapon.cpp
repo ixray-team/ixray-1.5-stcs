@@ -32,6 +32,8 @@
 BOOL	b_toggle_weapon_aim		= FALSE;
 extern CUIXml* pWpnScopeXml;
 
+ENGINE_API extern float psHUD_FOV_def;
+
 CWeapon::CWeapon()
 {
 	SetState				(eHidden);
@@ -80,6 +82,7 @@ CWeapon::CWeapon()
 
 	bReloadKeyPressed = false;
 	bAmmotypeKeyPressed = false;
+	m_HudFovZoom = 0.0f;
 }
 
 CWeapon::~CWeapon()
@@ -363,6 +366,9 @@ void CWeapon::Load		(LPCSTR section)
 	m_pdm.m_fPDM_disp_crouch		= pSettings->r_float( section, "PDM_disp_crouch"		);
 	m_pdm.m_fPDM_disp_crouch_no_acc	= pSettings->r_float( section, "PDM_disp_crouch_no_acc" );
 	m_crosshair_inertion			= READ_IF_EXISTS(pSettings, r_float, section, "crosshair_inertion",	5.91f);
+
+	m_HudFovZoom = READ_IF_EXISTS(pSettings, r_float, hud_sect, "hud_fov_zoom", 0.0f);
+
 	m_first_bullet_controller.load	(section);
 
 	fireDispersionConditionFactor = pSettings->r_float(section,"fire_dispersion_condition_factor"); 
@@ -1938,4 +1944,11 @@ void CWeapon::ZoomDec()
 	clamp(f, m_zoom_params.m_fScopeZoomFactor, min_zoom_factor);
 	SetZoomFactor(f);
 
+}
+
+float CWeapon::GetHudFov() {
+	auto base = inherited::GetHudFov();
+	auto zoom = m_HudFovZoom ? m_HudFovZoom : (psHUD_FOV_def * Device.fFOV / g_fov);
+	base += (zoom - base) * m_zoom_params.m_fZoomRotationFactor;
+	return base;
 }
