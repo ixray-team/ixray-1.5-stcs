@@ -189,6 +189,7 @@ enum
 	RFLAG_ACTOR_SHADOW = (1 << 9),
 	R2FLAG_USE_BUMP = (1 << 10),
 	RFLAG_CLOUD_SHADOWS = (1 << 12),
+	RFLAG_NO_RAM_TEXTURES = (1 << 13),
 };
 
 extern void						xrRender_initconsole	();
