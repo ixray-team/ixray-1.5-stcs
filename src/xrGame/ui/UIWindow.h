@@ -192,6 +192,10 @@ public:
 	LPCSTR					WindowName_script	()							{return *m_windowName;}
 	CUIWindow*				FindChild			(const shared_str name);
 
+	// Name of the window by node from XML
+	const shared_str		WindowNodeName() const { return m_windowNodeName; }
+	void					SetWindowNodeName(LPCSTR wn) { m_windowNodeName = wn; }
+
 	IC bool					CursorOverWindow	() const					{ return m_bCursorOverWindow; }
 	IC u32					FocusReceiveTime	() const					{ return m_dwFocusReceiveTime; }
 	
@@ -202,6 +206,7 @@ protected:
 	IC void					SafeRemoveChild(CUIWindow* child)				{WINDOW_LIST_it it = std::find(m_ChildWndList.begin(),m_ChildWndList.end(),child); if(it!=m_ChildWndList.end())m_ChildWndList.erase(it);};
 
 	shared_str				m_windowName;
+	shared_str				m_windowNodeName;
 	//список дочерних окон
 	WINDOW_LIST				m_ChildWndList;
 	

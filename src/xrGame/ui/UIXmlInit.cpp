@@ -112,6 +112,7 @@ bool CUIXmlInit::InitWindow(CUIXml& xml_doc, LPCSTR path,
 	InitAutoStaticGroup			(xml_doc, path, index, pWnd);
 	InitAutoFrameLineGroup		(xml_doc, path, index, pWnd);
 
+	pWnd->SetWindowNodeName(path);
 	return true;
 }
 
@@ -507,6 +508,7 @@ bool CUIXmlInit::InitDragDropListEx(CUIXml& xml_doc, const char* path, int index
 	}
 
 	pWnd->back_color		= GetColor( xml_doc, path, index, 0xFFFFFFFF );
+	pWnd->SetWindowNodeName(path);
 
 	return true;
 }
@@ -1377,6 +1379,7 @@ bool CUIXmlInit::InitListBox(CUIXml& xml_doc, const char* path, int index, CUILi
 	t_color = GetColor(xml_doc, _path, index, 0x00);
 	pWnd->SetTextColorS(t_color);
 
+	pWnd->SetWindowNodeName(path);
 	return true;
 }
 

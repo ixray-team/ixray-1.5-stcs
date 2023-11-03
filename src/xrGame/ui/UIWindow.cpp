@@ -190,6 +190,22 @@ void CUIWindow::Update()
 		Frect				r;
 		GetAbsoluteRect		(r);
 		cursor_on_window	= !!r.in(temp);
+
+#ifdef DEBUG
+		if (cursor_on_window && g_show_wnd_rect2) {
+			Frect rect{};
+			GetAbsoluteRect(rect);
+			add_rect_to_draw(rect);
+			// Sort windows without name
+			if (bDebug && m_windowNodeName != nullptr) {
+				CGameFont* F = UI().Font().pFontDI;
+				F->SetAligment(CGameFont::alCenter);
+				F->SetColor(0xffffffff);
+				F->OutNext("NodeName: [%s],Size: [w:%.2f] [h:%.2f], Pos: [x:%.f] [y:%.f]", m_windowNodeName.c_str(), GetWndSize().x, GetWndSize().y, GetWndPos().x, GetWndPos().y);
+			}
+		}
+#endif
+
 		// RECEIVE and LOST focus
 		if(m_bCursorOverWindow != cursor_on_window)
 		{
