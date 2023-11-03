@@ -200,6 +200,8 @@ Fvector3	ps_r2_dof					= Fvector3().set(-1.4f, 0.0f, 250.f);
 float		ps_r2_dof_sky				= 30;				//	distance to sky
 float		ps_r2_dof_kernel_size		= 7.0f;						//	7.0f
 
+float		ps_r2_def_aref_quality = 100.0f;
+
 float		ps_r3_dyn_wet_surf_near		= 10.f;				// 10.0f
 float		ps_r3_dyn_wet_surf_far		= 30.f;				// 30.0f
 int			ps_r3_dyn_wet_surf_sm_res	= 256;				// 256
@@ -713,6 +715,8 @@ void		xrRender_initconsole	()
 	CMD3(CCC_Mask,		"r2_detail_bump",				&ps_r2_ls_flags,			R2FLAG_DETAIL_BUMP);
 	CMD3(CCC_Mask, "r2_use_bump", &ps_r__common_flags, R2FLAG_USE_BUMP);
 	CMD3(CCC_Mask, "r__actor_shadow", &ps_r__common_flags, RFLAG_ACTOR_SHADOW);
+	CMD4(CCC_Float, "r2_def_aref_quality", &ps_r2_def_aref_quality, 70.0f, 200.0f);
+
 	CMD3(CCC_Token,		"r2_sun_quality",				&ps_r_sun_quality,			qsun_quality_token);
 
 	//	Igor: need restart
