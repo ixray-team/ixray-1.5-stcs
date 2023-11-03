@@ -309,6 +309,8 @@ private:
 };
 
 extern		ENGINE_API		CRenderDevice		Device;
+extern ENGINE_API CTimer loading_save_timer;
+extern ENGINE_API bool loading_save_timer_started;
 
 typedef fastdelegate::FastDelegate0<bool>		LOADING_EVENT;
 extern	ENGINE_API xr_list<LOADING_EVENT>		g_loading_events;

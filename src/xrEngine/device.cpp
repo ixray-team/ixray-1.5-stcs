@@ -31,6 +31,9 @@ using namespace DirectX;
 ENGINE_API CRenderDevice Device;
 ENGINE_API BOOL g_bRendering = FALSE; 
 
+ENGINE_API CTimer loading_save_timer;
+ENGINE_API bool loading_save_timer_started = false;
+
 BOOL		g_bLoaded = FALSE;
 ref_light	precache_light = 0;
 
@@ -132,7 +135,10 @@ void CRenderDevice::End		(void)
 			Memory.mem_compact								();
 			Msg												("* MEMORY USAGE: %d K",Memory.mem_usage()/1024);
 			Msg												("* End of synchronization A[%d] R[%d]",b_is_Active, b_is_Ready);
-
+			if (loading_save_timer_started) {
+				Msg("* Game Loading Timer: Finished for %d ms", loading_save_timer.GetElapsed_ms());
+				loading_save_timer_started = false;
+			}
 #ifdef FIND_CHUNK_BENCHMARK_ENABLE
 			g_find_chunk_counter.flush();
 #endif // FIND_CHUNK_BENCHMARK_ENABLE
