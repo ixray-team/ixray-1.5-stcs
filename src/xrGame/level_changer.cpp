@@ -16,7 +16,7 @@
 #include "ai_object_location_impl.h"
 #include "ai_space.h"
 #include "level_graph.h"
-#include "game_level_cross_table.h"
+#include "../xrServerEntities/game_level_cross_table.h"
 
 #include "HudManager.h"
 #include "UIGameSP.h"
