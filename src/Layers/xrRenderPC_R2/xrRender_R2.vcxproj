@@ -389,7 +389,7 @@
     <ClCompile Include="..\xrRender\FTreeVisual.cpp" />
     <ClCompile Include="..\xrRender\FVisual.cpp" />
     <ClCompile Include="..\xrRender\HOM.cpp" />
-    <ClCompile Include="..\xrRender\HW.cpp" />
+    <ClCompile Include="..\xrRenderDX9\dx9HW.cpp" />
     <ClCompile Include="..\xrRenderDX9\dx9HWCaps.cpp" />
     <ClCompile Include="..\xrRender\light.cpp" />
     <ClCompile Include="..\xrRender\LightTrack.cpp" />

@@ -848,7 +848,7 @@
     <ClCompile Include="..\xrRender\dxUISequenceVideoItem.cpp">
       <Filter>Interfase implementations\UI\UISequenceVideoItem</Filter>
     </ClCompile>
-    <ClCompile Include="..\xrRender\HW.cpp">
+    <ClCompile Include="..\xrRenderDX9\dx9HW.cpp">
       <Filter>Refactored\HW</Filter>
     </ClCompile>
     <ClCompile Include="..\xrRenderDX9\dx9HWCaps.cpp">

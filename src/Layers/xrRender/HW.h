@@ -62,9 +62,6 @@ public:
 	bool					m_bUsePerfhud;
 #else	//	USE_DX10
 
-private:
-	HINSTANCE 				hD3D;
-
 public:
 
 	IDirect3D9* 			pD3D;		// D3D

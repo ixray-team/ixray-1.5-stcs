@@ -924,7 +924,7 @@
     <ClCompile Include="r2_rendertarget_phase_ssao.cpp">
       <Filter>Core_Target</Filter>
     </ClCompile>
-    <ClCompile Include="..\xrRender\HW.cpp">
+    <ClCompile Include="..\xrRenderDX9\dx9HW.cpp">
       <Filter>Refactored\HW</Filter>
     </ClCompile>
     <ClCompile Include="..\xrRenderDX9\dx9HWCaps.cpp">
