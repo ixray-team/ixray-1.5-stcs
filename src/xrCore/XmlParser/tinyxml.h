@@ -126,6 +126,7 @@ struct TiXmlCursor
 
 	@sa TiXmlNode::Accept()
 */
+
 class TiXmlVisitor
 {
 public:
@@ -192,7 +193,7 @@ const TiXmlEncoding TIXML_DEFAULT_ENCODING = TIXML_ENCODING_UNKNOWN;
 	A Decleration contains: Attributes (not on tree)
 	@endverbatim
 */
-class XRXMLPARSER_API TiXmlBase
+class XRCORE_API TiXmlBase
 {
 	friend class TiXmlNode;
 	friend class TiXmlElement;
@@ -417,7 +418,7 @@ private:
 	in a document, or stand on its own. The type of a TiXmlNode
 	can be queried, and it can be cast to its more defined type.
 */
-class XRXMLPARSER_API TiXmlNode : public TiXmlBase
+class XRCORE_API TiXmlNode : public TiXmlBase
 {
 	friend class TiXmlDocument;
 	friend class TiXmlElement;
@@ -428,7 +429,7 @@ public:
 	    /** An input stream operator, for every class. Tolerant of newlines and
 		    formatting, but doesn't expect them.
 	    */
-	    //friend std::istream& operator >> (std::istream& in, TiXmlNode& base);
+//	    friend std::istream& operator >> (std::istream& in, TiXmlNode& base);
 
 	    /** An output stream operator, for every class. Note that this outputs
 		    without any newlines or formatting, as opposed to Print(), which
@@ -446,7 +447,7 @@ public:
 		    A TiXmlDocument will read nodes until it reads a root element, and
 			all the children of that root element.
 	    */	
-	    //friend std::ostream& operator<< (std::ostream& out, const TiXmlNode& base);
+//	    friend std::ostream& operator<< (std::ostream& out, const TiXmlNode& base);
 
 		/// Appends the XML node or attribute to a xr_string.
 		friend xr_string& operator<< (xr_string& out, const TiXmlNode& base );
@@ -516,8 +517,8 @@ public:
 	TiXmlNode* Parent()							{ return parent; }
 	const TiXmlNode* Parent() const				{ return parent; }
 
-	const TiXmlNode* FirstChild()	const	{ return firstChild; }		///< The first child of this node. Will be null if there are no children.
-	TiXmlNode* FirstChild()					{ return firstChild; }
+	const TiXmlNode* FirstChild()	const		{ return firstChild; }	///< The first child of this node. Will be null if there are no children.
+	TiXmlNode* FirstChild()						{ return firstChild; }
 	const TiXmlNode* FirstChild( const char * value ) const;			///< The first child of this node with the matching 'value'. Will be null if none found.
 	/// The first child of this node with the matching 'value'. Will be null if none found.
 	TiXmlNode* FirstChild( const char * _value ) {
@@ -992,7 +993,6 @@ protected:
 	const char* ReadValue( const char* in, TiXmlParsingData* prevData, TiXmlEncoding encoding );
 
 private:
-
 	TiXmlAttributeSet attributeSet;
 };
 

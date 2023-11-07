@@ -5632,9 +5632,6 @@
     <ProjectReference Include="..\xrSound\xrSound.vcxproj">
       <Project>{ccca7859-eb86-493e-9b53-c4235f45b3c5}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\xrXMLParser\xrXMLParser.vcxproj">
-      <Project>{94a1c366-3d19-48e6-8170-4adc2e70df98}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <Import Project="..\GameSpy.targets" />

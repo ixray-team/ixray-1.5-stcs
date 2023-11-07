@@ -85,6 +85,9 @@
     <Filter Include="OS">
       <UniqueIdentifier>{d2145d1a-aaf3-4479-9299-7b00812c2fa3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="TinyXML">
+      <UniqueIdentifier>{cdab2684-4ceb-4c6e-8ffe-14c1710f4618}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FTimer.cpp">
@@ -286,6 +289,18 @@
       <Filter>OS</Filter>
     </ClCompile>
     <ClCompile Include="xrSyncronize.cpp" />
+    <ClCompile Include="XmlParser\tinyxml.cpp">
+      <Filter>TinyXML</Filter>
+    </ClCompile>
+    <ClCompile Include="XmlParser\tinyxmlerror.cpp">
+      <Filter>TinyXML</Filter>
+    </ClCompile>
+    <ClCompile Include="XmlParser\tinyxmlparser.cpp">
+      <Filter>TinyXML</Filter>
+    </ClCompile>
+    <ClCompile Include="XmlParser\xrXMLParser.cpp">
+      <Filter>TinyXML</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FTimer.h">
@@ -598,6 +613,12 @@
       <Filter>OS</Filter>
     </ClInclude>
     <ClInclude Include="xrSyncronize.h" />
+    <ClInclude Include="XmlParser\tinyxml.h">
+      <Filter>TinyXML</Filter>
+    </ClInclude>
+    <ClInclude Include="XmlParser\xrXMLParser.h">
+      <Filter>TinyXML</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="xrCore.rc">

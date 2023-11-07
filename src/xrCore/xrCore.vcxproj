@@ -348,6 +348,10 @@
     </ClCompile>
     <ClCompile Include="stream_reader.cpp" />
     <ClCompile Include="string_concatenations.cpp" />
+    <ClCompile Include="XmlParser\tinyxml.cpp" />
+    <ClCompile Include="XmlParser\tinyxmlerror.cpp" />
+    <ClCompile Include="XmlParser\tinyxmlparser.cpp" />
+    <ClCompile Include="XmlParser\xrXMLParser.cpp" />
     <ClCompile Include="xrCore.cpp" />
     <ClCompile Include="xrDebug.cpp" />
     <ClCompile Include="xrMemory.cpp" />
@@ -445,6 +449,8 @@
     <ClInclude Include="string_concatenations_inline.h" />
     <ClInclude Include="SubAlloc.hpp" />
     <ClInclude Include="vector.h" />
+    <ClInclude Include="XmlParser\tinyxml.h" />
+    <ClInclude Include="XmlParser\xrXMLParser.h" />
     <ClInclude Include="xrCore.h" />
     <ClInclude Include="xrCore_platform.h" />
     <ClInclude Include="xrDebug.h" />
