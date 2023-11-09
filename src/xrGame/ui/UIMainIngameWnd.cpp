@@ -11,7 +11,6 @@
 #include "../CustomOutfit.h"
 #include "../HUDManager.h"
 #include "../PDA.h"
-//.7#include "../WeaponHUD.h"
 #include "../xrServerEntities/character_info.h"
 #include "../inventory.h"
 #include "../UIGameSP.h"

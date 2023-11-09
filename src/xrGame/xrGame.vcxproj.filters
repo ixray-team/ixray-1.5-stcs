@@ -8975,9 +8975,6 @@
     <ClCompile Include="Level_load.cpp">
       <Filter>Core\Client\Level</Filter>
     </ClCompile>
-    <ClCompile Include="level_map_locations.cpp">
-      <Filter>Core\Client\Level</Filter>
-    </ClCompile>
     <ClCompile Include="Level_network.cpp">
       <Filter>Core\Client\Level</Filter>
     </ClCompile>
