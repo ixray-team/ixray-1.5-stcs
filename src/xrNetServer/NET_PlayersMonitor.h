@@ -46,8 +46,6 @@ public:
 	{
 		//Msg("-S- Entering to csPlayers [%d]", GetCurrentThreadId());
 		csPlayers.Enter();
-		//LogStackTrace(
-		//	make_string("-S- Entered to csPlayers [%d]", GetCurrentThreadId()).c_str());
 		now_iterating_in_net_players	=	true;
 #ifdef DEBUG
 		iterator_thread_id = GetCurrentThreadId();
@@ -66,8 +64,6 @@ public:
 	{
 		//Msg("-S- Entering to csPlayers [%d]", GetCurrentThreadId());
 		csPlayers.Enter();
-		//LogStackTrace(
-		//	make_string("-S- Entered to csPlayers [%d]", GetCurrentThreadId()).c_str());
 		now_iterating_in_net_players	=	true;
 #ifdef DEBUG
 		iterator_thread_id = GetCurrentThreadId();
@@ -88,8 +84,6 @@ public:
 		u32 ret_count = 0;
 		//Msg("-S- Entering to csPlayers [%d]", GetCurrentThreadId());
 		csPlayers.Enter();
-		//LogStackTrace(
-		//	make_string("-S- Entered to csPlayers [%d]", GetCurrentThreadId()).c_str());
 		now_iterating_in_net_players	=	true;
 #ifdef DEBUG
 		iterator_thread_id = GetCurrentThreadId();
@@ -117,8 +111,6 @@ public:
 	{
 		//Msg("-S- Entering to csPlayers [%d]", GetCurrentThreadId());
 		csPlayers.Enter();
-		//LogStackTrace(
-		//	make_string("-S- Entered to csPlayers [%d]", GetCurrentThreadId()).c_str());
 		VERIFY(!now_iterating_in_net_players);
 		now_iterating_in_net_players	=	true;
 #ifdef DEBUG
@@ -144,8 +136,6 @@ public:
 	{
 		//Msg("-S- Entering to csPlayers [%d]", GetCurrentThreadId());
 		csPlayers.Enter();
-		//LogStackTrace(
-		//	make_string("-S- Entered to csPlayers [%d]", GetCurrentThreadId()).c_str());
 		players_collection_t::iterator client_iter = std::find_if(
 			net_Players.begin(),
 			net_Players.end(),
@@ -163,8 +153,6 @@ public:
 	{
 		//Msg("-S- Entering to csPlayers [%d]", GetCurrentThreadId());
 		csPlayers.Enter();
-		//LogStackTrace(
-		//	make_string("-S- Entered to csPlayers [%d]", GetCurrentThreadId()).c_str());
 		VERIFY(!now_iterating_in_net_players);
 		net_Players.push_back(new_client);
 		//Msg("-S- Leaving from csPlayers [%d]", GetCurrentThreadId());
@@ -176,8 +164,6 @@ public:
 	{
 		//Msg("-S- Entering to csPlayers [%d]", GetCurrentThreadId());
 		csPlayers.Enter();
-		//LogStackTrace(
-		//	make_string("-S- Entered to csPlayers [%d]", GetCurrentThreadId()).c_str());
 		now_iterating_in_net_players_disconn	=	true;
 #ifdef DEBUG
 		iterator_thread_id = GetCurrentThreadId();
@@ -192,8 +178,6 @@ public:
 	{
 		//Msg("-S- Entering to csPlayers [%d]", GetCurrentThreadId());
 		csPlayers.Enter();
-		//LogStackTrace(
-		//	make_string("-S- Entered to csPlayers [%d]", GetCurrentThreadId()).c_str());
 		VERIFY(!now_iterating_in_net_players_disconn);
 		now_iterating_in_net_players_disconn	=	true;
 #ifdef DEBUG
@@ -219,8 +203,6 @@ public:
 	{
 		//Msg("-S- Entering to csPlayers [%d]", GetCurrentThreadId());
 		csPlayers.Enter();
-		//LogStackTrace(
-		//	make_string("-S- Entered to csPlayers [%d]", GetCurrentThreadId()).c_str());
 		now_iterating_in_net_players_disconn	=	true;
 #ifdef DEBUG
 		iterator_thread_id = GetCurrentThreadId();
@@ -241,8 +223,6 @@ public:
 	{
 		//Msg("-S- Entering to csPlayers [%d]", GetCurrentThreadId());
 		csPlayers.Enter();
-		//LogStackTrace(
-		//	make_string("-S- Entered to csPlayers [%d]", GetCurrentThreadId()).c_str());
 		VERIFY(!now_iterating_in_net_players_disconn);
 		net_Players_disconnected.push_back(new_client);
 		//Msg("-S- Leaving from csPlayers [%d]", GetCurrentThreadId());
@@ -253,8 +233,6 @@ public:
 	{
 		//Msg("-S- Entering to csPlayers [%d]", GetCurrentThreadId());
 		csPlayers.Enter();
-		//LogStackTrace(
-		//	make_string("-S- Entered to csPlayers [%d]", GetCurrentThreadId()).c_str());
 		u32 ret_count = net_Players.size();
 		//Msg("-S- Leaving from csPlayers [%d]", GetCurrentThreadId());
 		csPlayers.Leave();

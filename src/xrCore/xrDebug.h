@@ -58,8 +58,6 @@ IC	std::string __cdecl	make_string		(LPCSTR format,...)
 
 extern XRCORE_API	xrDebug		Debug;
 
-XRCORE_API void LogStackTrace	(LPCSTR header);
-
 #include "xrDebug_macros.h"
 
 #endif // xrDebugH

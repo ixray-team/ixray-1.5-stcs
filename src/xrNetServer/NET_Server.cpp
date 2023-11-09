@@ -185,9 +185,6 @@ IPureServer::_Recieve( const void* data, u32 data_size, u32 param )
 	//DWORD currentThreadId = GetCurrentThreadId();
 	//Msg("-S- Entering to csMessages from _Receive [%d]", currentThreadId);
 	csMessage.Enter();
-	//LogStackTrace(
-	//		make_string("-S- Entered to csMessages [%d]", currentThreadId).c_str());
-	//---------------------------------------
 	if( psNET_Flags.test(NETFLAG_LOG_SV_PACKETS) ) 
 	{
 		if( !pSvNetLog) 
