@@ -429,7 +429,7 @@
     <ClCompile Include="..\xrRender\SH_Constant.cpp" />
     <ClCompile Include="..\xrRender\SH_Matrix.cpp" />
     <ClCompile Include="..\xrRenderDX9\dx9SH_RT.cpp" />
-    <ClCompile Include="..\xrRender\SH_Texture.cpp" />
+    <ClCompile Include="..\xrRenderDX9\dx9SH_Texture.cpp" />
     <ClCompile Include="..\xrRender\SkeletonAnimated.cpp" />
     <ClCompile Include="..\xrRender\SkeletonCustom.cpp" />
     <ClCompile Include="..\xrRender\SkeletonRigid.cpp" />
