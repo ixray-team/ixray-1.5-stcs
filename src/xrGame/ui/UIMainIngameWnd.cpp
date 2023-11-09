@@ -48,7 +48,6 @@
 #include "UIColorAnimatorWrapper.h"
 #include "../game_news.h"
 
-#include "static_cast_checked.hpp"
 #include "game_cl_capture_the_artefact.h"
 #include "UIHudStatesWnd.h"
 #include "UIActorMenu.h"
@@ -351,7 +350,7 @@ void CUIMainIngameWnd::Update()
 		//this is a bad style... It left for backward compatibility
 		//need to move this logic into UIGameCTA class
 		//bool b_Artefact = (NULL != m_pActor->inventory().ItemFromSlot(ARTEFACT_SLOT));
-		game_cl_CaptureTheArtefact* cta_game = static_cast_checked<game_cl_CaptureTheArtefact*>(&Game());
+		game_cl_CaptureTheArtefact* cta_game = static_cast<game_cl_CaptureTheArtefact*>(&Game());
 		R_ASSERT(cta_game);
 		R_ASSERT(lookat_player);
 		

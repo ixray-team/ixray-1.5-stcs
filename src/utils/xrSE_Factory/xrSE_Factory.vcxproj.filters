@@ -94,9 +94,6 @@
     <Filter Include="Scripts\ScriptDebugger">
       <UniqueIdentifier>{af802a86-1fba-413e-9d83-77ebfddfd4b4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\memory_manager">
-      <UniqueIdentifier>{cb29f6c3-869b-4461-9279-e4537d4e1dfc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripts\lua_studio">
       <UniqueIdentifier>{0de5cf60-3156-462b-8ae8-ae6166322d0c}</UniqueIdentifier>
     </Filter>
@@ -411,9 +408,6 @@
     <ClInclude Include="script_file.h">
       <Filter>Scripts\ScriptDebugger</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\xrServerEntities\doug_lea_memory_allocator.h">
-      <Filter>Scripts\memory_manager</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\xrServerEntities\lua_studio.h">
       <Filter>Scripts\lua_studio</Filter>
     </ClInclude>
@@ -670,9 +664,6 @@
     </ClCompile>
     <ClCompile Include="script_file.cpp">
       <Filter>Scripts\ScriptDebugger</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\xrServerEntities\doug_lea_memory_allocator.c">
-      <Filter>Scripts\memory_manager</Filter>
     </ClCompile>
     <ClCompile Include="..\..\xrServerEntities\lua_studio.cpp">
       <Filter>Scripts\lua_studio</Filter>

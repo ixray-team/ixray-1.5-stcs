@@ -19,7 +19,6 @@
 #include "hudmanager.h"
 #include "uigamecustom.h"
 #include "clsid_game.h"
-#include "static_cast_checked.hpp"
 #include "player_hud.h"
 
 using namespace InventoryUtilities;

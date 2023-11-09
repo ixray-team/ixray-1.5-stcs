@@ -191,7 +191,6 @@
     <ClInclude Include="..\..\xrServerEntities\character_info.h" />
     <ClInclude Include="..\..\xrServerEntities\character_info_defs.h" />
     <ClInclude Include="..\..\xrServerEntities\clsid_game.h" />
-    <ClInclude Include="..\..\xrServerEntities\doug_lea_memory_allocator.h" />
     <ClInclude Include="..\..\xrServerEntities\DrawUtils.h" />
     <ClInclude Include="..\..\xrServerEntities\FastDelegate.h" />
     <ClInclude Include="..\..\xrServerEntities\gametype_chooser.h" />
@@ -315,17 +314,6 @@
     <ClCompile Include="..\..\xrServerEntities\alife_monster_brain.cpp" />
     <ClCompile Include="..\..\xrServerEntities\alife_space.cpp" />
     <ClCompile Include="..\..\xrServerEntities\character_info.cpp" />
-    <ClCompile Include="..\..\xrServerEntities\doug_lea_memory_allocator.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </PrecompiledHeader>
-      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Level2</WarningLevel>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">
-      </PrecompiledHeader>
-      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">Level2</WarningLevel>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </PrecompiledHeader>
-      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Level2</WarningLevel>
-    </ClCompile>
     <ClCompile Include="..\..\xrServerEntities\gametype_chooser.cpp" />
     <ClCompile Include="..\..\xrServerEntities\lua_studio.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">pch_script.h</PrecompiledHeaderFile>

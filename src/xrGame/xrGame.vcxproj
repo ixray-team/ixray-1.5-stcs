@@ -227,7 +227,6 @@
     <ClInclude Include="..\xrServerEntities\character_info.h" />
     <ClInclude Include="..\xrServerEntities\character_info_defs.h" />
     <ClInclude Include="..\xrServerEntities\clsid_game.h" />
-    <ClInclude Include="..\xrServerEntities\doug_lea_memory_allocator.h" />
     <ClInclude Include="..\xrServerEntities\DrawUtils.h" />
     <ClInclude Include="..\xrServerEntities\FastDelegate.h" />
     <ClInclude Include="..\xrServerEntities\gametype_chooser.h" />
@@ -1554,7 +1553,6 @@
     <ClInclude Include="stalker_velocity_collection_inline.h" />
     <ClInclude Include="stalker_velocity_holder.h" />
     <ClInclude Include="stalker_velocity_holder_inline.h" />
-    <ClInclude Include="static_cast_checked.hpp" />
     <ClInclude Include="static_obstacles_avoider.h" />
     <ClInclude Include="static_obstacles_avoider_inline.h" />
     <ClInclude Include="StdAfx.h" />
@@ -1667,7 +1665,6 @@
     <ClInclude Include="ui\UIEditKeyBind.h" />
     <ClInclude Include="ui\UIEncyclopediaArticleWnd.h" />
     <ClInclude Include="ui\UIEncyclopediaWnd.h" />
-    <ClInclude Include="ui\UIEventsWnd.h" />
     <ClInclude Include="ui\UIFactionWarWnd.h" />
     <ClInclude Include="ui\UIFrags.h" />
     <ClInclude Include="ui\UIFrags2.h" />
@@ -1682,7 +1679,6 @@
     <ClInclude Include="ui\UIInteractiveBackground.h" />
     <ClInclude Include="ui\UIInventoryUpgradeWnd.h" />
     <ClInclude Include="ui\UIInventoryUtilities.h" />
-    <ClInclude Include="ui\UIInventoryWnd.h" />
     <ClInclude Include="ui\UIInvUpgrade.h" />
     <ClInclude Include="ui\UIInvUpgradeInfo.h" />
     <ClInclude Include="ui\UIInvUpgradeProperty.h" />
@@ -1728,8 +1724,6 @@
     <ClInclude Include="ui\UIOptionsManager.h" />
     <ClInclude Include="ui\UIOptionsManagerScript.h" />
     <ClInclude Include="ui\UIOutfitInfo.h" />
-    <ClInclude Include="ui\UIOutfitInfo2.h" />
-    <ClInclude Include="ui\UIOutfitSlot.h" />
     <ClInclude Include="ui\UIPdaContactsWnd.h" />
     <ClInclude Include="ui\UIPdaKillMessage.h" />
     <ClInclude Include="ui\UIPdaListItem.h" />
@@ -1767,8 +1761,6 @@
     <ClInclude Include="ui\UITabControl.h" />
     <ClInclude Include="ui\UITalkDialogWnd.h" />
     <ClInclude Include="ui\UITalkWnd.h" />
-    <ClInclude Include="ui\UITaskDescrWnd.h" />
-    <ClInclude Include="ui\UITaskItem.h" />
     <ClInclude Include="ui\UITaskWnd.h" />
     <ClInclude Include="ui\UITextBanner.h" />
     <ClInclude Include="ui\UITextureMaster.h" />
@@ -1872,19 +1864,6 @@
     <ClCompile Include="..\xrServerEntities\alife_monster_brain.cpp" />
     <ClCompile Include="..\xrServerEntities\alife_space.cpp" />
     <ClCompile Include="..\xrServerEntities\character_info.cpp" />
-    <ClCompile Include="..\xrServerEntities\doug_lea_memory_allocator.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </PrecompiledHeaderFile>
-      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Level2</WarningLevel>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">
-      </PrecompiledHeader>
-      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">Level2</WarningLevel>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </PrecompiledHeader>
-      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Level2</WarningLevel>
-    </ClCompile>
     <ClCompile Include="..\xrServerEntities\gametype_chooser.cpp" />
     <ClCompile Include="..\xrServerEntities\LevelGameDef.cpp" />
     <ClCompile Include="..\xrServerEntities\lua_studio.cpp">
@@ -4699,11 +4678,6 @@
     </ClCompile>
     <ClCompile Include="stalker_velocity_collection.cpp" />
     <ClCompile Include="stalker_velocity_holder.cpp" />
-    <ClCompile Include="static_cast_checked_test.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="static_obstacles_avoider.cpp" />
     <ClCompile Include="StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -4931,17 +4905,6 @@
     <ClCompile Include="ui\UIEditKeyBind.cpp" />
     <ClCompile Include="ui\UIEncyclopediaArticleWnd.cpp" />
     <ClCompile Include="ui\UIEncyclopediaWnd.cpp" />
-    <ClCompile Include="ui\UIEventsWnd.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">pch_script.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)$(ProjectName)_script.pch</PrecompiledHeaderOutputFile>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">true</ExcludedFromBuild>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">pch_script.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">$(IntDir)$(ProjectName)_script.pch</PrecompiledHeaderOutputFile>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">pch_script.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)$(ProjectName)_script.pch</PrecompiledHeaderOutputFile>
-    </ClCompile>
     <ClCompile Include="ui\UIFactionWarWnd.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">pch_script.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)$(ProjectName)_script.pch</PrecompiledHeaderOutputFile>
@@ -5004,17 +4967,6 @@
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)$(ProjectName)_script.pch</PrecompiledHeaderOutputFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">pch_script.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">$(IntDir)$(ProjectName)_script.pch</PrecompiledHeaderOutputFile>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">pch_script.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)$(ProjectName)_script.pch</PrecompiledHeaderOutputFile>
-    </ClCompile>
-    <ClCompile Include="ui\UIInventoryWnd.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">pch_script.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)$(ProjectName)_script.pch</PrecompiledHeaderOutputFile>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">true</ExcludedFromBuild>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">pch_script.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">$(IntDir)$(ProjectName)_script.pch</PrecompiledHeaderOutputFile>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">pch_script.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)$(ProjectName)_script.pch</PrecompiledHeaderOutputFile>
     </ClCompile>
@@ -5134,16 +5086,6 @@
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)$(ProjectName)_script.pch</PrecompiledHeaderOutputFile>
     </ClCompile>
     <ClCompile Include="ui\UIOutfitInfo.cpp" />
-    <ClCompile Include="ui\UIOutfitInfo2.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="ui\UIOutfitSlot.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="ui\UIPdaContactsWnd.cpp" />
     <ClCompile Include="ui\UIPdaKillMessage.cpp" />
     <ClCompile Include="ui\UIPdaListItem.cpp" />
@@ -5255,22 +5197,6 @@
     </ClCompile>
     <ClCompile Include="ui\UITalkDialogWnd.cpp" />
     <ClCompile Include="ui\UITalkWnd.cpp" />
-    <ClCompile Include="ui\UITaskDescrWnd.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="ui\UITaskItem.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">pch_script.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)$(ProjectName)_script.pch</PrecompiledHeaderOutputFile>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">true</ExcludedFromBuild>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">pch_script.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">$(IntDir)$(ProjectName)_script.pch</PrecompiledHeaderOutputFile>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">pch_script.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)$(ProjectName)_script.pch</PrecompiledHeaderOutputFile>
-    </ClCompile>
     <ClCompile Include="ui\UITaskWnd.cpp" />
     <ClCompile Include="ui\UITextBanner.cpp" />
     <ClCompile Include="ui\UITextureMaster.cpp" />

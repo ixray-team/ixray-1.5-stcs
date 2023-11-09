@@ -10,7 +10,7 @@
 #include "script_storage.h"
 #include "script_thread.h"
 #include <stdarg.h>
-#include "doug_lea_memory_allocator.h"
+#include "../xrCore/doug_lea_allocator.h"
 
 #ifndef DEBUG
 #	include "opt.lua.h"
@@ -59,13 +59,13 @@ LPCSTR	file_header = 0;
 #endif
 
 #ifndef PURE_ALLOC
-#	ifndef USE_MEMORY_MONITOR
+//#	ifndef USE_MEMORY_MONITOR
 #		define USE_DL_ALLOCATOR
-#	endif // USE_MEMORY_MONITOR
+//#	endif // USE_MEMORY_MONITOR
 #endif // PURE_ALLOC
 
 #ifndef USE_DL_ALLOCATOR
-static void *lua_alloc_xr	(void *ud, void *ptr, size_t osize, size_t nsize) {
+static void *lua_alloc		(void *ud, void *ptr, size_t osize, size_t nsize) {
   (void)ud;
   (void)osize;
   if (nsize == 0) {
@@ -80,16 +80,53 @@ static void *lua_alloc_xr	(void *ud, void *ptr, size_t osize, size_t nsize) {
 #endif // DEBUG_MEMORY_MANAGER
 }
 #else // USE_DL_ALLOCATOR
-static void *lua_alloc_dl	(void *ud, void *ptr, size_t osize, size_t nsize) {
+
+#include "../xrCore/memory_allocator_options.h"
+
+#ifdef USE_ARENA_ALLOCATOR
+static const u32			s_arena_size = 96*1024*1024;
+static char					s_fake_array[s_arena_size];
+static doug_lea_allocator	s_allocator( s_fake_array, s_arena_size, "lua" );
+#else // #ifdef USE_ARENA_ALLOCATOR
+static doug_lea_allocator	s_allocator( 0, 0, "lua" );
+#endif // #ifdef USE_ARENA_ALLOCATOR
+
+static void *lua_alloc		(void *ud, void *ptr, size_t osize, size_t nsize) {
+#ifndef USE_MEMORY_MONITOR
   (void)ud;
   (void)osize;
-  if (nsize == 0)	{	dlfree			(ptr);	 return	NULL;  }
-  else				return dlrealloc	(ptr, nsize);
+	if ( !nsize )	{
+		s_allocator.free_impl	(ptr);
+		return					0;
+	}
+
+	if ( !ptr )
+		return					s_allocator.malloc_impl((u32)nsize);
+
+	return						s_allocator.realloc_impl(ptr, (u32)nsize);
+#else // #ifndef USE_MEMORY_MONITOR
+	if ( !nsize )	{
+		memory_monitor::monitor_free(ptr);
+		s_allocator.free_impl		(ptr);
+		return						NULL;
+	}
+
+	if ( !ptr ) {
+		void* const result			= s_allocator.malloc_impl((u32)nsize);
+		memory_monitor::monitor_alloc (result,nsize,"LUA");
+		return						result;
+	}
+
+	memory_monitor::monitor_free	(ptr);
+	void* const result				= s_allocator.realloc_impl(ptr, (u32)nsize);
+	memory_monitor::monitor_alloc	(result,nsize,"LUA");
+	return							result;
+#endif // #ifndef USE_MEMORY_MONITOR
 }
 
 u32 game_lua_memory_usage	()
 {
-	return					((u32)dlmallinfo().uordblks);
+	return					(s_allocator.get_allocated_size());
 }
 #endif // USE_DL_ALLOCATOR
 
@@ -211,7 +248,7 @@ CScriptStorage::CScriptStorage		()
 
 #ifdef USE_LUA_STUDIO
 #	ifndef USE_DEBUGGER
-	static_assert(false, "Do Not Define USE_LUA_STUDIO macro without USE_DEBUGGER macro");
+	static_assert(false, "Do not define USE_LUA_STUDIO macro without USE_DEBUGGER macro");
 #	endif // #ifndef USE_DEBUGGER
 #endif // #ifdef USE_LUA_STUDIO
 }
@@ -240,11 +277,7 @@ void CScriptStorage::reinit	()
 	if (m_virtual_machine)
 		lua_close			(m_virtual_machine);
 
-#ifndef USE_DL_ALLOCATOR
-	m_virtual_machine		= lua_newstate(lua_alloc_xr, NULL);
-#else // USE_DL_ALLOCATOR
-	m_virtual_machine		= lua_newstate(lua_alloc_dl, NULL);
-#endif // USE_DL_ALLOCATOR
+	m_virtual_machine		= lua_newstate(lua_alloc, NULL);
 
 	if (!m_virtual_machine) {
 		Msg					("! ERROR : Cannot initialize script virtual machine!");
@@ -360,7 +393,7 @@ int CScriptStorage::vscript_log		(ScriptStorage::ELuaMessageType tLuaMessageType
 	xr_strcpy	(S2,SS);
 	S1		= S2 + xr_strlen(SS);
 	vsprintf(S1,caFormat,marker);
-	strcat	(S2,"\r\n");
+	xr_strcat	(S2,"\r\n");
 
 #ifdef DEBUG
 #	ifndef ENGINE_BUILD
