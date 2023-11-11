@@ -218,7 +218,7 @@ void CScriptEngine::setup_callbacks		()
 #	endif // #ifndef USE_LUA_STUDIO
 #endif
 	{
-#if !XRAY_EXCEPTIONS
+#ifdef LUABIND_NO_EXCEPTIONS
 		luabind::set_error_callback		(CScriptEngine::lua_error);
 #endif
 
@@ -227,7 +227,7 @@ void CScriptEngine::setup_callbacks		()
 #endif // MASTER_GOLD
 	}
 
-#if !XRAY_EXCEPTIONS
+#ifdef LUABIND_NO_EXCEPTIONS
 	luabind::set_cast_failed_callback	(lua_cast_failed);
 #endif
 	lua_atpanic							(lua(),CScriptEngine::lua_panic);
