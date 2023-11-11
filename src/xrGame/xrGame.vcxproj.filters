@@ -10445,12 +10445,6 @@
     <ClCompile Include="UIDialogHolder.cpp">
       <Filter>UI</Filter>
     </ClCompile>
-    <ClCompile Include="ui\uiinventorywnd2.cpp">
-      <Filter>UI\Common\InventoryWnd</Filter>
-    </ClCompile>
-    <ClCompile Include="ui\UIInventoryWnd3.cpp">
-      <Filter>UI\Common\InventoryWnd</Filter>
-    </ClCompile>
     <ClCompile Include="ui\UIInventoryUpgradeWnd.cpp">
       <Filter>UI\Common\InventoryWnd\InventoryUpgrade</Filter>
     </ClCompile>
