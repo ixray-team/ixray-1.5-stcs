@@ -14,6 +14,7 @@ ipch/
 *.VC.db
 *.VC.VC.opendb
 *.aps
+build/
 
 # Build results
 obj/
@@ -26,6 +27,8 @@ UpgradeLog*.XML
 UpgradeLog*.htm
 
 # Dependencies
+sdk/3d_sdk/
+dep/
 packages/
 
 # C++ Builder backups
