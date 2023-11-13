@@ -2,6 +2,9 @@ if (jit == nil) then
 	profiler.setup_hook	()
 end
 
+string.gfind = string.gmatch
+math.mod = math.fmod
+math.randomseed (time_global())
 
 function empty	(container)
 	if (type(container) == "function") then
