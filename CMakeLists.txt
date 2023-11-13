@@ -76,7 +76,6 @@ set(IXRAY_FOLDER_3RD FOLDER "3rd Party")
 
 # 3rd libraries
 add_subdirectory("src/3rd party/luabind")
-add_subdirectory("src/3rd party/luajit")
 add_subdirectory("src/3rd party/ode")
 add_subdirectory("src/3rd party/crypto")
 add_subdirectory("src/3rd party/cximage")
@@ -181,7 +180,6 @@ endif()
 
 # Move 3rd
 set_target_properties(luabind PROPERTIES ${IXRAY_FOLDER_3RD})
-set_target_properties(luajit PROPERTIES ${IXRAY_FOLDER_3RD})
 set_target_properties(ODE PROPERTIES ${IXRAY_FOLDER_3RD})
 set_target_properties(crypto PROPERTIES ${IXRAY_FOLDER_3RD})
 set_target_properties(CxImage PROPERTIES ${IXRAY_FOLDER_3RD})

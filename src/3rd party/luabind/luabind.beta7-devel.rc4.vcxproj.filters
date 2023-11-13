@@ -427,6 +427,7 @@
     <None Include="luabind\doc\index.html">
       <Filter>doc</Filter>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="luabind\test\test.hpp">

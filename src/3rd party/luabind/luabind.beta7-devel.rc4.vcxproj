@@ -332,6 +332,7 @@
   <ItemGroup>
     <None Include="luabind\doc\docs.html" />
     <None Include="luabind\doc\index.html" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\luajit\lua.JIT.1.1.4.vcxproj">
@@ -340,5 +341,12 @@
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\..\..\packages\ImeSense.Packages.LuaJIT.2.1.0-beta3\build\native\ImeSense.Packages.LuaJIT.targets" Condition="Exists('..\..\..\packages\ImeSense.Packages.LuaJIT.2.1.0-beta3\build\native\ImeSense.Packages.LuaJIT.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Данный проект ссылается на пакеты NuGet, отсутствующие на этом компьютере. Используйте восстановление пакетов NuGet, чтобы скачать их.  Дополнительную информацию см. по адресу: http://go.microsoft.com/fwlink/?LinkID=322105. Отсутствует следующий файл: {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\..\packages\ImeSense.Packages.LuaJIT.2.1.0-beta3\build\native\ImeSense.Packages.LuaJIT.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\ImeSense.Packages.LuaJIT.2.1.0-beta3\build\native\ImeSense.Packages.LuaJIT.targets'))" />
+  </Target>
 </Project>
