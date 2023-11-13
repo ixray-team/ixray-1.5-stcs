@@ -63,8 +63,8 @@ endif()
 #set(RENDERDOC_API "${CMAKE_CURRENT_SOURCE_DIR}/src/Dependencies/renderdoc")
 
 # SDK folders
-set(IXRAY_SDK_LIB ${CMAKE_CURRENT_SOURCE_DIR}/sdk/libraries/)
-set(IXRAY_SDK_BIN ${CMAKE_CURRENT_SOURCE_DIR}/sdk/binaries/)
+set(IXRAY_SDK_LIB ${CMAKE_CURRENT_SOURCE_DIR}/sdk/libraries/${CMAKE_GENERATOR_PLATFORM}/)
+set(IXRAY_SDK_BIN ${CMAKE_CURRENT_SOURCE_DIR}/sdk/binaries/${CMAKE_GENERATOR_PLATFORM}/)
 set(IXRAY_SDK_INC ${CMAKE_CURRENT_SOURCE_DIR}/sdk/include/)
 
 # Solution folders
