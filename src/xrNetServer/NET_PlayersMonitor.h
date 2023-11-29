@@ -233,7 +233,7 @@ public:
 	{
 		//Msg("-S- Entering to csPlayers [%d]", GetCurrentThreadId());
 		csPlayers.Enter();
-		u32 ret_count = net_Players.size();
+		u32 ret_count = (u32)net_Players.size();
 		//Msg("-S- Leaving from csPlayers [%d]", GetCurrentThreadId());
 		csPlayers.Leave();
 		return ret_count;

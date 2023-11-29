@@ -124,7 +124,7 @@ CGameTask*	CGameTaskManager::GiveGameTaskToActor(CGameTask* t, u32 timeToComplet
 	}
 
 
-	//óñòàíîâèòü ôëàæîê íåîáõîäèìîñòè ïðî÷òåíèÿ òàñêîâ â PDA
+	//ÑƒÑÑ‚Ð°Ð½Ð¾Ð²Ð¸Ñ‚ÑŒ Ñ„Ð»Ð°Ð¶Ð¾Ðº Ð½ÐµÐ¾Ð±Ñ…Ð¾Ð´Ð¸Ð¼Ð¾ÑÑ‚Ð¸ Ð¿Ñ€Ð¾Ñ‡Ñ‚ÐµÐ½Ð¸Ñ Ñ‚Ð°ÑÐºÐ¾Ð² Ð² PDA
 	if ( HUD().GetUI() )
 	{
 		HUD().GetUI()->UpdatePda();
@@ -323,7 +323,7 @@ u32 CGameTaskManager::GetTaskIndex( CGameTask* t, ETaskState state, ETaskType ty
 	}
 
 	vGameTasks& v	= GetGameTasks();
-	u32 cnt			= v.size();
+	u32 cnt			= (u32)v.size();
 	u32 res			= 0;
 	for ( u32 i = 0; i < cnt; ++i )
 	{

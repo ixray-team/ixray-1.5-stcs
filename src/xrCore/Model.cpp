@@ -975,9 +975,6 @@ static void _STDCALL StartModelRare(int MaxOrder,MR_METHOD MRMethod)
     }
     else
     {    
-    
-        UINT i, k, m;
-
         memset( CharMask, 0, sizeof(CharMask) );
         EscCount=PrintCount=1;
         ::OrderFall = ::MaxOrder = MaxOrder;          

@@ -53,7 +53,7 @@ public:
 
 			void							ActivePDAContacts		(xr_vector<CPda*>& res);
 			CPda*							GetPdaFromOwner			(CObject* owner);
-			u32								ActiveContactsNum		()							{return m_active_contacts.size();}
+			u32								ActiveContactsNum		()							{return (u32)m_active_contacts.size();}
 
 
 	virtual void							save					(NET_Packet &output_packet);
