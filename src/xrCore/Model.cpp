@@ -733,9 +733,10 @@ inline SEE2_CONTEXT* PPM_CONTEXT::makeEscFreq2() const
     if (NumStats != 0xFF) {
         t=Suffix->NumStats;
         psee2c=SEE2Cont[QTable[NumStats+2]-3]+(SummFreq > 11*(NumStats+1));
-        psee2c += 2*(2*NumStats < t+NumMasked)+Flags;
+        psee2c += 2 * (u32(2 * NumStats) < u32(t + NumMasked)) + Flags;
         SubRange.scale=psee2c->getMean();
-    } else {
+    }
+    else {
         psee2c=&DummySEE2Cont;              SubRange.scale=1;
     }
     return psee2c;
@@ -752,7 +753,7 @@ inline void PPM_CONTEXT::encodeSymbol2(int symbol)
         LoCnt += p->Freq;
     } while ( --i );
     SubRange.high=(SubRange.scale += (SubRange.low=LoCnt));
-    psee2c->Summ += SubRange.scale;            NumMasked = NumStats;
+    psee2c->Summ += (WORD)SubRange.scale;            NumMasked = NumStats;
     return;
 SYMBOL_FOUND:
     SubRange.low=LoCnt;                        SubRange.high=(LoCnt += p->Freq);
@@ -784,7 +785,7 @@ inline void PPM_CONTEXT::decodeSymbol2()
         SubRange.low=HiCnt;                    SubRange.high=SubRange.scale;
         i=NumStats-NumMasked;               NumMasked = NumStats;
         do { CharMask[(*pps)->Symbol]=EscCount; pps++; } while ( --i );
-        psee2c->Summ += SubRange.scale;
+        psee2c->Summ += (WORD)SubRange.scale;
     }
 }
 inline void ClearMask(_PPMD_FILE* EncodedFile,_PPMD_FILE* DecodedFile)
@@ -980,31 +981,9 @@ static void _STDCALL StartModelRare(int MaxOrder,MR_METHOD MRMethod)
         ::OrderFall = ::MaxOrder = MaxOrder;          
         ::MRMethod  = MRMethod;
         
-///        InitSubAllocator();
         RunLength = InitRL = -((MaxOrder < 12) ? MaxOrder : 12) - 1;
-///        MaxContext = (PPM_CONTEXT*) AllocContext();
-///        MaxContext->Suffix = NULL;
-
         MaxContext  = context;
         FoundState  = 0;
-
-/*
-        if( !trained_model || _PPMD_E_GETC(trained_model) > MaxOrder ) 
-        {
-            MaxContext->SummFreq=(MaxContext->NumStats=255)+2;
-            MaxContext->Stats = (PPM_CONTEXT::STATE*) AllocUnits(256/2);
-            for( PrevSuccess=i=0;i < 256;i++) 
-            {
-                MaxContext->Stats[i].Symbol=i;  MaxContext->Stats[i].Freq=1;
-                MaxContext->Stats[i].Successor=NULL;
-            }
-        } 
-        else 
-        {
-            MaxContext->read(trained_model,0xFF);
-            MaxContext->makeSuffix();
-        }
-*/
     }
 }
 
