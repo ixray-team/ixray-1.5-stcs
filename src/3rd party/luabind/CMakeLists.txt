@@ -23,29 +23,33 @@ target_include_directories(luabind PUBLIC "${IXRAY_SDK_INC}/luabind/")
 target_include_directories(luabind PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/luabind/src")
 target_include_directories(luabind PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/")
 
-target_precompile_headers(luabind PUBLIC "pch.h")
 target_compile_definitions(luabind PRIVATE LUABIND_BUILDING)
-target_compile_definitions(luabind PUBLIC LUABIND_NO_EXCEPTIONS)
+target_compile_definitions(luabind PUBLIC "$<$<CONFIG:RELWITHDEBINFO>:LUABIND_NO_EXCEPTIONS>")
+target_compile_definitions(luabind PUBLIC "$<$<CONFIG:RELEASE>:LUABIND_NO_EXCEPTIONS>")
 
-# Nuget
-set(LUAJIT ${CMAKE_BINARY_DIR}/packages/ImeSense.Packages.LuaJIT.2.1.0-beta3/)
+# NuGet
+set(LUAJIT ${CMAKE_BINARY_DIR}/packages/IXRay.Packages.LuaJIT.2023.8.23-open/)
 
 add_custom_command(TARGET ${PROJECT_NAME}
     PRE_BUILD
-    COMMAND ${NUGET_COMMAND} restore ${CMAKE_CURRENT_SOURCE_DIR}/Packages.config -SolutionDirectory ${CMAKE_BINARY_DIR}
+    COMMAND ${NUGET_COMMAND} restore ${CMAKE_CURRENT_SOURCE_DIR}/packages.config -SolutionDirectory ${CMAKE_BINARY_DIR}
 )
 
-# LuaJIT
 if(NOT "${CMAKE_VS_PLATFORM_NAME}" MATCHES "(x64)")
     add_custom_command(TARGET ${PROJECT_NAME}
         POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${LUAJIT}native/bin/x86/Release/lua51.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/$<CONFIG>/
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${LUAJIT}native/bin/x86/lua51.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/$<CONFIG>/
     )
-    target_link_libraries(luabind PUBLIC ${CMAKE_BINARY_DIR}/packages/ImeSense.Packages.LuaJIT.2.1.0-beta3/native/lib/x86/Release/lua51.lib)
 else()
     add_custom_command(TARGET ${PROJECT_NAME}
         POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${LUAJIT}native/bin/${CMAKE_VS_PLATFORM_NAME}/Release/lua51.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/$<CONFIG>/
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${LUAJIT}native/bin/x64/lua51.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/$<CONFIG>/
     )
-    target_link_libraries(luabind PUBLIC ${CMAKE_BINARY_DIR}/packages/ImeSense.Packages.LuaJIT.2.1.0-beta3/native/lib/${CMAKE_VS_PLATFORM_NAME}/Release/lua51.lib)
+endif()
+
+## LuaJIT
+if(NOT "${CMAKE_VS_PLATFORM_NAME}" MATCHES "(x64)")
+    target_link_libraries(luabind PUBLIC ${LUAJIT}native/lib/x86/lua51.lib)
+else()
+    target_link_libraries(luabind PUBLIC ${LUAJIT}native/lib/x64/lua51.lib)
 endif()

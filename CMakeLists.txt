@@ -193,7 +193,7 @@ if(NOT IXRAY_COMPRESSOR_ONLY)
 else()
     set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT xrCompress)
     set_target_properties(xrEngine xrAPI xrCDB xrSound xrCPU_Pipe xrParticles xrGame xrRender_R1 xrRender_R2 xrRender_R3 xrEngine xrNetServer PROPERTIES EXCLUDE_FROM_ALL 1 EXCLUDE_FROM_DEFAULT_BUILD 1)
-    set_target_properties(ODE luabind luajit crypto CxImage PROPERTIES EXCLUDE_FROM_ALL 1 EXCLUDE_FROM_DEFAULT_BUILD 1)
+    set_target_properties(ODE luabind crypto CxImage PROPERTIES EXCLUDE_FROM_ALL 1 EXCLUDE_FROM_DEFAULT_BUILD 1)
 
     set_target_properties(xrEngine PROPERTIES ${IXRAY_FOLDER_ENGINE})
 
