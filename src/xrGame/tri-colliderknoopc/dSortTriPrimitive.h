@@ -42,7 +42,7 @@ IC int dcTriListCollider::dSortTriPrimitiveCollide (
 		CDB::RESULT*    R_end                           = XRC.r_end()	;
 #ifdef DEBUG
 		
-		dbg_total_saved_tries-=data->cashed_tries.size();
+		dbg_total_saved_tries-= (u32)data->cashed_tries.size();
 		dbg_new_queries_per_step++;
 #endif
 		data->cashed_tries								.clear()		;
@@ -51,7 +51,7 @@ IC int dcTriListCollider::dSortTriPrimitiveCollide (
 			data->cashed_tries.push_back(Res->id);
 		}
 #ifdef DEBUG
-		dbg_total_saved_tries+=data->cashed_tries.size();
+		dbg_total_saved_tries+= (u32)data->cashed_tries.size();
 #endif
 		data->last_aabb_pos.set(cast_fv(p));
 		data->last_aabb_size.set(aabb);

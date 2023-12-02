@@ -182,10 +182,10 @@ void CRender::render_sun_cascade ( u32 cascade_ind )
 
 	#ifndef USE_DX10
 		XMStoreFloat4x4(reinterpret_cast<XMFLOAT4X4*>(&mdir_Project),
-			XMMatrixOrthographicOffCenterLH(-map_size * 0.5f, map_size * 0.5f, -map_size * 0.5f, map_size * 0.5f, 0.1, dist + map_size));
+			XMMatrixOrthographicOffCenterLH(-map_size * 0.5f, map_size * 0.5f, -map_size * 0.5f, map_size * 0.5f, 0.1f, dist + map_size));
 	#else
 		XMStoreFloat4x4(reinterpret_cast<XMFLOAT4X4*>(&mdir_Project),
-			XMMatrixOrthographicOffCenterLH(-map_size * 0.5f, map_size * 0.5f, -map_size * 0.5f, map_size * 0.5f, 0.1, dist + 1.41421f * map_size));
+			XMMatrixOrthographicOffCenterLH(-map_size * 0.5f, map_size * 0.5f, -map_size * 0.5f, map_size * 0.5f, 0.1f, dist + 1.41421f * map_size));
 	#endif // USE_DX10
 
 		// build viewport xform

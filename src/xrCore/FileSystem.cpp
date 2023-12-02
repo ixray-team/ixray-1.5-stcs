@@ -166,16 +166,6 @@ bool EFS_Utils::GetOpenNameInternal( LPCSTR initial,  LPSTR buffer, int sz_buf, 
                         
     ofn.FlagsEx			= OFN_EX_NOPLACESBAR;
     
-/*
-	unsigned int	dwVersion = GetVersion();
-	unsigned int	dwWindowsMajorVersion =  (DWORD)(LOBYTE(LOWORD(dwVersion)));
-	if ( dwWindowsMajorVersion == 6 )
-	{
-	     	ofn.Flags |= OFN_ENABLEHOOK;
-  	     	ofn.lpfnHook = OFNHookProcOldStyle;
-	}
-*/
-
 	bool bRes 			= !!GetOpenFileName( &ofn );
     if (!bRes)
     {

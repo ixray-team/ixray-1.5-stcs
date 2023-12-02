@@ -956,7 +956,7 @@ u32 game_sv_GameState::getRPcount (u16 team_idx)
 	if ( !(team_idx<TEAM_COUNT) )
 		return 0;
 	else
-		return rpoints[team_idx].size();
+		return (u32)rpoints[team_idx].size();
 }
 
 RPoint game_sv_GameState::getRP (u16 team_idx, u32 rp_idx)
@@ -1030,7 +1030,7 @@ void game_sv_GameState::OnRoundStart			()
 		}
 	};
 	rpointsBlocked.clear			();
-}// ñòàðò ðàóíäà
+}// ÑÑ‚Ð°Ñ€Ñ‚ Ñ€Ð°ÑƒÐ½Ð´Ð°
 
 void game_sv_GameState::OnRoundEnd()
 { 
@@ -1048,7 +1048,7 @@ void game_sv_GameState::OnRoundEnd()
 	{
 		m_bFastRestart = true;
 	}
-}// êîíåö ðàóíäà
+}// ÐºÐ¾Ð½ÐµÑ† Ñ€Ð°ÑƒÐ½Ð´Ð°
 
 void game_sv_GameState::SaveMapList				()
 {

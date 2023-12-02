@@ -202,7 +202,7 @@ void CEngineAPI::CreateRendererList()
 		if (bBreakLoop) break;
 		_tmp.back()					= xr_strdup(val);
 	}
-	u32 _cnt								= _tmp.size()+1;
+	u32 _cnt								= (u32)_tmp.size()+1;
 	vid_quality_token						= xr_alloc<xr_token>(_cnt);
 
 	vid_quality_token[_cnt-1].id			= -1;

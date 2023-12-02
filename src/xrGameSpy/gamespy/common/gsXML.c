@@ -144,14 +144,14 @@ GSXmlStreamWriter gsXmlCreateStreamWriter(const char ** namespaces, int count)
 	for (i=0; i < GS_XML_SOAP_DEFAULT_NAMESPACE_COUNT; i++)
 	{
 		GS_ASSERT(GS_XML_SOAP_DEFAULT_NAMESPACES[i] != NULL);
-		namespaceLen += strlen(GS_XML_SOAP_NAMESPACE_PREFIX)+1; // +1 for space
-		namespaceLen += strlen(GS_XML_SOAP_DEFAULT_NAMESPACES[i]);
+		namespaceLen += (int)strlen(GS_XML_SOAP_NAMESPACE_PREFIX)+1; // +1 for space
+		namespaceLen += (int)strlen(GS_XML_SOAP_DEFAULT_NAMESPACES[i]);
 	}
 	for (i=0; i < count; i++)
 	{
 		GS_ASSERT(namespaces[i] != NULL);
-		namespaceLen += strlen(GS_XML_SOAP_NAMESPACE_PREFIX)+1; // +1 for space
-		namespaceLen += strlen(namespaces[i]);
+		namespaceLen += (int)strlen(GS_XML_SOAP_NAMESPACE_PREFIX)+1; // +1 for space
+		namespaceLen += (int)strlen(namespaces[i]);
 	}
 	while (initialCapacity < namespaceLen)
 		initialCapacity += GS_XML_SOAP_BUFFER_INCREMENT_SIZE;

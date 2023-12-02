@@ -16,8 +16,7 @@ class ECORE_API CModelPool
 private:
 	friend class CRender;
 
-	struct str_pred
-	{	
+	struct str_pred {
 		IC bool operator()(const shared_str& x, const shared_str& y) const
 		{	return xr_strcmp(x,y)<0;}
 	};

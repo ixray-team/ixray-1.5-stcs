@@ -221,7 +221,7 @@ void CUILogsWnd::PerformWork()
 {
 	if(!m_news_in_queue.empty())
 	{
-		u32 count = _min(30, m_news_in_queue.size());
+		u32 count = _min(30, (u32)m_news_in_queue.size());
 //.		u32 count = m_news_in_queue.size();
 		for(u32 i=0; i<count;++i)
 		{

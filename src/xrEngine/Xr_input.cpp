@@ -332,6 +332,8 @@ BOOL CInput::iGetAsyncBtnState( int btn )
 	return !!mouseState[btn];
 }
 
+#pragma warning(push)
+#pragma warning(disable: 4644)
 void CInput::MouseUpdate( )
 {
 	HRESULT hr;
@@ -433,6 +435,8 @@ void CInput::MouseUpdate( )
 	}
 }
 
+#pragma warning(pop)
+
 //-------------------------------------------------------
 void CInput::iCapture(IInputReceiver *p)
 {
@@ -461,7 +465,7 @@ void CInput::iRelease(IInputReceiver *p)
 		IInputReceiver * ir = cbStack.back();
 		ir->IR_OnActivate();
 	}else{// we are not topmost receiver, so remove the nearest one
-		u32 cnt = cbStack.size();
+		u32 cnt = (u32)cbStack.size();
 		for(;cnt>0;--cnt)
 			if( cbStack[cnt-1] == p ){
 				xr_vector<IInputReceiver*>::iterator it = cbStack.begin();

@@ -368,7 +368,7 @@ IC void CBackend::ApplyVertexLayout()
 
 		CHK_DX(HW.pDevice->CreateInputLayout(
 			&decl->dx10_dcl_code[0],
-			decl->dx10_dcl_code.size()-1,
+			(u32)decl->dx10_dcl_code.size()-1,
 			m_pInputSignature->GetBufferPointer(),
 			m_pInputSignature->GetBufferSize(),
 			&pLayout

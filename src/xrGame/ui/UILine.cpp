@@ -123,7 +123,7 @@ void CUILine::ProcessNewLines()
 
 void CUILine::Draw(CGameFont* pFont, float x, float y) const{
 	float length = 0;
-	int size = m_subLines.size();
+	int size = (int)m_subLines.size();
 
 	for (int i=0; i<size; i++)
 	{
@@ -136,7 +136,7 @@ void CUILine::Draw(CGameFont* pFont, float x, float y) const{
 
 int CUILine::GetSize(){
 	int sz = 0;
-	int size = m_subLines.size();
+	int size = (int)m_subLines.size();
 	for (int i=0; i<size; i++)
 		sz += (int)m_subLines[i].m_text.size();
 
@@ -233,7 +233,7 @@ bool CUILine::InitPos(Position& pos) const
 }
 
 bool CUILine::IncPos(Position& pos) const{
-	u32 totalLinesCount = m_subLines.size();
+	u32 totalLinesCount = (u32)m_subLines.size();
 	if (totalLinesCount < pos.curr_subline)
 		return false;
 

@@ -34,6 +34,12 @@ CROS_impl::CROS_impl	()
 	sun_value			= 0.2f;
 	sun_smooth			= 0.2f;
 
+	for (int Iter = 0; Iter < 6; Iter++)
+	{
+		hemi_cube[Iter]			= 1.0f;
+		hemi_cube_smooth[Iter]	= 1.0f;
+	}
+
 #if RENDER!=R_R1
 	last_position.set( 0.0f, 0.0f, 0.0f );
 	ticks_to_update		= 0;
@@ -316,7 +322,7 @@ void 	CROS_impl::smart_update(IRenderable* O)
 	}
 	else
 	{
-		if (!last_position.similar(position, 0.15))
+		if (!last_position.similar(position, 0.15f))
 		{
 			sky_rays_uptodate = 0;
 			update(O);

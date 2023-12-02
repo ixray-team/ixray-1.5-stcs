@@ -121,7 +121,7 @@ CKinematics::~CKinematics	()
 void	CKinematics::IBoneInstances_Create()
 {
 	// VERIFY2				(bones->size() < 64, "More than 64 bones is a crazy thing!");
-	u32				size	= bones->size();
+	u32				size	= (u32)bones->size();
 	bone_instances			=xr_alloc<CBoneInstance>(size);
 	for (u32 i=0; i<size; i++)
 		bone_instances[i].construct();
@@ -414,7 +414,7 @@ void CKinematics::Depart		()
 	visimask.zero				();
 	if(bones)
 	{
-		u32 count = bones->size();
+		u32 count = (u32)bones->size();
 #ifdef DEBUG
     	if (count > 64)
         	Msg("ahtung !!! %d", count);
@@ -741,7 +741,7 @@ int CKinematics::LL_GetBoneGroups(xr_vector<xr_vector<u16> >& groups)
             }
         }
     }
-    return groups.size();
+    return (int)groups.size();
 }
 
 #ifdef DEBUG

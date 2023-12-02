@@ -23,7 +23,7 @@ bool item_pred(const CInifile::Item& x, LPCSTR val)
 }
 
 //------------------------------------------------------------------------------
-//Òåëî ôóíêöèé Inifile
+//Ð¢ÐµÐ»Ð¾ Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¹ Inifile
 //------------------------------------------------------------------------------
 XRCORE_API BOOL _parse(LPSTR dest, LPCSTR src)
 {
@@ -289,7 +289,7 @@ void	CInifile::Load(IReader* F, LPCSTR path
 					string512	tmp;
 					_GetItem	(inherited_names,k,tmp);
 					Sect& inherited_section = r_section(tmp);
-					total_count		+= inherited_section.Data.size();
+					total_count		+= (u32)inherited_section.Data.size();
 				}
 
 				Current->Data.reserve( Current->Data.size() + total_count );
@@ -466,7 +466,7 @@ u32		CInifile::line_count(LPCSTR Sname)const
 
 u32	CInifile::section_count	( )const
 {
-	return DATA.size();
+	return (u32)DATA.size();
 }
 
 

@@ -17,7 +17,7 @@
 
 CDrawUtilities DUImpl;
 
-#define LINE_DIVISION  32  // не меньше 6!!!!!
+#define LINE_DIVISION  32  // РЅРµ РјРµРЅСЊС€Рµ 6!!!!!
 // for drawing sphere
 static Fvector circledef1[LINE_DIVISION];
 static Fvector circledef2[LINE_DIVISION];
@@ -105,7 +105,7 @@ void SPrimitiveBuffer::CreateFromData(D3DPRIMITIVETYPE _pt, u32 _p_cnt, u32 FVF,
 	p_type				= _pt;
 	v_cnt				= _v_cnt;
 	i_cnt				= _i_cnt;
-	u32 stride = FVF::ComputeVertexSize(FVF);
+	u32 stride = (u32)FVF::ComputeVertexSize(FVF);
 	R_CHK(HW.pDevice->CreateVertexBuffer(v_cnt*stride, D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &pVB, 0));
 	u8* 				bytes;
 	R_CHK				(pVB->Lock(0,0,(LPVOID*)&bytes,0));
@@ -1086,15 +1086,15 @@ void CDrawUtilities::DrawGrid()
 	_VertexStream*	Stream	= &RCache.Vertex;
     u32 vBase;
 	// fill VB
-	FVF::L*	pv	= (FVF::L*)Stream->Lock(m_GridPoints.size(),vs_L->vb_stride,vBase);
+	FVF::L*	pv	= (FVF::L*)Stream->Lock((u32)m_GridPoints.size(),vs_L->vb_stride,vBase);
     for (FLvertexIt v_it=m_GridPoints.begin(); v_it!=m_GridPoints.end(); v_it++,pv++) pv->set(*v_it);
-	Stream->Unlock(m_GridPoints.size(),vs_L->vb_stride);
+	Stream->Unlock((u32)m_GridPoints.size(),vs_L->vb_stride);
 	// Render it as triangle list
     Fmatrix ddd;
     ddd.identity();
     RCache.set_xform_world(ddd);
 	DU_DRAW_SH(dxRenderDeviceRender::Instance().m_WireShader);
-    DU_DRAW_DP(D3DPT_LINELIST,vs_L,vBase,m_GridPoints.size()/2);
+    DU_DRAW_DP(D3DPT_LINELIST,vs_L,vBase, (u32)m_GridPoints.size()/2);
 }
 
 void CDrawUtilities::DrawSelectionRect(const Ivector2& m_SelStart, const Ivector2& m_SelEnd){

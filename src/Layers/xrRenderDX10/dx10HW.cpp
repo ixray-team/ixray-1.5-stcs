@@ -907,7 +907,7 @@ void fill_vid_mode_list(CHW* _hw)
 //	_tmp.push_back				(NULL);
 //	_tmp.back()					= xr_strdup("1024x768");
 
-	u32 _cnt						= _tmp.size()+1;
+	u32 _cnt						= (u32)_tmp.size()+1;
 
 	vid_mode_token					= xr_alloc<xr_token>(_cnt);
 

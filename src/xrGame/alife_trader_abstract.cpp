@@ -38,9 +38,9 @@ void CSE_ALifeTraderAbstract::spawn_supplies	()
 
 	if(m_SpecificCharacter.size())
 	{
-		//åñëè â custom data îáúåêòà åñòü
-		//ñåêöèÿ [dont_spawn_character_supplies]
-		//òî íå âûçûâàòü spawn èç selected_char.SupplySpawn()
+		//ÐµÑÐ»Ð¸ Ð² custom data Ð¾Ð±ÑŠÐµÐºÑ‚Ð° ÐµÑÑ‚ÑŒ
+		//ÑÐµÐºÑ†Ð¸Ñ [dont_spawn_character_supplies]
+		//Ñ‚Ð¾ Ð½Ðµ Ð²Ñ‹Ð·Ñ‹Ð²Ð°Ñ‚ÑŒ spawn Ð¸Ð· selected_char.SupplySpawn()
 		bool specific_character_supply = true;	
 
 		if (xr_strlen(dynamic_object->m_ini_string))
@@ -214,7 +214,7 @@ void CSE_ALifeTraderAbstract::add_online	(const bool &update_registries)
 
 void add_offline_impl						(CSE_ALifeDynamicObject *object, const xr_vector<ALife::_OBJECT_ID> &saved_children, const bool &update_registries)
 {
-	for (u32 i=0, n=saved_children.size(); i<n; ++i) {
+	for (u32 i=0, n= (u32)saved_children.size(); i<n; ++i) {
 		CSE_ALifeDynamicObject	*child = smart_cast<CSE_ALifeDynamicObject*>(ai().alife().objects().object(saved_children[i],true));
 		R_ASSERT				(child);
 		child->m_bOnline		= false;

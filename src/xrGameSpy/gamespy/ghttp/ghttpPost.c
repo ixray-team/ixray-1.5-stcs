@@ -1326,7 +1326,7 @@ static GHIPostingResult ghiPostStateDoPosting
 
 					// id
 					strcpy_s(&buffer[writePos], sizeof(buffer) - writePos , GHI_DIME_SOAPID);
-					writePos += strlen(GHI_DIME_SOAPID);
+					writePos += (int)strlen(GHI_DIME_SOAPID);
 					padBytes = (int)(4-strlen(GHI_DIME_SOAPID)%4);
 					if (padBytes != 4)
 					{
@@ -1336,7 +1336,7 @@ static GHIPostingResult ghiPostStateDoPosting
 
 					// type
 					strcpy_s(&buffer[writePos],sizeof(buffer) - writePos, GHI_DIME_SOAPTYPE);
-					writePos += strlen(GHI_DIME_SOAPTYPE);
+					writePos += (int)strlen(GHI_DIME_SOAPTYPE);
 					padBytes = (int)(4-strlen(GHI_DIME_SOAPTYPE)%4);
 					if (padBytes != 4)
 					{
@@ -1392,7 +1392,7 @@ static GHIPostingResult ghiPostStateDoPosting
 
 					// id
 					strcpy_s(&buffer[writePos],sizeof(buffer) - writePos, state->data->name);
-					writePos += strlen(state->data->name);
+					writePos += (int)strlen(state->data->name);
 					padBytes = (int)(4-strlen(state->data->name)%4);
 					if (padBytes != 4)
 					{
@@ -1402,7 +1402,7 @@ static GHIPostingResult ghiPostStateDoPosting
 
 					// type
 					strcpy_s(&buffer[writePos],sizeof(buffer) - writePos, contentType);
-					writePos += strlen(contentType);
+					writePos += (int)strlen(contentType);
 					padBytes = (int)(4-strlen(contentType)%4);
 					if (padBytes != 4)
 					{

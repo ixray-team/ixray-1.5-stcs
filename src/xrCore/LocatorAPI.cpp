@@ -170,7 +170,7 @@ XRCORE_API void _dump_open_files(int mode)
 		}
 	}
 	if(bShow)
-		Log("----total count=",(u32) g_open_files.size());
+		Msg("----total count=%d",(int)g_open_files.size());
 }
 
 CLocatorAPI::CLocatorAPI()
@@ -345,20 +345,11 @@ void CLocatorAPI::LoadArchive(archive& A, LPCSTR entrypoint)
 	if(entrypoint)
 		xr_strcpy				(fs_entry_point, sizeof(fs_entry_point), entrypoint);
 
-
-//	DUMMY_STUFF	*g_temporary_stuff_subst = NULL;
-//
-//	if(strstr(A.path.c_str(),".xdb"))
-//	{
-//		g_temporary_stuff_subst		= g_temporary_stuff;
-//		g_temporary_stuff			= NULL;
-//	}
-
 	// Read FileSystem
 	A.open				();
 	IReader* hdr		= open_chunk(A.hSrcFile,1); 
 	R_ASSERT			(hdr);
-	RStringVec			fv;
+
 	while (!hdr->eof())
 	{
 		string_path		name,full;
@@ -391,9 +382,6 @@ void CLocatorAPI::LoadArchive(archive& A, LPCSTR entrypoint)
 		Register		(full,A.vfs_idx,crc,ptr,size_real,size_compr,0);
 	}
 	hdr->close			();
-
-//	if(g_temporary_stuff_subst)
-//		g_temporary_stuff		= g_temporary_stuff_subst;
 }
 
 void CLocatorAPI::archive::open()
@@ -429,7 +417,7 @@ void CLocatorAPI::ProcessArchive(LPCSTR _path)
 
 	m_archives.push_back		(archive());
 	archive& A					= m_archives.back();
-	A.vfs_idx					= m_archives.size()-1;
+	A.vfs_idx					= (u32)m_archives.size()-1;
 	A.path						= path;
 
 	A.open						();
@@ -1033,7 +1021,7 @@ int CLocatorAPI::file_list(FS_FileSet& dest, LPCSTR path, u32 flags, LPCSTR mask
 			dest.insert(FS_File(entry_begin,entry.size_real,entry.modif,fl));
 		}
 	}
-	return dest.size();
+	return (u32)dest.size();
 }
 
 void CLocatorAPI::check_cached_files	(LPSTR fname, const u32 &fname_size, const file &desc, LPCSTR &source_name)

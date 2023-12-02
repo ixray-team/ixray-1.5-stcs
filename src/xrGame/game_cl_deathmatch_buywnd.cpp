@@ -60,7 +60,7 @@ void game_cl_Deathmatch::OnBuyMenu_Ok	()
 			_p	= &(pCurBuyMenu->GetPreset(_preset_idx_origin));
 	}
 	
-	u32 ItemsCount							= _p->size();
+	u32 ItemsCount							= (u32)_p->size();
 	for (u32 i=0; i<ItemsCount; ++i)
 	{
 		const _preset_item& _pitem = _p[0][i];
@@ -79,7 +79,7 @@ void game_cl_Deathmatch::OnBuyMenu_Ok	()
 		}
 	}
 
-	//принудительно добавляем нож
+	//РїСЂРёРЅСѓРґРёС‚РµР»СЊРЅРѕ РґРѕР±Р°РІР»СЏРµРј РЅРѕР¶
 	u8 SectID, ItemID;
 	pCurBuyMenu->GetWeaponIndexByName("mp_wpn_knife", SectID, ItemID);
 //	pCurPresetItems->push_back(GetBuyMenuItemIndex(SectID, ItemID));
@@ -149,7 +149,7 @@ void game_cl_Deathmatch::SetBuyMenuItems		(PRESET_ITEMS* pItems, BOOL OnlyPreset
 	if (pCurActor)
 	{
 		//defusing all weapons
-		u32 max_addammo_count = pCurActor->inventory().m_all.size();
+		u32 max_addammo_count = (u32)pCurActor->inventory().m_all.size();
 		aditional_ammo_t add_ammo(
 			_alloca(
 				sizeof(aditional_ammo_t::value_type) * (max_addammo_count * 2)
@@ -158,7 +158,7 @@ void game_cl_Deathmatch::SetBuyMenuItems		(PRESET_ITEMS* pItems, BOOL OnlyPreset
 		);
 		TryToDefuseAllWeapons(add_ammo);
 
-		//проверяем слоты
+		//РїСЂРѕРІРµСЂСЏРµРј СЃР»РѕС‚С‹
 		TISlotArr::const_iterator	ISlot = pCurActor->inventory().m_slots.begin();
 		TISlotArr::const_iterator	ESlot = pCurActor->inventory().m_slots.end();
 
@@ -189,7 +189,7 @@ void game_cl_Deathmatch::SetBuyMenuItems		(PRESET_ITEMS* pItems, BOOL OnlyPreset
 			}
 		};
 
-		//проверяем пояс
+		//РїСЂРѕРІРµСЂСЏРµРј РїРѕСЏСЃ
 		TIItemContainer::const_iterator	IBelt = pCurActor->inventory().m_belt.begin();
 		TIItemContainer::const_iterator	EBelt = pCurActor->inventory().m_belt.end();
 
@@ -214,7 +214,7 @@ void game_cl_Deathmatch::SetBuyMenuItems		(PRESET_ITEMS* pItems, BOOL OnlyPreset
 			}
 		};
 
-		//проверяем ruck
+		//РїСЂРѕРІРµСЂСЏРµРј ruck
 		TIItemContainer::const_iterator	IRuck = pCurActor->inventory().m_ruck.begin();
 		TIItemContainer::const_iterator	ERuck = pCurActor->inventory().m_ruck.end();
 
@@ -378,10 +378,10 @@ void	game_cl_Deathmatch::LoadTeamDefaultPresetItems	(const shared_str& caSection
 
 	string256			ItemName;
 	string4096			DefItems;
-	// Читаем данные этого поля
+	// Р§РёС‚Р°РµРј РґР°РЅРЅС‹Рµ СЌС‚РѕРіРѕ РїРѕР»СЏ
 	xr_strcpy(DefItems, pSettings->r_string(caSection, "default_items"));
 	u32 count	= _GetItemCount(DefItems);
-	// теперь для каждое имя оружия, разделенные запятыми, заносим в массив
+	// С‚РµРїРµСЂСЊ РґР»СЏ РєР°Р¶РґРѕРµ РёРјСЏ РѕСЂСѓР¶РёСЏ, СЂР°Р·РґРµР»РµРЅРЅС‹Рµ Р·Р°РїСЏС‚С‹РјРё, Р·Р°РЅРѕСЃРёРј РІ РјР°СЃСЃРёРІ
 	for (u32 i = 0; i < count; ++i)
 	{
 		_GetItem(DefItems, i, ItemName);

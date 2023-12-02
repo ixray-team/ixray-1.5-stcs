@@ -50,7 +50,8 @@ private:
 	}
 };
 
-u32 crc32(const void* P, u32 len) {
+u32 crc32(const void* P, size_t len) 
+{
 	Crc32Initializer::init();
 
 	// Pass a text string to this function and it will return the CRC
@@ -76,7 +77,8 @@ u32 crc32(const void* P, u32 len) {
 	return ulCRC ^ 0xFFFFFFFF;
 	}
 
-u32 crc32(const void* P, u32 len, u32 starting_crc) {
+u32 crc32(const void* P, size_t len, u32 starting_crc) 
+{
 	Crc32Initializer::init();
 
 	u32		ulCRC		= 0xffffffff ^ starting_crc; 
@@ -89,7 +91,8 @@ u32 crc32(const void* P, u32 len, u32 starting_crc) {
 	return ulCRC ^ 0xFFFFFFFF;
 	}
 
-u32 path_crc32(const char* path, u32 len) {
+u32 path_crc32(const char* path, size_t len) 
+{
 	Crc32Initializer::init();
 
 	u32 ulCRC = 0xFFFFFFFF;

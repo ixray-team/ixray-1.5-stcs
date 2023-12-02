@@ -298,7 +298,7 @@ void	thread_name	(const char* name)
 
 	if (SetThreadDescriptionProc != nullptr)
 	{
-		int len = strlen(name);
+		int len = (int)strlen(name);
 		wchar_t* WName = new wchar_t[len + 1];
 
 		// Converts the path to wide characters

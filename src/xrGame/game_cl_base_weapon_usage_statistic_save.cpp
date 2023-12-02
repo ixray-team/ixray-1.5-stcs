@@ -33,7 +33,7 @@ void WeaponUsageStatistic::WriteLtx(CInifile& ini)
 	ini.w_u32(sect, "dwTotalNumRespawns_1",m_dwTotalNumRespawns[1]);
 	ini.w_u32(sect, "dwTotalNumRespawns_2",m_dwTotalNumRespawns[2]);
 
-	u32 NumPlayers = aPlayersStatistic.size();
+	u32 NumPlayers = (u32)aPlayersStatistic.size();
 	u32 validPlayersCount = 0;
 	for (u32 i = 0; i < NumPlayers; ++i)
 	{
@@ -104,7 +104,7 @@ void WeaponUsageStatistic::Write(FILE* pFile)
 	fwrite(m_dwTotalPlayersMoneyRound, 4, 3, pFile);
 	fwrite(m_dwTotalNumRespawns, 4, 3, pFile);	
 	//----------------------------------------------
-	u32 NumPlayers = aPlayersStatistic.size();
+	u32 NumPlayers = (u32)aPlayersStatistic.size();
 	fwrite(&NumPlayers, 4, 1, pFile);
 	//----------------------------------------------
 	for (u32 i=0; i<NumPlayers; i++)
@@ -139,7 +139,7 @@ void Player_Statistic::WriteLtx(CInifile& ini, LPCSTR sect)
 
 	ini.w_u8(sect,"dwCurrentTeam",m_dwCurrentTeam);
 
-	u32 NumWeapons = aWeaponStats.size();
+	u32 NumWeapons = (u32)aWeaponStats.size();
 
 	ini.w_u32(sect,"NumWeapons",NumWeapons);
 
@@ -163,7 +163,7 @@ void Player_Statistic::Write(FILE* pFile)
 	fwrite(m_dwTotalMoneyRound, 4, 3, pFile);	
 	fwrite(m_dwNumRespawned, 4, 3, pFile);	
 	//----------------------------------------------
-	u32 NumWeapons = aWeaponStats.size();
+	u32 NumWeapons = (u32)aWeaponStats.size();
 	fwrite(&NumWeapons, 4, 1, pFile);
 	//----------------------------------------------
 	for (u32 i=0; i<aWeaponStats.size(); i++)
@@ -204,7 +204,7 @@ void Weapon_Statistic::WriteLtx(CInifile& ini, LPCSTR sect)
 
 	ini.w_u32(sect,"NumHits",NumHits);
 
-	u32 hits_size = m_Hits.size();
+	u32 hits_size = (u32)m_Hits.size();
 	i = 0;
 	u32 hit_number = 0;
 	u8 hit_index = 0;

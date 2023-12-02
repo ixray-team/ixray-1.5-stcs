@@ -107,11 +107,11 @@ void GenerateStrips(const u16* in_indices, const s32 in_numIndices, xr_vector<Pr
 		unsigned int numIndices = 0;
 		for(int i_ = 0; i_ < tempStrips.size(); i_++)
 		{
-			numIndices += tempStrips[i_]->m_faces.size() * 3;
+			numIndices += (u32)tempStrips[i_]->m_faces.size() * 3;
 		}
 
 		//add in the list
-		numIndices += tempFaces.size() * 3;
+		numIndices += (u32)tempFaces.size() * 3;
 
 		primGroups[0].type       = PT_LIST;
 		primGroups[0].numIndices = numIndices;
@@ -130,7 +130,7 @@ void GenerateStrips(const u16* in_indices, const s32 in_numIndices, xr_vector<Pr
 		}
 
 		//do lists
-		for(u32 i_ = 0; i_ < tempFaces.size(); i_++)
+		for(u32 i_ = 0; i_ < (u32)tempFaces.size(); i_++)
 		{
 			primGroups[0].indices[indexCtr++] = u16(tempFaces[i_]->m_v0);
 			primGroups[0].indices[indexCtr++] = u16(tempFaces[i_]->m_v1);
@@ -169,7 +169,7 @@ void GenerateStrips(const u16* in_indices, const s32 in_numIndices, xr_vector<Pr
 				stripLength = i_ - startingLoc;
 			}
 			else
-				stripLength = stripIndices.size();
+				stripLength = (int)stripIndices.size();
 			
 			primGroups[stripCtr].type       = PT_STRIP;
 			primGroups[stripCtr].indices    = xr_alloc<u16>	(stripLength);
@@ -187,8 +187,8 @@ void GenerateStrips(const u16* in_indices, const s32 in_numIndices, xr_vector<Pr
 		{
 			int faceGroupLoc					= numGroups - 1;    //the face group is the last one
 			primGroups[faceGroupLoc].type       = PT_LIST;
-			primGroups[faceGroupLoc].indices    = xr_alloc<u16>	(tempFaces.size() * 3);
-			primGroups[faceGroupLoc].numIndices = tempFaces.size() * 3;
+			primGroups[faceGroupLoc].indices    = xr_alloc<u16>	((u32)tempFaces.size() * 3);
+			primGroups[faceGroupLoc].numIndices = (u32)tempFaces.size() * 3;
 			int indexCtr = 0;
 			for(int i_ = 0; i_ < tempFaces.size(); i_++)
 			{
@@ -235,7 +235,7 @@ void GenerateStrips(const u16* in_indices, const s32 in_numIndices, xr_vector<Pr
 //
 void RemapIndices(const xr_vector<PrimitiveGroup> &in_primGroups, const u16 numVerts, xr_vector<PrimitiveGroup> &remappedGroups)
 {
-	int numGroups			= in_primGroups.size();
+	int numGroups			= (int)in_primGroups.size();
 	remappedGroups.resize	(numGroups);
 
 	//caches oldIndex --> newIndex conversion

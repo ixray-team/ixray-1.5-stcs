@@ -167,7 +167,7 @@ void CUIRankingWnd::Init()
 	xml.SetLocalRoot( node );
 
 	CInifile::Sect&		faction_section = pSettings->r_section( fract_section );
-	m_factions_count = faction_section.Data.size();
+	m_factions_count = (u32)faction_section.Data.size();
 	CInifile::SectIt_	ib = faction_section.Data.begin();
 	CInifile::SectIt_	ie = faction_section.Data.end();
 	for ( u8 i = 0; ib != ie ; ++ib, ++i )

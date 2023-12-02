@@ -176,7 +176,7 @@ void CUILines::ParseText(){
 	if (uFlags.test(flRecognizeNewLine))
 		if ( m_pFont->IsMultibyte() ) {
 			CUILine *ptmp_line = xr_new<CUILine>();
-			int vsz = line->m_subLines.size();
+			int vsz = (int)line->m_subLines.size();
 			VERIFY( vsz );
 			for ( int i = 0 ; i < vsz ; i++ ) {
 				char *pszTemp = NULL;
@@ -209,7 +209,7 @@ void CUILines::ParseText(){
 		UI().ClientToScreenScaledWidth( fTargetWidth );
 		VERIFY( ( m_wndSize.x > 0 ) && ( fTargetWidth > 0 ) );
 		fTargetWidth = m_wndSize.x / fTargetWidth;
-		int vsz = line->m_subLines.size();
+		int vsz = (int)line->m_subLines.size();
 		VERIFY( vsz );
 		if ( ( vsz > 1 ) && ( ! bNewLines ) ) { // only colored line, pizdets
 			for ( int i = 0 ; i < vsz ; i++ ) {
@@ -249,7 +249,7 @@ void CUILines::ParseText(){
 	} else
 	{
 		float max_width							= m_wndSize.x;
-		u32 sbl_cnt								= line->m_subLines.size();
+		u32 sbl_cnt								= (u32)line->m_subLines.size();
 		CUILine									tmp_line;
 		string4096								buff;
 		float curr_width						= 0.0f;
@@ -425,7 +425,7 @@ void CUILines::Draw(float x, float y){
 		float height	= m_pFont->CurrentHeight_();
 		UI().ClientToScreenScaledHeight(height);
 
-		u32 size		= m_lines.size();
+		u32 size		= (u32)m_lines.size();
 
 		m_pFont->SetAligment((CGameFont::EAligment)m_eTextAlign);
 		for (int i=0; i<(int)size; i++)

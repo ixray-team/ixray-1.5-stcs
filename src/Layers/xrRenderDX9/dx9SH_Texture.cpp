@@ -121,7 +121,7 @@ void CTexture::apply_avi	(u32 dwStage)
 void CTexture::apply_seq	(u32 dwStage)	{
 	// SEQ
 	u32	frame		= Device.dwTimeContinual/seqMSPF; //Device.dwTimeGlobal
-	u32	frame_data	= seqDATA.size();
+	u32	frame_data	= (u32)seqDATA.size();
 	if (flags.seqCycles)		{
 		u32	frame_id	= frame%(frame_data*2);
 		if (frame_id>=frame_data)	frame_id = (frame_data-1) - (frame_id%frame_data);

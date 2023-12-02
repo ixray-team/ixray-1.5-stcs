@@ -484,7 +484,7 @@ CUICellItem* CUIDragDropListEx::RemoveItem(CUICellItem* itm, bool force_root)
 
 u32 CUIDragDropListEx::ItemsCount()
 {
-	return m_container->GetChildWndList().size();
+	return (u32)m_container->GetChildWndList().size();
 }
 
 bool CUIDragDropListEx::IsOwner(CUICellItem* itm){
@@ -752,8 +752,8 @@ u32 CUICellContainer::GetCellsInRange(const Irect& rect, UI_CELLS_VEC& res)
 		for(int y=rect.y1;y<=rect.y2;++y)
 			res.push_back	(GetCellAt(Ivector2().set(x,y)));
 
-	std::unique				(res.begin(), res.end());
-	return res.size			();
+	res.erase(std::unique(res.begin(), res.end()), res.end());
+	return (u32)res.size			();
 }
 
 void CUICellContainer::ReinitSize()

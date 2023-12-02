@@ -277,7 +277,7 @@ void CPHMovementControl::Calculate(const xr_vector<DetailPathManager::STravelPat
 	//float distance;//distance
 
 	bool  near_line;
-	m_path_size=path.size();
+	m_path_size= (int)path.size();
 	Fvector dir;
 	dir.set(0,0,0);
 	if(m_path_size==0)

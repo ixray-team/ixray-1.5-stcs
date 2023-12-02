@@ -38,7 +38,7 @@ LPCSTR const* thunderbolt_id::collection()
 
 u32 thunderbolt_id::collection_size		()
 {
-	return							(m_manager.thunderbolts_ids().size());
+	return							((u32)m_manager.thunderbolts_ids().size());
 }
 
 void thunderbolt_id::fill				(editor::property_holder_collection* collection)

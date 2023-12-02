@@ -28,7 +28,7 @@ class	game_cl_GameState	: public game_GameState, public ISheduled
 {
 	typedef game_GameState	inherited;
 	shared_str							m_game_type_name;
-//	bool								m_bCrosshair;	//был ли показан прицел-курсор HUD перед вызовом меню
+//	bool								m_bCrosshair;	//Р±С‹Р» Р»Рё РїРѕРєР°Р·Р°РЅ РїСЂРёС†РµР»-РєСѓСЂСЃРѕСЂ HUD РїРµСЂРµРґ РІС‹Р·РѕРІРѕРј РјРµРЅСЋ
 protected:
 	CUIGameCustom*						m_game_ui_custom;
 	u16									m_u16VotingEnabled;	
@@ -92,7 +92,7 @@ public:
 				game_PlayerState*	GetPlayerByGameID		(u32 GameID);
 				game_PlayerState*	GetPlayerByOrderID		(u32 id);
 				ClientID			GetClientIDByOrderID	(u32 id);
-				u32					GetPlayersCount			() const {return players.size();};
+				u32					GetPlayersCount			() const {return (u32)players.size();};
 	virtual		CUIGameCustom*		createGameUI			(){return NULL;};
 	virtual		void				GetMapEntities			(xr_vector<SZoneMapEntityData>& dst)	{};
 

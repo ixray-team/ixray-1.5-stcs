@@ -116,16 +116,16 @@ public:
 
 	virtual		void				OnEvent					(NET_Packet &tNetPacket, u16 type, u32 time, ClientID sender );
 
-	virtual		void				OnTeamScore				(u32 /**team/**/, bool)						;		// команда выиграла
-	virtual		void				OnTeamsInDraw			()								{};		// ничья
+	virtual		void				OnTeamScore				(u32 /**team/**/, bool)						;		// РєРѕРјР°РЅРґР° РІС‹РёРіСЂР°Р»Р°
+	virtual		void				OnTeamsInDraw			()								{};		// РЅРёС‡СЊСЏ
 
 	// Events
-	virtual		void				OnRoundStart			();												// старт раунда
-	virtual		void				OnRoundEnd				();	// round_end_reason							// конец раунда
+	virtual		void				OnRoundStart			();												// СЃС‚Р°СЂС‚ СЂР°СѓРЅРґР°
+	virtual		void				OnRoundEnd				();	// round_end_reason							// РєРѕРЅРµС† СЂР°СѓРЅРґР°
 	virtual		void				OnDelayedRoundEnd		( ERoundEnd_Result reason );
 	virtual		void				OnDelayedTeamEliminated();
 
-	virtual		void				OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, NET_Packet& P); //игрок получил Hit
+	virtual		void				OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, NET_Packet& P); //РёРіСЂРѕРє РїРѕР»СѓС‡РёР» Hit
 	virtual		void				OnPlayerHitPlayer_Case	(game_PlayerState* ps_hitter, game_PlayerState* ps_hitted, SHit* pHitS);	
 
 	virtual		BOOL				OnTouch					(u16 eid_who, u16 eid_what, BOOL bForced = FALSE);
@@ -208,7 +208,7 @@ public:
 	virtual		BOOL				IsAnomaliesEnabled		();
 	virtual		u32					GetAnomaliesTime		();
 
-	virtual		u32					GetNumTeams				() {return teams.size();};
+	virtual		u32					GetNumTeams				() {return (u32)teams.size();};
 
 	// adtitional methods for predicates
 	void		__stdcall			RespawnPlayerAsSpectator(IClient* client);

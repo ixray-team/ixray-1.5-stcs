@@ -6,10 +6,10 @@
 // tables to calculate view-frustum bounds in world space
 // note: D3D uses [0..1] range for Z
 static Fvector3		corners [8]			= {
-	{ -1, -1,  0.7 },	{ -1, -1, +1},
-	{ -1, +1, +1 },		{ -1, +1,  0.7},
-	{ +1, +1, +1 },		{ +1, +1,  0.7},
-	{ +1, -1, +1 },		{ +1, -1,  0.7}
+	{ -1.0f, -1.0f, 0.7f },		{ -1.0f, -1.0f, +1.0f},
+	{ -1.0f, +1.0f, +1.0f },	{ -1.0f, +1.0f,  0.7f},
+	{ +1.0f, +1.0f, +1.0f },	{ +1.0f, +1.0f,  0.7f},
+	{ +1.0f, -1.0f, +1.0f },	{ +1.0f, -1.0f,  0.7f}
 };
 static u16			facetable[16][3]		= {
 	{ 3, 2, 1 },  

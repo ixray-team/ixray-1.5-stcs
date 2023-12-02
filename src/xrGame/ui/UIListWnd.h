@@ -66,7 +66,7 @@ public:
 	void			EnableAlwaysShowScroll	(bool flag)					{m_bAlwaysShowScroll_enable = flag;}
 
 
-	int				GetItemsCount			()							{return m_ItemList.size();}
+	int				GetItemsCount			()							{return (int) m_ItemList.size();}
 
 	//подготовить все элементы заново
 	void 			Reset					();

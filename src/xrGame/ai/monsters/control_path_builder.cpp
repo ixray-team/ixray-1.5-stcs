@@ -75,7 +75,7 @@ void CControlPathBuilder::update_schedule()
 	if (m_data.enable) {
 		detail().set_path_type				(eDetailPathTypeSmooth);
 
-		// установить direction
+		// СѓСЃС‚Р°РЅРѕРІРёС‚СЊ direction
 		detail().set_use_dest_orientation	(m_data.use_dest_orientation);
 		if (m_data.use_dest_orientation)	detail().set_dest_direction	(m_data.dest_orientation);
 
@@ -133,7 +133,7 @@ bool CControlPathBuilder::build_special(const Fvector &target, u32 node, u32 vel
 	if (!accessible(target)) return false;
 	
 	if (node == u32(-1)) {
-		// нода в прямой видимости?
+		// РЅРѕРґР° РІ РїСЂСЏРјРѕР№ РІРёРґРёРјРѕСЃС‚Рё?
 		restrictions().add_border(object().Position(), target);
 		node = ai().level_graph().check_position_in_direction(object().ai_location().level_vertex_id(),object().Position(),target);
 		restrictions().remove_border();
@@ -175,7 +175,7 @@ bool CControlPathBuilder::is_path_end(float dist_to_end)
 	if (!is_moving_on_path())		return true;
 
 	u32 cur_point_idx	= detail().curr_travel_point_index();
-	u32	path_size		= detail().path().size();
+	u32	path_size		= (u32)detail().path().size();
 	if (path_size < 2)					return true;
 	if (cur_point_idx + 1 >= path_size)	return true;
 

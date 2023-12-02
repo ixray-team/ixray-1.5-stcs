@@ -1157,7 +1157,7 @@ void	CWeaponMagazined::OnNextFireMode		()
 {
 	if (!m_bHasDifferentFireModes) return;
 	if (GetState() != eIdle) return;
-	m_iCurFireMode = (m_iCurFireMode+1+m_aFireModes.size()) % m_aFireModes.size();
+	m_iCurFireMode = int((m_iCurFireMode+1+m_aFireModes.size()) % m_aFireModes.size());
 	SetQueueSize(GetCurrentFireMode());
 };
 
@@ -1165,7 +1165,7 @@ void	CWeaponMagazined::OnPrevFireMode		()
 {
 	if (!m_bHasDifferentFireModes) return;
 	if (GetState() != eIdle) return;
-	m_iCurFireMode = (m_iCurFireMode-1+m_aFireModes.size()) % m_aFireModes.size();
+	m_iCurFireMode = int((m_iCurFireMode-1+m_aFireModes.size()) % m_aFireModes.size());
 	SetQueueSize(GetCurrentFireMode());	
 };
 

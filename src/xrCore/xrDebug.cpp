@@ -481,12 +481,13 @@ LONG WINAPI BuildStackTrace(PEXCEPTION_POINTERS pExceptionInfo)
 				Buffer += moduleInfo.ModuleName;
 
 			char buf[_MAX_U64TOSTR_BASE2_COUNT];
-			_itoa_s(displacement, buf, _countof(buf), 16);
+			_itoa_s((int)displacement, buf, _countof(buf), 16);
 
 			Buffer += moduleInfo.ModuleName;
 			Buffer += "!";
 			Buffer += pSymbol->Name;
-			Buffer += displacement;
+			Buffer += ":";
+			Buffer += std::to_string(displacement);
 			Buffer += "\r\n";
 		}
 

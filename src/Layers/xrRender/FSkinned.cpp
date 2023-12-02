@@ -424,7 +424,7 @@ void CSkeletonX_ext::_Load_hw	(Fvisual& V, void *	_verts_)
 				Vertices1W.create		( crc, V.vCount, (vertBoned1W*)_verts_);
 			}
 
-			u32 vStride = ComputeVertexSize(dwDecl_01W, 0);
+			u32 vStride = (u32)ComputeVertexSize(dwDecl_01W, 0);
 			VERIFY	(vStride==sizeof(vertHW_1W));
 //			BYTE*	bytes		= 0;
 			VERIFY				(NULL==V.p_rm_Vertices);
@@ -464,7 +464,7 @@ void CSkeletonX_ext::_Load_hw	(Fvisual& V, void *	_verts_)
 				Vertices2W.create		( crc, V.vCount, (vertBoned2W*)_verts_);
 			}
 
-			u32 vStride = ComputeVertexSize(dwDecl_2W, 0);
+			u32 vStride = (u32)ComputeVertexSize(dwDecl_2W, 0);
 			VERIFY				(vStride==sizeof(vertHW_2W));
 //			BYTE* bytes			= 0;
 			VERIFY				(NULL==V.p_rm_Vertices);
@@ -504,7 +504,7 @@ void CSkeletonX_ext::_Load_hw	(Fvisual& V, void *	_verts_)
 				Vertices3W.create		( crc, V.vCount, (vertBoned3W*)_verts_);
 			}
 
-			u32 vStride = ComputeVertexSize(dwDecl_3W, 0);
+			u32 vStride = (u32)ComputeVertexSize(dwDecl_3W, 0);
 			VERIFY					(vStride==sizeof(vertHW_3W));
 //			BYTE*	bytes			= 0;
 			VERIFY					(NULL==V.p_rm_Vertices);
@@ -547,7 +547,7 @@ void CSkeletonX_ext::_Load_hw	(Fvisual& V, void *	_verts_)
 				Vertices4W.create		( crc, V.vCount, (vertBoned4W*)_verts_);
 			}
 
-			u32 vStride = ComputeVertexSize(dwDecl_4W, 0);
+			u32 vStride = (u32)ComputeVertexSize(dwDecl_4W, 0);
 			VERIFY					(vStride==sizeof(vertHW_4W));
 //			BYTE*	bytes			= 0;
 			VERIFY					(NULL==V.p_rm_Vertices);
@@ -601,7 +601,7 @@ void CSkeletonX_ext::_Load_hw	(Fvisual& V, void *	_verts_)
 	case RM_SINGLE:
 	case RM_SKINNING_1B:
 		{
-			u32 vStride = ComputeVertexSize(dwDecl_01W, 0);
+			u32 vStride = (u32)ComputeVertexSize(dwDecl_01W, 0);
 			VERIFY	(vStride==sizeof(vertHW_1W));
 			BYTE*	bytes		= 0;
 			VERIFY				(NULL==V.p_rm_Vertices);
@@ -620,7 +620,7 @@ void CSkeletonX_ext::_Load_hw	(Fvisual& V, void *	_verts_)
 		break;
 	case RM_SKINNING_2B:
 		{
-			u32 vStride = ComputeVertexSize(dwDecl_2W, 0);
+			u32 vStride = (u32)ComputeVertexSize(dwDecl_2W, 0);
 			VERIFY				(vStride==sizeof(vertHW_2W));
 			BYTE* bytes			= 0;
 			VERIFY				(NULL==V.p_rm_Vertices);
@@ -640,7 +640,7 @@ void CSkeletonX_ext::_Load_hw	(Fvisual& V, void *	_verts_)
 		}break;
 	case RM_SKINNING_3B:
 		{
-			u32 vStride = ComputeVertexSize(dwDecl_3W, 0);
+			u32 vStride = (u32)ComputeVertexSize(dwDecl_3W, 0);
 			VERIFY					(vStride==sizeof(vertHW_3W));
 			BYTE*	bytes			= 0;
 			VERIFY					(NULL==V.p_rm_Vertices);
@@ -661,7 +661,7 @@ void CSkeletonX_ext::_Load_hw	(Fvisual& V, void *	_verts_)
 		}break;
 	case RM_SKINNING_4B:
 		{
-			u32 vStride = ComputeVertexSize(dwDecl_4W, 0);
+			u32 vStride = (u32)ComputeVertexSize(dwDecl_4W, 0);
 			VERIFY					(vStride==sizeof(vertHW_4W));
 			BYTE*	bytes			= 0;
 			VERIFY					(NULL==V.p_rm_Vertices);

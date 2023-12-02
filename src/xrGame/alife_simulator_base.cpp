@@ -124,7 +124,7 @@ CSE_Abstract *CALifeSimulatorBase::spawn_item	(LPCSTR section, const Fvector &po
 	CSE_ALifeDynamicObject		*dynamic_object = smart_cast<CSE_ALifeDynamicObject*>(abstract);
 	VERIFY						(dynamic_object);
 
-	//оружие спавним с полным магазинои
+	//РѕСЂСѓР¶РёРµ СЃРїР°РІРЅРёРј СЃ РїРѕР»РЅС‹Рј РјР°РіР°Р·РёРЅРѕРё
 	CSE_ALifeItemWeapon* weapon = smart_cast<CSE_ALifeItemWeapon*>(dynamic_object);
 	if(weapon)
 		weapon->a_elapsed		= weapon->get_ammo_magsize();
@@ -272,7 +272,7 @@ void CALifeSimulatorBase::release	(CSE_Abstract *abstract, bool alife_query)
 	VERIFY							(object);
 
 	if (!object->children.empty()) {
-		u32							children_count = object->children.size();
+		u32							children_count = (u32)object->children.size();
 		u32							bytes = children_count*sizeof(ALife::_OBJECT_ID);
 		ALife::_OBJECT_ID			*children = (ALife::_OBJECT_ID*)_alloca(bytes);
 		CopyMemory					(children,&*object->children.begin(),bytes);

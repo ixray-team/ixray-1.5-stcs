@@ -38,7 +38,7 @@ LPCSTR const* sound_id::collection					()
 
 u32 sound_id::collection_size						()
 {
-	return							(m_manager.channels_ids().size());
+	return							((u32)m_manager.channels_ids().size());
 }
 
 void sound_id::fill			(editor::property_holder_collection* collection)

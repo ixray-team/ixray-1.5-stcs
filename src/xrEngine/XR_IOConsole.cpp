@@ -323,7 +323,7 @@ void CConsole::OnRender()
 	}
 	
 	// ---------------------
-	u32 log_line = LogFile->size() - 1;
+	u32 log_line = (u32)LogFile->size() - 1;
 	ypos -= LDIST;
 	for(int i = log_line - scroll_delta; i >= 0; --i) {
 		ypos -= LDIST;
@@ -455,7 +455,7 @@ void CConsole::DrawBackgrounds(bool bGame) {
 
 	// --------------------------- scroll bar --------------------
 
-	u32 tips_sz = m_tips.size();
+	u32 tips_sz = (u32)m_tips.size();
 	if (tips_sz > VIEW_TIPS_COUNT) {
 		Frect rb, rs;
 
@@ -686,7 +686,7 @@ IConsole_Command* CConsole::find_next_cmd(LPCSTR in_str, shared_str& out_str)
 }
 
 bool CConsole::add_next_cmds(LPCSTR in_str, vecTipsEx& out_v) {
-	u32 cur_count = out_v.size();
+	u32 cur_count = (u32)out_v.size();
 	if (cur_count >= MAX_TIPS_COUNT) {
 		return false;
 	}
@@ -724,7 +724,7 @@ bool CConsole::add_next_cmds(LPCSTR in_str, vecTipsEx& out_v) {
 
 bool CConsole::add_internal_cmds(LPCSTR in_str, vecTipsEx& out_v)
 {
-	u32 cur_count = out_v.size();
+	u32 cur_count = (u32)out_v.size();
 	if (cur_count >= MAX_TIPS_COUNT) {
 		return false;
 	}
@@ -865,7 +865,7 @@ void CConsole::update_tips() {
 void CConsole::select_for_filter(LPCSTR filter_str, vecTips& in_v, vecTipsEx& out_v)
 {
 	out_v.clear();
-	u32 in_count = in_v.size();
+	u32 in_count = (u32)in_v.size();
 	if (in_count == 0 || !filter_str) {
 		return;
 	}
