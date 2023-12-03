@@ -10,6 +10,7 @@ on:
       - 'sdk/**'
       - 'src/**'
       - '**/CMakeLists.txt'
+      - '**/*.bat'
       - '**/*.ltx'
   pull_request:
     branches:
@@ -20,6 +21,7 @@ on:
       - 'sdk/**'
       - 'src/**'
       - '**/CMakeLists.txt'
+      - '**/*.bat'
       - '**/*.ltx'
 
 defaults:
