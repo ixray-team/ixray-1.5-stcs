@@ -1,11 +1,4 @@
-#ifndef xrCoreH
-#define xrCoreH
 #pragma once
-
-#ifndef DEBUG
-#	define MASTER_GOLD
-#endif // DEBUG
-
 #	include "xrCore_platform.h"
 
 
@@ -270,5 +263,3 @@ public:
 
 
 extern XRCORE_API xrCore Core;
-
-#endif

@@ -40,7 +40,7 @@ if (IXRAY_ASAN)
     add_compile_options(-fsanitize=address)
 endif()
 
-## Edit and Continue mode
+# Edit and Continue mode
 add_compile_options("$<$<CONFIG:DEBUG>:/ZI>" "$<$<CONFIG:RELWITHDEBINFO>:/Zi>")
 
 # Configure NuGet
