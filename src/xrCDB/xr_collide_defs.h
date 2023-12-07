@@ -83,7 +83,7 @@ namespace collide
 	{
 		CObject*	O;				// if NULL - static
 		float		range;			// range to intersection
-		int			element;		// РЅРѕРјРµСЂ РєРѕСЃС‚Рё/РЅРѕРјРµСЂ С‚СЂРµСѓРіРѕР»СЊРЅРёРєР°
+		int			element;		// номер кости/номер треугольника
 		IC rq_result& set		(CObject* _O, float _range, int _element)
 		{
 			O		= _O;

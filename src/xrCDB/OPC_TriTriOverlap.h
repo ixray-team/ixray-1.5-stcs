@@ -265,7 +265,7 @@ inline_ BOOL AABBTreeCollider::TriTriOverlap(const Point& V0, const Point& V1, c
 
 	float tmp=a*xxyy;
 	isect1[0]=tmp+b*x1*yy;
-	isect1[1] = tmp + _c * x0 * yy;
+	isect1[1]=tmp+_c*x0*yy;
 
 	tmp=d*xxyy;
 	isect2[0]=tmp+e*xx*y1;

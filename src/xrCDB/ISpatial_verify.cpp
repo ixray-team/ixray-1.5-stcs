@@ -17,8 +17,8 @@ public:
 	void		walk		(ISpatial_NODE* N, Fvector& n_C, float n_R)
 	{
 		// test items
-		n_count += 1;
-		o_count += (u32)N->items.size();
+		n_count			+=		1;
+		o_count			+= (u32)N->items.size();
 
 		// recurse
 		float	c_R		=		n_R/2;
