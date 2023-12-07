@@ -617,13 +617,12 @@ int APIENTRY WinMain_impl(HINSTANCE hInstance,
 
 		InitInput				();
 
+		Engine.External.CreateRendererList();
 		InitConsole				();
 
-		Engine.External.CreateRendererList();
-
 #ifndef DEDICATED_SERVER
-		if(strstr(Core.Params,"-r2a"))	
-			Console->Execute			("renderer renderer_r2a");
+		if(strstr(Core.Params,"-r3"))	
+			Console->Execute("renderer renderer_r3");
 		else
 		if(strstr(Core.Params,"-r2"))	
 			Console->Execute			("renderer renderer_r2");
@@ -632,6 +631,8 @@ int APIENTRY WinMain_impl(HINSTANCE hInstance,
 			CCC_LoadCFG_custom*	pTmp = xr_new<CCC_LoadCFG_custom>("renderer ");
 			pTmp->Execute				(Console->ConfigFile);
 			xr_delete					(pTmp);
+			// В любом случае надо вызывать команду CCC_R2
+			Console->Execute((std::string("renderer ") + Console->GetToken("renderer")).c_str());
 		}
 #else
 			Console->Execute			("renderer renderer_r1");

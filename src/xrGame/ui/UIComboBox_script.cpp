@@ -26,6 +26,6 @@ void CUIComboBox::script_register(lua_State *L)
 		.def("disable_id",			&CUIComboBox::disable_id)
 		.def("enable_id",			&CUIComboBox::enable_id)
 		.def("SetCurrentValue",		&CUIComboBox::SetCurrentValue)
-
+		.def("GetValueOf", &CUIComboBox::GetValueOf)
 	];
 }

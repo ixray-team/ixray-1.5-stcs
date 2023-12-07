@@ -29,7 +29,7 @@ public:
 	virtual void	OnRender					(); // only for list-box
 
 			LPCSTR		GetText					();
-
+			LPCSTR GetValueOf(int index);
 			void		SetListLength			(int length);
 			void		SetVertScroll			(bool bVScroll = true){m_list_box.SetFixedScrollBar(bVScroll);};
 	CUIListBoxItem*		AddItem_				(LPCSTR str, int _data);

@@ -3,9 +3,6 @@
 //****************************************************************************
 // Support for extension DLLs
 //****************************************************************************
-
-#if !defined(AFX_ENGINEAPI_H__CF21372B_C8B8_4891_82FC_D872C84E1DD4__INCLUDED_)
-#define AFX_ENGINEAPI_H__CF21372B_C8B8_4891_82FC_D872C84E1DD4__INCLUDED_
 #pragma once
 
 // Abstract 'Pure' class for DLL interface
@@ -25,12 +22,6 @@ typedef DLL_API  DLL_Pure*	  __cdecl Factory_Create	(CLASS_ID	CLS_ID);
 typedef DLL_API  void		  __cdecl Factory_Destroy	(DLL_Pure*	O);
 };
 
-// Tuning interface
-extern "C" {
-	typedef void __cdecl VTPause	(void);
-	typedef void __cdecl VTResume	(void);
-};
-
 class ENGINE_API		CEngineAPI
 {
 private:
@@ -40,6 +31,8 @@ public:
 	Factory_Create*		pCreate;
 	Factory_Destroy*	pDestroy;
 	void				Initialize	();
+	
+	void				InitializeNotDedicated();
 	void				Destroy		();
 
 	void				CreateRendererList();
@@ -50,5 +43,3 @@ public:
 
 #define NEW_INSTANCE(a)		Engine.External.pCreate(a)
 #define DEL_INSTANCE(a)		{ Engine.External.pDestroy(a); a=NULL; }
-
-#endif // !defined(AFX_ENGINEAPI_H__CF21372B_C8B8_4891_82FC_D872C84E1DD4__INCLUDED_)
