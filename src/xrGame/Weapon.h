@@ -13,7 +13,6 @@
 #include "first_bullet_controller.h"
 
 #include "CameraRecoil.h"
-#include "IXRayGameConstants.h"
 
 class CEntity;
 class ENGINE_API CMotionDef;
@@ -156,7 +155,7 @@ public:
 	//для отоброажения иконок апгрейдов в интерфейсе
 	int	GetScopeX()
 	{
-		if (GameConstants::GetUseHQ_Icons())
+		if (EngineExternal()[EEngineExternalUI::HQIcons])
 			return pSettings->r_s32(m_scopes[m_cur_scope], "scope_x") * 2;
 		else
 			return pSettings->r_s32(m_scopes[m_cur_scope], "scope_x");
@@ -164,7 +163,7 @@ public:
 
 	int	GetScopeY()
 	{
-		if (GameConstants::GetUseHQ_Icons())
+		if (EngineExternal()[EEngineExternalUI::HQIcons])
 			return pSettings->r_s32(m_scopes[m_cur_scope], "scope_y") * 2;
 		else
 			return pSettings->r_s32(m_scopes[m_cur_scope], "scope_y");

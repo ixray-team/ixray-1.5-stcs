@@ -4,7 +4,6 @@
 #include "ui/xrUIXmlParser.h"
 #include "xr_level_controller.h"
 #include "GamePersistent.h"
-#include "IXRayGameConstants.h"
 
 STRING_TABLE_DATA* CStringTable::pData = NULL;
 BOOL CStringTable::m_bWriteErrorsToLog = FALSE;
@@ -31,7 +30,7 @@ void CStringTable::Init		()
     
 	pData				= xr_new<STRING_TABLE_DATA>();
 	
-	//имя языка, если не задано (NULL), то первый <text> в <string> в XML
+	//РёРјСЏ СЏР·С‹РєР°, РµСЃР»Рё РЅРµ Р·Р°РґР°РЅРѕ (NULL), С‚Рѕ РїРµСЂРІС‹Р№ <text> РІ <string> РІ XML
 	pData->m_sLanguage	= pSettings->r_string("string_table", "language");
 
 
@@ -52,7 +51,7 @@ void CStringTable::Init		()
 		Load			(fn);
 	}
 	g_pGamePersistent->ps_curlang = pData->m_sLanguage;
-	g_pGamePersistent->ps_UseLangForScreen = GameConstants::GetUseLoadScreenByLang();
+	g_pGamePersistent->ps_UseLangForScreen = EngineExternal()[EEngineExternalUI::LoadscreenByLang];
 #ifdef DEBUG
 	Msg("StringTable: loaded %d files", fset.size());
 #endif // #ifdef DEBUG
@@ -67,7 +66,7 @@ void CStringTable::Load	(LPCSTR xml_file_full)
 
 	uiXml.Load					(CONFIG_PATH, _s, xml_file_full);
 
-	//общий список всех записей таблицы в файле
+	//РѕР±С‰РёР№ СЃРїРёСЃРѕРє РІСЃРµС… Р·Р°РїРёСЃРµР№ С‚Р°Р±Р»РёС†С‹ РІ С„Р°Р№Р»Рµ
 	int string_num = uiXml.GetNodesNum		(uiXml.GetRoot(), "string");
 
 	for(int i=0; i<string_num; ++i)

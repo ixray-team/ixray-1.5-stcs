@@ -1,7 +1,6 @@
 
 #include "stdafx.h"
 #include "Weapon.h"
-#include "IXRayGameConstants.h"
 
 static bool process_if_exists_deg2rad( LPCSTR section, LPCSTR name, float& value, bool test )
 {
@@ -232,7 +231,7 @@ bool CWeapon::install_upgrade_addon(LPCSTR section, bool test)
 		{
 			m_sSilencerName = pSettings->r_string(section, "silencer_name");
 
-			if (GameConstants::GetUseHQ_Icons())
+			if (EngineExternal()[EEngineExternalUI::HQIcons])
 			{
 				m_iSilencerX = pSettings->r_s32(section, "silencer_x") * 2;
 				m_iSilencerY = pSettings->r_s32(section, "silencer_y") * 2;
@@ -258,7 +257,7 @@ bool CWeapon::install_upgrade_addon(LPCSTR section, bool test)
 		{
 			m_sGrenadeLauncherName = pSettings->r_string(section, "grenade_launcher_name");
 
-			if (GameConstants::GetUseHQ_Icons())
+			if (EngineExternal()[EEngineExternalUI::HQIcons])
 			{
 				m_iGrenadeLauncherX = pSettings->r_s32(section, "grenade_launcher_x") * 2;
 				m_iGrenadeLauncherY = pSettings->r_s32(section, "grenade_launcher_y") * 2;

@@ -15,7 +15,6 @@
 #include "ui_arrow.h"
 #include "UIInventoryUtilities.h"
 #include "../HUDManager.h"
-#include "IXRayGameConstants.h"
 
 static const u32 c_white = color_rgba(255, 255, 255, 255);
 static const u32 c_green = color_rgba(0, 255, 0, 255);
@@ -316,29 +315,29 @@ void CUIHudStatesWnd::SetAmmoIcon( const shared_str& sect_name )
 		float yPos = pSettings->r_float(sect_name, "inv_grid_y");
 
 		m_ui_weapon_icon->GetUIStaticItem().SetOriginalRect(
-			( xPos      * INV_GRID_WIDTH(GameConstants::GetUseHQ_Icons())), ( yPos       * INV_GRID_HEIGHT(GameConstants::GetUseHQ_Icons())),
-			( gridWidth * INV_GRID_WIDTH(GameConstants::GetUseHQ_Icons())), ( gridHeight * INV_GRID_HEIGHT(GameConstants::GetUseHQ_Icons())) );
+			( xPos      * INV_GRID_WIDTH(EngineExternal()[EEngineExternalUI::HQIcons])), ( yPos       * INV_GRID_HEIGHT(EngineExternal()[EEngineExternalUI::HQIcons])),
+			( gridWidth * INV_GRID_WIDTH(EngineExternal()[EEngineExternalUI::HQIcons])), ( gridHeight * INV_GRID_HEIGHT(EngineExternal()[EEngineExternalUI::HQIcons])) );
 		m_ui_weapon_icon->SetStretchTexture( true );
 
 		// now perform only width scale for ammo, which (W)size >2
 		// all others ammo (1x1, 1x2) will be not scaled (original picture)
-		float h = gridHeight * INV_GRID_HEIGHT(GameConstants::GetUseHQ_Icons()) * 0.65f;
-		float w = gridWidth  * INV_GRID_WIDTH(GameConstants::GetUseHQ_Icons()) * 0.65f;
+		float h = gridHeight * INV_GRID_HEIGHT(EngineExternal()[EEngineExternalUI::HQIcons]) * 0.65f;
+		float w = gridWidth  * INV_GRID_WIDTH(EngineExternal()[EEngineExternalUI::HQIcons]) * 0.65f;
 		float posx_16 = 8.33f;
 		float posx = 10.0f;
 
-		if (GameConstants::GetUseHQ_Icons())
+		if (EngineExternal()[EEngineExternalUI::HQIcons])
 		{
-			h = gridHeight * INV_GRID_HEIGHT(GameConstants::GetUseHQ_Icons()) / 2 * 0.65f;
-			w = gridWidth * INV_GRID_WIDTH(GameConstants::GetUseHQ_Icons()) / 2 * 0.65f;
+			h = gridHeight * INV_GRID_HEIGHT(EngineExternal()[EEngineExternalUI::HQIcons]) / 2 * 0.65f;
+			w = gridWidth * INV_GRID_WIDTH(EngineExternal()[EEngineExternalUI::HQIcons]) / 2 * 0.65f;
 		}
 
 		if (gridWidth > 2.01f)
 		{
-			if (GameConstants::GetUseHQ_Icons())
-				w = INV_GRID_WIDTH(GameConstants::GetUseHQ_Icons()) / 2 * 1.5f;
+			if (EngineExternal()[EEngineExternalUI::HQIcons])
+				w = INV_GRID_WIDTH(EngineExternal()[EEngineExternalUI::HQIcons]) / 2 * 1.5f;
 			else
-				w = INV_GRID_WIDTH(GameConstants::GetUseHQ_Icons()) * 1.5f;
+				w = INV_GRID_WIDTH(EngineExternal()[EEngineExternalUI::HQIcons]) * 1.5f;
 		}
 
 		bool is_16x10 = UI().is_widescreen();

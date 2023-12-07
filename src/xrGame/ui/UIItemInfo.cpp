@@ -25,7 +25,6 @@
 #include "../Weapon.h"
 #include "../CustomOutfit.h"
 #include "../eatable_item.h"
-#include "IXRayGameConstants.h"
 
 extern const LPCSTR g_inventory_upgrade_xml;
 
@@ -332,26 +331,26 @@ void CUIItemInfo::InitItem(CUICellItem* pCellItem, CInventoryItem* pCompareItem,
 		UIItemImage->SetShader				(InventoryUtilities::GetEquipmentIconsShader());
 
 		Irect item_grid_rect				= pInvItem->GetInvGridRect();
-		UIItemImage->GetUIStaticItem().SetOriginalRect(	float(item_grid_rect.x1*INV_GRID_WIDTH(GameConstants::GetUseHQ_Icons())), float(item_grid_rect.y1*INV_GRID_HEIGHT(GameConstants::GetUseHQ_Icons())),
-														float(item_grid_rect.x2*INV_GRID_WIDTH(GameConstants::GetUseHQ_Icons())),	float(item_grid_rect.y2*INV_GRID_HEIGHT(GameConstants::GetUseHQ_Icons())));
+		UIItemImage->GetUIStaticItem().SetOriginalRect(	float(item_grid_rect.x1*INV_GRID_WIDTH(EngineExternal()[EEngineExternalUI::HQIcons])), float(item_grid_rect.y1*INV_GRID_HEIGHT(EngineExternal()[EEngineExternalUI::HQIcons])),
+														float(item_grid_rect.x2*INV_GRID_WIDTH(EngineExternal()[EEngineExternalUI::HQIcons])),	float(item_grid_rect.y2*INV_GRID_HEIGHT(EngineExternal()[EEngineExternalUI::HQIcons])));
 		UIItemImage->TextureOn				();
 		UIItemImage->ClipperOn				();
 		UIItemImage->SetStretchTexture		(true);
 		Frect v_r{};
 			
-		if (GameConstants::GetUseHQ_Icons())
+		if (EngineExternal()[EEngineExternalUI::HQIcons])
 		{
 			v_r = { 0.0f,
 				0.0f,
-				float(item_grid_rect.x2 * INV_GRID_WIDTH2(GameConstants::GetUseHQ_Icons()) / 2),
-				float(item_grid_rect.y2 * INV_GRID_HEIGHT2(GameConstants::GetUseHQ_Icons()) / 2) };
+				float(item_grid_rect.x2 * INV_GRID_WIDTH2(EngineExternal()[EEngineExternalUI::HQIcons]) / 2),
+				float(item_grid_rect.y2 * INV_GRID_HEIGHT2(EngineExternal()[EEngineExternalUI::HQIcons]) / 2) };
 		}
 		else
 		{
 				v_r = { 0.0f,
 				0.0f,
-				float(item_grid_rect.x2 * INV_GRID_WIDTH2(GameConstants::GetUseHQ_Icons())),
-				float(item_grid_rect.y2 * INV_GRID_HEIGHT2(GameConstants::GetUseHQ_Icons())) };
+				float(item_grid_rect.x2 * INV_GRID_WIDTH2(EngineExternal()[EEngineExternalUI::HQIcons])),
+				float(item_grid_rect.y2 * INV_GRID_HEIGHT2(EngineExternal()[EEngineExternalUI::HQIcons])) };
 		}
 		if(UI().is_widescreen())
 			v_r.x2 /= 1.2f;
@@ -439,26 +438,26 @@ void CUIItemInfo::InitItemUpgradeIcon(CInventoryItem* pInvItem)
 		UIItemImage->SetShader				(InventoryUtilities::GetEquipmentIconsShader());
 
 		Irect item_grid_rect				= pInvItem->GetInvGridRect();
-		UIItemImage->GetUIStaticItem().SetOriginalRect(	float(item_grid_rect.x1*INV_GRID_WIDTH(GameConstants::GetUseHQ_Icons())), float(item_grid_rect.y1*INV_GRID_HEIGHT(GameConstants::GetUseHQ_Icons())),
-														float(item_grid_rect.x2*INV_GRID_WIDTH(GameConstants::GetUseHQ_Icons())),	float(item_grid_rect.y2*INV_GRID_HEIGHT(GameConstants::GetUseHQ_Icons())));
+		UIItemImage->GetUIStaticItem().SetOriginalRect(	float(item_grid_rect.x1*INV_GRID_WIDTH(EngineExternal()[EEngineExternalUI::HQIcons])), float(item_grid_rect.y1*INV_GRID_HEIGHT(EngineExternal()[EEngineExternalUI::HQIcons])),
+														float(item_grid_rect.x2*INV_GRID_WIDTH(EngineExternal()[EEngineExternalUI::HQIcons])),	float(item_grid_rect.y2*INV_GRID_HEIGHT(EngineExternal()[EEngineExternalUI::HQIcons])));
 		UIItemImage->TextureOn				();
 		UIItemImage->ClipperOn				();
 		UIItemImage->SetStretchTexture		(true);
 		Frect v_r{};
 			
-		if (GameConstants::GetUseHQ_Icons())
+		if (EngineExternal()[EEngineExternalUI::HQIcons])
 		{
 			v_r = { 0.0f,
 				0.0f,
-				float(item_grid_rect.x2 * INV_GRID_WIDTH2(GameConstants::GetUseHQ_Icons()) / 2),
-				float(item_grid_rect.y2 * INV_GRID_HEIGHT2(GameConstants::GetUseHQ_Icons()) / 2) };
+				float(item_grid_rect.x2 * INV_GRID_WIDTH2(EngineExternal()[EEngineExternalUI::HQIcons]) / 2),
+				float(item_grid_rect.y2 * INV_GRID_HEIGHT2(EngineExternal()[EEngineExternalUI::HQIcons]) / 2) };
 		}
 		else
 		{
 				v_r = { 0.0f,
 				0.0f,
-				float(item_grid_rect.x2 * INV_GRID_WIDTH2(GameConstants::GetUseHQ_Icons())),
-				float(item_grid_rect.y2 * INV_GRID_HEIGHT2(GameConstants::GetUseHQ_Icons())) };
+				float(item_grid_rect.x2 * INV_GRID_WIDTH2(EngineExternal()[EEngineExternalUI::HQIcons])),
+				float(item_grid_rect.y2 * INV_GRID_HEIGHT2(EngineExternal()[EEngineExternalUI::HQIcons])) };
 		}
 		if(UI().is_widescreen())
 			v_r.x2 /= 1.2f;

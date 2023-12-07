@@ -23,7 +23,6 @@
 #include "WeaponBinocularsVision.h"
 #include "ui/UIWindow.h"
 #include "ui/UIXmlInit.h"
-#include "IXRayGameConstants.h"
 
 #define WEAPON_REMOVE_TIME		60000
 #define ROTATION_TIME			0.25f
@@ -437,7 +436,7 @@ void CWeapon::Load		(LPCSTR section)
 	{
 		m_sSilencerName = pSettings->r_string(section,"silencer_name");
 
-		if (GameConstants::GetUseHQ_Icons())
+		if (EngineExternal()[EEngineExternalUI::HQIcons])
 		{
 			m_iSilencerX = pSettings->r_s32(section, "silencer_x") * 2;
 			m_iSilencerY = pSettings->r_s32(section, "silencer_y") * 2;
@@ -453,7 +452,7 @@ void CWeapon::Load		(LPCSTR section)
 	{
 		m_sGrenadeLauncherName = pSettings->r_string(section,"grenade_launcher_name");
 
-		if (GameConstants::GetUseHQ_Icons())
+		if (EngineExternal()[EEngineExternalUI::HQIcons])
 		{
 			m_iGrenadeLauncherX = pSettings->r_s32(section, "grenade_launcher_x") * 2;
 			m_iGrenadeLauncherY = pSettings->r_s32(section, "grenade_launcher_y") * 2;

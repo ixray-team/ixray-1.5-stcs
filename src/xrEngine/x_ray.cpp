@@ -605,6 +605,7 @@ int APIENTRY WinMain_impl(HINSTANCE hInstance,
 			xr_strcpy( Core.UserName , sizeof( Core.UserName ) , "Player" );
 			xr_strcpy( Core.CompName , sizeof( Core.CompName ) , "Computer" );
 	}
+	EngineExternal();
 
 #ifndef DEDICATED_SERVER
 	{
