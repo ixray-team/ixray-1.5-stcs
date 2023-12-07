@@ -29,10 +29,12 @@ ICF bool CLevelGraph::valid_vertex_id	(u32 id) const
 	return				(b);
 }
 
-ICF	CLevelGraph::CVertex	*CLevelGraph::vertex(const u32 vertex_id) const
-{
-	VERIFY				(valid_vertex_id(vertex_id));
-	return				(m_nodes + vertex_id);
+ICF	CLevelGraph::CVertex* CLevelGraph::vertex(const u32 vertex_id) const {
+	VERIFY(valid_vertex_id(vertex_id));
+	if (!valid_vertex_id(vertex_id)) {
+		return m_nodes;
+	}
+	return (m_nodes + vertex_id);
 }
 
 ICF	u32	CLevelGraph::vertex	(const CVertex *vertex_p) const
