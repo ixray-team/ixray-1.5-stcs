@@ -237,7 +237,7 @@ void CObjectList::Update		(bool bForce)
 			Device.Statistic->UpdateClient_active	= (u32)objects_active.size();
 			Device.Statistic->UpdateClient_total	= u32(objects_active.size() + objects_sleeping.size());
 
-			u32 const objects_count		= (u32)workload->size();
+			size_t const objects_count = workload->size();
 			CObject** objects			= (CObject**)_alloca(objects_count*sizeof(CObject*));
 			std::copy					( workload->begin(), workload->end(), objects );
 
@@ -451,8 +451,26 @@ void		CObjectList::Destroy			( CObject*	O		)
 	if (0==O)								return;
 	net_Unregister							(O);
 
-	VERIFY						( m_crows[1].empty() );
+	if ( !Device.Paused() ) {
+		if ( !m_crows[1].empty() ) {
+			Msg								( "assertion !m_crows[1].empty() failed: %d", m_crows[1].size() );
+
+			Objects::const_iterator i		= m_crows[1].begin( );
+			Objects::const_iterator	const e	= m_crows[1].end( );
+			for (u32 j=0; i != e; ++i, ++j )
+				Msg							( "%d %s", j, (*i)->cName().c_str() );
+			VERIFY							( Device.Paused() || m_crows[1].empty() );
 	m_crows[1].clear();
+		}
+	}
+	else {
+		Objects& crows				= m_crows[1];
+		Objects::iterator const i	= std::find(crows.begin(),crows.end(),O);
+		if	( i != crows.end() ) {
+			crows.erase				( i);
+			VERIFY					( std::find(crows.begin(), crows.end(),O) == crows.end() );
+		}
+	}
 
 	Objects& crows				= m_crows[0];
 	Objects::iterator _i0		= std::find(crows.begin(),crows.end(),O);

@@ -283,13 +283,13 @@ void	CInifile::Load(IReader* F, LPCSTR path
 				VERIFY2				(m_flags.test(eReadOnly),"Allow for readonly mode only.");
 				inherited_names		+= 2;
 				u32 cnt				= _GetItemCount(inherited_names);
-				u32 total_count		= 0;
+				size_t total_count	= 0;
                 u32 k               = 0;
 				for (k=0; k<cnt; ++k) {
 					string512	tmp;
 					_GetItem	(inherited_names,k,tmp);
 					Sect& inherited_section = r_section(tmp);
-					total_count		+= (u32)inherited_section.Data.size();
+					total_count		+= inherited_section.Data.size();
 				}
 
 				Current->Data.reserve( Current->Data.size() + total_count );

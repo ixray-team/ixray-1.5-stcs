@@ -147,7 +147,7 @@ int ProcessDifference()
 
 	string_path out_path;
 	string_path stats;
-	u32 total = target_file_list.size();
+	u32 total = (u32) target_file_list.size();
 	for(u32 i=0; i<total; ++i)
 	{
 		LPCSTR fn = target_file_list[i];

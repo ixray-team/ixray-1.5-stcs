@@ -467,7 +467,7 @@ void CConsole::DrawBackgrounds(bool bGame) {
 
 		VERIFY(rb.y2 - rb.y1 >= 1.0f);
 		float back_height = rb.y2 - rb.y1;
-		float u_height = (back_height * VIEW_TIPS_COUNT) / float(tips_sz);
+		float u_height = (back_height * (float)VIEW_TIPS_COUNT)/ float(tips_sz);
 		if (u_height < 0.5f * font_h) {
 			u_height = 0.5f * font_h;
 		}

@@ -18,48 +18,37 @@
 #endif // M_BORLAND
 
 #ifdef DEBUG
-	XRCORE_API	u32					g_file_mapped_memory = 0;
-	u32								g_file_mapped_count	= 0;
-	typedef xr_map<u32,std::pair<u32,shared_str> >	FILE_MAPPINGS;
+XRCORE_API size_t g_file_mapped_memory = 0;
+size_t g_file_mapped_count = 0;
+
+using FILE_MAPPINGS = xr_hash_map<size_t, std::pair<size_t, shared_str>>;
 	FILE_MAPPINGS					g_file_mappings;
 
-void register_file_mapping			(void *address, const u32 &size, LPCSTR file_name)
-{
-	FILE_MAPPINGS::const_iterator	I = g_file_mappings.find(*(u32*)&address);
-	VERIFY							(I == g_file_mappings.end());
-	g_file_mappings.insert			(std::make_pair(*(u32*)&address,std::make_pair(size,shared_str(file_name))));
+void register_file_mapping(void* address, const size_t& size, LPCSTR file_name) {
+	size_t CastedAddress = *(size_t*)&address;
 
-//	Msg								("++register_file_mapping(%2d):   [0x%08x]%s", g_file_mapped_count + 1, *((u32*)&address), file_name);
+	FILE_MAPPINGS::const_iterator I = g_file_mappings.find(CastedAddress);
+	VERIFY							(I == g_file_mappings.end());
+
+	g_file_mappings.try_emplace(CastedAddress, std::make_pair(size, shared_str(file_name)));
 
 	g_file_mapped_memory			+= size;
 	++g_file_mapped_count;
-#ifdef USE_MEMORY_MONITOR
-//	memory_monitor::monitor_alloc	(addres,size,"file mapping");
-	string512						temp;
-	xr_sprintf						(temp, sizeof(temp),"file mapping: %s",file_name);
-	memory_monitor::monitor_alloc	(address,size,temp);
-#endif // USE_MEMORY_MONITOR
 }
 
-void unregister_file_mapping		(void *address, const u32 &size)
-{
-	FILE_MAPPINGS::iterator			I = g_file_mappings.find(*(u32*)&address);
+void unregister_file_mapping(void* address, const size_t& size) {
+	FILE_MAPPINGS::iterator I = g_file_mappings.find(*(size_t*)&address);
 	VERIFY							(I != g_file_mappings.end());
-//	VERIFY2							((*I).second.first == size,make_string("file mapping sizes are different: %d -> %d",(*I).second.first,size));
+
 	g_file_mapped_memory			-= (*I).second.first;
 	--g_file_mapped_count;
 
-//	Msg								("--unregister_file_mapping(%2d): [0x%08x]%s", g_file_mapped_count + 1, *((u32*)&address), (*I).second.second.c_str());
-
 	g_file_mappings.erase			(I);
-
-#ifdef USE_MEMORY_MONITOR
-	memory_monitor::monitor_free	(address);
-#endif // USE_MEMORY_MONITOR
 }
 
 XRCORE_API void dump_file_mappings	()
 {
+#if 0
 	Msg								("* active file mappings (%d):",g_file_mappings.size());
 
 	FILE_MAPPINGS::const_iterator	I = g_file_mappings.begin();
@@ -71,6 +60,7 @@ XRCORE_API void dump_file_mappings	()
 			(*I).second.first,
 			(*I).second.second.c_str()
 		);
+#endif
 }
 #endif // DEBUG
 //////////////////////////////////////////////////////////////////////

@@ -222,7 +222,7 @@ void IGame_Persistent::destroy_particles		(const bool &all_particles)
 			(*ps_active.begin())->PSI_internal_delete	();
 	}
 	else {
-		u32								active_size = (u32)ps_active.size();
+		size_t active_size = ps_active.size();
 		CPS_Instance					**I = (CPS_Instance**)_alloca(active_size*sizeof(CPS_Instance*));
 		std::copy						(ps_active.begin(),ps_active.end(),I);
 
