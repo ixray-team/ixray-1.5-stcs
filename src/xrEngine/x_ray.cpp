@@ -301,73 +301,7 @@ INT_PTR CALLBACK logDlgProc(HWND hw, UINT msg, WPARAM wp, LPARAM lp) {
 	}
 	return TRUE;
 }
-/*
-void	test_rtc	()
-{
-	CStatTimer		tMc,tM,tC,tD;
-	u32				bytes=0;
-	tMc.FrameStart	();
-	tM.FrameStart	();
-	tC.FrameStart	();
-	tD.FrameStart	();
-	::Random.seed	(0x12071980);
-	for		(u32 test=0; test<10000; test++)
-	{
-		u32			in_size			= ::Random.randI(1024,256*1024);
-		u32			out_size_max	= rtc_csize		(in_size);
-		u8*			p_in			= xr_alloc<u8>	(in_size);
-		u8*			p_in_tst		= xr_alloc<u8>	(in_size);
-		u8*			p_out			= xr_alloc<u8>	(out_size_max);
-		for (u32 git=0; git<in_size; git++)			p_in[git] = (u8)::Random.randI	(8);	// garbage
-		bytes		+= in_size;
 
-		tMc.Begin	();
-		memcpy		(p_in_tst,p_in,in_size);
-		tMc.End		();
-
-		tM.Begin	();
-		CopyMemory(p_in_tst,p_in,in_size);
-		tM.End		();
-
-		tC.Begin	();
-		u32			out_size		= rtc_compress	(p_out,out_size_max,p_in,in_size);
-		tC.End		();
-
-		tD.Begin	();
-		u32			in_size_tst		= rtc_decompress(p_in_tst,in_size,p_out,out_size);
-		tD.End		();
-
-		// sanity check
-		R_ASSERT	(in_size == in_size_tst);
-		for (u32 tit=0; tit<in_size; tit++)			R_ASSERT(p_in[tit] == p_in_tst[tit]);	// garbage
-
-		xr_free		(p_out);
-		xr_free		(p_in_tst);
-		xr_free		(p_in);
-	}
-	tMc.FrameEnd	();	float rMc		= 1000.f*(float(bytes)/tMc.result)/(1024.f*1024.f);
-	tM.FrameEnd		(); float rM		= 1000.f*(float(bytes)/tM.result)/(1024.f*1024.f);
-	tC.FrameEnd		(); float rC		= 1000.f*(float(bytes)/tC.result)/(1024.f*1024.f);
-	tD.FrameEnd		(); float rD		= 1000.f*(float(bytes)/tD.result)/(1024.f*1024.f);
-	Msg				("* memcpy:        %5.2f M/s (%3.1f%%)",rMc,100.f*rMc/rMc);
-	Msg				("* mm-memcpy:     %5.2f M/s (%3.1f%%)",rM,100.f*rM/rMc);
-	Msg				("* compression:   %5.2f M/s (%3.1f%%)",rC,100.f*rC/rMc);
-	Msg				("* decompression: %5.2f M/s (%3.1f%%)",rD,100.f*rD/rMc);
-}
-*/
-extern void	testbed	(void);
-
-// video
-/*
-static	HINSTANCE	g_hInstance		;
-static	HINSTANCE	g_hPrevInstance	;
-static	int			g_nCmdShow		;
-void	__cdecl		intro_dshow_x	(void*)
-{
-	IntroDSHOW_wnd		(g_hInstance,g_hPrevInstance,"GameData\\Stalker_Intro.avi",g_nCmdShow);
-	g_bIntroFinished	= TRUE	;
-}
-*/
 #define dwStickyKeysStructSize sizeof( STICKYKEYS )
 #define dwFilterKeysStructSize sizeof( FILTERKEYS )
 #define dwToggleKeysStructSize sizeof( TOGGLEKEYS )
@@ -830,7 +764,7 @@ CApplication::CApplication()
 	eConsole					= Engine.Event.Handler_Attach("KERNEL:console",this);
 
 	// levels
-	Level_Current				= 0;
+	Level_Current				= u32(-1);
 	Level_Scan					( );
 
 	// Font
@@ -1063,28 +997,67 @@ void CApplication::Level_Scan()
 	FS.file_list_close		(folder);
 }
 
-void CApplication::Level_Set(u32 L)
+void gen_logo_name(string_path& dest, LPCSTR level_name, int num)
 {
-	if (L>=Levels.size())	return;
-	Level_Current = L;
-	FS.get_path	("$level$")->_set	(Levels[L].folder);
+	strconcat	(sizeof(dest), dest, "intro\\intro_", level_name);
 
+	u32 len = xr_strlen(dest);
+	if(dest[len-1]=='\\')
+		dest[len-1] = 0;
 
-	string_path					temp;
-	string_path					temp2;
-	strconcat					(sizeof(temp),temp,"intro\\intro_",Levels[L].folder);
-	temp[xr_strlen(temp)-1] = 0;
-	if (FS.exist(temp2, "$game_textures$", temp, ".dds") || FS.exist(temp2, "$level$", temp, ".dds"))
-		//hLevelLogo.create	("font", temp);
-		m_pRender->setLevelLogo(temp);
-	else
-		//hLevelLogo.create	("font", "intro\\intro_no_start_picture");
-		m_pRender->setLevelLogo("intro\\intro_no_start_picture");
+	string16 buff;
+	xr_strcat(dest, sizeof(dest), "_");
+	xr_strcat(dest, sizeof(dest), _itoa(num + 1, buff, 10));
+}
+
+void CApplication::Level_Set(u32 L) {
+	if (L >= Levels.size())	return;
+	FS.get_path("$level$")->_set(Levels[L].folder);
+
+	static string_path			path;
+
+	if (Level_Current != L)
+	{
+		path[0] = 0;
+
+		Level_Current = L;
+
+		int count = 0;
+		while (true)
+		{
+			string_path temp2;
+			gen_logo_name(path, Levels[L].folder, count);
+
+			if (FS.exist(temp2, "$game_textures$", path, ".dds") || FS.exist(temp2, "$level$", path, ".dds")) {
+				count++;
+			} else {
+				string_path temp3;
+				strconcat(sizeof(path), path, "intro\\intro_", Levels[L].folder);
+				path[xr_strlen(path) - 1] = 0;
+
+				string_path nm;
+				strconcat(sizeof(nm), nm, path, ".dds");
+				FS.update_path(temp3, "$game_textures$", nm);
+
+				break;
+			}
+		}
+
+		if (count)
+		{
+			int num = ::Random.randI(count);
+			gen_logo_name(path, Levels[L].folder, num);
+		}
+	}
+
+	if (path[0])
+		m_pRender->setLevelLogo(path);
 }
 
 int CApplication::Level_ID(LPCSTR name, LPCSTR ver, bool bSet)
 {
 	int result = -1;
+
 	CLocatorAPI::archives_it it		= FS.m_archives.begin();
 	CLocatorAPI::archives_it it_e	= FS.m_archives.end();
 	bool arch_res					= false;
