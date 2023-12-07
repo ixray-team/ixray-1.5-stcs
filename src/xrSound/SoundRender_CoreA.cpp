@@ -85,29 +85,33 @@ void CSoundRender_CoreA::commit()
 
 void CSoundRender_CoreA::set_listener(const CSoundRender_Environment& env)
 {
-    A_CHK(alEffectf(effect, AL_EAXREVERB_DENSITY, env.Density));
     A_CHK(alEffectf(effect, AL_EAXREVERB_DIFFUSION, env.EnvironmentDiffusion));
     A_CHK(alEffectf(effect, AL_EAXREVERB_GAIN, env.Room));
     A_CHK(alEffectf(effect, AL_EAXREVERB_GAINHF, env.RoomHF));
-    A_CHK(alEffectf(effect, AL_EAXREVERB_GAINHF, env.RoomLF));
     A_CHK(alEffectf(effect, AL_EAXREVERB_DECAY_TIME, env.DecayTime));
     A_CHK(alEffectf(effect, AL_EAXREVERB_DECAY_HFRATIO, env.DecayHFRatio));
-    A_CHK(alEffectf(effect, AL_EAXREVERB_DECAY_LFRATIO, env.DecayLFRatio));
     A_CHK(alEffectf(effect, AL_EAXREVERB_REFLECTIONS_GAIN, env.Reflections));
     A_CHK(alEffectf(effect, AL_EAXREVERB_REFLECTIONS_DELAY, env.ReflectionsDelay));
-    //A_CHK(alEffectf(effect, AL_EAXREVERB_REFLECTIONS_PAN, *env.ReflectionsPan));
     A_CHK(alEffectf(effect, AL_EAXREVERB_LATE_REVERB_GAIN, env.Reverb));
-    A_CHK(alEffectf(effect, AL_EAXREVERB_LATE_REVERB_DELAY, env.ReverbDelay));
+    A_CHK(alEffectf(effect, AL_EAXREVERB_AIR_ABSORPTION_GAINHF, env.AirAbsorptionHF));
+    A_CHK(alEffectf(effect, AL_EAXREVERB_ROOM_ROLLOFF_FACTOR, env.RoomRolloffFactor));
+
+    if (env.version == SNDENV_VER_IXR)
+    {
+        A_CHK(alEffectf(effect, AL_EAXREVERB_GAINHF, env.RoomLF));
+        //A_CHK(alEffectf(effect, AL_EAXREVERB_REFLECTIONS_PAN, *env.ReflectionsPan));
+        //A_CHK(alEffectf(effect, AL_EAXREVERB_LATE_REVERB_PAN, *env.ReverbPan));
+        A_CHK(alEffecti(effect, AL_EAXREVERB_DECAY_HFLIMIT, env.DecayHFLimit));
     A_CHK(alEffectf(effect, AL_EAXREVERB_ECHO_TIME, env.EchoTime));
     A_CHK(alEffectf(effect, AL_EAXREVERB_ECHO_DEPTH, env.EchoDepth));
-    //A_CHK(alEffectf(effect, AL_EAXREVERB_LATE_REVERB_PAN, *env.ReverbPan));
+        A_CHK(alEffectf(effect, AL_EAXREVERB_LATE_REVERB_DELAY, env.ReverbDelay));
+        A_CHK(alEffectf(effect, AL_EAXREVERB_DECAY_LFRATIO, env.DecayLFRatio));
     A_CHK(alEffectf(effect, AL_EAXREVERB_MODULATION_TIME, env.ModulationTime));
     A_CHK(alEffectf(effect, AL_EAXREVERB_MODULATION_DEPTH, env.ModulationDepth));
-    A_CHK(alEffectf(effect, AL_EAXREVERB_AIR_ABSORPTION_GAINHF, env.AirAbsorptionHF));
     A_CHK(alEffectf(effect, AL_EAXREVERB_HFREFERENCE, env.HFReference));
     A_CHK(alEffectf(effect, AL_EAXREVERB_LFREFERENCE, env.LFReference));
-    A_CHK(alEffectf(effect, AL_EAXREVERB_ROOM_ROLLOFF_FACTOR, env.RoomRolloffFactor));
-    A_CHK(alEffecti(effect, AL_EAXREVERB_DECAY_HFLIMIT, env.DecayHFLimit));
+        A_CHK(alEffectf(effect, AL_EAXREVERB_DENSITY, env.Density));
+    }
 }
 
 void CSoundRender_CoreA::get_listener(CSoundRender_Environment& env)
@@ -160,7 +164,7 @@ void CSoundRender_CoreA::_initialize(int stage)
 	R_ASSERT						(snd_device_id>=0 && snd_device_id<pDeviceList->GetNumDevices());
 	const ALDeviceDesc& deviceDesc	= pDeviceList->GetDeviceDesc(snd_device_id);
     // OpenAL device
-    pDevice						= alcOpenDevice		(deviceDesc.name);
+    pDevice						= alcOpenDevice		(deviceDesc.name_al);
 	if (pDevice == nullptr)
 	{
 		CHECK_OR_EXIT			(0,"SOUND: OpenAL: Failed to create device.");
@@ -245,6 +249,9 @@ void CSoundRender_CoreA::_initialize(int stage)
 
     // Check if an error occured, and clean up if so.
     ALenum err = alGetError();
+
+    if (psSoundFlags.test(ss_EFX))
+    {
     if (err == AL_NO_ERROR)
     {
         m_is_supported = true;
@@ -255,6 +262,11 @@ void CSoundRender_CoreA::_initialize(int stage)
         Log("SOUND: OpenAL: Failed to init EFX:", alGetString(err));
         if (alIsEffect(effect))
             alDeleteEffects(1, &effect);
+        }
+    }
+    else
+    {
+        m_is_supported = false;
     }
 
     inherited::_initialize		(stage);

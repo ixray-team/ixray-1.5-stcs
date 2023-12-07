@@ -39,6 +39,8 @@ XRSOUND_API extern int				psSoundTargets			;
 XRSOUND_API extern int				psSoundCacheSizeMB		;
 XRSOUND_API extern xr_token*		snd_devices_token		;
 XRSOUND_API extern u32				snd_device_id			;
+XRSOUND_API extern float psSoundTimeFactor;       //--#SM+#--
+XRSOUND_API extern float psSoundLinearFadeFactor; //--#SM+#--
 
 // Flags
 enum {
@@ -62,6 +64,7 @@ enum {
 enum {
 	sm_Looped			= (1ul<<0ul),	//!< Looped
 	sm_2D				= (1ul<<1ul),	//!< 2D mode
+	sm_Intro			= (1ul<<2ul),	//!< Only for music and video
 	sm_forcedword		= u32(-1),
 };
 enum esound_type{
@@ -181,6 +184,7 @@ class XRSOUND_API			CSound_emitter
 public:
 	virtual BOOL					is_2D					()															= 0;
 	virtual void					switch_to_2D			()															= 0;
+	virtual void					switch_to_Intro			()															= 0;
 	virtual void					switch_to_3D			()															= 0;
 	virtual void					set_position			(const Fvector &pos)										= 0;
 	virtual void					set_frequency			(float freq)												= 0;
@@ -293,7 +297,7 @@ public:
 extern XRSOUND_API CSound_manager_interface*		Sound;
 
 /// ********* Sound ********* (utils, accessors, helpers)
-IC ref_sound_data::ref_sound_data				()																{	handle=0;feedback=0;g_type=0;g_object=0;s_type=st_Effect;			}
+IC ref_sound_data::ref_sound_data				()																{ handle=0; feedback=0; g_type=0; g_object=0; s_type=st_Effect; dwBytesTotal = 0; fTimeTotal = 0.0f;}
 IC ref_sound_data::ref_sound_data				( LPCSTR fName, esound_type sound_type, int	game_type )	{	::Sound->_create_data			(*this,fName, sound_type, game_type);							}
 IC ref_sound_data::~ref_sound_data				()																{	::Sound->_destroy_data			(*this);																}
 

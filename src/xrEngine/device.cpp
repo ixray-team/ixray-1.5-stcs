@@ -560,3 +560,8 @@ void	CRenderDevice::RemoveSeqFrame	( pureFrame* f )
 	seqFrame.Remove		( f );
 }
 
+void CRenderDevice::time_factor(const float& time_factor) {
+	Timer.time_factor(time_factor);
+	TimerGlobal.time_factor(time_factor);
+	psSoundTimeFactor = time_factor; //--#SM+#--
+}

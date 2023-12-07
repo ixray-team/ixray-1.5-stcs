@@ -10,7 +10,7 @@ class ENGINE_API	IConsole_Command
 {
 public		:
 	friend class	CConsole;
-	typedef char	TInfo	[256];
+	typedef char	TInfo	[512];
 	typedef char	TStatus	[256];
 	using vecTips = xr_vector<shared_str>;
 	using vecLRU = xr_vector<shared_str>;
@@ -91,8 +91,7 @@ public		:
 	virtual void	Info	(TInfo& I)
 	{	xr_strcpy(I,"'on/off' or '1/0'"); }
 
-	virtual void	fill_tips(vecTips& tips, u32 mode)
-	{
+	virtual void fill_tips(vecTips& tips, u32 mode) {
 		TStatus str;
 		xr_sprintf(str, sizeof(str), "%s  (current)  [on/off]", value->test(mask) ? "on" : "off");
 		tips.push_back(str);
@@ -124,8 +123,7 @@ public		:
 	virtual void	Info	(TInfo& I)
 	{	xr_strcpy(I,"'on/off' or '1/0'"); }
 
-	virtual void	fill_tips(vecTips& tips, u32 mode)
-	{
+	virtual void fill_tips(vecTips& tips, u32 mode) {
 		TStatus str;
 		xr_sprintf(str, sizeof(str), "%s  (current)  [on/off]", value->test(mask) ? "on" : "off");
 		tips.push_back(str);
@@ -174,10 +172,14 @@ public		:
 	{	
 		I[0]=0;
 		xr_token *tok = tokens;
-		while (tok->name) {
+
+		for (int Iter = 0;;Iter++)
+		{
+			if (tok[Iter].name == nullptr)
+				break;
+
 			if (I[0]) xr_strcat(I,"/");
-			xr_strcat(I,tok->name);
-			tok++;
+			xr_strcat(I, tok[Iter].name);
 		}
 	}
 	virtual xr_token* GetToken(){return tokens;}
@@ -206,6 +208,9 @@ public		:
 	}
 
 };
+
+#undef min
+#undef max
 
 class ENGINE_API	CCC_Float : public IConsole_Command
 {

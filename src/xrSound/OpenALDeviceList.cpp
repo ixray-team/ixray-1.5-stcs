@@ -65,9 +65,7 @@ ALDeviceList::~ALDeviceList()
 
 void ALDeviceList::Enumerate()
 {
-	char				*devices;
 	int	ALmajor, ALminor, EFXmajor, EFXminor, index;
-	const char* actualDeviceName;
 	
 	Msg("SOUND: OpenAL: enumerate devices...");
 	// have a set of vectors storing the device list, selection status, spec version #, and XRAM support status
@@ -75,31 +73,73 @@ void ALDeviceList::Enumerate()
 	m_devices.clear				();
 	
 	CoUninitialize();
-	// grab function pointers for 1.0-API functions, and if successful proceed to enumerate all devices
-	if (alcIsExtensionPresent(nullptr, "ALC_ENUMERATION_EXT"))
-	{
-		Msg("SOUND: OpenAL: EnumerationExtension Present");
 
-		devices = (char*)alcGetString(nullptr, ALC_DEVICE_SPECIFIER);
-		Msg					("devices %s",devices);
-		xr_strcpy(m_defaultDeviceName, (char*)alcGetString(nullptr, ALC_DEFAULT_DEVICE_SPECIFIER));
+	xr_vector<xr_string> DeviceNameList;
+	xr_vector<const char*> DeviceOALNameList;
+	auto list_audio_devices = [&DeviceNameList, &DeviceOALNameList](const ALCchar* devices)
+	{
+		const ALCchar* device = devices, * next = devices + 1;
+		size_t len = 0;
+
+		while (device && *device != '\0' && next && *next != '\0')
+		{
+			len = strlen(device);
+			wchar_t* wDevice = new wchar_t[len];
+			ZeroMemory(wDevice, sizeof(wchar_t) * len);
+
+			char* AnsiDevice = new char[len];
+
+
+			MultiByteToWideChar(CP_UTF8, 0, device, (int)len, wDevice, (int)len);
+			WideCharToMultiByte(CP_ACP, 0, wDevice, (int)len, AnsiDevice, (int)len, NULL, NULL);
+
+			xr_string cDevice = AnsiDevice;
+			delete[] AnsiDevice;
+
+			size_t SubStrPos = cDevice.find('(');
+			if (SubStrPos != xr_string::npos)
+			{
+				cDevice = cDevice.substr(SubStrPos + 1, cDevice.find(')') - SubStrPos - 1);
+			}
+
+			DeviceNameList.push_back(cDevice);
+			DeviceOALNameList.push_back(device);
+
+			device += (len + 1);
+			next += (len + 2);
+
+			delete[] wDevice;
+		}
+	};
+
+	// Open default device
+	
+	DeviceNameList.push_back("Default Device");
+	DeviceOALNameList.push_back(alcGetString(NULL, ALC_DEFAULT_DEVICE_SPECIFIER));
+	
+	// grab function pointers for 1.0-API functions, and if successful proceed to enumerate all devices
+	if (alcIsExtensionPresent(nullptr, "ALC_ENUMERATE_ALL_EXT"))
+	{
+		list_audio_devices(alcGetString(NULL, ALC_ALL_DEVICES_SPECIFIER));
+
+		xr_strcpy(m_defaultDeviceName, DeviceNameList[0].c_str());
 		Msg("SOUND: OpenAL: system  default SndDevice name is %s", m_defaultDeviceName);
 
 		index				= 0;
 		// go through device list (each device terminated with a single NULL, list terminated with double NULL)
-		while (*devices != '\0')
+		for (size_t Iter = 0; Iter < DeviceOALNameList.size(); Iter++)
 		{
-			ALCdevice *device		= alcOpenDevice(devices);
+			const char* Device = DeviceOALNameList[Iter];
+			ALCdevice *device		= alcOpenDevice(Device);
 			if (device) 
 			{
 				ALCcontext* context = alcCreateContext(device, nullptr);
 				if (context) 
 				{
 					alcMakeContextCurrent(context);
-					// if new actual device name isn't already in the list, then add it...
-					actualDeviceName = alcGetString(device, ALC_DEVICE_SPECIFIER);
 
-					if ((actualDeviceName != nullptr) && xr_strlen(actualDeviceName) > 0)
+					// if new actual device name isn't already in the list, then add it...
+					if ((Device != nullptr) && xr_strlen(Device) > 0)
 					{
 						alcGetIntegerv(device, ALC_MAJOR_VERSION, sizeof(int), &ALmajor);
 						alcGetIntegerv(device, ALC_MINOR_VERSION, sizeof(int), &ALminor);
@@ -107,7 +147,7 @@ void ALDeviceList::Enumerate()
 						alcGetIntegerv(device, ALC_EFX_MAJOR_VERSION, sizeof(int), &EFXmajor);
 						alcGetIntegerv(device, ALC_EFX_MINOR_VERSION, sizeof(int), &EFXminor);
 
-						m_devices.push_back(ALDeviceDesc(actualDeviceName, ALminor, ALmajor, EFXminor, EFXmajor));
+						m_devices.push_back(ALDeviceDesc(DeviceNameList[Iter].c_str(), Device, ALminor, ALmajor, EFXminor, EFXmajor));
 
 						++index;
 					}
@@ -119,10 +159,8 @@ void ALDeviceList::Enumerate()
 				alcCloseDevice(device);
 			}else
 			{
-				Msg("SOUND: OpenAL: cant open device %s",devices);
+				Msg("SOUND: OpenAL: cant open device %s", Device);
 			}
-
-			devices		+= xr_strlen(devices) + 1;
 		}
 	}else
 		Msg("SOUND: OpenAL: EnumerationExtension NOT Present");
@@ -135,7 +173,14 @@ void ALDeviceList::Enumerate()
 	for(u32 i=0; i<_cnt;++i)
 	{
 		snd_devices_token[i].id				= i;
-		snd_devices_token[i].name			= xr_strdup(m_devices[i].name);
+
+		xr_string NormalName = m_devices[i].name;
+		if (NormalName.find("OpenAL Soft on") != xr_string::npos)
+		{
+			NormalName = NormalName.substr(15);
+		}
+
+		snd_devices_token[i].name = xr_strdup(NormalName.data());
 	}
 //--
 

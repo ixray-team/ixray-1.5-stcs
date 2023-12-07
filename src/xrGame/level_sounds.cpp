@@ -105,7 +105,7 @@ BOOL SMusicTrack::in(u32 game_time)
 
 void SMusicTrack::Play()
 {
-	m_SourceStereo.play_at_pos	(0,Fvector().set(0.0f,0.0f,0.0f),sm_2D);
+	m_SourceStereo.play_at_pos(0, Fvector().set(0.0f, 0.0f, 0.0f), sm_Intro);
 	SetVolume					(1.0f);
 }
 
@@ -216,7 +216,7 @@ void CLevelSoundManager::Update()
 			}
 			if (!indices.empty())
 			{
-				u32 idx			= Random.randI(indices.size());
+				u32 idx			= Random.randI((u32)indices.size());
 				m_CurrentTrack	= indices[idx];
 				SMusicTrack& T	= m_MusicTracks[m_CurrentTrack];
 				T.Play			();

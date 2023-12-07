@@ -13,10 +13,16 @@ CSoundRender_TargetA::CSoundRender_TargetA():CSoundRender_Target()
     cache_gain			= 0.f;
     cache_pitch			= 1.f;
     pSource				= 0;
+    Slot = u32(-1);
 }
 
 CSoundRender_TargetA::~CSoundRender_TargetA()
 {
+}
+
+void CSoundRender_TargetA::SetSlot(ALuint NewSlot)
+{
+    Slot = NewSlot;
 }
 
 BOOL	CSoundRender_TargetA::_initialize		()
@@ -69,6 +75,12 @@ void	CSoundRender_TargetA::render		()
 		fill_block	(pBuffers[buf_idx]);
 
 	A_CHK			(alSourceQueueBuffers	(pSource, sdef_target_count, pBuffers));	
+    
+    if (Slot != u32(-1) && !m_pEmitter->bIntro)
+    {
+        A_CHK(alSource3i(pSource, AL_AUXILIARY_SEND_FILTER, Slot, 0, AL_FILTER_NULL));
+    }
+    
 	A_CHK			(alSourcePlay			(pSource));
 
     inherited::render();
@@ -97,7 +109,8 @@ void	CSoundRender_TargetA::rewind			()
 	A_CHK			(alSourcePlay			(pSource));
 }
 
-void CSoundRender_TargetA::update() {
+void	CSoundRender_TargetA::update			()
+{
     inherited::update();
 
     ALint processed, state;
@@ -172,7 +185,8 @@ void	CSoundRender_TargetA::fill_parameters()
     }
 
 	VERIFY2(m_pEmitter,SE->source()->file_name());
-    float	_pitch	= m_pEmitter->p_source.freq;			clamp	(_pitch,EPS_L,2.f);
+    float _pitch = m_pEmitter->p_source.freq * psSoundTimeFactor; //--#SM+#-- Correct sound "speed" by time factor
+    clamp(_pitch, EPS_L, 100.f); //--#SM+#-- Increase sound frequancy (speed) limit
     if (!fsimilar(_pitch,cache_pitch)){
         cache_pitch	= _pitch;
         A_CHK(alSourcef	(pSource, AL_PITCH,				_pitch));
