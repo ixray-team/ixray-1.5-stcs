@@ -9,6 +9,7 @@ enum class EEngineExternalUI
 
 enum class EEngineExternalPhysical
 {
+	DeadBodyRagdoll,
 	None
 };
 

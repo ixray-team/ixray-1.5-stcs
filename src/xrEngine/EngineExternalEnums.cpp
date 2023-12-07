@@ -14,7 +14,7 @@ END_ENUM(EEngineExternalUI)
 
 BEGIN_ENUM(EEngineExternalPhysical)
 {
-	DECL_ENUM_ELEMENT(None),
+	DECL_ENUM_ELEMENT(DeadBodyRagdoll),
 } 
 END_ENUM(EEngineExternalPhysical)
 
