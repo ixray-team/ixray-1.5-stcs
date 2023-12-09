@@ -220,11 +220,7 @@ void CMemoryReader::r(void *p,int cnt)const
 
 CMemoryReader::CMemoryReader	( const u32	file_size_ ): file_size( file_size_ ), position( 0 )
 {
-	 data = (u8*)	Memory.mem_alloc	(file_size_
-#ifdef DEBUG_MEMORY_NAME
-			,		"CMemoryReader - storage"
-#endif // DEBUG_MEMORY_NAME
-			);
+	 data = (u8*)Memory.mem_alloc(file_size_);
 }
 
 CMemoryReader::	~CMemoryReader	()
