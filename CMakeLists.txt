@@ -8,8 +8,8 @@ option(IXRAY_COMPRESSOR_ONLY "Build only compressor" OFF)
 #option(IXRAY_PLUGIN_MAX "Enable X-Ray Plugins for Autodesk 3ds Max" OFF)
 #option(IXRAY_PLUGIN_LW "Enable X-Ray Plugins for Lightwave 2020" OFF)
 option(IXRAY_ASAN "Enable Address Sanitizer" OFF)
-#option(IXRAY_USE_R1 "Enable DirectX 9 static render" ON)
-#option(IXRAY_USE_R2 "Enable DirectX 9 dynamic render" ON)
+option(IXRAY_USE_R1 "Enable DirectX 9 static render" ON)
+option(IXRAY_USE_R2 "Enable DirectX 9 dynamic render" ON)
 
 # Wrap CMake general configs 
 set(CMAKE_CONFIGURATION_TYPES "Debug;RelWithDebInfo;Release" CACHE STRING "" FORCE)
@@ -92,13 +92,13 @@ add_subdirectory("src/xrParticles")
 
 # add_subdirectory("src/plugins")
 
-#if (IXRAY_USE_R1)
+if (IXRAY_USE_R1)
     add_subdirectory("src/Layers/xrRenderPC_R1")
-#endif()
-#
-#if (IXRAY_USE_R2)
+endif()
+
+if (IXRAY_USE_R2)
     add_subdirectory("src/Layers/xrRenderPC_R2")
-#endif()
+endif()
 
 add_subdirectory("src/Layers/xrRenderPC_R3")
 add_subdirectory("src/xrGame")
@@ -144,13 +144,13 @@ set_target_properties(xrParticles PROPERTIES ${IXRAY_FOLDER_ENGINE})
 set_target_properties(xrGame xrGameSpy PROPERTIES ${IXRAY_FOLDER_GAME})
 set_target_properties(xrGameSpy PROPERTIES ${IXRAY_FOLDER_GAME})
 
-#if (IXRAY_USE_R1)
+if (IXRAY_USE_R1)
     set_target_properties(xrRender_R1 PROPERTIES ${IXRAY_FOLDER_RENDER})
-#endif()
+endif()
 
-#if (IXRAY_USE_R2)
+if (IXRAY_USE_R2)
     set_target_properties(xrRender_R2 PROPERTIES ${IXRAY_FOLDER_RENDER})
-#endif()
+endif()
 
 set_target_properties(xrRender_R3 PROPERTIES ${IXRAY_FOLDER_RENDER})
 
