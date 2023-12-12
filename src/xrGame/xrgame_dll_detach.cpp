@@ -30,9 +30,9 @@ typedef xr_vector<std::pair<shared_str,int> >	STORY_PAIRS;
 extern STORY_PAIRS								story_ids;
 extern STORY_PAIRS								spawn_story_ids;
 
-extern void show_smart_cast_stats					();
-extern void clear_smart_cast_stats					();
-extern void release_smart_cast_stats				();
+//extern void show_smart_cast_stats					();
+//extern void clear_smart_cast_stats					();
+//extern void release_smart_cast_stats				();
 extern void dump_list_wnd							();
 extern void dump_list_lines							();
 extern void dump_list_sublines						();
@@ -108,18 +108,18 @@ void clean_game_globals()
 	//static shader for blood
 	CEntityAlive::UnloadBloodyWallmarks				();
 	CEntityAlive::UnloadFireParticles				();
-	//очищение памяти таблицы строк
+	//РѕС‡РёС‰РµРЅРёРµ РїР°РјСЏС‚Рё С‚Р°Р±Р»РёС†С‹ СЃС‚СЂРѕРє
 	CStringTable::Destroy							();
-	// Очищение таблицы цветов
+	// РћС‡РёС‰РµРЅРёРµ С‚Р°Р±Р»РёС†С‹ С†РІРµС‚РѕРІ
 	CUIXmlInit::DeleteColorDefs						();
-	// Очищение таблицы идентификаторов рангов и отношений сталкеров
+	// РћС‡РёС‰РµРЅРёРµ С‚Р°Р±Р»РёС†С‹ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂРѕРІ СЂР°РЅРіРѕРІ Рё РѕС‚РЅРѕС€РµРЅРёР№ СЃС‚Р°Р»РєРµСЂРѕРІ
 	InventoryUtilities::ClearCharacterInfoStrings	();
 
 	xr_delete										(g_sound_collection_storage);
 	
 #ifdef DEBUG
 	xr_delete										(g_profiler);
-	release_smart_cast_stats						();
+	//release_smart_cast_stats						();
 #endif
 
 	RELATION_REGISTRY::clear_relation_registry		();
