@@ -55,6 +55,8 @@ void CPhysicsElement::script_register(lua_State *L)
 
 void CPhysicsJoint::script_register(lua_State *L)
 {
+	constexpr auto out_value_23 = policy_list<policy::out_value<2>, policy::out_value<3>>();
+
 	module(L)
 		[
 			class_<CPhysicsJoint>("physics_joint")
@@ -72,9 +74,9 @@ void CPhysicsJoint::script_register(lua_State *L)
 			.def("set_axis_dir_vs_second_element",		(void(CPhysicsJoint::*)(const float,const float,const float,const int ))(&CPhysicsJoint::SetAxisDirVsSecondElement))
 			.def("set_limits",							&CPhysicsJoint::SetLimits)
 			.def("set_max_force_and_velocity",			&CPhysicsJoint::SetForceAndVelocity)
-			.def("get_max_force_and_velocity",			&CPhysicsJoint::GetMaxForceAndVelocity)
+			.def("get_max_force_and_velocity",			&CPhysicsJoint::GetMaxForceAndVelocity, out_value_23)
 			.def("get_axis_angle",						&CPhysicsJoint::GetAxisAngle)
-			.def("get_limits",							&CPhysicsJoint::GetLimits,out_value(_2) + out_value(_3))
+			.def("get_limits", &CPhysicsJoint::GetLimits, out_value_23)
 			.def("get_axis_dir",						&CPhysicsJoint::GetAxisDirDynamic)
 			.def("get_anchor",							&CPhysicsJoint::GetAnchorDynamic)
 			.def("is_breakable",						&CPhysicsJoint::isBreakable)

@@ -137,19 +137,19 @@ void LuaError(lua_State* L)
 	doug_lea_allocator	g_render_lua_allocator( 0, 0, "render:lua" );
 #endif // #ifdef USE_ARENA_ALLOCATOR
 
-	static void* lua_alloc(void* ud, void* ptr, size_t osize, size_t nsize) {
-		(void)ud;
-		(void)osize;
-		if (!nsize) {
-			g_render_lua_allocator.free_impl(ptr);
-			return 0;
-		}
-
-		if (!ptr)
-			return g_render_lua_allocator.malloc_impl((u32)nsize);
-
-		return g_render_lua_allocator.realloc_impl(ptr, (u32)nsize);
+static void* lua_alloc(void* ud, void* ptr, size_t osize, size_t nsize) {
+	(void)ud;
+	(void)osize;
+	if (!nsize) {
+		g_render_lua_allocator.free_impl(ptr);
+		return 0;
 	}
+
+	if (!ptr)
+		return g_render_lua_allocator.malloc_impl((u32)nsize);
+
+	return g_render_lua_allocator.realloc_impl(ptr, (u32)nsize);
+}
 
 // export
 void	CResourceManager::LS_Load			()
@@ -172,8 +172,6 @@ void	CResourceManager::LS_Load			()
 	if (0==luabind::get_error_callback())
 		luabind::set_error_callback		(LuaError);
 #endif
-
-	function		(LSVM, "log",	LuaLog);
 
 	module			(LSVM)
 	[
@@ -208,24 +206,24 @@ void	CResourceManager::LS_Load			()
 
 		class_<adopt_compiler>("_compiler")
 			.def(								constructor<const adopt_compiler&>())
-			.def("begin",						&adopt_compiler::_pass			,return_reference_to(_1))
-			.def("begin",						&adopt_compiler::_passgs		,return_reference_to(_1))
-			.def("sorting",						&adopt_compiler::_options		,return_reference_to(_1))
-			.def("emissive",					&adopt_compiler::_o_emissive	,return_reference_to(_1))
-			.def("distort",						&adopt_compiler::_o_distort		,return_reference_to(_1))
-			.def("wmark",						&adopt_compiler::_o_wmark		,return_reference_to(_1))
-			.def("fog",							&adopt_compiler::_fog			,return_reference_to(_1))
-			.def("zb",							&adopt_compiler::_ZB			,return_reference_to(_1))
-			.def("blend",						&adopt_compiler::_blend			,return_reference_to(_1))
-			.def("aref",						&adopt_compiler::_aref			,return_reference_to(_1))
+			.def("begin",						&adopt_compiler::_pass			,return_reference_to<1>())
+			.def("begin",						&adopt_compiler::_passgs		,return_reference_to<1>())
+			.def("sorting",						&adopt_compiler::_options		,return_reference_to<1>())
+			.def("emissive",					&adopt_compiler::_o_emissive	,return_reference_to<1>())
+			.def("distort",						&adopt_compiler::_o_distort		,return_reference_to<1>())
+			.def("wmark",						&adopt_compiler::_o_wmark		,return_reference_to<1>())
+			.def("fog",							&adopt_compiler::_fog			,return_reference_to<1>())
+			.def("zb",							&adopt_compiler::_ZB			,return_reference_to<1>())
+			.def("blend",						&adopt_compiler::_blend			,return_reference_to<1>())
+			.def("aref",						&adopt_compiler::_aref			,return_reference_to<1>())
 			//	For compatibility only
-			.def("dx10color_write_enable",		&adopt_compiler::_dx10color_write_enable,return_reference_to(_1))
-			.def("color_write_enable",			&adopt_compiler::_dx10color_write_enable,return_reference_to(_1))
-			.def("dx10texture",					&adopt_compiler::_dx10texture	,return_reference_to(_1))
-			.def("dx10stencil",					&adopt_compiler::_dx10Stencil	,return_reference_to(_1))
-			.def("dx10stencil_ref",				&adopt_compiler::_dx10StencilRef,return_reference_to(_1))
-			.def("dx10atoc",					&adopt_compiler::_dx10ATOC		,return_reference_to(_1))
-			.def("dx10zfunc",					&adopt_compiler::_dx10ZFunc		,return_reference_to(_1))			
+			.def("dx10color_write_enable",		&adopt_compiler::_dx10color_write_enable,return_reference_to<1>())
+			.def("color_write_enable",			&adopt_compiler::_dx10color_write_enable,return_reference_to<1>())
+			.def("dx10texture",					&adopt_compiler::_dx10texture	,return_reference_to<1>())
+			.def("dx10stencil",					&adopt_compiler::_dx10Stencil	,return_reference_to<1>())
+			.def("dx10stencil_ref",				&adopt_compiler::_dx10StencilRef,return_reference_to<1>())
+			.def("dx10atoc",					&adopt_compiler::_dx10ATOC		,return_reference_to<1>())
+			.def("dx10zfunc",					&adopt_compiler::_dx10ZFunc		,return_reference_to<1>())			
 
 			.def("dx10sampler",					&adopt_compiler::_dx10sampler		)	// returns sampler-object
 			.def("dx10Options",					&adopt_compiler::_dx10Options		),	// returns options-object			
@@ -246,6 +244,7 @@ void	CResourceManager::LS_Load			()
 				value("invdestcolor",			int(D3DBLEND_INVDESTCOLOR)),
 				value("srcalphasat",			int(D3DBLEND_SRCALPHASAT))
 			],
+		def("log", LuaLog),
 
 		class_<adopt_cmp_func>("cmp_func")
 			.enum_("cmp_func")

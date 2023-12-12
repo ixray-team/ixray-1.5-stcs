@@ -21,6 +21,9 @@
 #include <process.h>
 #include <locale.h>
 
+#include <luabind/luabind.hpp>
+#include <luabind/memory_allocator.hpp>
+
 //---------------------------------------------------------------------
 ENGINE_API CInifile* pGameIni		= NULL;
 BOOL	g_bIntroFinished			= FALSE;
@@ -305,6 +308,21 @@ INT_PTR CALLBACK logDlgProc(HWND hw, UINT msg, WPARAM wp, LPARAM lp) {
 #define dwStickyKeysStructSize sizeof( STICKYKEYS )
 #define dwFilterKeysStructSize sizeof( FILTERKEYS )
 #define dwToggleKeysStructSize sizeof( TOGGLEKEYS )
+
+static void* __cdecl luabind_allocator(void* context, const void* pointer, size_t const size) {
+	if (!size) {
+		void* non_const_pointer = const_cast<LPVOID>(pointer);
+		xr_free(non_const_pointer);
+		return nullptr;
+	}
+
+	if (!pointer) {
+		return xr_malloc(size);
+	}
+
+	void* non_const_pointer = const_cast<LPVOID>(pointer);
+	return xr_realloc(non_const_pointer, size);
+}
 
 struct damn_keys_filter {
 	BOOL bScreenSaverState;
@@ -612,6 +630,8 @@ int APIENTRY WinMain_impl(HINSTANCE hInstance,
 		damn_keys_filter		filter;
 		(void)filter;
 #endif // DEDICATED_SERVER
+		luabind::allocator = &luabind_allocator;
+		luabind::allocator_context = nullptr;
 
 		FPU::m24r				();
 		InitEngine				();

@@ -29,10 +29,13 @@ struct CWrapperBase : public T, public luabind::wrap_base {
 	DEFINE_LUA_WRAPPER_METHOD_V1(shedule_Update, u32)
 	DEFINE_LUA_WRAPPER_METHOD_R2P1_V1(GetMapEntities, xr_vector<SZoneMapEntityData>)
 
-	virtual game_PlayerState* createPlayerState()
-	{ return call_member<game_PlayerState*>(this,"createPlayerState")[adopt(result)];}
-	static game_PlayerState* createPlayerState_static(inherited* ptr)
-	{ return ptr->self_type::inherited::createPlayerState();}
+	virtual game_PlayerState* createPlayerState() {
+		return luabind::call_member<game_PlayerState*>(this, "createPlayerState");
+		//return call_member<game_PlayerState*>(this, "createPlayerState")[adopt<result>()];
+	}
+	static game_PlayerState* createPlayerState_static(inherited* ptr) {
+		return ptr->self_type::inherited::createPlayerState();
+	}
 };
 
 #pragma warning(pop)
@@ -101,7 +104,7 @@ void game_cl_mp_script::script_register(lua_State *L)
 
 	module(L)
 	[
-		class_< game_cl_mp_script, WrapType, game_cl_mp >("game_cl_mp_script")
+		class_<game_cl_mp_script, game_cl_mp, default_holder, WrapType>("game_cl_mp_script")
 			.def(	constructor<>())
 			.def("CommonMessageOut",	&BaseType::CommonMessageOut)
 			.def("GetPlayersCount",		&BaseType::GetPlayersCount)
@@ -126,7 +129,7 @@ void game_cl_mp_script::script_register(lua_State *L)
 			.def("FillMapEntities",		&BaseType::GetMapEntities, &WrapType::GetMapEntities_static)
 			.def("TranslateGameMessage",&BaseType::TranslateGameMessage, &WrapType::TranslateGameMessage_static)
 
-			.def("createPlayerState",	&BaseType::createPlayerState, &WrapType::createPlayerState_static, adopt(result) )
-			.def("createGameUI",		&BaseType::createGameUI, &WrapType::createGameUI_static, adopt(result) )
+			.def("createPlayerState",	&BaseType::createPlayerState, &WrapType::createPlayerState_static, adopt<0>() )
+			.def("createGameUI",		&BaseType::createGameUI, &WrapType::createGameUI_static, adopt<0>() )
 	];
 }

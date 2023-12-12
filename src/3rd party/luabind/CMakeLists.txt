@@ -3,11 +3,15 @@ set(LUABIND_SRC_FILES)
 
 # Files import
 file(GLOB_RECURSE LUABIND_SOURCE_ALL_FILES
-    "luabind_memory.cpp"
     "luabind/src/*.*"
 )
 
+file(GLOB_RECURSE LUABIND_INCL_ALL_FILES
+    "${IXRAY_SDK_INC}/luabind/*.*"
+)
+
 source_group("src" FILES ${LUABIND_SOURCE_ALL_FILES})
+source_group("include" FILES ${LUABIND_INCL_ALL_FILES})
 
 # Apply list
 list(APPEND LUABIND_SRC_FILES ${LUABIND_SOURCE_ALL_FILES})

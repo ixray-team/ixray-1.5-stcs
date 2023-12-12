@@ -38,37 +38,12 @@ xr_token	round_end_result_str[]=
 	{ 0,						0							}
 };
 
-// Main
-/*game_PlayerState*	game_sv_GameState::get_it					(u32 it)
-{
-	xrClientData*	C	= (xrClientData*)m_server->client_Get			(it);
-	if (0==C)			return 0;
-	else				return C->ps;
-}*/
-
 game_PlayerState*	game_sv_GameState::get_id					(ClientID id)							
 {
 	xrClientData*	C	= (xrClientData*)m_server->ID_to_client	(id);
 	if (0==C)			return NULL;
 	else				return C->ps;
 }
-
-/*ClientID				game_sv_GameState::get_it_2_id				(u32 it)
-{
-	xrClientData*	C	= (xrClientData*)m_server->client_Get		(it);
-	if (0==C){
-		ClientID clientID;clientID.set(0);
-		return clientID;
-	}
-	else				return C->ID;
-}
-
-LPCSTR				game_sv_GameState::get_name_it				(u32 it)
-{
-	xrClientData*	C	= (xrClientData*)m_server->client_Get		(it);
-	if (0==C)			return 0;
-	else				return *C->name;
-}*/
 
 LPCSTR				game_sv_GameState::get_name_id				(ClientID id)							
 {

@@ -174,9 +174,14 @@ struct CWrapperBase : public T, public luabind::wrap_base {
 	DEFINE_LUA_WRAPPER_METHOD_V0(OnRoundEnd)
 
 	virtual game_PlayerState* createPlayerState()
-	{return call_member<game_PlayerState*>(this,"createPlayerState")[adopt(result)];}
+	{
+		return luabind::call_member<game_PlayerState*>(this, "createPlayerState");
+		//return call_member<game_PlayerState*>(this,"createPlayerState")[adopt<result>()];
+	}
 	static game_PlayerState* createPlayerState_static(inherited* ptr)
-	{return ptr->self_type::inherited::createPlayerState();}
+	{
+		return ptr->self_type::inherited::createPlayerState();
+	}
 
 	DEFINE_LUA_WRAPPER_METHOD_R2P3_V3(OnPlayerHitPlayer, u16, u16, NET_Packet)
 };
@@ -205,7 +210,7 @@ void game_sv_mp_script::script_register(lua_State *L)
 
 	module(L)
 	[
-		class_< game_sv_mp_script, WrapType, game_sv_mp >("game_sv_mp_script")
+		class_<game_sv_mp_script, game_sv_mp, default_holder, WrapType>("game_sv_mp_script")
 			.def(	constructor<>())
 			.def("GetTeamData",			&GetTeamData)
 			.def("SpawnPlayer",			&SpawnPlayer)
@@ -226,6 +231,6 @@ void game_sv_mp_script::script_register(lua_State *L)
 			.def("OnRoundEnd",			&BaseType::OnRoundEnd, &WrapType::OnRoundEnd_static)
 
 			.def("net_Export_State",	&BaseType::net_Export_State, &WrapType::net_Export_State_static)
-			.def("createPlayerState",	&BaseType::createPlayerState, &WrapType::createPlayerState_static, adopt(result) )
+			.def("createPlayerState",	&BaseType::createPlayerState, &WrapType::createPlayerState_static, adopt<0>() )
 	];
 }

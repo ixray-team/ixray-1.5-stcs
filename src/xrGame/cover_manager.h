@@ -10,14 +10,17 @@
 
 #include "profiler.h"
 #include "quadtree.h"
+#include <luabind/luabind.hpp>
 
 class CCoverPoint;
 
-namespace LevelGraph {
+namespace LevelGraph 
+{
 	class	CVertex;
 };
 
-namespace smart_cover{
+namespace smart_cover
+{
 	class cover;
 	class storage;
 	class object;

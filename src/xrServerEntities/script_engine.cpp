@@ -6,6 +6,7 @@
 //	Description : XRay Script Engine
 ////////////////////////////////////////////////////////////////////////////
 
+#include "stdafx.h"
 #include "pch_script.h"
 #include "script_engine.h"
 #include "ai_space.h"
@@ -196,11 +197,11 @@ int  CScriptEngine::lua_pcall_failed	(lua_State *L)
 	return					(LUA_ERRRUN);
 }
 
-void lua_cast_failed					(lua_State *L, LUABIND_TYPE_INFO info)
+void lua_cast_failed					(lua_State *L, luabind::type_id const& info)
 {
 	CScriptEngine::print_output	(L,"",LUA_ERRRUN);
 
-	Debug.fatal				(DEBUG_INFO,"LUA error: cannot cast lua value to %s",info->name());
+	Debug.fatal				(DEBUG_INFO,"LUA error: cannot cast lua value to %s",info.name());
 }
 
 void CScriptEngine::setup_callbacks		()
@@ -223,7 +224,13 @@ void CScriptEngine::setup_callbacks		()
 #endif
 
 #ifndef MASTER_GOLD
-		luabind::set_pcall_callback		(CScriptEngine::lua_pcall_failed);
+		luabind::set_pcall_callback
+		(
+			[](lua_State* L) ->void
+			{  
+				lua_pushcfunction(L, CScriptEngine::lua_pcall_failed);
+			}
+		);
 #endif // MASTER_GOLD
 	}
 
@@ -231,6 +238,7 @@ void CScriptEngine::setup_callbacks		()
 	luabind::set_cast_failed_callback	(lua_cast_failed);
 #endif
 	lua_atpanic							(lua(),CScriptEngine::lua_panic);
+	luabind::disable_super_deprecation();
 }
 
 #ifdef DEBUG
@@ -356,8 +364,9 @@ void CScriptEngine::load_common_scripts()
 		string256		I;
 		for (u32 i=0; i<n; ++i) {
 			process_file(_GetItem(caScriptString,i,I));
-			if (object("_G",strcat(I,"_initialize"),LUA_TFUNCTION)) {
-//				lua_dostring			(lua(),strcat(I,"()"));
+			xr_strcat	(I,"_initialize");
+			if (object("_G",I,LUA_TFUNCTION)) {
+//				lua_dostring			(lua(),xr_strcat(I,"()"));
 				luabind::functor<void>	f;
 				R_ASSERT				(functor(I,f));
 				f						();

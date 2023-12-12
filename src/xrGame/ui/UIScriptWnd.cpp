@@ -10,7 +10,15 @@ struct event_comparer{
 
 	event_comparer(shared_str n, s16 e):name(n),event(e){}
 	bool operator ()(SCallbackInfo* i){
-		return( (i->m_controlName==name) && (i->m_event==event) );
+		if (i->m_event == event)
+		{
+			return((i->m_controlName == name) && (i->m_event == event));
+		}
+		else
+		{
+			return false;
+		}
+		
 	}
 };
 

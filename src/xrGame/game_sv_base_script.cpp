@@ -16,7 +16,7 @@
 #include "object_broker.h"
 
 using namespace luabind;
-
+using namespace luabind::policy;
 
 CUISequencer* g_tutorial = NULL;
 CUISequencer* g_tutorial2 = NULL;
