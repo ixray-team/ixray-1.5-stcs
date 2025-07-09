@@ -1116,7 +1116,7 @@
       [spawn] \n
       device_torch \n
       wpn_lr300_up2 \n
-      ammo_5.56x45_ap = 1 \n
+      ammo_5.45x39_ap = 1 \n
       wpn_beretta = 1 \n
       ammo_9x19_fmj = 1 \n
       grenade_f1 = 1 \n
@@ -1146,7 +1146,7 @@
       [spawn] \n
       device_torch \n
       wpn_lr300_up2 = 1, scope \n
-      ammo_5.56x45_ap = 1 \n
+      ammo_5.45x39_ap = 1 \n
       wpn_fort = 1 \n
       ammo_9x18_fmj = 1 \n
       grenade_f1 = 1 \n
