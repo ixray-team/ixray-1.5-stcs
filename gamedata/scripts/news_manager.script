@@ -50,16 +50,17 @@ tips_icons = {
 	gar_digger_quester_name			= "ui_npc_small_neutral_2_face_1",
 
 	agr_duty_base_commander_name 	= "ui_npc_small_dolg_2_face_1",
+        agr_holeman_name 	        = "ui_npc_small_dolg_2_mask",
 	agr_weaponmaster_name			= "ui_npc_small_dolg_2_mask",
     agr_barman_name					= "ui_npc_u_dolg_2_face_2",
 
---	val_freedom_trader_name			= "ui_npc_small_freedom_2_face_1",
 	val_freedom_leader_name			= "ui_npc_small_freedom_2_face_2",
 	val_freedom_trader_name			= "ui_npc_small_freedom_2_mask",
 
 	red_forester_name				= "ui_npc_small_lesnik_1",
 
 	yan_st_sakharov_name			= "ui_npc_small_ucheniy_1",
+	yan_st_levsha_name			= "ui_npc_u_neutral_2_mask",
 }
 
 
@@ -73,13 +74,13 @@ function send_tip(actor, news_id, timeout, sender, showtime, sender_id)
 			local npc = sim:story_object(sender_id)
 			if npc ~= nil then
 				if npc.online then
-					--РІ РѕРЅР»Р°Р№РЅРµ РїСЂРѕРІРµСЂСЏРµРј РЅР° СЂР°РЅРµРЅРЅРѕСЃС‚СЊ
+					--в онлайне проверяем на раненность
 					if xr_wounded.is_heavy_wounded_by_id(npc.id) then
 						printf("[PDA]Cannot send tips [%s], sender is heavy wounded", tostring(news_id))
 						return false
 					end
 				end
-				-- РІ РґСЂСѓРіРёС… СЃР»СѓС‡Р°СЏС… С‚РѕР»СЊРєРѕ РЅР° СЃРјРµСЂС‚СЊ
+				-- в других случаях только на смерть
 				if npc:alive() == 1 then
 					printf("[PDA]Cannot send tips [%s], sender is dead", tostring(news_id))
 					return false
@@ -91,7 +92,7 @@ function send_tip(actor, news_id, timeout, sender, showtime, sender_id)
 	if timeout == nil then timeout = 0 end
 	if showtime == nil then showtime = 5000 end
 
-	--' РРіСЂР°РµРј РґРµС„РѕР»С‚РЅС‹Р№ Р·РІСѓРє
+	--' Играем дефолтный звук
     xr_sound.set_sound_play(actor:id(), "pda_tips")
 
 
@@ -145,7 +146,7 @@ function send_sound(npc, faction, point, str, str2)
 
 
 --		callstack()
-		--' РРіСЂР°РµРј РґРµС„РѕР»С‚РЅС‹Р№ Р·РІСѓРє
+		--' Играем дефолтный звук
 --	    xr_sound.set_sound_play(db.actor:id(), "pda_tips")
 
 	    local texture = "ui_iconsTotal_grouping"
@@ -224,7 +225,7 @@ end
 
 function relocate_item(actor, type, item, amount)
 	if db.actor == nil then return false end
-	--' РРіСЂР°РµРј РґРµС„РѕР»С‚РЅС‹Р№ Р·РІСѓРє
+	--' Играем дефолтный звук
 	if not amount then
 		amount = 1
 	end
@@ -261,7 +262,7 @@ end
 
 function relocate_money(actor, type, amount)
 	if db.actor == nil then return false end
-	--' РРіСЂР°РµРј РґРµС„РѕР»С‚РЅС‹Р№ Р·РІСѓРє
+	--' Играем дефолтный звук
 	if type == "in" then
 		local news_caption = game.translate_string("general_in_money")
 		local news_text = game.translate_string(tostring(amount))
