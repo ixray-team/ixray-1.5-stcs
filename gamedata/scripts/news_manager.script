@@ -61,7 +61,10 @@ tips_icons = {
 
 	yan_st_sakharov_name			= "ui_npc_small_ucheniy_1",
 	yan_st_levsha_name			= "ui_npc_u_neutral_2_mask",
-}
+
+        mil_kostiuk_name			= "ui_npc_u_freedom_4",
+        mil_hog_name			= "ui_npc_small_merc_4",
+} 
 
 
 function send_tip(actor, news_id, timeout, sender, showtime, sender_id)
