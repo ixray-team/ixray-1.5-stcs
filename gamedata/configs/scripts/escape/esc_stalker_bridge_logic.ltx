@@ -26,7 +26,7 @@ meet = meet
 
 [remark@no_work1]
 anim = backoff
-on_actor_in_zone = esc_space_restrictor_nasip_bridge_1 | walker@enter_work1 %=set_squad_goodwill(esc_smart_terrain_6_8_stalker_patrol:enemy) =set_squad_goodwill(esc_smart_terrain_6_8_stalker_sniper:enemy) =set_squad_goodwill(esc_smart_terrain_6_8_stalker:enemy) =set_squad_goodwill(esc_smart_terrain_4_8_stalker_2_squad:enemy)%
+on_actor_in_zone = esc_space_restrictor_nasip_bridge_1 | walker@enter_work1 %=set_gulag_relation_actor(esc_smart_terrain_6_8:enemy) =set_gulag_relation_actor(esc_smart_terrain_4_8:enemy)%
 on_info = {=actor_out_zone(esc_space_restrictor_nasip_bridge) =actor_out_zone(esc_space_restrictor_nasip_bridge_1)} walker@enter_work1
 snd = esc_railroadpost_no
 
