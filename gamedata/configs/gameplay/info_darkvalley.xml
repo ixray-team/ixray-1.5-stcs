@@ -190,4 +190,7 @@
     <info_portion id="val_recover_item_1_done"></info_portion>
     <info_portion id="val_recover_item_2_done"></info_portion>
     <info_portion id="val_recover_item_3_done"></info_portion>
+
+	<info_portion id="val_freedom_base_under_attack"></info_portion>
+	
 </game_information_portions>
