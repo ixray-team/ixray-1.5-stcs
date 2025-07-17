@@ -169,6 +169,7 @@
     <info_portion id="val_be_info_bandit_spy"></info_portion>
     <info_portion id="val_bandit_spy_die"></info_portion>
     <info_portion id="val_bandit_spy_found"></info_portion>
+	<info_portion id="val_bandit_spy_fail"></info_portion>
     
     <info_portion id="val_pda_bandit_spy_onboard"></info_portion>
     <info_portion id="val_bandit_pda_reward"></info_portion>

@@ -318,8 +318,10 @@ target_cond = true
 prior = 11
 name = val_bandit_spy_name
 text = val_bandit_spy_text
-condlist_0 = {+val_bandit_spy_die} complete
-condlist_1 = {+val_bandit_spy_found} reversed
+condlist_0 = {+val_bandit_spy_die -val_bandit_spy_fail} complete
+condlist_1 = {+val_bandit_spy_found -val_bandit_spy_fail} reversed
+condlist_2 = {=actor_in_dolg -val_bandit_spy_die -val_bandit_spy_found -val_bandit_spy_fail} fail
+condlist_3 = {+val_bandit_spy_fail -val_bandit_spy_die -val_bandit_spy_found} fail
 target_story_ids = 1121
 
 [val_bandit_spy_kill]
@@ -328,6 +330,8 @@ task_type = additional
 ;icon = ui_mt_image_attack_tower
 target_cond = true
 condlist_0 = {+val_bandit_spy_die} complete
+condlist_1 = {=actor_in_dolg -val_bandit_spy_die} fail
+condlist_2 = {+val_bandit_spy_fail -val_bandit_spy_die} fail
 prior = 11
 name = st_val_bandit_spy_kill_name
 text = st_val_bandit_spy_kill_text
@@ -338,7 +342,9 @@ type = storyline
 task_type = additional
 ;icon = ui_mt_image_attack_tower
 target_cond = true
-condlist_0 = {+val_bandit_spy_done} complete
+condlist_0 = {+val_bandit_spy_done -val_bandit_spy_fail} complete
+condlist_2 = {=actor_in_dolg -val_bandit_spy_done} reversed
+condlist_3 = {+val_bandit_spy_fail -val_bandit_spy_done} fail
 prior = 11
 name = st_val_bandit_spy_return_name
 text = st_val_bandit_spy_return_text
@@ -348,14 +354,14 @@ target_story_ids = 1125
 [val_night_bloodsucker]
 type = storyline
 task_type = additional
-;icon = ui_mt_image_attack_tower
 target_cond = true
 prior = 11
 name = val_night_bloodsucker_name
 text = val_night_bloodsucker_text
-;on_complete = %+val_night_bloodsucker_done%
-condlist_0 = {+val_night_bloodsucker_complete} complete
-condlist_1 = {+val_night_bloodsucker_fail} fail
+condlist_0 = {+val_night_bloodsucker_complete !is_day} complete
+condlist_1 = {=is_day -val_night_bloodsucker_complete -val_night_bloodsucker_fail} fail
+condlist_2 = {=actor_in_dolg -val_night_bloodsucker_fail -val_night_bloodsucker_complete} fail
+condlist_3 = {+val_night_bloodsucker_fail -val_night_bloodsucker_complete} fail
 target_story_ids = 1122
 
 [val_night_bloodsucker_reward]
@@ -366,8 +372,9 @@ target_cond = true
 prior = 11
 name = val_night_bloodsucker_reward_name
 text = val_night_bloodsucker_reward_text
-;on_complete = %+val_night_bloodsucker_reward_done%
 condlist_0 = {+val_night_bloodsucker_reward_complete} complete
+condlist_1 = {=actor_in_dolg -val_night_bloodsucker_complete} reversed
+condlist_2 = {+val_bandit_spy_fail -val_night_bloodsucker_complete} reversed
 reward_money = 2000
 target_story_ids = 1123
 

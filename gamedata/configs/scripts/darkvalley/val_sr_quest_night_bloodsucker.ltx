@@ -2,11 +2,12 @@
 active = sr_idle
 
 [sr_idle]
-on_info = {+val_night_bloodsucker_started} sr_idle@3 %=give_inited_task(storyline:val_night_bloodsucker:freedom)%
+on_info = {+val_night_bloodsucker_started -val_night_bloodsucker_fail} sr_idle@3 %=give_inited_task(storyline:val_night_bloodsucker:freedom)%
 
 [sr_idle@3]
-on_info = {=is_day} nil %+val_night_bloodsucker_fail%
-on_info2 = {+val_night_bloodsucker_complete} sr_idle@4 %=give_inited_task(storyline:val_night_bloodsucker_reward:freedom)%
+on_info = {=is_day -val_night_bloodsucker_fail -val_night_bloodsucker_complete} nil %+val_night_bloodsucker_fail%
+on_info2 = {+val_night_bloodsucker_complete-val_night_bloodsucker_fail} sr_idle@4 %=give_inited_task(storyline:val_night_bloodsucker_reward:freedom)%
+on_info3 = {+val_night_bloodsucker_fail -val_night_bloodsucker_complete} nil
 
 [sr_idle@4]
 on_info = {+val_night_bloodsucker_reward_complete} nil
