@@ -156,6 +156,7 @@ name = agr_take_reward_name
 text = agr_take_reward_text
 target_story_ids = 1001
 condlist_0 = {+agr_take_reward_complete} complete
+condlist_1 = {=actor_in_freedom -agr_take_reward_complete} fail, {=actor_in_bandit -agr_take_reward_complete} fail
 immediate_reward = true
 reward_money = 10000
 prior = 1
