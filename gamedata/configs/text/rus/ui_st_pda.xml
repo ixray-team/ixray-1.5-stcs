@@ -681,4 +681,7 @@
 	<string id="hospital">
 		<text>Заброшенный госпиталь</text>
 	</string>
+	<string id="agroprom_underground">
+		<text>Подземелье НИИ «Агропром»</text>
+	</string>
 </string_table>
