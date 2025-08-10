@@ -95,7 +95,10 @@
     <info_portion id="val_killer_base_under_attack_2"></info_portion>
     <info_portion id="val_killer_base_boom"></info_portion>
     <info_portion id="val_killer_1_1_dead"></info_portion>
+	<info_portion id="val_killer_1_2_dead"></info_portion>
     <info_portion id="val_killer_1_3_dead"></info_portion>
+	<info_portion id="val_killer_1_4_dead"></info_portion>
+	<info_portion id="val_killer_1_5_dead"></info_portion>	
     <info_portion id="val_freedom_attack_done"></info_portion>
     <info_portion id="val_freedom_attack_3"></info_portion>
     <info_portion id="val_freedom_attack_combat"></info_portion>
@@ -193,5 +196,7 @@
     <info_portion id="val_recover_item_3_done"></info_portion>
 
 	<info_portion id="val_freedom_base_under_attack"></info_portion>
+	<info_portion id="val_freedom_2_1_dead"></info_portion>
+	<info_portion id="val_freedom_2_2_dead"></info_portion>
 	
 </game_information_portions>
