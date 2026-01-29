@@ -93,7 +93,7 @@ jobs:
             -nologo
 
       - name: Upload engine binaries
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v6
         with:
           name: bin-engine-(${{ matrix.platform }}-${{ matrix.config }})-(${{ github.sha }})
           path: |
@@ -101,7 +101,7 @@ jobs:
             bin/Win32/${{ matrix.config }}/*.dll
 
       - name: Upload server binaries
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v6
         with:
           name: bin-dedicated-(${{ matrix.platform }}-${{ matrix.config }})-(${{ github.sha }})
           path: |
@@ -109,7 +109,7 @@ jobs:
             bin/dedicated/Win32/${{ matrix.config }}/*.dll
 
       - name: Upload utilities binaries
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v6
         with:
           name: bin-utils-(${{ matrix.platform }}-${{ matrix.config }})-(${{ github.sha }})
           path: |
@@ -117,7 +117,7 @@ jobs:
             bin/utils/Win32/${{ matrix.config }}/*.dll
 
       - name: Upload engine libraries
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v6
         with:
           name: lib-engine-(${{ matrix.platform }}-${{ matrix.config }})-(${{ github.sha }})
           path: |
@@ -125,7 +125,7 @@ jobs:
             lib/Win32/${{ matrix.config }}/*.exp
 
       - name: Upload server libraries
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v6
         with:
           name: lib-dedicated-(${{ matrix.platform }}-${{ matrix.config }})-(${{ github.sha }})
           path: |
@@ -133,7 +133,7 @@ jobs:
             lib/dedicated/Win32/${{ matrix.config }}/*.exp
 
       - name: Upload utilities libraries
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v6
         with:
           name: lib-utils-(${{ matrix.platform }}-${{ matrix.config }})-(${{ github.sha }})
           path: |
@@ -175,13 +175,13 @@ jobs:
             ${{ github.workspace }}/temp/gamedata
 
       - name: Upload gamedata
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v6
         with:
           name: gamedata-(${{ github.sha }})
           path: temp/gamedata/
 
       - name: Upload patch
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v6
         with:
           name: patch-(${{ github.sha }})
           path: patches/xpatch_11.db
